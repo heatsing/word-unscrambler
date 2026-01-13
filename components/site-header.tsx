@@ -83,7 +83,6 @@ export function SiteHeader() {
               <NavigationMenuItem>
                 <Link href="/" legacyBehavior passHref>
                   <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    <Home className="mr-2 h-4 w-4" />
                     Home
                   </NavigationMenuLink>
                 </Link>
@@ -92,7 +91,6 @@ export function SiteHeader() {
               {/* Navigation 1: Word Finders */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm">
-                  <Sparkles className="mr-2 h-4 w-4" />
                   Word Finders
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -102,12 +100,9 @@ export function SiteHeader() {
                         <NavigationMenuLink key={item.href} asChild>
                           <Link
                             href={item.href}
-                            className="group flex items-center gap-3 rounded-lg p-2.5 hover:bg-accent transition-colors block"
+                            className="rounded-lg p-2.5 hover:bg-accent transition-colors block"
                           >
-                            <div className="flex-1">
-                              <div className="text-sm font-medium">{item.name}</div>
-                            </div>
-                            <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="text-sm font-medium">{item.name}</div>
                           </Link>
                         </NavigationMenuLink>
                       ))}
@@ -119,7 +114,6 @@ export function SiteHeader() {
               {/* Navigation 2: List of Words */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm">
-                  <BookOpen className="mr-2 h-4 w-4" />
                   List of Words
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -129,12 +123,9 @@ export function SiteHeader() {
                         <NavigationMenuLink key={item.href} asChild>
                           <Link
                             href={item.href}
-                            className="group flex items-center gap-3 rounded-lg p-2.5 hover:bg-accent transition-colors block"
+                            className="rounded-lg p-2.5 hover:bg-accent transition-colors block"
                           >
-                            <div className="flex-1">
-                              <div className="text-sm font-medium">{item.name}</div>
-                            </div>
-                            <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="text-sm font-medium">{item.name}</div>
                           </Link>
                         </NavigationMenuLink>
                       ))}
@@ -146,7 +137,6 @@ export function SiteHeader() {
               {/* Navigation 3: Words by Length */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm">
-                  <Hash className="mr-2 h-4 w-4" />
                   Words by Length
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -171,7 +161,6 @@ export function SiteHeader() {
               <NavigationMenuItem>
                 <Link href="/about" legacyBehavior passHref>
                   <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    <Info className="mr-2 h-4 w-4" />
                     About
                   </NavigationMenuLink>
                 </Link>
@@ -202,14 +191,12 @@ export function SiteHeader() {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-3 text-lg font-semibold hover:text-primary transition-colors"
                   >
-                    <Home className="h-5 w-5" />
                     Home
                   </Link>
 
                   {/* Word Finders */}
                   <div>
-                    <h3 className="font-semibold text-sm text-muted-foreground mb-3 flex items-center gap-2">
-                      <Sparkles className="h-4 w-4" />
+                    <h3 className="font-semibold text-sm text-muted-foreground mb-3">
                       WORD FINDERS
                     </h3>
                     <div className="flex flex-col gap-1">
@@ -228,8 +215,7 @@ export function SiteHeader() {
 
                   {/* List of Words */}
                   <div>
-                    <h3 className="font-semibold text-sm text-muted-foreground mb-3 flex items-center gap-2">
-                      <BookOpen className="h-4 w-4" />
+                    <h3 className="font-semibold text-sm text-muted-foreground mb-3">
                       LIST OF WORDS
                     </h3>
                     <div className="flex flex-col gap-1">
@@ -248,8 +234,7 @@ export function SiteHeader() {
 
                   {/* Words by Length */}
                   <div>
-                    <h3 className="font-semibold text-sm text-muted-foreground mb-3 flex items-center gap-2">
-                      <Hash className="h-4 w-4" />
+                    <h3 className="font-semibold text-sm text-muted-foreground mb-3">
                       WORDS BY LENGTH
                     </h3>
                     <div className="grid grid-cols-2 gap-2">
@@ -272,7 +257,6 @@ export function SiteHeader() {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-3 text-lg font-semibold hover:text-primary transition-colors pt-4 border-t"
                   >
-                    <Info className="h-5 w-5" />
                     About
                   </Link>
                 </nav>
