@@ -18,31 +18,31 @@ import { useState } from "react"
 
 // Navigation 1: Word Finders (18 tools)
 const wordFinders = [
-  { name: "Word Unscrambler", href: "/word-unscrambler", description: "Unscramble any letters", icon: "✨" },
-  { name: "Wordle Solver", href: "/wordle-solver", description: "Solve Wordle puzzles", icon: "🎯" },
-  { name: "Anagram Solver", href: "/anagram-solver", description: "Find anagrams", icon: "🔄" },
-  { name: "Scrabble Word Finder", href: "/scrabble", description: "High-scoring words", icon: "🎲" },
-  { name: "Scrabble Go", href: "/scrabble-go", description: "Scrabble Go helper", icon: "🎮" },
-  { name: "Words with Friends", href: "/words-with-friends", description: "WWF cheat tool", icon: "👥" },
-  { name: "Jumble Solver", href: "/jumble-solver", description: "Solve jumbles", icon: "🧩" },
-  { name: "Word Generator", href: "/word-generator", description: "Random words", icon: "⚡" },
-  { name: "Word Scramble", href: "/word-scramble", description: "Scramble solver", icon: "🔀" },
-  { name: "Wordscapes", href: "/wordscapes", description: "Wordscapes help", icon: "🌄" },
-  { name: "Word Cookies", href: "/word-cookies", description: "Cookie answers", icon: "🍪" },
-  { name: "Wordfeud", href: "/wordfeud", description: "Wordfeud cheat", icon: "⚔️" },
-  { name: "Text Twist", href: "/text-twist", description: "Text Twist solver", icon: "🌀" },
-  { name: "Boggle Solver", href: "/boggle-solver", description: "Solve Boggle grids", icon: "🎲" },
-  { name: "Crossword Solver", href: "/crossword-solver", description: "Crossword help", icon: "📰" },
-  { name: "Word Search Solver", href: "/word-search-solver", description: "Find hidden words", icon: "🔍" },
-  { name: "Hangman Solver", href: "/hangman-solver", description: "Hangman helper", icon: "🎭" },
-  { name: "Letter Boxed Solver", href: "/letter-boxed-solver", description: "NYT Letter Boxed", icon: "📦" },
+  { name: "Word Unscrambler", href: "/word-unscrambler", description: "Unscramble any letters" },
+  { name: "Wordle Solver", href: "/wordle-solver", description: "Solve Wordle puzzles" },
+  { name: "Anagram Solver", href: "/anagram-solver", description: "Find anagrams" },
+  { name: "Scrabble Word Finder", href: "/scrabble", description: "High-scoring words" },
+  { name: "Scrabble Go", href: "/scrabble-go", description: "Scrabble Go helper" },
+  { name: "Words with Friends", href: "/words-with-friends", description: "WWF cheat tool" },
+  { name: "Jumble Solver", href: "/jumble-solver", description: "Solve jumbles" },
+  { name: "Word Generator", href: "/word-generator", description: "Random words" },
+  { name: "Word Scramble", href: "/word-scramble", description: "Scramble solver" },
+  { name: "Wordscapes", href: "/wordscapes", description: "Wordscapes help" },
+  { name: "Word Cookies", href: "/word-cookies", description: "Cookie answers" },
+  { name: "Wordfeud", href: "/wordfeud", description: "Wordfeud cheat" },
+  { name: "Text Twist", href: "/text-twist", description: "Text Twist solver" },
+  { name: "Boggle Solver", href: "/boggle-solver", description: "Solve Boggle grids" },
+  { name: "Crossword Solver", href: "/crossword-solver", description: "Crossword help" },
+  { name: "Word Search Solver", href: "/word-search-solver", description: "Find hidden words" },
+  { name: "Hangman Solver", href: "/hangman-solver", description: "Hangman helper" },
+  { name: "Letter Boxed Solver", href: "/letter-boxed-solver", description: "NYT Letter Boxed" },
 ]
 
 // Navigation 2: List of Words (3 categories)
 const wordLists = [
-  { name: "Words by Length", href: "/words-by-length", icon: "📏", description: "Browse words by letter count" },
-  { name: "Words Start With", href: "/words-start-with", icon: "▶️", description: "Words beginning with specific letters" },
-  { name: "Words With Letters", href: "/words-with-letters", icon: "🔤", description: "Words containing certain letters" },
+  { name: "Words by Length", href: "/words-by-length", description: "Browse words by letter count" },
+  { name: "Words Start With", href: "/words-start-with", description: "Words beginning with specific letters" },
+  { name: "Words With Letters", href: "/words-with-letters", description: "Words containing certain letters" },
 ]
 
 // Navigation 3: Words by Length (10-letter to 2-letter)
@@ -105,7 +105,6 @@ export function SiteHeader() {
                             href={item.href}
                             className="group flex items-center gap-3 rounded-lg p-3 hover:bg-accent transition-colors"
                           >
-                            <span className="text-xl">{item.icon}</span>
                             <div className="flex-1">
                               <div className="text-sm font-medium">{item.name}</div>
                               <div className="text-xs text-muted-foreground">{item.description}</div>
@@ -135,7 +134,6 @@ export function SiteHeader() {
                             href={item.href}
                             className="group flex items-center gap-3 rounded-lg p-3 hover:bg-accent transition-colors"
                           >
-                            <span className="text-xl">{item.icon}</span>
                             <div className="flex-1">
                               <div className="text-sm font-medium">{item.name}</div>
                               <div className="text-xs text-muted-foreground">{item.description}</div>
@@ -228,10 +226,9 @@ export function SiteHeader() {
                           key={item.href}
                           href={item.href}
                           onClick={() => setMobileOpen(false)}
-                          className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent transition-colors"
+                          className="text-sm px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
                         >
-                          <span className="text-lg">{item.icon}</span>
-                          <span className="text-sm font-medium">{item.name}</span>
+                          {item.name}
                         </Link>
                       ))}
                     </div>
@@ -249,10 +246,9 @@ export function SiteHeader() {
                           key={item.href}
                           href={item.href}
                           onClick={() => setMobileOpen(false)}
-                          className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent transition-colors"
+                          className="text-sm px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
                         >
-                          <span className="text-lg">{item.icon}</span>
-                          <span className="text-sm font-medium">{item.name}</span>
+                          {item.name}
                         </Link>
                       ))}
                     </div>
