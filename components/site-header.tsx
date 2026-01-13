@@ -96,8 +96,7 @@ export function SiteHeader() {
                   Word Finders
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[320px] p-4">
-                    <h4 className="mb-3 text-sm font-semibold text-muted-foreground">All Word Finder Tools</h4>
+                  <div className="w-[280px] p-4">
                     <div className="space-y-1">
                       {wordFinders.map((item) => (
                         <NavigationMenuLink key={item.href} asChild>
@@ -107,7 +106,6 @@ export function SiteHeader() {
                           >
                             <div className="flex-1">
                               <div className="text-sm font-medium">{item.name}</div>
-                              <div className="text-xs text-muted-foreground">{item.description}</div>
                             </div>
                             <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </Link>
@@ -125,8 +123,7 @@ export function SiteHeader() {
                   List of Words
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[320px] p-4">
-                    <h4 className="mb-3 text-sm font-semibold text-muted-foreground">Browse Word Lists</h4>
+                  <div className="w-[280px] p-4">
                     <div className="space-y-1">
                       {wordLists.map((item) => (
                         <NavigationMenuLink key={item.href} asChild>
@@ -136,7 +133,6 @@ export function SiteHeader() {
                           >
                             <div className="flex-1">
                               <div className="text-sm font-medium">{item.name}</div>
-                              <div className="text-xs text-muted-foreground">{item.description}</div>
                             </div>
                             <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </Link>
@@ -154,19 +150,15 @@ export function SiteHeader() {
                   Words by Length
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[280px] p-4">
-                    <h4 className="mb-3 text-sm font-semibold text-muted-foreground">Quick Access by Letter Count</h4>
+                  <div className="w-[240px] p-4">
                     <div className="space-y-1">
                       {wordsByLength.map((item) => (
                         <NavigationMenuLink key={item.href} asChild>
                           <Link
                             href={item.href}
-                            className="flex items-center justify-between rounded-md p-2.5 hover:bg-accent transition-colors block"
+                            className="flex items-center rounded-md p-2.5 hover:bg-accent transition-colors block"
                           >
                             <span className="text-sm font-medium">{item.name}</span>
-                            <Badge variant="outline" className="text-xs">
-                              {item.count}
-                            </Badge>
                           </Link>
                         </NavigationMenuLink>
                       ))}
