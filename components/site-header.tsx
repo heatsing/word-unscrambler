@@ -16,41 +16,46 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { Badge } from "@/components/ui/badge"
 import { useState } from "react"
 
-const popularTools = [
-  { name: "Word Unscrambler", href: "/word-unscrambler", icon: "✨", badge: "Popular" },
-  { name: "Wordle Solver", href: "/wordle-solver", icon: "🎯", badge: "Hot" },
-  { name: "Scrabble Word Finder", href: "/scrabble", icon: "🎲", badge: null },
-  { name: "Anagram Solver", href: "/anagram-solver", icon: "🔄", badge: null },
-]
-
+// Navigation 1: Word Finders (18 tools)
 const wordFinders = [
-  { name: "Word Unscrambler", href: "/word-unscrambler", description: "Unscramble any letters" },
-  { name: "Wordle Solver", href: "/wordle-solver", description: "Solve Wordle puzzles" },
-  { name: "Anagram Solver", href: "/anagram-solver", description: "Find anagrams" },
-  { name: "Scrabble Word Finder", href: "/scrabble", description: "High-scoring words" },
-  { name: "Scrabble Go", href: "/scrabble-go", description: "Scrabble Go helper" },
-  { name: "Words with Friends", href: "/words-with-friends", description: "WWF cheat tool" },
-  { name: "Jumble Solver", href: "/jumble-solver", description: "Solve jumbles" },
-  { name: "Word Generator", href: "/word-generator", description: "Random words" },
-  { name: "Word Scramble", href: "/word-scramble", description: "Scramble solver" },
-  { name: "Wordscapes", href: "/wordscapes", description: "Wordscapes help" },
-  { name: "Word Cookies", href: "/word-cookies", description: "Cookie answers" },
-  { name: "Wordfeud", href: "/wordfeud", description: "Wordfeud cheat" },
+  { name: "Word Unscrambler", href: "/word-unscrambler", description: "Unscramble any letters", icon: "✨" },
+  { name: "Wordle Solver", href: "/wordle-solver", description: "Solve Wordle puzzles", icon: "🎯" },
+  { name: "Anagram Solver", href: "/anagram-solver", description: "Find anagrams", icon: "🔄" },
+  { name: "Scrabble Word Finder", href: "/scrabble", description: "High-scoring words", icon: "🎲" },
+  { name: "Scrabble Go", href: "/scrabble-go", description: "Scrabble Go helper", icon: "🎮" },
+  { name: "Words with Friends", href: "/words-with-friends", description: "WWF cheat tool", icon: "👥" },
+  { name: "Jumble Solver", href: "/jumble-solver", description: "Solve jumbles", icon: "🧩" },
+  { name: "Word Generator", href: "/word-generator", description: "Random words", icon: "⚡" },
+  { name: "Word Scramble", href: "/word-scramble", description: "Scramble solver", icon: "🔀" },
+  { name: "Wordscapes", href: "/wordscapes", description: "Wordscapes help", icon: "🌄" },
+  { name: "Word Cookies", href: "/word-cookies", description: "Cookie answers", icon: "🍪" },
+  { name: "Wordfeud", href: "/wordfeud", description: "Wordfeud cheat", icon: "⚔️" },
+  { name: "Text Twist", href: "/text-twist", description: "Text Twist solver", icon: "🌀" },
+  { name: "Boggle Solver", href: "/boggle-solver", description: "Solve Boggle grids", icon: "🎲" },
+  { name: "Crossword Solver", href: "/crossword-solver", description: "Crossword help", icon: "📰" },
+  { name: "Word Search Solver", href: "/word-search-solver", description: "Find hidden words", icon: "🔍" },
+  { name: "Hangman Solver", href: "/hangman-solver", description: "Hangman helper", icon: "🎭" },
+  { name: "Letter Boxed Solver", href: "/letter-boxed-solver", description: "NYT Letter Boxed", icon: "📦" },
 ]
 
+// Navigation 2: List of Words (3 categories)
 const wordLists = [
-  { name: "Words by Length", href: "/words-by-length", icon: "📏" },
-  { name: "Words Start With", href: "/words-start-with", icon: "▶️" },
-  { name: "Words With Letters", href: "/words-with-letters", icon: "🔤" },
+  { name: "Words by Length", href: "/words-by-length", icon: "📏", description: "Browse words by letter count" },
+  { name: "Words Start With", href: "/words-start-with", icon: "▶️", description: "Words beginning with specific letters" },
+  { name: "Words With Letters", href: "/words-with-letters", icon: "🔤", description: "Words containing certain letters" },
 ]
 
-const quickLengths = [
-  { name: "2-Letter Words", href: "/2-letter-words", count: "31" },
-  { name: "3-Letter Words", href: "/3-letter-words", count: "400+" },
-  { name: "4-Letter Words", href: "/4-letter-words", count: "800+" },
-  { name: "5-Letter Words", href: "/5-letter-words", count: "1000+" },
+// Navigation 3: Words by Length (10-letter to 2-letter)
+const wordsByLength = [
+  { name: "10-Letter Words", href: "/10-letter-words", count: "400+" },
+  { name: "9-Letter Words", href: "/9-letter-words", count: "400+" },
+  { name: "8-Letter Words", href: "/8-letter-words", count: "300+" },
+  { name: "7-Letter Words", href: "/7-letter-words", count: "400+" },
   { name: "6-Letter Words", href: "/6-letter-words", count: "500+" },
-  { name: "7-Letter Words", href: "/7-letter-words", count: "300+" },
+  { name: "5-Letter Words", href: "/5-letter-words", count: "1000+" },
+  { name: "4-Letter Words", href: "/4-letter-words", count: "800+" },
+  { name: "3-Letter Words", href: "/3-letter-words", count: "400+" },
+  { name: "2-Letter Words", href: "/2-letter-words", count: "31" },
 ]
 
 export function SiteHeader() {
@@ -84,109 +89,89 @@ export function SiteHeader() {
                 </Link>
               </NavigationMenuItem>
 
-              {/* Tools Dropdown */}
+              {/* Navigation 1: Word Finders */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm">
                   <Sparkles className="mr-2 h-4 w-4" />
-                  Word Tools
+                  Word Finders
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="w-[600px] p-4">
-                    {/* Popular Tools Section */}
-                    <div className="mb-4 pb-4 border-b">
-                      <h4 className="mb-3 text-sm font-semibold text-muted-foreground">Popular Tools</h4>
-                      <div className="grid grid-cols-2 gap-2">
-                        {popularTools.map((item) => (
-                          <NavigationMenuLink key={item.href} asChild>
-                            <Link
-                              href={item.href}
-                              className="group flex items-center gap-3 rounded-lg p-3 hover:bg-accent transition-colors"
-                            >
-                              <span className="text-2xl">{item.icon}</span>
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2">
-                                  <span className="text-sm font-medium">{item.name}</span>
-                                  {item.badge && (
-                                    <Badge variant="secondary" className="text-xs px-1.5 py-0">
-                                      {item.badge}
-                                    </Badge>
-                                  )}
-                                </div>
-                              </div>
-                              <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </Link>
-                          </NavigationMenuLink>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* All Tools */}
-                    <div>
-                      <h4 className="mb-3 text-sm font-semibold text-muted-foreground">All Tools</h4>
-                      <div className="grid grid-cols-2 gap-2">
-                        {wordFinders.map((item) => (
-                          <NavigationMenuLink key={item.href} asChild>
-                            <Link
-                              href={item.href}
-                              className="block rounded-md p-2 hover:bg-accent transition-colors"
-                            >
+                    <h4 className="mb-3 text-sm font-semibold text-muted-foreground">All Word Finder Tools</h4>
+                    <div className="grid grid-cols-2 gap-2">
+                      {wordFinders.map((item) => (
+                        <NavigationMenuLink key={item.href} asChild>
+                          <Link
+                            href={item.href}
+                            className="group flex items-center gap-3 rounded-lg p-3 hover:bg-accent transition-colors"
+                          >
+                            <span className="text-xl">{item.icon}</span>
+                            <div className="flex-1">
                               <div className="text-sm font-medium">{item.name}</div>
                               <div className="text-xs text-muted-foreground">{item.description}</div>
-                            </Link>
-                          </NavigationMenuLink>
-                        ))}
-                      </div>
+                            </div>
+                            <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </Link>
+                        </NavigationMenuLink>
+                      ))}
                     </div>
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
-              {/* Word Lists */}
+              {/* Navigation 2: List of Words */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm">
                   <BookOpen className="mr-2 h-4 w-4" />
-                  Word Lists
+                  List of Words
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="w-[400px] p-4">
-                    <div className="space-y-4">
-                      {/* Browse Options */}
-                      <div>
-                        <h4 className="mb-3 text-sm font-semibold text-muted-foreground">Browse Words</h4>
-                        <div className="space-y-1">
-                          {wordLists.map((item) => (
-                            <NavigationMenuLink key={item.href} asChild>
-                              <Link
-                                href={item.href}
-                                className="flex items-center gap-3 rounded-md p-3 hover:bg-accent transition-colors"
-                              >
-                                <span className="text-xl">{item.icon}</span>
-                                <span className="text-sm font-medium">{item.name}</span>
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
-                        </div>
-                      </div>
+                    <h4 className="mb-3 text-sm font-semibold text-muted-foreground">Browse Word Lists</h4>
+                    <div className="space-y-2">
+                      {wordLists.map((item) => (
+                        <NavigationMenuLink key={item.href} asChild>
+                          <Link
+                            href={item.href}
+                            className="group flex items-center gap-3 rounded-lg p-3 hover:bg-accent transition-colors"
+                          >
+                            <span className="text-xl">{item.icon}</span>
+                            <div className="flex-1">
+                              <div className="text-sm font-medium">{item.name}</div>
+                              <div className="text-xs text-muted-foreground">{item.description}</div>
+                            </div>
+                            <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </Link>
+                        </NavigationMenuLink>
+                      ))}
+                    </div>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
 
-                      {/* Quick Access by Length */}
-                      <div className="pt-4 border-t">
-                        <h4 className="mb-3 text-sm font-semibold text-muted-foreground">Quick Access</h4>
-                        <div className="grid grid-cols-2 gap-2">
-                          {quickLengths.map((item) => (
-                            <NavigationMenuLink key={item.href} asChild>
-                              <Link
-                                href={item.href}
-                                className="flex items-center justify-between rounded-md p-2 hover:bg-accent transition-colors"
-                              >
-                                <span className="text-sm font-medium">{item.name}</span>
-                                <Badge variant="outline" className="text-xs">
-                                  {item.count}
-                                </Badge>
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
-                        </div>
-                      </div>
+              {/* Navigation 3: Words by Length */}
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="text-sm">
+                  <Hash className="mr-2 h-4 w-4" />
+                  Words by Length
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="w-[350px] p-4">
+                    <h4 className="mb-3 text-sm font-semibold text-muted-foreground">Quick Access by Letter Count</h4>
+                    <div className="grid grid-cols-2 gap-2">
+                      {wordsByLength.map((item) => (
+                        <NavigationMenuLink key={item.href} asChild>
+                          <Link
+                            href={item.href}
+                            className="flex items-center justify-between rounded-md p-2.5 hover:bg-accent transition-colors"
+                          >
+                            <span className="text-sm font-medium">{item.name}</span>
+                            <Badge variant="outline" className="text-xs">
+                              {item.count}
+                            </Badge>
+                          </Link>
+                        </NavigationMenuLink>
+                      ))}
                     </div>
                   </div>
                 </NavigationMenuContent>
@@ -231,54 +216,32 @@ export function SiteHeader() {
                     Home
                   </Link>
 
-                  {/* Popular Tools */}
+                  {/* Word Finders */}
                   <div>
                     <h3 className="font-semibold text-sm text-muted-foreground mb-3 flex items-center gap-2">
                       <Sparkles className="h-4 w-4" />
-                      POPULAR TOOLS
+                      WORD FINDERS
                     </h3>
-                    <div className="flex flex-col gap-1">
-                      {popularTools.map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-accent transition-colors"
-                        >
-                          <span className="text-xl">{item.icon}</span>
-                          <span className="text-sm font-medium flex-1">{item.name}</span>
-                          {item.badge && (
-                            <Badge variant="secondary" className="text-xs">
-                              {item.badge}
-                            </Badge>
-                          )}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* All Word Finders */}
-                  <div>
-                    <h3 className="font-semibold text-sm text-muted-foreground mb-3">ALL WORD TOOLS</h3>
                     <div className="flex flex-col gap-1">
                       {wordFinders.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
                           onClick={() => setMobileOpen(false)}
-                          className="text-sm px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
+                          className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent transition-colors"
                         >
-                          {item.name}
+                          <span className="text-lg">{item.icon}</span>
+                          <span className="text-sm font-medium">{item.name}</span>
                         </Link>
                       ))}
                     </div>
                   </div>
 
-                  {/* Word Lists */}
+                  {/* List of Words */}
                   <div>
                     <h3 className="font-semibold text-sm text-muted-foreground mb-3 flex items-center gap-2">
                       <BookOpen className="h-4 w-4" />
-                      WORD LISTS
+                      LIST OF WORDS
                     </h3>
                     <div className="flex flex-col gap-1">
                       {wordLists.map((item) => (
@@ -288,21 +251,21 @@ export function SiteHeader() {
                           onClick={() => setMobileOpen(false)}
                           className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent transition-colors"
                         >
-                          <span>{item.icon}</span>
+                          <span className="text-lg">{item.icon}</span>
                           <span className="text-sm font-medium">{item.name}</span>
                         </Link>
                       ))}
                     </div>
                   </div>
 
-                  {/* Quick Lengths */}
+                  {/* Words by Length */}
                   <div>
                     <h3 className="font-semibold text-sm text-muted-foreground mb-3 flex items-center gap-2">
                       <Hash className="h-4 w-4" />
-                      BY LENGTH
+                      WORDS BY LENGTH
                     </h3>
                     <div className="grid grid-cols-2 gap-2">
-                      {quickLengths.map((item) => (
+                      {wordsByLength.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
