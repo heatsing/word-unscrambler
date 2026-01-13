@@ -7,33 +7,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ALL_WORDS } from "@/lib/dictionary"
-import { Search, Sparkles, Layers } from "lucide-react"
+import { Search, ArrowLeft, Sparkles } from "lucide-react"
 
-const exampleSearches = [
-  { letters: "qu", description: "Words with QU" },
-  { letters: "xyz", description: "Rare letter combo" },
-  { letters: "tion", description: "Common ending" },
-  { letters: "ae", description: "Vowel pair" },
-]
+const commonEndings = ["ed", "ing", "ly", "er", "est", "tion", "ness", "ful", "less", "ment", "ity", "ous", "ive", "able", "ible", "al", "ic", "ical", "ish", "ize"]
 
-export default function WordsWithLettersPage() {
-  const [letters, setLetters] = useState("")
+export default function WordsEndingInPage() {
+  const [suffix, setSuffix] = useState("")
   const [searched, setSearched] = useState(false)
 
   const results = useMemo(() => {
-    if (!letters.trim()) return []
-    const searchLetters = letters.toLowerCase().trim()
-    return ALL_WORDS.filter((word) => word.includes(searchLetters))
-  }, [letters, searched])
+    if (!suffix.trim()) return []
+    const searchSuffix = suffix.toLowerCase().trim()
+    return ALL_WORDS.filter((word) => word.endsWith(searchSuffix))
+  }, [suffix, searched])
 
   const handleSearch = () => {
-    if (letters.trim()) {
+    if (suffix.trim()) {
       setSearched(true)
     }
   }
 
-  const handleExampleClick = (exampleLetters: string) => {
-    setLetters(exampleLetters)
+  const handleEndingClick = (ending: string) => {
+    setSuffix(ending)
     setSearched(true)
   }
 
@@ -53,15 +48,14 @@ export default function WordsWithLettersPage() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 animate-fade-in">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg mb-4 shadow-lg">
-            <Layers className="h-8 w-8 text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg mb-4 shadow-lg">
+            <ArrowLeft className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
-            Words With Letters
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+            Words Ending In
           </h1>
           <p className="text-lg text-muted-foreground text-pretty max-w-2xl mx-auto">
-            Find all words that contain specific letters. Enter any combination of letters and discover words that
-            include them.
+            Find all words that end with specific letters. Perfect for rhyming, poetry, word games, and creative writing.
           </p>
         </div>
 
@@ -70,9 +64,9 @@ export default function WordsWithLettersPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Search className="h-5 w-5" />
-              Search Words Containing Letters
+              Search Words by Ending Letters
             </CardTitle>
-            <CardDescription>Enter letters to find all words that contain them anywhere</CardDescription>
+            <CardDescription>Enter letters to find all words that end with them</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <form
@@ -85,9 +79,9 @@ export default function WordsWithLettersPage() {
               <div className="relative flex-1">
                 <Input
                   type="text"
-                  value={letters}
-                  onChange={(e) => setLetters(e.target.value.toLowerCase())}
-                  placeholder="Enter letters (e.g., qu, xyz, tion)"
+                  value={suffix}
+                  onChange={(e) => setSuffix(e.target.value.toLowerCase())}
+                  placeholder="Enter ending letters (e.g., ing, ed, tion)"
                   className="h-12 text-lg"
                   onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
@@ -99,17 +93,17 @@ export default function WordsWithLettersPage() {
             </form>
 
             <div>
-              <p className="text-sm font-semibold mb-3 text-center">Try These Examples:</p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {exampleSearches.map((example) => (
+              <p className="text-sm font-semibold mb-3 text-center">Common Word Endings:</p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {commonEndings.map((ending) => (
                   <Button
-                    key={example.letters}
+                    key={ending}
                     variant="outline"
-                    onClick={() => handleExampleClick(example.letters)}
-                    className="flex flex-col h-auto p-3 hover:bg-primary hover:text-primary-foreground"
+                    size="sm"
+                    onClick={() => handleEndingClick(ending)}
+                    className="font-medium hover:bg-primary hover:text-primary-foreground"
                   >
-                    <span className="font-bold uppercase">{example.letters}</span>
-                    <span className="text-xs mt-1">{example.description}</span>
+                    -{ending}
                   </Button>
                 ))}
               </div>
@@ -122,7 +116,7 @@ export default function WordsWithLettersPage() {
           <div className="space-y-6 animate-fade-in">
             <div className="flex items-center justify-between">
               <h2 className="text-3xl font-bold">
-                Words containing "{letters}"
+                Words ending in "{suffix}"
               </h2>
               <div className="flex gap-2">
                 <Badge variant="secondary" className="text-sm">
@@ -145,28 +139,19 @@ export default function WordsWithLettersPage() {
 
                 <TabsContent value="all" className="mt-6">
                   <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                    {displayResults.map((word, index) => {
-                      const letterIndex = word.indexOf(letters.toLowerCase())
-                      const before = word.slice(0, letterIndex)
-                      const match = word.slice(letterIndex, letterIndex + letters.length)
-                      const after = word.slice(letterIndex + letters.length)
-
-                      return (
-                        <Card
-                          key={`${word}-${index}`}
-                          className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
-                        >
-                          <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
-                            {before}
-                            <span className="text-primary font-bold">{match}</span>
-                            {after}
-                          </span>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {word.length} letter{word.length !== 1 ? "s" : ""}
-                          </p>
-                        </Card>
-                      )
-                    })}
+                    {displayResults.map((word, index) => (
+                      <Card
+                        key={`${word}-${index}`}
+                        className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
+                      >
+                        <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
+                          {word}
+                        </span>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {word.length} letter{word.length !== 1 ? "s" : ""}
+                        </p>
+                      </Card>
+                    ))}
                   </div>
                   {results.length > 100 && (
                     <p className="text-center text-sm text-muted-foreground mt-6">
@@ -213,7 +198,7 @@ export default function WordsWithLettersPage() {
                 <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                 <p className="text-lg font-semibold mb-2">No words found</p>
                 <p className="text-sm text-muted-foreground">
-                  No words contain "{letters}". Try different letters.
+                  No words end with "{suffix}". Try different letters.
                 </p>
               </Card>
             )}
@@ -230,9 +215,9 @@ export default function WordsWithLettersPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-muted-foreground space-y-2">
-              <p>1. Enter any letter combination in the search box</p>
+              <p>1. Enter the ending letter(s) in the search box</p>
               <p>2. Click "Search" or press Enter to find words</p>
-              <p>3. Letters can appear anywhere in the word</p>
+              <p>3. Or click any common ending for quick search</p>
               <p>4. Browse results in grid view or grouped by length</p>
             </CardContent>
           </Card>
@@ -242,10 +227,10 @@ export default function WordsWithLettersPage() {
               <CardTitle>Perfect For</CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-muted-foreground space-y-2">
-              <p>• Finding words with rare letter combinations</p>
-              <p>• Word game pattern discovery</p>
-              <p>• Crossword puzzle assistance</p>
-              <p>• Spelling and vocabulary practice</p>
+              <p>• Finding rhyming words for poetry</p>
+              <p>• Scrabble and word game strategies</p>
+              <p>• Creative writing and songwriting</p>
+              <p>• Language learning and word patterns</p>
             </CardContent>
           </Card>
         </div>
@@ -253,22 +238,22 @@ export default function WordsWithLettersPage() {
         {/* SEO Content */}
         <div className="mt-12 prose prose-sm max-w-none">
           <Card className="p-6 md:p-8 shadow-lg">
-            <h2 className="text-2xl font-bold mb-4">Find Words Containing Specific Letters</h2>
+            <h2 className="text-2xl font-bold mb-4">Find Words Ending With Any Letters</h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                Our Words With Letters tool helps you discover all words that contain specific letter combinations.
-                Whether you're solving crossword puzzles, playing word games, or exploring English word patterns, this
-                comprehensive search tool makes it easy to find words with particular letter sequences.
+                Our Words Ending In tool helps you discover all words that finish with specific letters. Whether you're
+                writing poetry, solving word puzzles, or playing word games, this comprehensive tool makes it easy to
+                find words with specific endings.
               </p>
               <p>
-                Simply enter any letter combination (like "qu", "xyz", or "tion") and instantly see all words that
-                contain those letters anywhere in the word. The matching letters are highlighted in each result for easy
-                identification. Perfect for finding words with rare letter combinations or common patterns.
+                Simply enter any ending letters (like "ing", "ed", or "tion") and instantly see all matching words from
+                our extensive dictionary. Perfect for finding rhymes, completing crosswords, or exploring word patterns.
+                View results organized by length or in a complete list for easy browsing.
               </p>
               <p>
-                With thousands of words in our database, you'll discover interesting patterns and expand your vocabulary.
-                Use this tool for Scrabble strategy, crossword solving, or language learning. Our search is fast,
-                accurate, and completely free to use.
+                With thousands of words in our database, you'll discover common endings like "-ly", "-er", and "-ness",
+                as well as less common suffixes. Our tool is perfect for poets, writers, word game enthusiasts, and
+                language learners exploring English word patterns.
               </p>
             </div>
           </Card>

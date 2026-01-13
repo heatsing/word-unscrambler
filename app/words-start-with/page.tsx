@@ -1,149 +1,264 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Search } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ALL_WORDS } from "@/lib/dictionary"
+import { Search, ArrowRight, Sparkles } from "lucide-react"
 
-const commonPrefixes = [
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-  "m",
-  "n",
-  "o",
-  "p",
-  "q",
-  "r",
-  "s",
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z",
-]
+const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 
 export default function WordsStartWithPage() {
   const [prefix, setPrefix] = useState("")
-  const [results, setResults] = useState<string[]>([])
   const [searched, setSearched] = useState(false)
 
-  const handleSearch = (searchPrefix: string) => {
-    // Mock results
-    const mockResults = [
-      `${searchPrefix}bove`,
-      `${searchPrefix}bout`,
-      `${searchPrefix}buse`,
-      `${searchPrefix}ctive`,
-      `${searchPrefix}ction`,
-      `${searchPrefix}ctor`,
-      `${searchPrefix}dmit`,
-      `${searchPrefix}dult`,
-      `${searchPrefix}fter`,
-      `${searchPrefix}gain`,
-    ]
-    setResults(mockResults.slice(0, 10))
+  const results = useMemo(() => {
+    if (!prefix.trim()) return []
+    const searchPrefix = prefix.toLowerCase().trim()
+    return ALL_WORDS.filter((word) => word.startsWith(searchPrefix))
+  }, [prefix, searched])
+
+  const handleSearch = () => {
+    if (prefix.trim()) {
+      setSearched(true)
+    }
+  }
+
+  const handleLetterClick = (letter: string) => {
+    setPrefix(letter)
     setSearched(true)
   }
 
-  const handlePrefixClick = (letter: string) => {
-    setPrefix(letter)
-    handleSearch(letter)
-  }
+  const groupedResults = useMemo(() => {
+    return results.reduce((acc, word) => {
+      const len = word.length
+      if (!acc[len]) acc[len] = []
+      acc[len].push(word)
+      return acc
+    }, {} as Record<number, string[]>)
+  }, [results])
+
+  const displayResults = results.slice(0, 100)
 
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-lg mb-4">
-            <Search className="h-8 w-8 text-primary" />
+        {/* Header */}
+        <div className="text-center mb-12 animate-fade-in">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg mb-4 shadow-lg">
+            <ArrowRight className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Words Starting With</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+            Words Starting With
+          </h1>
           <p className="text-lg text-muted-foreground text-pretty max-w-2xl mx-auto">
             Find all words that start with specific letters. Perfect for crossword puzzles, word games, and expanding
             your vocabulary.
           </p>
         </div>
 
-        <div className="mb-12">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault()
-              if (prefix.trim()) handleSearch(prefix.trim())
-            }}
-            className="flex gap-2 max-w-2xl mx-auto mb-8"
-          >
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input
-                type="text"
-                value={prefix}
-                onChange={(e) => setPrefix(e.target.value)}
-                placeholder="Enter starting letters..."
-                className="pl-10 h-12 text-lg"
-              />
-            </div>
-            <Button type="submit" size="lg" className="h-12 px-8">
-              Search
-            </Button>
-          </form>
+        {/* Search Interface */}
+        <Card className="mb-8 shadow-lg animate-scale-in">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Search className="h-5 w-5" />
+              Search Words by Starting Letters
+            </CardTitle>
+            <CardDescription>Enter letters to find all words that begin with them</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                handleSearch()
+              }}
+              className="flex gap-3"
+            >
+              <div className="relative flex-1">
+                <Input
+                  type="text"
+                  value={prefix}
+                  onChange={(e) => setPrefix(e.target.value.toLowerCase())}
+                  placeholder="Enter starting letters (e.g., app, str, con)"
+                  className="h-12 text-lg"
+                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                />
+              </div>
+              <Button type="submit" size="lg" className="h-12 px-8">
+                <Search className="mr-2 h-4 w-4" />
+                Search
+              </Button>
+            </form>
 
-          <div>
-            <p className="text-sm text-muted-foreground text-center mb-4">Or select a letter:</p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {commonPrefixes.map((letter) => (
-                <Button
-                  key={letter}
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handlePrefixClick(letter)}
-                  className="w-10 h-10 p-0 font-semibold uppercase"
-                >
-                  {letter}
-                </Button>
-              ))}
+            <div>
+              <p className="text-sm font-semibold mb-3 text-center">Quick Search by Letter:</p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {alphabet.map((letter) => (
+                  <Button
+                    key={letter}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleLetterClick(letter)}
+                    className="w-10 h-10 p-0 font-bold uppercase hover:bg-primary hover:text-primary-foreground"
+                  >
+                    {letter}
+                  </Button>
+                ))}
+              </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
+        {/* Results */}
         {searched && (
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">
-              Words starting with "{prefix}" ({results.length} found)
-            </h2>
-            <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-              {results.map((word, index) => (
-                <Card key={index} className="p-3 text-center hover:shadow-md transition-shadow">
-                  <span className="font-medium">{word}</span>
-                </Card>
-              ))}
+          <div className="space-y-6 animate-fade-in">
+            <div className="flex items-center justify-between">
+              <h2 className="text-3xl font-bold">
+                Words starting with "{prefix}"
+              </h2>
+              <div className="flex gap-2">
+                <Badge variant="secondary" className="text-sm">
+                  Total: {results.length}
+                </Badge>
+                {results.length > 100 && (
+                  <Badge variant="default" className="text-sm">
+                    Showing first 100
+                  </Badge>
+                )}
+              </div>
             </div>
+
+            {results.length > 0 ? (
+              <Tabs defaultValue="all" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="all">All Words</TabsTrigger>
+                  <TabsTrigger value="grouped">By Length</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="all" className="mt-6">
+                  <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                    {displayResults.map((word, index) => (
+                      <Card
+                        key={`${word}-${index}`}
+                        className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
+                      >
+                        <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
+                          {word}
+                        </span>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {word.length} letter{word.length !== 1 ? "s" : ""}
+                        </p>
+                      </Card>
+                    ))}
+                  </div>
+                  {results.length > 100 && (
+                    <p className="text-center text-sm text-muted-foreground mt-6">
+                      Showing first 100 of {results.length} words. Try a more specific search for better results.
+                    </p>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="grouped" className="mt-6 space-y-6">
+                  {Object.keys(groupedResults)
+                    .sort((a, b) => Number(a) - Number(b))
+                    .map((length) => {
+                      const wordsInGroup = groupedResults[Number(length)]
+                      const displayWords = wordsInGroup.slice(0, 20)
+
+                      return (
+                        <div key={length} className="space-y-3">
+                          <h3 className="text-xl font-semibold flex items-center gap-2">
+                            {length} Letter Words
+                            <Badge variant="outline">{wordsInGroup.length}</Badge>
+                          </h3>
+                          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                            {displayWords.map((word, index) => (
+                              <Card
+                                key={`${word}-${index}`}
+                                className="p-3 text-center hover:shadow-md hover:scale-105 transition-all cursor-pointer"
+                              >
+                                <span className="font-semibold uppercase">{word}</span>
+                              </Card>
+                            ))}
+                          </div>
+                          {wordsInGroup.length > 20 && (
+                            <p className="text-xs text-muted-foreground">
+                              Showing first 20 of {wordsInGroup.length} words
+                            </p>
+                          )}
+                        </div>
+                      )
+                    })}
+                </TabsContent>
+              </Tabs>
+            ) : (
+              <Card className="p-12 text-center border-dashed">
+                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-lg font-semibold mb-2">No words found</p>
+                <p className="text-sm text-muted-foreground">
+                  No words start with "{prefix}". Try different letters.
+                </p>
+              </Card>
+            )}
           </div>
         )}
 
-        <Card className="mt-12">
-          <CardHeader>
-            <CardTitle>How to Use This Tool</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground space-y-2">
-            <p>1. Enter the starting letter(s) in the search box above</p>
-            <p>2. Click "Search" or select a letter from the alphabet grid</p>
-            <p>3. Browse through all words that begin with those letters</p>
-            <p>4. Use this for crosswords, Scrabble, Words with Friends, and more</p>
-          </CardContent>
-        </Card>
+        {/* Info Cards */}
+        <div className="grid gap-6 md:grid-cols-2 mt-12">
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-primary" />
+                How to Use
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm text-muted-foreground space-y-2">
+              <p>1. Enter the starting letter(s) in the search box</p>
+              <p>2. Click "Search" or press Enter to find words</p>
+              <p>3. Or click any letter from the alphabet grid for quick search</p>
+              <p>4. Browse results in grid view or grouped by length</p>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle>Perfect For</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm text-muted-foreground space-y-2">
+              <p>• Crossword puzzle solving</p>
+              <p>• Scrabble and Words with Friends strategy</p>
+              <p>• Word game assistance</p>
+              <p>• Vocabulary building and learning</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* SEO Content */}
+        <div className="mt-12 prose prose-sm max-w-none">
+          <Card className="p-6 md:p-8 shadow-lg">
+            <h2 className="text-2xl font-bold mb-4">Find Words Starting With Any Letters</h2>
+            <div className="space-y-4 text-muted-foreground leading-relaxed">
+              <p>
+                Our Words Starting With tool helps you discover all words that begin with specific letters. Whether
+                you're solving crossword puzzles, playing Scrabble, or exploring new vocabulary, this comprehensive
+                word finder makes it easy to find exactly what you need.
+              </p>
+              <p>
+                Simply enter any starting letters (like "app", "str", or "con") and instantly see all matching words
+                from our extensive dictionary. You can view results in a complete list or organized by word length for
+                easier browsing. Perfect for word game players and puzzle enthusiasts alike.
+              </p>
+              <p>
+                With thousands of words in our database, you'll find everything from common words to rare gems. Use the
+                quick letter buttons for fast searches, or type custom letter combinations for more specific results.
+                Our tool is free, fast, and perfect for any word-related challenge.
+              </p>
+            </div>
+          </Card>
+        </div>
       </div>
     </div>
   )
