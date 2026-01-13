@@ -1,34 +1,32 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { ArrowRight, Search, Sparkles, Zap } from "lucide-react"
+import { WordSearch } from "@/components/word-search"
+
+export const metadata = {
+  title: "Word Unscrambler & Word Game Solver - Unscramble Words Instantly",
+  description:
+    "Free word unscrambler tool to solve Wordle, Scrabble, Words with Friends, and more. Unscramble letters instantly and find all possible words from your letters.",
+  keywords: "word unscrambler, anagram solver, wordle solver, scrabble word finder, words with friends cheat",
+}
 
 export default function HomePage() {
   return (
     <div className="container mx-auto px-4 py-12">
       {/* Hero Section */}
       <section className="text-center mb-16">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-balance">Word Unscrambler & Word Game Solver</h1>
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 text-pretty">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-balance bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            Word Unscrambler & Word Game Solver
+          </h1>
+          <p className="text-lg md:text-xl text-muted-foreground mb-12 text-pretty">
             Unscramble letters, solve word puzzles, and dominate your favorite word games. Get instant solutions for
             Wordle, Scrabble, Words with Friends, and more.
           </p>
 
-          {/* Search Box */}
-          <div className="flex gap-2 max-w-xl mx-auto mb-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input type="text" placeholder="Enter your letters here..." className="pl-10 h-12 text-lg" />
-            </div>
-            <Button size="lg" className="h-12 px-8">
-              Unscramble
-            </Button>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Example: Enter "listen" to find words like "silent", "enlist", "tinsel"
-          </p>
+          {/* Interactive Search Component */}
+          <WordSearch />
         </div>
       </section>
 

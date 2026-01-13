@@ -12,6 +12,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { useState } from "react"
 
 const wordFinders = [
@@ -127,6 +128,7 @@ export function SiteHeader() {
           </NavigationMenu>
 
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Button variant="ghost" size="icon" className="hidden md:inline-flex">
               <Search className="h-5 w-5" />
               <span className="sr-only">Search</span>
