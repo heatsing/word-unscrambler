@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,14 +13,35 @@ import { Search, ArrowRight, Sparkles } from "lucide-react"
 const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 
 export default function WordsStartWithPage() {
+  const searchParams = useSearchParams()
   const [prefix, setPrefix] = useState("")
   const [searched, setSearched] = useState(false)
+  const [lengthFilter, setLengthFilter] = useState<number | null>(null)
+
+  useEffect(() => {
+    const lettersParam = searchParams.get("letters")
+    const lengthParam = searchParams.get("length")
+
+    if (lettersParam) {
+      setPrefix(lettersParam.toLowerCase())
+      setSearched(true)
+    }
+    if (lengthParam) {
+      setLengthFilter(Number(lengthParam))
+    }
+  }, [searchParams])
 
   const results = useMemo(() => {
     if (!prefix.trim()) return []
     const searchPrefix = prefix.toLowerCase().trim()
-    return ALL_WORDS.filter((word) => word.startsWith(searchPrefix))
-  }, [prefix, searched])
+    let filtered = ALL_WORDS.filter((word) => word.startsWith(searchPrefix))
+
+    if (lengthFilter) {
+      filtered = filtered.filter((word) => word.length === lengthFilter)
+    }
+
+    return filtered
+  }, [prefix, searched, lengthFilter])
 
   const handleSearch = () => {
     if (prefix.trim()) {
@@ -58,6 +80,11 @@ export default function WordsStartWithPage() {
             Find all words that start with specific letters. Perfect for crossword puzzles, word games, and expanding
             your vocabulary.
           </p>
+          {lengthFilter && (
+            <Badge variant="secondary" className="mt-4">
+              Filtered by {lengthFilter}-letter words
+            </Badge>
+          )}
         </div>
 
         {/* Search Interface */}
@@ -109,6 +136,18 @@ export default function WordsStartWithPage() {
                 ))}
               </div>
             </div>
+
+            {lengthFilter && (
+              <div className="text-center">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setLengthFilter(null)}
+                >
+                  Clear length filter
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -117,7 +156,7 @@ export default function WordsStartWithPage() {
           <div className="space-y-6 animate-fade-in">
             <div className="flex items-center justify-between">
               <h2 className="text-3xl font-bold">
-                Words starting with "{prefix}"
+                Words starting with "{prefix}"{lengthFilter ? ` (${lengthFilter} letters)` : ""}
               </h2>
               <div className="flex gap-2">
                 <Badge variant="secondary" className="text-sm">

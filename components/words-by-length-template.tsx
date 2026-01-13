@@ -1,12 +1,12 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { Card } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { BookOpen, Search, RefreshCw } from "lucide-react"
+import { BookOpen, Search, RefreshCw, Plus } from "lucide-react"
 
 interface WordsByLengthTemplateProps {
   length: number
@@ -22,15 +22,18 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled
 }
 
+const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+
 export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplateProps) {
   const [refreshKey, setRefreshKey] = useState(0)
   const [searchQuery, setSearchQuery] = useState("")
+  const [displayCount, setDisplayCount] = useState(100)
 
-  // Get random 100 words or all words if less than 100
+  // Get random words based on display count
   const displayWords = useMemo(() => {
     const shuffled = shuffleArray(words)
-    return shuffled.slice(0, Math.min(100, words.length))
-  }, [words, refreshKey])
+    return shuffled.slice(0, Math.min(displayCount, words.length))
+  }, [words, refreshKey, displayCount])
 
   // Filter words based on search query
   const filteredWords = useMemo(() => {
@@ -41,6 +44,11 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
   const handleRefresh = () => {
     setRefreshKey((prev) => prev + 1)
     setSearchQuery("")
+    setDisplayCount(100)
+  }
+
+  const handleLoadMore = () => {
+    setDisplayCount((prev) => Math.min(prev + 100, words.length))
   }
 
   const otherLengths = [2, 3, 4, 5, 6, 7, 8, 9, 10].filter((l) => l !== length)
@@ -96,28 +104,38 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
         </Card>
 
         {/* Word Grid */}
-        <div className="mb-12">
+        <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold">
-              {searchQuery ? "Search Results" : `Random ${Math.min(100, words.length)} Words`}
+              {searchQuery ? "Search Results" : `${length}-Letter Words`}
             </h2>
             {!searchQuery && words.length > 100 && (
               <p className="text-sm text-muted-foreground">Click refresh to see different words</p>
             )}
           </div>
           {filteredWords.length > 0 ? (
-            <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 animate-fade-in">
-              {filteredWords.map((word, index) => (
-                <Card
-                  key={`${word}-${index}`}
-                  className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
-                >
-                  <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
-                    {word}
-                  </span>
-                </Card>
-              ))}
-            </div>
+            <>
+              <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 animate-fade-in">
+                {filteredWords.map((word, index) => (
+                  <Card
+                    key={`${word}-${index}`}
+                    className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
+                  >
+                    <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
+                      {word}
+                    </span>
+                  </Card>
+                ))}
+              </div>
+              {!searchQuery && displayCount < words.length && (
+                <div className="text-center mt-8">
+                  <Button onClick={handleLoadMore} size="lg" variant="outline">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Load More Words ({words.length - displayCount} remaining)
+                  </Button>
+                </div>
+              )}
+            </>
           ) : (
             <Card className="p-12 text-center border-dashed">
               <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -125,6 +143,75 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
               <p className="text-sm text-muted-foreground">Try a different search term</p>
             </Card>
           )}
+        </div>
+
+        {/* Letter Navigation Sections */}
+        <div className="space-y-8 mb-12">
+          {/* Starting with */}
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle>{length} Letter Words Starting With</CardTitle>
+              <CardDescription>Find {length}-letter words that start with a specific letter</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {alphabet.map((letter) => (
+                  <Link
+                    key={`start-${letter}`}
+                    href={`/words-start-with?letters=${letter}&length=${length}`}
+                  >
+                    <Button variant="outline" className="w-12 h-12 font-bold uppercase hover:bg-primary hover:text-primary-foreground">
+                      {letter}
+                    </Button>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Ending in */}
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle>{length} Letter Words Ending In</CardTitle>
+              <CardDescription>Find {length}-letter words that end with a specific letter</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {alphabet.map((letter) => (
+                  <Link
+                    key={`end-${letter}`}
+                    href={`/words-ending-in?letters=${letter}&length=${length}`}
+                  >
+                    <Button variant="outline" className="w-12 h-12 font-bold uppercase hover:bg-primary hover:text-primary-foreground">
+                      {letter}
+                    </Button>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* With */}
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle>{length} Letter Words With</CardTitle>
+              <CardDescription>Find {length}-letter words that contain a specific letter</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {alphabet.map((letter) => (
+                  <Link
+                    key={`with-${letter}`}
+                    href={`/words-with-letters?letters=${letter}&length=${length}`}
+                  >
+                    <Button variant="outline" className="w-12 h-12 font-bold uppercase hover:bg-primary hover:text-primary-foreground">
+                      {letter}
+                    </Button>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Navigation to Other Lengths */}
@@ -162,23 +249,24 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
                     ? "versatile and frequently appear in word games"
                     : "longer words that can earn you high scores in word games"}
                 . Our database includes {words.length} unique {length}-letter words from the official dictionary. We
-                display 100 random words at a time - click the refresh button to see different words!
+                display 100 random words at a time - click the "Load More" button or refresh to see different words!
               </p>
               <h3 className="text-xl font-bold mt-6 mb-3">How to Use This {length}-Letter Word Finder</h3>
               <ul className="space-y-2 list-disc pl-5">
                 <li>Use the search box above to quickly find specific {length}-letter words</li>
+                <li>Click the "Load More" button to see additional words from our database</li>
                 <li>Click the "Refresh Words" button to see a different random selection</li>
+                <li>Browse by starting letter, ending letter, or containing letter using the sections below</li>
                 <li>
                   We show 100 random words at a time from our collection of {words.length} {length}-letter words
                 </li>
                 <li>Perfect for discovering high-scoring Scrabble and Words with Friends words</li>
                 <li>Ideal for solving {length === 5 ? "Wordle puzzles" : "crossword clues"}</li>
-                <li>Expand your vocabulary with less common {length}-letter words</li>
               </ul>
               <h3 className="text-xl font-bold mt-6 mb-3">Popular {length}-Letter Words</h3>
               <p>
                 Some of the most commonly used {length}-letter words include: {words.slice(0, 15).join(", ")}, and many
-                more. Use the refresh button above to discover all possibilities from our extensive word database.
+                more. Use the load more button above to discover all possibilities from our extensive word database.
               </p>
             </div>
           </Card>
