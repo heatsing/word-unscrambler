@@ -96,14 +96,14 @@ export function SiteHeader() {
                   Word Finders
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[600px] p-4">
+                  <div className="w-[320px] p-4">
                     <h4 className="mb-3 text-sm font-semibold text-muted-foreground">All Word Finder Tools</h4>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-1">
                       {wordFinders.map((item) => (
                         <NavigationMenuLink key={item.href} asChild>
                           <Link
                             href={item.href}
-                            className="group flex items-center gap-3 rounded-lg p-3 hover:bg-accent transition-colors"
+                            className="group flex items-center gap-3 rounded-lg p-2.5 hover:bg-accent transition-colors block"
                           >
                             <div className="flex-1">
                               <div className="text-sm font-medium">{item.name}</div>
@@ -125,14 +125,14 @@ export function SiteHeader() {
                   List of Words
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[400px] p-4">
+                  <div className="w-[320px] p-4">
                     <h4 className="mb-3 text-sm font-semibold text-muted-foreground">Browse Word Lists</h4>
-                    <div className="space-y-2">
+                    <div className="space-y-1">
                       {wordLists.map((item) => (
                         <NavigationMenuLink key={item.href} asChild>
                           <Link
                             href={item.href}
-                            className="group flex items-center gap-3 rounded-lg p-3 hover:bg-accent transition-colors"
+                            className="group flex items-center gap-3 rounded-lg p-2.5 hover:bg-accent transition-colors block"
                           >
                             <div className="flex-1">
                               <div className="text-sm font-medium">{item.name}</div>
@@ -154,14 +154,14 @@ export function SiteHeader() {
                   Words by Length
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[350px] p-4">
+                  <div className="w-[280px] p-4">
                     <h4 className="mb-3 text-sm font-semibold text-muted-foreground">Quick Access by Letter Count</h4>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-1">
                       {wordsByLength.map((item) => (
                         <NavigationMenuLink key={item.href} asChild>
                           <Link
                             href={item.href}
-                            className="flex items-center justify-between rounded-md p-2.5 hover:bg-accent transition-colors"
+                            className="flex items-center justify-between rounded-md p-2.5 hover:bg-accent transition-colors block"
                           >
                             <span className="text-sm font-medium">{item.name}</span>
                             <Badge variant="outline" className="text-xs">
