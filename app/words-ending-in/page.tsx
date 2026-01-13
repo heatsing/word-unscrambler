@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,14 +13,35 @@ import { Search, ArrowLeft, Sparkles } from "lucide-react"
 const commonEndings = ["ed", "ing", "ly", "er", "est", "tion", "ness", "ful", "less", "ment", "ity", "ous", "ive", "able", "ible", "al", "ic", "ical", "ish", "ize"]
 
 export default function WordsEndingInPage() {
+  const searchParams = useSearchParams()
   const [suffix, setSuffix] = useState("")
   const [searched, setSearched] = useState(false)
+  const [lengthFilter, setLengthFilter] = useState<number | null>(null)
+
+  useEffect(() => {
+    const lettersParam = searchParams.get("letters")
+    const lengthParam = searchParams.get("length")
+
+    if (lettersParam) {
+      setSuffix(lettersParam.toLowerCase())
+      setSearched(true)
+    }
+    if (lengthParam) {
+      setLengthFilter(Number(lengthParam))
+    }
+  }, [searchParams])
 
   const results = useMemo(() => {
     if (!suffix.trim()) return []
     const searchSuffix = suffix.toLowerCase().trim()
-    return ALL_WORDS.filter((word) => word.endsWith(searchSuffix))
-  }, [suffix, searched])
+    let filtered = ALL_WORDS.filter((word) => word.endsWith(searchSuffix))
+
+    if (lengthFilter) {
+      filtered = filtered.filter((word) => word.length === lengthFilter)
+    }
+
+    return filtered
+  }, [suffix, searched, lengthFilter])
 
   const handleSearch = () => {
     if (suffix.trim()) {
@@ -57,6 +79,11 @@ export default function WordsEndingInPage() {
           <p className="text-lg text-muted-foreground text-pretty max-w-2xl mx-auto">
             Find all words that end with specific letters. Perfect for rhyming, poetry, word games, and creative writing.
           </p>
+          {lengthFilter && (
+            <Badge variant="secondary" className="mt-4">
+              Filtered by {lengthFilter}-letter words
+            </Badge>
+          )}
         </div>
 
         {/* Search Interface */}
@@ -108,6 +135,18 @@ export default function WordsEndingInPage() {
                 ))}
               </div>
             </div>
+
+            {lengthFilter && (
+              <div className="text-center">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setLengthFilter(null)}
+                >
+                  Clear length filter
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -116,7 +155,7 @@ export default function WordsEndingInPage() {
           <div className="space-y-6 animate-fade-in">
             <div className="flex items-center justify-between">
               <h2 className="text-3xl font-bold">
-                Words ending in "{suffix}"
+                Words ending in "{suffix}"{lengthFilter ? ` (${lengthFilter} letters)` : ""}
               </h2>
               <div className="flex gap-2">
                 <Badge variant="secondary" className="text-sm">

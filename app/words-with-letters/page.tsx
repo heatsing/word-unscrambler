@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -17,14 +18,35 @@ const exampleSearches = [
 ]
 
 export default function WordsWithLettersPage() {
+  const searchParams = useSearchParams()
   const [letters, setLetters] = useState("")
   const [searched, setSearched] = useState(false)
+  const [lengthFilter, setLengthFilter] = useState<number | null>(null)
+
+  useEffect(() => {
+    const lettersParam = searchParams.get("letters")
+    const lengthParam = searchParams.get("length")
+
+    if (lettersParam) {
+      setLetters(lettersParam.toLowerCase())
+      setSearched(true)
+    }
+    if (lengthParam) {
+      setLengthFilter(Number(lengthParam))
+    }
+  }, [searchParams])
 
   const results = useMemo(() => {
     if (!letters.trim()) return []
     const searchLetters = letters.toLowerCase().trim()
-    return ALL_WORDS.filter((word) => word.includes(searchLetters))
-  }, [letters, searched])
+    let filtered = ALL_WORDS.filter((word) => word.includes(searchLetters))
+
+    if (lengthFilter) {
+      filtered = filtered.filter((word) => word.length === lengthFilter)
+    }
+
+    return filtered
+  }, [letters, searched, lengthFilter])
 
   const handleSearch = () => {
     if (letters.trim()) {
@@ -63,6 +85,11 @@ export default function WordsWithLettersPage() {
             Find all words that contain specific letters. Enter any combination of letters and discover words that
             include them.
           </p>
+          {lengthFilter && (
+            <Badge variant="secondary" className="mt-4">
+              Filtered by {lengthFilter}-letter words
+            </Badge>
+          )}
         </div>
 
         {/* Search Interface */}
@@ -114,6 +141,18 @@ export default function WordsWithLettersPage() {
                 ))}
               </div>
             </div>
+
+            {lengthFilter && (
+              <div className="text-center">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setLengthFilter(null)}
+                >
+                  Clear length filter
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -122,7 +161,7 @@ export default function WordsWithLettersPage() {
           <div className="space-y-6 animate-fade-in">
             <div className="flex items-center justify-between">
               <h2 className="text-3xl font-bold">
-                Words containing "{letters}"
+                Words containing "{letters}"{lengthFilter ? ` (${lengthFilter} letters)` : ""}
               </h2>
               <div className="flex gap-2">
                 <Badge variant="secondary" className="text-sm">
