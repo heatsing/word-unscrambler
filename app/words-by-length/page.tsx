@@ -7,15 +7,15 @@ import { DICTIONARY } from "@/lib/dictionary"
 import { BookOpen, ArrowRight } from "lucide-react"
 
 const lengthsData = [
-  { length: 2, count: DICTIONARY[2]?.length || 0, description: "Two-letter words" },
-  { length: 3, count: DICTIONARY[3]?.length || 0, description: "Three-letter words" },
-  { length: 4, count: DICTIONARY[4]?.length || 0, description: "Four-letter words" },
-  { length: 5, count: DICTIONARY[5]?.length || 0, description: "Five-letter words (Wordle)" },
-  { length: 6, count: DICTIONARY[6]?.length || 0, description: "Six-letter words" },
-  { length: 7, count: DICTIONARY[7]?.length || 0, description: "Seven-letter words" },
-  { length: 8, count: DICTIONARY[8]?.length || 0, description: "Eight-letter words" },
-  { length: 9, count: DICTIONARY[9]?.length || 0, description: "Nine-letter words" },
-  { length: 10, count: DICTIONARY[10]?.length || 0, description: "Ten-letter words" },
+  { length: 2, title: "2 Letter Word Finder" },
+  { length: 3, title: "3 Letter Word Finder" },
+  { length: 4, title: "4 Letter Word Finder" },
+  { length: 5, title: "5 Letter Word Finder" },
+  { length: 6, title: "6 Letter Word Finder" },
+  { length: 7, title: "7 Letter Word Finder" },
+  { length: 8, title: "8 Letter Word Finder" },
+  { length: 9, title: "9 Letter Word Finder" },
+  { length: 10, title: "10 Letter Word Finder" },
 ]
 
 export default function WordsByLengthPage() {
@@ -42,26 +42,13 @@ export default function WordsByLengthPage() {
             <Link key={item.length} href={`/${item.length}-letter-words`}>
               <Card className="h-full hover:shadow-xl hover:scale-105 transition-all cursor-pointer group animate-scale-in">
                 <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-3xl font-bold text-primary group-hover:scale-110 transition-transform inline-block">
-                        {item.length}
-                      </CardTitle>
-                      <CardDescription className="mt-2">{item.description}</CardDescription>
-                    </div>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-xl font-bold text-primary group-hover:text-primary/80 transition-colors">
+                      {item.title}
+                    </CardTitle>
                     <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between">
-                    <Badge variant="secondary" className="text-sm">
-                      {item.count.toLocaleString()} words
-                    </Badge>
-                    <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
-                      View all →
-                    </span>
-                  </div>
-                </CardContent>
               </Card>
             </Link>
           ))}
@@ -105,10 +92,9 @@ export default function WordsByLengthPage() {
                 <h3 className="font-semibold mb-2">Best for Wordle</h3>
                 <Link
                   href="/5-letter-words"
-                  className="text-primary hover:underline flex items-center gap-2"
+                  className="text-primary hover:underline"
                 >
                   5-Letter Words
-                  <Badge variant="outline">{DICTIONARY[5]?.length || 0}</Badge>
                 </Link>
                 <p className="text-xs text-muted-foreground mt-1">
                   Complete list of all valid Wordle words
@@ -120,10 +106,9 @@ export default function WordsByLengthPage() {
                 <div className="space-y-1">
                   <Link
                     href="/7-letter-words"
-                    className="text-primary hover:underline flex items-center gap-2"
+                    className="text-primary hover:underline"
                   >
                     7-Letter Words
-                    <Badge variant="outline">{DICTIONARY[7]?.length || 0}</Badge>
                   </Link>
                   <p className="text-xs text-muted-foreground">7-letter bingo words for bonus points</p>
                 </div>
