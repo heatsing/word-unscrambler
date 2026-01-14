@@ -28,6 +28,10 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
   const [refreshKey, setRefreshKey] = useState(0)
   const [searchQuery, setSearchQuery] = useState("")
   const [displayCount, setDisplayCount] = useState(100)
+  const [startsWith, setStartsWith] = useState("")
+  const [endsWith, setEndsWith] = useState("")
+  const [contains, setContains] = useState("")
+  const [excludes, setExcludes] = useState("")
 
   // Get random words based on display count
   const displayWords = useMemo(() => {
@@ -35,15 +39,48 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
     return shuffled.slice(0, Math.min(displayCount, words.length))
   }, [words, refreshKey, displayCount])
 
-  // Filter words based on search query
+  // Filter words based on advanced search options
   const filteredWords = useMemo(() => {
-    if (!searchQuery.trim()) return displayWords
-    return displayWords.filter((word) => word.toLowerCase().includes(searchQuery.toLowerCase()))
-  }, [displayWords, searchQuery])
+    let filtered = displayWords
+
+    // Simple search query
+    if (searchQuery.trim()) {
+      filtered = filtered.filter((word) => word.toLowerCase().includes(searchQuery.toLowerCase()))
+    }
+
+    // Starts with
+    if (startsWith.trim()) {
+      filtered = filtered.filter((word) => word.toLowerCase().startsWith(startsWith.toLowerCase().trim()))
+    }
+
+    // Ends with
+    if (endsWith.trim()) {
+      filtered = filtered.filter((word) => word.toLowerCase().endsWith(endsWith.toLowerCase().trim()))
+    }
+
+    // Contains
+    if (contains.trim()) {
+      filtered = filtered.filter((word) => word.toLowerCase().includes(contains.toLowerCase().trim()))
+    }
+
+    // Excludes
+    if (excludes.trim()) {
+      const excludeLetters = excludes.toLowerCase().trim().split("")
+      filtered = filtered.filter((word) => {
+        return !excludeLetters.some((letter) => word.toLowerCase().includes(letter))
+      })
+    }
+
+    return filtered
+  }, [displayWords, searchQuery, startsWith, endsWith, contains, excludes])
 
   const handleRefresh = () => {
     setRefreshKey((prev) => prev + 1)
     setSearchQuery("")
+    setStartsWith("")
+    setEndsWith("")
+    setContains("")
+    setExcludes("")
     setDisplayCount(100)
   }
 
@@ -70,10 +107,15 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
           </p>
         </div>
 
-        {/* Search and Refresh */}
-        <Card className="mb-8 p-6 shadow-lg">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
+        {/* Advanced Search */}
+        <Card className="mb-8 shadow-lg">
+          <CardHeader>
+            <CardTitle>Advanced Search</CardTitle>
+            <CardDescription>Use filters to find specific {length}-letter words</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Main Search */}
+            <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <Input
                 type="text"
@@ -83,25 +125,71 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
                 className="pl-10 h-12"
               />
             </div>
-            <Button onClick={handleRefresh} variant="outline" size="lg" className="sm:w-auto">
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Refresh Words
-            </Button>
-          </div>
-          {searchQuery && (
-            <p className="text-sm text-muted-foreground mt-3">
-              Found {filteredWords.length} word{filteredWords.length !== 1 ? "s" : ""} matching "{searchQuery}"
-            </p>
-          )}
+
+            {/* Filter Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">Starts With</label>
+                <Input
+                  type="text"
+                  value={startsWith}
+                  onChange={(e) => setStartsWith(e.target.value)}
+                  placeholder="e.g., ab"
+                  className="h-10"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-2 block">Ends With</label>
+                <Input
+                  type="text"
+                  value={endsWith}
+                  onChange={(e) => setEndsWith(e.target.value)}
+                  placeholder="e.g., ed"
+                  className="h-10"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-2 block">Contains</label>
+                <Input
+                  type="text"
+                  value={contains}
+                  onChange={(e) => setContains(e.target.value)}
+                  placeholder="e.g., ing"
+                  className="h-10"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-2 block">Exclude Letters</label>
+                <Input
+                  type="text"
+                  value={excludes}
+                  onChange={(e) => setExcludes(e.target.value)}
+                  placeholder="e.g., xyz"
+                  className="h-10"
+                />
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center justify-between pt-2">
+              <div className="text-sm text-muted-foreground">
+                Found {filteredWords.length} word{filteredWords.length !== 1 ? "s" : ""}
+              </div>
+              <Button onClick={handleRefresh} variant="outline">
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Reset & Refresh
+              </Button>
+            </div>
+          </CardContent>
         </Card>
 
         {/* Word Grid */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold">
-              {searchQuery ? "Search Results" : `${length}-Letter Words`}
+              {(searchQuery || startsWith || endsWith || contains || excludes) ? "Search Results" : `${length}-Letter Words`}
             </h2>
-            {!searchQuery && words.length > 100 && (
+            {!(searchQuery || startsWith || endsWith || contains || excludes) && words.length > 100 && (
               <p className="text-sm text-muted-foreground">Click refresh to see different words</p>
             )}
           </div>
@@ -119,7 +207,7 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
                   </Card>
                 ))}
               </div>
-              {!searchQuery && displayCount < words.length && (
+              {!(searchQuery || startsWith || endsWith || contains || excludes) && displayCount < words.length && (
                 <div className="text-center mt-8">
                   <Button onClick={handleLoadMore} size="lg" variant="outline">
                     <Plus className="mr-2 h-4 w-4" />
