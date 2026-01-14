@@ -1,10 +1,14 @@
-"use client"
-
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { DICTIONARY } from "@/lib/dictionary"
 import { BookOpen, ArrowRight } from "lucide-react"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Words By Length - Find Words by Letter Count | Word Finder",
+  description: "Browse our comprehensive dictionary organized by word length. Find all 2-letter through 10-letter words for Scrabble, Wordle, crossword puzzles, and word games.",
+}
 
 const lengthsData = [
   { length: 2, title: "2 Letter Word Finder" },
