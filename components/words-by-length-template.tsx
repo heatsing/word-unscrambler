@@ -62,20 +62,12 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
             <BookOpen className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            {length}-Letter Words
+            {length} Letter Word Finder
           </h1>
           <p className="text-lg text-muted-foreground text-pretty max-w-2xl mx-auto">
             Comprehensive list of {length}-letter words. Perfect for word games like Scrabble, Words with Friends,
             Wordle, and crossword puzzles.
           </p>
-          <div className="flex items-center justify-center gap-3 mt-4">
-            <Badge variant="secondary" className="text-sm">
-              Total: {words.length} words
-            </Badge>
-            <Badge variant="default" className="text-sm">
-              Showing: {displayWords.length} words
-            </Badge>
-          </div>
         </div>
 
         {/* Search and Refresh */}
