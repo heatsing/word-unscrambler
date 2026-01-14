@@ -38,11 +38,12 @@ const wordFinders = [
   { name: "Letter Boxed Solver", href: "/letter-boxed-solver", description: "NYT Letter Boxed" },
 ]
 
-// Navigation 2: List of Words (3 categories)
+// Navigation 2: List of Words (5 categories)
 const wordLists = [
   { name: "Words by Length", href: "/words-by-length", description: "Browse words by letter count" },
   { name: "Words Start With", href: "/words-start-with", description: "Words beginning with specific letters" },
   { name: "Words With Letters", href: "/words-with-letters", description: "Words containing certain letters" },
+  { name: "Words Ending In", href: "/words-ending-in", description: "Words ending with specific letters" },
 ]
 
 // Navigation 3: Words by Length (10-letter to 2-letter)
