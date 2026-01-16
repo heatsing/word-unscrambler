@@ -271,3 +271,25 @@ export function getWordDefinition(word: string): string {
   // For now, return a placeholder
   return `Definition of "${word}" - This word is in the dictionary.`
 }
+
+/**
+ * Generates random words from the dictionary
+ * @param count - Number of words to generate
+ * @param length - Optional specific word length
+ * @returns Array of random words
+ */
+export function generateRandomWords(count: number, length?: number): string[] {
+  let wordPool: string[] = []
+
+  if (length && DICTIONARY[length]) {
+    // Get words of specific length
+    wordPool = [...DICTIONARY[length]]
+  } else {
+    // Get all words
+    wordPool = [...ALL_WORDS]
+  }
+
+  // Shuffle and return requested count
+  const shuffled = wordPool.sort(() => Math.random() - 0.5)
+  return shuffled.slice(0, Math.min(count, wordPool.length))
+}

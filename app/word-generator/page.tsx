@@ -6,34 +6,31 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Wand2 } from "lucide-react"
+import { generateRandomWords } from "@/lib/word-utils"
+import { Wand2, RefreshCw, Copy, Check } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
 
 export default function WordGeneratorPage() {
-  const [wordLength, setWordLength] = useState("5")
-  const [count, setCount] = useState("10")
+  const [wordLength, setWordLength] = useState("any")
+  const [count, setCount] = useState("20")
   const [generatedWords, setGeneratedWords] = useState<string[]>([])
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
 
   const generateWords = () => {
-    // Mock word generation
-    const mockWords = [
-      "random",
-      "clever",
-      "bright",
-      "simple",
-      "strong",
-      "mighty",
-      "gentle",
-      "cosmic",
-      "stellar",
-      "bright",
-      "crystal",
-      "diamond",
-      "emerald",
-      "fantasy",
-      "journey",
-    ]
-    const numWords = Math.min(Number.parseInt(count), 20)
-    setGeneratedWords(mockWords.slice(0, numWords))
+    const numWords = Math.min(Number.parseInt(count), 100)
+    const length = wordLength === "any" ? undefined : Number.parseInt(wordLength)
+    const words = generateRandomWords(numWords, length)
+    setGeneratedWords(words)
+  }
+
+  const copyWord = (word: string, index: number) => {
+    navigator.clipboard.writeText(word)
+    setCopiedIndex(index)
+    setTimeout(() => setCopiedIndex(null), 2000)
+  }
+
+  const copyAllWords = () => {
+    navigator.clipboard.writeText(generatedWords.join(", "))
   }
 
   return (
@@ -65,12 +62,16 @@ export default function WordGeneratorPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="any">Any length</SelectItem>
+                    <SelectItem value="2">2 letters</SelectItem>
                     <SelectItem value="3">3 letters</SelectItem>
                     <SelectItem value="4">4 letters</SelectItem>
                     <SelectItem value="5">5 letters</SelectItem>
                     <SelectItem value="6">6 letters</SelectItem>
                     <SelectItem value="7">7 letters</SelectItem>
                     <SelectItem value="8">8 letters</SelectItem>
+                    <SelectItem value="9">9 letters</SelectItem>
+                    <SelectItem value="10">10 letters</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -83,7 +84,7 @@ export default function WordGeneratorPage() {
                   id="count"
                   type="number"
                   min="1"
-                  max="20"
+                  max="100"
                   value={count}
                   onChange={(e) => setCount(e.target.value)}
                 />
@@ -98,12 +99,46 @@ export default function WordGeneratorPage() {
         </Card>
 
         {generatedWords.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-6">Generated Words</h2>
+          <div className="mb-8 animate-fade-in">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold">
+                Generated {generatedWords.length} Word{generatedWords.length !== 1 ? "s" : ""}
+              </h2>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={copyAllWords}>
+                  <Copy className="mr-2 h-4 w-4" />
+                  Copy All
+                </Button>
+                <Button variant="outline" size="sm" onClick={generateWords}>
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                  Regenerate
+                </Button>
+              </div>
+            </div>
             <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
               {generatedWords.map((word, index) => (
-                <Card key={index} className="p-4 text-center hover:shadow-md transition-shadow">
-                  <span className="font-medium text-lg">{word}</span>
+                <Card
+                  key={index}
+                  className="hover:shadow-lg transition-all hover-lift cursor-pointer group"
+                  onClick={() => copyWord(word, index)}
+                >
+                  <CardContent className="p-4 text-center">
+                    <div className="flex flex-col gap-2">
+                      <span className="font-bold text-lg uppercase group-hover:text-primary transition-colors">
+                        {word}
+                      </span>
+                      <div className="flex items-center justify-center gap-2">
+                        <Badge variant="secondary" className="text-xs">
+                          {word.length} letters
+                        </Badge>
+                        {copiedIndex === index ? (
+                          <Check className="h-3 w-3 text-green-500" />
+                        ) : (
+                          <Copy className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
                 </Card>
               ))}
             </div>
@@ -120,6 +155,7 @@ export default function WordGeneratorPage() {
             <p>• Password generation ideas</p>
             <p>• Team building and brainstorming activities</p>
             <p>• Educational vocabulary exercises</p>
+            <p>• Click any word to copy it to clipboard</p>
           </CardContent>
         </Card>
       </div>
