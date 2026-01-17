@@ -36,13 +36,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
     `/${length}-letter-words`
   )
 
+  // 动态生成所有字母组合页面
+  const lengths = [2, 3, 4, 5, 6, 7, 8, 9, 10]
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
+
+  const letterPages: string[] = []
+
+  // 生成 "starting with" 页面
+  for (const length of lengths) {
+    for (const letter of alphabet) {
+      letterPages.push(`/${length}-letter-words-starting-with/${letter}`)
+    }
+  }
+
+  // 生成 "ending with" 页面
+  for (const length of lengths) {
+    for (const letter of alphabet) {
+      letterPages.push(`/${length}-letter-words-ending-with/${letter}`)
+    }
+  }
+
+  // 生成 "containing" 页面
+  for (const length of lengths) {
+    for (const letter of alphabet) {
+      letterPages.push(`/${length}-letter-words-with-${letter}`)
+    }
+  }
+
   // 合并所有页面
-  const allPages = [...staticPages, ...wordLengthPages]
+  const allPages = [...staticPages, ...wordLengthPages, ...letterPages]
 
   return allPages.map(route => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
-    priority: route === '' ? 1.0 : route.includes('letter-words') ? 0.8 : 0.7,
+    priority: route === '' ? 1.0
+      : route.includes('letter-words-starting-with') ||
+        route.includes('letter-words-ending-with') ||
+        route.includes('letter-words-with-') ? 0.6
+      : route.includes('letter-words') ? 0.8
+      : 0.7,
   }))
 }
