@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Menu, Home, Sparkles, BookOpen, Hash, Info, ChevronRight } from "lucide-react"
+import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   NavigationMenu,
@@ -68,8 +68,8 @@ export function SiteHeader() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary to-primary/60 text-primary-foreground font-bold rounded-lg shadow-md group-hover:shadow-lg transition-all group-hover:scale-105">
-              <Sparkles className="h-5 w-5" />
+            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold rounded-lg shadow-md group-hover:shadow-lg transition-all group-hover:scale-105">
+              <span className="text-xl font-bold">W</span>
             </div>
             <div className="hidden sm:block">
               <div className="font-bold text-lg leading-none">Word Unscrambler</div>
