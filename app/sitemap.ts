@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://wordunscrambler.com' // 请替换为实际的域名
+  const baseUrl = 'https://wordunscrambler.cc'
 
   // 静态页面
   const staticPages = [

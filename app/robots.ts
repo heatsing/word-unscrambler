@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/private/',
     },
-    sitemap: 'https://wordunscrambler.com/sitemap.xml',
+    sitemap: 'https://wordunscrambler.cc/sitemap.xml',
   }
 }
