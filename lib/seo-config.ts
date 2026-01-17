@@ -52,6 +52,30 @@ export const seoConfig = {
     description: "Free crossword puzzle solver. Enter pattern with known letters and find answers. Solve NYT crossword, cryptic & themed puzzles instantly.",
     keywords: ["crossword solver", "crossword answers", "crossword helper", "crossword clue solver"],
     canonical: "/crossword-solver"
+  },
+  wordFinder: {
+    title: "Word Finder - Scrabble & Words With Friends Cheat Tool",
+    description: "Advanced word finder for Scrabble and Words With Friends. Enter your letters and find the highest scoring words. Free word cheat tool.",
+    keywords: ["word finder", "scrabble word finder", "wwf word finder", "find words with letters", "word cheat"],
+    canonical: "/word-finder"
+  },
+  descrambler: {
+    title: "Word Descrambler - Unscramble Letters Into Words Fast",
+    description: "Free word descrambler tool. Unscramble any jumbled letters and find all valid words. Perfect for word games and puzzles.",
+    keywords: ["word descrambler", "descramble words", "descramble letters", "letter descrambler", "word puzzle solver"],
+    canonical: "/descrambler"
+  },
+  wordScramble: {
+    title: "Word Scramble Solver - Unscramble Scrambled Words",
+    description: "Solve word scramble puzzles instantly. Enter scrambled letters and find all possible words. Free word scramble solver and helper.",
+    keywords: ["word scramble", "scramble solver", "unscramble scrambled words", "word scramble game", "scramble helper"],
+    canonical: "/word-scramble"
+  },
+  unscramble: {
+    title: "Unscramble Words - Letter Unscrambler & Word Solver",
+    description: "Unscramble words and letters quickly. Enter jumbled letters and find all valid word combinations. Free unscramble tool for word games.",
+    keywords: ["unscramble", "unscramble words", "unscramble letters", "letter unscrambler", "word unscrambler"],
+    canonical: "/unscramble"
   }
 }
 
