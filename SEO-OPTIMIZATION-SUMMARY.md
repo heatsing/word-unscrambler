@@ -234,13 +234,13 @@ H2: Browse by Letter
 ## 🎯 待完成任务
 
 ### 高优先级
-1. 替换 Google Search Console 验证码 (layout.tsx line 61)
+1. 替换 Google Search Console 验证码 (layout.tsx line 57)
 2. 为所有工具页面添加FAQ内容
 3. 创建策略指南页面
 4. 添加面包屑导航UI组件
 
 ### 中优先级
-1. 为剩余工具页面创建layout.tsx
+1. ✅ ~~为剩余工具页面创建layout.tsx~~ (已完成 2026-01-17)
 2. 添加更多FAQ schemas
 3. 创建博客/文章部分
 4. 优化图片alt标签
@@ -311,8 +311,34 @@ H2: Browse by Letter
 - [Google Rich Results Test](https://search.google.com/test/rich-results)
 - [PageSpeed Insights](https://pagespeed.web.dev/)
 
+## 📅 最近更新 (2026-01-17)
+
+### 构建和技术优化
+- ✅ 移除 Google Fonts (解决 TLS 连接错误)
+- ✅ 使用动态图标生成 (icon.tsx, apple-icon.tsx)
+- ✅ 升级 TypeScript 5.0.2 → 5.9.3
+- ✅ 构建成功，无警告，生成 92 个静态页面
+
+### SEO元数据完善
+- ✅ 为 7 个剩余工具页面添加 layout.tsx 和 SEO 配置:
+  - Words With Friends
+  - Jumble Solver
+  - Word Generator
+  - Word Finder
+  - Descrambler
+  - Word Scramble
+  - Unscramble
+- ✅ 所有工具页面现在都有唯一的 title、description 和 canonical URL
+
+### 页面覆盖统计更新
+- **工具页面**: 15+ (全部有 SEO 元数据)
+- **静态页面**: 23+
+- **动态字母页面**: 702
+- **总页面数**: 734+
+- **有元数据的页面**: 100%
+
 ---
 
 **最后更新**: 2026-01-17
-**版本**: 1.0
+**版本**: 1.1
 **维护者**: Word Unscrambler Team
