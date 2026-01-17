@@ -8,13 +8,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ALL_WORDS } from "@/lib/dictionary"
-import { Search, ArrowRight, Sparkles } from "lucide-react"
+import { Search, ArrowLeft, Sparkles } from "lucide-react"
 
-const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+const commonEndings = ["ed", "ing", "ly", "er", "est", "tion", "ness", "ful", "less", "ment", "ity", "ous", "ive", "able", "ible", "al", "ic", "ical", "ish", "ize"]
 
-export default function WordsStartWithPage() {
+export default function WordsEndingInPage() {
   const searchParams = useSearchParams()
-  const [prefix, setPrefix] = useState("")
+  const [suffix, setSuffix] = useState("")
   const [searched, setSearched] = useState(false)
   const [lengthFilter, setLengthFilter] = useState<number | null>(null)
 
@@ -23,7 +23,7 @@ export default function WordsStartWithPage() {
     const lengthParam = searchParams.get("length")
 
     if (lettersParam) {
-      setPrefix(lettersParam.toLowerCase())
+      setSuffix(lettersParam.toLowerCase())
       setSearched(true)
     }
     if (lengthParam) {
@@ -32,25 +32,25 @@ export default function WordsStartWithPage() {
   }, [searchParams])
 
   const results = useMemo(() => {
-    if (!prefix.trim()) return []
-    const searchPrefix = prefix.toLowerCase().trim()
-    let filtered = ALL_WORDS.filter((word) => word.startsWith(searchPrefix))
+    if (!suffix.trim()) return []
+    const searchSuffix = suffix.toLowerCase().trim()
+    let filtered = ALL_WORDS.filter((word) => word.endsWith(searchSuffix))
 
     if (lengthFilter) {
       filtered = filtered.filter((word) => word.length === lengthFilter)
     }
 
     return filtered
-  }, [prefix, searched, lengthFilter])
+  }, [suffix, searched, lengthFilter])
 
   const handleSearch = () => {
-    if (prefix.trim()) {
+    if (suffix.trim()) {
       setSearched(true)
     }
   }
 
-  const handleLetterClick = (letter: string) => {
-    setPrefix(letter)
+  const handleEndingClick = (ending: string) => {
+    setSuffix(ending)
     setSearched(true)
   }
 
@@ -70,15 +70,14 @@ export default function WordsStartWithPage() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 animate-fade-in">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg mb-4 shadow-lg">
-            <ArrowRight className="h-8 w-8 text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg mb-4 shadow-lg">
+            <ArrowLeft className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-            Words Starting With
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+            Words Ending In
           </h1>
           <p className="text-lg text-muted-foreground text-pretty max-w-2xl mx-auto">
-            Find all words that start with specific letters. Perfect for crossword puzzles, word games, and expanding
-            your vocabulary.
+            Find all words that end with specific letters. Perfect for rhyming, poetry, word games, and creative writing.
           </p>
           {lengthFilter && (
             <Badge variant="secondary" className="mt-4">
@@ -92,9 +91,9 @@ export default function WordsStartWithPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Search className="h-5 w-5" />
-              Search Words by Starting Letters
+              Search Words by Ending Letters
             </CardTitle>
-            <CardDescription>Enter letters to find all words that begin with them</CardDescription>
+            <CardDescription>Enter letters to find all words that end with them</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <form
@@ -107,9 +106,9 @@ export default function WordsStartWithPage() {
               <div className="relative flex-1">
                 <Input
                   type="text"
-                  value={prefix}
-                  onChange={(e) => setPrefix(e.target.value.toLowerCase())}
-                  placeholder="Enter starting letters (e.g., app, str, con)"
+                  value={suffix}
+                  onChange={(e) => setSuffix(e.target.value.toLowerCase())}
+                  placeholder="Enter ending letters (e.g., ing, ed, tion)"
                   className="h-12 text-lg"
                   onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
@@ -121,17 +120,17 @@ export default function WordsStartWithPage() {
             </form>
 
             <div>
-              <p className="text-sm font-semibold mb-3 text-center">Quick Search by Letter:</p>
+              <p className="text-sm font-semibold mb-3 text-center">Common Word Endings:</p>
               <div className="flex flex-wrap justify-center gap-2">
-                {alphabet.map((letter) => (
+                {commonEndings.map((ending) => (
                   <Button
-                    key={letter}
+                    key={ending}
                     variant="outline"
                     size="sm"
-                    onClick={() => handleLetterClick(letter)}
-                    className="w-10 h-10 p-0 font-bold uppercase hover:bg-primary hover:text-primary-foreground"
+                    onClick={() => handleEndingClick(ending)}
+                    className="font-medium hover:bg-primary hover:text-primary-foreground"
                   >
-                    {letter}
+                    -{ending}
                   </Button>
                 ))}
               </div>
@@ -156,7 +155,7 @@ export default function WordsStartWithPage() {
           <div className="space-y-6 animate-fade-in">
             <div className="flex items-center justify-between">
               <h2 className="text-3xl font-bold">
-                Words starting with "{prefix}"{lengthFilter ? ` (${lengthFilter} letters)` : ""}
+                Words ending in "{suffix}"{lengthFilter ? ` (${lengthFilter} letters)` : ""}
               </h2>
               <div className="flex gap-2">
                 <Badge variant="secondary" className="text-sm">
@@ -238,7 +237,7 @@ export default function WordsStartWithPage() {
                 <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                 <p className="text-lg font-semibold mb-2">No words found</p>
                 <p className="text-sm text-muted-foreground">
-                  No words start with "{prefix}". Try different letters.
+                  No words end with "{suffix}". Try different letters.
                 </p>
               </Card>
             )}
@@ -255,9 +254,9 @@ export default function WordsStartWithPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-muted-foreground space-y-2">
-              <p>1. Enter the starting letter(s) in the search box</p>
+              <p>1. Enter the ending letter(s) in the search box</p>
               <p>2. Click "Search" or press Enter to find words</p>
-              <p>3. Or click any letter from the alphabet grid for quick search</p>
+              <p>3. Or click any common ending for quick search</p>
               <p>4. Browse results in grid view or grouped by length</p>
             </CardContent>
           </Card>
@@ -267,10 +266,10 @@ export default function WordsStartWithPage() {
               <CardTitle>Perfect For</CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-muted-foreground space-y-2">
-              <p>• Crossword puzzle solving</p>
-              <p>• Scrabble and Words with Friends strategy</p>
-              <p>• Word game assistance</p>
-              <p>• Vocabulary building and learning</p>
+              <p>• Finding rhyming words for poetry</p>
+              <p>• Scrabble and word game strategies</p>
+              <p>• Creative writing and songwriting</p>
+              <p>• Language learning and word patterns</p>
             </CardContent>
           </Card>
         </div>
@@ -278,22 +277,22 @@ export default function WordsStartWithPage() {
         {/* SEO Content */}
         <div className="mt-12 prose prose-sm max-w-none">
           <Card className="p-6 md:p-8 shadow-lg">
-            <h2 className="text-2xl font-bold mb-4">Find Words Starting With Any Letters</h2>
+            <h2 className="text-2xl font-bold mb-4">Find Words Ending With Any Letters</h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                Our Words Starting With tool helps you discover all words that begin with specific letters. Whether
-                you're solving crossword puzzles, playing Scrabble, or exploring new vocabulary, this comprehensive
-                word finder makes it easy to find exactly what you need.
+                Our Words Ending In tool helps you discover all words that finish with specific letters. Whether you're
+                writing poetry, solving word puzzles, or playing word games, this comprehensive tool makes it easy to
+                find words with specific endings.
               </p>
               <p>
-                Simply enter any starting letters (like "app", "str", or "con") and instantly see all matching words
-                from our extensive dictionary. You can view results in a complete list or organized by word length for
-                easier browsing. Perfect for word game players and puzzle enthusiasts alike.
+                Simply enter any ending letters (like "ing", "ed", or "tion") and instantly see all matching words from
+                our extensive dictionary. Perfect for finding rhymes, completing crosswords, or exploring word patterns.
+                View results organized by length or in a complete list for easy browsing.
               </p>
               <p>
-                With thousands of words in our database, you'll find everything from common words to rare gems. Use the
-                quick letter buttons for fast searches, or type custom letter combinations for more specific results.
-                Our tool is free, fast, and perfect for any word-related challenge.
+                With thousands of words in our database, you'll discover common endings like "-ly", "-er", and "-ness",
+                as well as less common suffixes. Our tool is perfect for poets, writers, word game enthusiasts, and
+                language learners exploring English word patterns.
               </p>
             </div>
           </Card>

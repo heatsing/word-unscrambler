@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Menu, Home, Sparkles, BookOpen, Hash, Info, ChevronRight } from "lucide-react"
+import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   NavigationMenu,
@@ -38,11 +38,12 @@ const wordFinders = [
   { name: "Letter Boxed Solver", href: "/letter-boxed-solver", description: "NYT Letter Boxed" },
 ]
 
-// Navigation 2: List of Words (3 categories)
+// Navigation 2: List of Words (5 categories)
 const wordLists = [
   { name: "Words by Length", href: "/words-by-length", description: "Browse words by letter count" },
   { name: "Words Start With", href: "/words-start-with", description: "Words beginning with specific letters" },
   { name: "Words With Letters", href: "/words-with-letters", description: "Words containing certain letters" },
+  { name: "Words Ending In", href: "/words-ending-in", description: "Words ending with specific letters" },
 ]
 
 // Navigation 3: Words by Length (10-letter to 2-letter)
@@ -67,8 +68,8 @@ export function SiteHeader() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary to-primary/60 text-primary-foreground font-bold rounded-lg shadow-md group-hover:shadow-lg transition-all group-hover:scale-105">
-              <Sparkles className="h-5 w-5" />
+            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold rounded-lg shadow-md group-hover:shadow-lg transition-all group-hover:scale-105">
+              <span className="text-xl font-bold">W</span>
             </div>
             <div className="hidden sm:block">
               <div className="font-bold text-lg leading-none">Word Unscrambler</div>
@@ -83,7 +84,6 @@ export function SiteHeader() {
               <NavigationMenuItem>
                 <Link href="/" legacyBehavior passHref>
                   <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    <Home className="mr-2 h-4 w-4" />
                     Home
                   </NavigationMenuLink>
                 </Link>
@@ -92,24 +92,18 @@ export function SiteHeader() {
               {/* Navigation 1: Word Finders */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm">
-                  <Sparkles className="mr-2 h-4 w-4" />
                   Word Finders
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[320px] p-4">
-                    <h4 className="mb-3 text-sm font-semibold text-muted-foreground">All Word Finder Tools</h4>
+                  <div className="w-[280px] p-4">
                     <div className="space-y-1">
                       {wordFinders.map((item) => (
                         <NavigationMenuLink key={item.href} asChild>
                           <Link
                             href={item.href}
-                            className="group flex items-center gap-3 rounded-lg p-2.5 hover:bg-accent transition-colors block"
+                            className="rounded-lg p-2.5 hover:bg-accent transition-colors block"
                           >
-                            <div className="flex-1">
-                              <div className="text-sm font-medium">{item.name}</div>
-                              <div className="text-xs text-muted-foreground">{item.description}</div>
-                            </div>
-                            <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="text-sm font-medium">{item.name}</div>
                           </Link>
                         </NavigationMenuLink>
                       ))}
@@ -121,24 +115,18 @@ export function SiteHeader() {
               {/* Navigation 2: List of Words */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm">
-                  <BookOpen className="mr-2 h-4 w-4" />
                   List of Words
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[320px] p-4">
-                    <h4 className="mb-3 text-sm font-semibold text-muted-foreground">Browse Word Lists</h4>
+                  <div className="w-[280px] p-4">
                     <div className="space-y-1">
                       {wordLists.map((item) => (
                         <NavigationMenuLink key={item.href} asChild>
                           <Link
                             href={item.href}
-                            className="group flex items-center gap-3 rounded-lg p-2.5 hover:bg-accent transition-colors block"
+                            className="rounded-lg p-2.5 hover:bg-accent transition-colors block"
                           >
-                            <div className="flex-1">
-                              <div className="text-sm font-medium">{item.name}</div>
-                              <div className="text-xs text-muted-foreground">{item.description}</div>
-                            </div>
-                            <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="text-sm font-medium">{item.name}</div>
                           </Link>
                         </NavigationMenuLink>
                       ))}
@@ -150,23 +138,18 @@ export function SiteHeader() {
               {/* Navigation 3: Words by Length */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm">
-                  <Hash className="mr-2 h-4 w-4" />
                   Words by Length
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[280px] p-4">
-                    <h4 className="mb-3 text-sm font-semibold text-muted-foreground">Quick Access by Letter Count</h4>
+                  <div className="w-[240px] p-4">
                     <div className="space-y-1">
                       {wordsByLength.map((item) => (
                         <NavigationMenuLink key={item.href} asChild>
                           <Link
                             href={item.href}
-                            className="flex items-center justify-between rounded-md p-2.5 hover:bg-accent transition-colors block"
+                            className="flex items-center rounded-md p-2.5 hover:bg-accent transition-colors block"
                           >
                             <span className="text-sm font-medium">{item.name}</span>
-                            <Badge variant="outline" className="text-xs">
-                              {item.count}
-                            </Badge>
                           </Link>
                         </NavigationMenuLink>
                       ))}
@@ -179,7 +162,6 @@ export function SiteHeader() {
               <NavigationMenuItem>
                 <Link href="/about" legacyBehavior passHref>
                   <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    <Info className="mr-2 h-4 w-4" />
                     About
                   </NavigationMenuLink>
                 </Link>
@@ -210,14 +192,12 @@ export function SiteHeader() {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-3 text-lg font-semibold hover:text-primary transition-colors"
                   >
-                    <Home className="h-5 w-5" />
                     Home
                   </Link>
 
                   {/* Word Finders */}
                   <div>
-                    <h3 className="font-semibold text-sm text-muted-foreground mb-3 flex items-center gap-2">
-                      <Sparkles className="h-4 w-4" />
+                    <h3 className="font-semibold text-sm text-muted-foreground mb-3">
                       WORD FINDERS
                     </h3>
                     <div className="flex flex-col gap-1">
@@ -236,8 +216,7 @@ export function SiteHeader() {
 
                   {/* List of Words */}
                   <div>
-                    <h3 className="font-semibold text-sm text-muted-foreground mb-3 flex items-center gap-2">
-                      <BookOpen className="h-4 w-4" />
+                    <h3 className="font-semibold text-sm text-muted-foreground mb-3">
                       LIST OF WORDS
                     </h3>
                     <div className="flex flex-col gap-1">
@@ -256,8 +235,7 @@ export function SiteHeader() {
 
                   {/* Words by Length */}
                   <div>
-                    <h3 className="font-semibold text-sm text-muted-foreground mb-3 flex items-center gap-2">
-                      <Hash className="h-4 w-4" />
+                    <h3 className="font-semibold text-sm text-muted-foreground mb-3">
                       WORDS BY LENGTH
                     </h3>
                     <div className="grid grid-cols-2 gap-2">
@@ -280,7 +258,6 @@ export function SiteHeader() {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-3 text-lg font-semibold hover:text-primary transition-colors pt-4 border-t"
                   >
-                    <Info className="h-5 w-5" />
                     About
                   </Link>
                 </nav>

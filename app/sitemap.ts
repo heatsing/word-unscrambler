@@ -1,60 +1,80 @@
-import type { MetadataRoute } from "next"
+import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wordunscrambler.com"
+  const baseUrl = 'https://wordunscrambler.cc'
 
-  const wordFinderTools = [
-    "wordle",
-    "anagram-solver",
-    "jumble-solver",
-    "scrabble-go",
-    "scrabble",
-    "scrabble-cheat",
-    "unscramble",
-    "word-cookies",
-    "descrambler",
-    "word-finder",
-    "word-generator",
-    "word-scramble",
-    "word-solver",
-    "word-unscrambler",
-    "wordfeud",
-    "wordle-solver",
-    "words-with-friends",
-    "wordscapes",
-  ]
-
-  const wordLengths = [2, 3, 4, 5, 6, 7, 8, 9, 10]
-
+  // 静态页面
   const staticPages = [
-    "",
-    "words-by-length",
-    "words-start-with",
-    "words-with-letters",
-    "privacy-policy",
-    "terms",
-    "about",
-    "contact",
+    '',
+    '/word-unscrambler',
+    '/wordle-solver',
+    '/anagram-solver',
+    '/scrabble',
+    '/scrabble-go',
+    '/words-with-friends',
+    '/jumble-solver',
+    '/word-generator',
+    '/word-scramble',
+    '/wordscapes',
+    '/word-cookies',
+    '/wordfeud',
+    '/text-twist',
+    '/boggle-solver',
+    '/crossword-solver',
+    '/word-search-solver',
+    '/hangman-solver',
+    '/letter-boxed-solver',
+    '/words-by-length',
+    '/words-start-with',
+    '/words-with-letters',
+    '/words-ending-in',
+    '/about',
   ]
 
-  return [
-    ...staticPages.map((page) => ({
-      url: `${baseUrl}/${page}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: page === "" ? 1 : 0.8,
-    })),
-    ...wordFinderTools.map((tool) => ({
-      url: `${baseUrl}/${tool}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
-    })),
-    ...wordLengths.map((length) => ({
-      url: `${baseUrl}/${length}-letter-words`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.9,
-    })),
-  ]
+  // 单词长度页面 (2-10 letter words)
+  const wordLengthPages = [2, 3, 4, 5, 6, 7, 8, 9, 10].map(length =>
+    `/${length}-letter-words`
+  )
+
+  // 动态生成所有字母组合页面
+  const lengths = [2, 3, 4, 5, 6, 7, 8, 9, 10]
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
+
+  const letterPages: string[] = []
+
+  // 生成 "starting with" 页面
+  for (const length of lengths) {
+    for (const letter of alphabet) {
+      letterPages.push(`/${length}-letter-words-starting-with/${letter}`)
+    }
+  }
+
+  // 生成 "ending with" 页面
+  for (const length of lengths) {
+    for (const letter of alphabet) {
+      letterPages.push(`/${length}-letter-words-ending-with/${letter}`)
+    }
+  }
+
+  // 生成 "containing" 页面
+  for (const length of lengths) {
+    for (const letter of alphabet) {
+      letterPages.push(`/${length}-letter-words-with-${letter}`)
+    }
+  }
+
+  // 合并所有页面
+  const allPages = [...staticPages, ...wordLengthPages, ...letterPages]
+
+  return allPages.map(route => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: route === '' ? 1.0
+      : route.includes('letter-words-starting-with') ||
+        route.includes('letter-words-ending-with') ||
+        route.includes('letter-words-with-') ? 0.6
+      : route.includes('letter-words') ? 0.8
+      : 0.7,
+  }))
 }
