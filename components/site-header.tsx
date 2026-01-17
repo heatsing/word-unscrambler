@@ -80,15 +80,6 @@ export function SiteHeader() {
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden lg:flex">
             <NavigationMenuList className="gap-1">
-              {/* Home */}
-              <NavigationMenuItem>
-                <Link href="/" legacyBehavior passHref>
-                  <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    Home
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-
               {/* Navigation 1: Word Finders */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm">
@@ -186,15 +177,6 @@ export function SiteHeader() {
                   <SheetTitle>Menu</SheetTitle>
                 </SheetHeader>
                 <nav className="flex flex-col gap-6 mt-8">
-                  {/* Home */}
-                  <Link
-                    href="/"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-3 text-lg font-semibold hover:text-primary transition-colors"
-                  >
-                    Home
-                  </Link>
-
                   {/* Word Finders */}
                   <div>
                     <h3 className="font-semibold text-sm text-muted-foreground mb-3">
