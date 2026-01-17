@@ -2,7 +2,7 @@ export function GET() {
   const robotsTxt = `User-agent: *
 Allow: /
 
-Sitemap: ${process.env.NEXT_PUBLIC_SITE_URL || "https://wordunscrambler.com"}/sitemap.xml`
+Sitemap: ${process.env.NEXT_PUBLIC_SITE_URL || "https://wordunscrambler.cc"}/sitemap.xml`
 
   return new Response(robotsTxt, {
     headers: {

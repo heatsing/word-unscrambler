@@ -68,7 +68,7 @@ export default function ContactPage() {
             <h3 className="font-semibold mb-2">Other ways to reach us:</h3>
             <p className="text-sm text-muted-foreground">
               For bug reports, feature requests, or general inquiries, you can also reach us through our social media
-              channels or email us directly at support@wordunscrambler.com
+              channels or email us directly at support@wordunscrambler.cc
             </p>
           </CardContent>
         </Card>
