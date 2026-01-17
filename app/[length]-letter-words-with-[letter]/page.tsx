@@ -27,7 +27,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { length, letter } = params
+  const { length, letter } = await params
   const letterUpper = letter.toUpperCase()
 
   return {
@@ -36,8 +36,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default function WordsWithLetterPage({ params }: Props) {
-  const { length, letter } = params
+export default async function WordsWithLetterPage({ params }: Props) {
+  const { length, letter } = await params
   const wordLength = parseInt(length)
 
   if (isNaN(wordLength) || wordLength < 2 || wordLength > 10) {
