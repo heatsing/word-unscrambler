@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { solveWordle } from "@/lib/word-utils"
 import { Sparkles, HelpCircle, X, Check, AlertCircle, Lightbulb, Target } from "lucide-react"
+import { Steps, type StepItem } from "@/components/steps"
 
 type LetterState = "correct" | "present" | "absent" | "unknown"
 
@@ -61,6 +62,36 @@ export default function WordleSolverPage() {
   }
 
   const suggestedStarters = ["adieu", "raise", "stare", "slate", "crane", "crate", "trace", "arose"]
+
+  // Structured How-to-Use steps
+  const howToSteps: StepItem[] = [
+    {
+      title: "Known Letters (Green)",
+      description: "Fill in the boxes with letters you know are in the correct position",
+      icon: <div className="w-6 h-6 rounded bg-green-500 flex items-center justify-center text-white text-xs" />,
+    },
+    {
+      title: "Present Letters (Yellow)",
+      description: "Enter letters that are in the word but in wrong positions",
+      icon: <div className="w-6 h-6 rounded bg-yellow-500 flex items-center justify-center text-white text-xs" />,
+    },
+    {
+      title: "Absent Letters (Gray)",
+      description: "Enter letters that are NOT in the word at all",
+      icon: <div className="w-6 h-6 rounded bg-gray-400 flex items-center justify-center text-white text-xs" />,
+      example: {
+        label: "Example:",
+        content: (
+          <div className="space-y-1 text-xs text-muted-foreground">
+            <p>• Pattern: <code className="bg-muted px-2 py-0.5 rounded">h_ll_</code></p>
+            <p>• Present: <code className="bg-muted px-2 py-0.5 rounded">e, o</code></p>
+            <p>• Absent: <code className="bg-muted px-2 py-0.5 rounded">a, r, t</code></p>
+            <p className="pt-2">→ Result: "hello", "hollo"</p>
+          </div>
+        ),
+      },
+    },
+  ]
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -280,52 +311,13 @@ export default function WordleSolverPage() {
                   How to Use
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4 text-sm">
-                <div className="space-y-2">
-                  <h4 className="font-semibold flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-green-500 flex items-center justify-center text-white text-xs">
-                      1
-                    </div>
-                    Known Letters (Green)
-                  </h4>
-                  <p className="text-muted-foreground text-xs">
-                    Fill in the boxes with letters you know are in the correct position
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h4 className="font-semibold flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-yellow-500 flex items-center justify-center text-white text-xs">
-                      2
-                    </div>
-                    Present Letters (Yellow)
-                  </h4>
-                  <p className="text-muted-foreground text-xs">
-                    Enter letters that are in the word but in wrong positions
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h4 className="font-semibold flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-gray-400 flex items-center justify-center text-white text-xs">
-                      3
-                    </div>
-                    Absent Letters (Gray)
-                  </h4>
-                  <p className="text-muted-foreground text-xs">
-                    Enter letters that are NOT in the word at all
-                  </p>
-                </div>
-
-                <div className="bg-background p-4 rounded-lg border mt-4">
-                  <p className="text-xs font-medium mb-2">Example:</p>
-                  <div className="space-y-1 text-xs text-muted-foreground">
-                    <p>• Pattern: <code className="bg-muted px-2 py-0.5 rounded">h_ll_</code></p>
-                    <p>• Present: <code className="bg-muted px-2 py-0.5 rounded">e, o</code></p>
-                    <p>• Absent: <code className="bg-muted px-2 py-0.5 rounded">a, r, t</code></p>
-                    <p className="pt-2">→ Result: "hello", "hollo"</p>
-                  </div>
-                </div>
+              <CardContent>
+                <Steps
+                  steps={howToSteps}
+                  headingLevel="h4"
+                  showConnector={true}
+                  className="space-y-4 text-sm"
+                />
               </CardContent>
             </Card>
           </div>
