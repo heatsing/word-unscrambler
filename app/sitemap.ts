@@ -3,32 +3,35 @@ import { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://wordunscrambler.cc'
 
-  // 静态页面
+  // 静态页面 - 仅包含实际存在的页面
   const staticPages = [
     '',
     '/word-unscrambler',
     '/wordle-solver',
+    '/wordle',
     '/anagram-solver',
     '/scrabble',
     '/scrabble-go',
+    '/scrabble-cheat',
     '/words-with-friends',
     '/jumble-solver',
     '/word-generator',
+    '/word-solver',
     '/word-scramble',
+    '/word-finder',
+    '/descrambler',
+    '/unscramble',
     '/wordscapes',
     '/word-cookies',
     '/wordfeud',
-    '/text-twist',
-    '/boggle-solver',
-    '/crossword-solver',
-    '/word-search-solver',
-    '/hangman-solver',
-    '/letter-boxed-solver',
     '/words-by-length',
     '/words-start-with',
     '/words-with-letters',
     '/words-ending-in',
     '/about',
+    '/contact',
+    '/privacy-policy',
+    '/terms',
   ]
 
   // 单词长度页面 (2-10 letter words)
