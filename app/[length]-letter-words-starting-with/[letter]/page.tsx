@@ -29,7 +29,7 @@ export async function generateStaticParams() {
 
 // 动态生成元数据
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { length, letter } = params
+  const { length, letter } = await params
   const letterUpper = letter.toUpperCase()
 
   return {
@@ -38,8 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default function WordsStartingWithPage({ params }: Props) {
-  const { length, letter } = params
+export default async function WordsStartingWithPage({ params }: Props) {
+  const { length, letter } = await params
   const wordLength = parseInt(length)
 
   // 验证参数
