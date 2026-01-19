@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { solveWordle } from "@/lib/word-utils"
 import { Sparkles, HelpCircle, X, Check, AlertCircle, Lightbulb, Target } from "lucide-react"
+import { Steps, type StepItem } from "@/components/steps"
+import { DataTransparency, type DictionarySource } from "@/components/data-transparency"
 
 type LetterState = "correct" | "present" | "absent" | "unknown"
 
@@ -61,6 +63,70 @@ export default function WordleSolverPage() {
   }
 
   const suggestedStarters = ["adieu", "raise", "stare", "slate", "crane", "crate", "trace", "arose"]
+
+  // Dictionary data for transparency section
+  const wordleDictionaries: DictionarySource[] = [
+    {
+      name: "Wordle Official Dictionary",
+      abbreviation: "WORDLE",
+      description: "Official word list maintained by The New York Times. Contains common 5-letter words used in daily puzzles.",
+      wordCount: "~2,300",
+      usage: "Daily Wordle answers (curated common words)",
+    },
+    {
+      name: "Valid Guess List",
+      abbreviation: "VALID",
+      description: "Extended list of all acceptable 5-letter words for Wordle guesses, including less common terms.",
+      wordCount: "~12,900",
+      usage: "All valid guesses (comprehensive word list)",
+    },
+    {
+      name: "ENABLE Word List",
+      abbreviation: "ENABLE",
+      description: "Enhanced North American Benchmark Lexicon - public domain word list for validation and cross-reference.",
+      wordCount: "172,000+",
+      usage: "Dictionary validation and extended word matching",
+    },
+  ]
+
+  const wordleValidationRules = [
+    "Exact length matching - only 5-letter words are considered for Wordle solutions",
+    "Position validation - green letters must match exact positions in candidate words",
+    "Inclusion check - yellow letters must exist in word but not in marked positions",
+    "Exclusion filtering - gray letters are completely removed from candidate pool",
+    "Dictionary cross-reference - all results validated against official Wordle word lists",
+    "Frequency ranking - words sorted by common usage patterns from NYT Wordle answers",
+  ]
+
+  // Structured How-to-Use steps
+  const howToSteps: StepItem[] = [
+    {
+      title: "Known Letters (Green)",
+      description: "Fill in the boxes with letters you know are in the correct position",
+      icon: <div className="w-6 h-6 rounded bg-green-500 flex items-center justify-center text-white text-xs" />,
+    },
+    {
+      title: "Present Letters (Yellow)",
+      description: "Enter letters that are in the word but in wrong positions",
+      icon: <div className="w-6 h-6 rounded bg-yellow-500 flex items-center justify-center text-white text-xs" />,
+    },
+    {
+      title: "Absent Letters (Gray)",
+      description: "Enter letters that are NOT in the word at all",
+      icon: <div className="w-6 h-6 rounded bg-gray-400 flex items-center justify-center text-white text-xs" />,
+      example: {
+        label: "Example:",
+        content: (
+          <div className="space-y-1 text-xs text-muted-foreground">
+            <p>• Pattern: <code className="bg-muted px-2 py-0.5 rounded">h_ll_</code></p>
+            <p>• Present: <code className="bg-muted px-2 py-0.5 rounded">e, o</code></p>
+            <p>• Absent: <code className="bg-muted px-2 py-0.5 rounded">a, r, t</code></p>
+            <p className="pt-2">→ Result: "hello", "hollo"</p>
+          </div>
+        ),
+      },
+    },
+  ]
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -280,52 +346,13 @@ export default function WordleSolverPage() {
                   How to Use
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4 text-sm">
-                <div className="space-y-2">
-                  <h4 className="font-semibold flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-green-500 flex items-center justify-center text-white text-xs">
-                      1
-                    </div>
-                    Known Letters (Green)
-                  </h4>
-                  <p className="text-muted-foreground text-xs">
-                    Fill in the boxes with letters you know are in the correct position
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h4 className="font-semibold flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-yellow-500 flex items-center justify-center text-white text-xs">
-                      2
-                    </div>
-                    Present Letters (Yellow)
-                  </h4>
-                  <p className="text-muted-foreground text-xs">
-                    Enter letters that are in the word but in wrong positions
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h4 className="font-semibold flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-gray-400 flex items-center justify-center text-white text-xs">
-                      3
-                    </div>
-                    Absent Letters (Gray)
-                  </h4>
-                  <p className="text-muted-foreground text-xs">
-                    Enter letters that are NOT in the word at all
-                  </p>
-                </div>
-
-                <div className="bg-background p-4 rounded-lg border mt-4">
-                  <p className="text-xs font-medium mb-2">Example:</p>
-                  <div className="space-y-1 text-xs text-muted-foreground">
-                    <p>• Pattern: <code className="bg-muted px-2 py-0.5 rounded">h_ll_</code></p>
-                    <p>• Present: <code className="bg-muted px-2 py-0.5 rounded">e, o</code></p>
-                    <p>• Absent: <code className="bg-muted px-2 py-0.5 rounded">a, r, t</code></p>
-                    <p className="pt-2">→ Result: "hello", "hollo"</p>
-                  </div>
-                </div>
+              <CardContent>
+                <Steps
+                  steps={howToSteps}
+                  headingLevel="h4"
+                  showConnector={true}
+                  className="space-y-4 text-sm"
+                />
               </CardContent>
             </Card>
           </div>
@@ -350,6 +377,41 @@ export default function WordleSolverPage() {
             chances of solving the puzzle efficiently.
           </p>
         </div>
+
+        {/* Data Transparency Section */}
+        <DataTransparency
+          toolName="Wordle Solver"
+          dictionaries={wordleDictionaries}
+          totalWords="15,000+"
+          validationRules={wordleValidationRules}
+          lastUpdated="January 2025"
+          updateFrequency="Monthly (synced with NYT Wordle updates)"
+          customSections={
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Wordle-Specific Features</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base">Answer List Priority</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground">
+                    Our solver prioritizes words from the official Wordle answer list (~2,300 words)
+                    over the extended guess list, increasing accuracy for daily puzzle solutions.
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base">Pattern Matching Logic</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground">
+                    Advanced constraint satisfaction algorithm ensures all green (correct position),
+                    yellow (wrong position), and gray (absent) letter rules are simultaneously satisfied.
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          }
+        />
       </div>
     </div>
   )
