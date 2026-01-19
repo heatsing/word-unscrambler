@@ -128,7 +128,38 @@ export default async function WordsStartingWithPage({ params }: Props) {
               </p>
             )}
           </div>
+
+          {/* Mini FAQ */}
+          <div className="mt-6 pt-6 border-t">
+            <h3 className="text-lg font-bold mb-3">Frequently Asked Questions</h3>
+            <dl className="space-y-3 text-sm">
+              <div>
+                <dt className="font-semibold">How many {length}-letter words start with {letterUpper}?</dt>
+                <dd className="text-muted-foreground mt-1">There are {words.length} valid {length}-letter words starting with {letterUpper} in our dictionary.</dd>
+              </div>
+              <div>
+                <dt className="font-semibold">Can I use these words in Scrabble?</dt>
+                <dd className="text-muted-foreground mt-1">Yes, all words listed are from standard dictionaries and valid for Scrabble, Words with Friends, and Wordle.</dd>
+              </div>
+            </dl>
+          </div>
         </Card>
+
+        {/* Breadcrumb Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://wordunscrambler.cc" },
+                { "@type": "ListItem", "position": 2, "name": `${length} Letter Words`, "item": `https://wordunscrambler.cc/${length}-letter-words` },
+                { "@type": "ListItem", "position": 3, "name": `Starting with ${letterUpper}`, "item": `https://wordunscrambler.cc/${length}-letter-words-starting-with/${letter}` }
+              ]
+            })
+          }}
+        />
       </div>
     </div>
   )

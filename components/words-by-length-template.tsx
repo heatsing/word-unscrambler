@@ -34,9 +34,11 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
   const [excludes, setExcludes] = useState("")
 
   // Get random words based on display count
+  // Optimize: Only shuffle first 500 words instead of entire array for performance
   const displayWords = useMemo(() => {
-    const shuffled = shuffleArray(words)
-    return shuffled.slice(0, Math.min(displayCount, words.length))
+    const subset = words.slice(0, Math.min(500, words.length))
+    const shuffled = shuffleArray(subset)
+    return shuffled.slice(0, Math.min(displayCount, shuffled.length))
   }, [words, refreshKey, displayCount])
 
   // Filter words based on advanced search options

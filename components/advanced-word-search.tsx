@@ -115,6 +115,11 @@ export function AdvancedWordSearch({ onSearch, defaultEnds = "" }: AdvancedWordS
             type="text"
             value={letters}
             onChange={(e) => setLetters(e.target.value.toLowerCase())}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch()
+              }
+            }}
             placeholder="YOUR LETTERS"
             className="pl-10 h-14 text-lg text-center placeholder:text-muted-foreground/40 placeholder:text-lg uppercase"
             maxLength={15}

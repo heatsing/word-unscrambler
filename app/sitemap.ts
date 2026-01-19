@@ -77,13 +77,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return allPages.map(route => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
+    changeFrequency:
+      route === '' ? 'daily' as const :  // Homepage更频繁
+      route.includes('letter-words') ? 'monthly' as const :  // 词表页面稳定
+      'weekly' as const,  // 工具页
     priority: route === '' ? 1.0
+      : route.match(/^\/\d+-letter-words$/) ? 0.9  // 主词表页优先级提高
       : route.match(/^\/words-ending-in\/[a-z]$/) ? 0.7  // words-ending-in/a-z pages
       : route.includes('letter-words-starting-with') ||
         route.includes('letter-words-ending-with') ||
         route.includes('letter-words-with-') ? 0.6
-      : route.includes('letter-words') ? 0.8
+      : route.includes('wordle') || route.includes('scrabble') ? 0.8  // 热门工具页
       : 0.7,
   }))
 }
