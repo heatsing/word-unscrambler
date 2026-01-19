@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ALL_WORDS } from "@/lib/dictionary"
 import { Search, ArrowLeft, Sparkles } from "lucide-react"
+import { AdvancedWordSearch } from "@/components/advanced-word-search"
 
 const commonEndings = ["ed", "ing", "ly", "er", "est", "tion", "ness", "ful", "less", "ment", "ity", "ous", "ive", "able", "ible", "al", "ic", "ical", "ish", "ize"]
 
@@ -18,6 +19,8 @@ export default function WordsEndingInPage() {
   const [suffix, setSuffix] = useState("")
   const [searched, setSearched] = useState(false)
   const [lengthFilter, setLengthFilter] = useState<number | null>(null)
+  const [advancedSearchResults, setAdvancedSearchResults] = useState<string[]>([])
+  const [showAdvancedResults, setShowAdvancedResults] = useState(false)
 
   useEffect(() => {
     const lettersParam = searchParams.get("letters")
@@ -55,6 +58,12 @@ export default function WordsEndingInPage() {
     setSearched(true)
   }
 
+  const handleAdvancedSearch = (results: string[]) => {
+    setAdvancedSearchResults(results)
+    setShowAdvancedResults(true)
+    setSearched(false) // Hide simple search results
+  }
+
   const groupedResults = useMemo(() => {
     return results.reduce((acc, word) => {
       const len = word.length
@@ -64,7 +73,17 @@ export default function WordsEndingInPage() {
     }, {} as Record<number, string[]>)
   }, [results])
 
+  const groupedAdvancedResults = useMemo(() => {
+    return advancedSearchResults.reduce((acc, word) => {
+      const len = word.length
+      if (!acc[len]) acc[len] = []
+      acc[len].push(word)
+      return acc
+    }, {} as Record<number, string[]>)
+  }, [advancedSearchResults])
+
   const displayResults = results.slice(0, 100)
+  const displayAdvancedResults = advancedSearchResults.slice(0, 100)
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -85,6 +104,11 @@ export default function WordsEndingInPage() {
               Filtered by {lengthFilter}-letter words
             </Badge>
           )}
+        </div>
+
+        {/* Advanced Search Module */}
+        <div className="mb-8 animate-scale-in">
+          <AdvancedWordSearch onSearch={handleAdvancedSearch} />
         </div>
 
         {/* Search Interface */}
@@ -171,6 +195,98 @@ export default function WordsEndingInPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Advanced Search Results */}
+        {showAdvancedResults && (
+          <div className="space-y-6 animate-fade-in">
+            <div className="flex items-center justify-between">
+              <h2 className="text-3xl font-bold">Search Results</h2>
+              <div className="flex gap-2">
+                <Badge variant="secondary" className="text-sm">
+                  Total: {advancedSearchResults.length}
+                </Badge>
+                {advancedSearchResults.length > 100 && (
+                  <Badge variant="default" className="text-sm">
+                    Showing first 100
+                  </Badge>
+                )}
+              </div>
+            </div>
+
+            {advancedSearchResults.length > 0 ? (
+              <Tabs defaultValue="all" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="all">All Words</TabsTrigger>
+                  <TabsTrigger value="grouped">By Length</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="all" className="mt-6">
+                  <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                    {displayAdvancedResults.map((word, index) => (
+                      <Card
+                        key={`${word}-${index}`}
+                        className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
+                      >
+                        <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
+                          {word}
+                        </span>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {word.length} letter{word.length !== 1 ? "s" : ""}
+                        </p>
+                      </Card>
+                    ))}
+                  </div>
+                  {advancedSearchResults.length > 100 && (
+                    <p className="text-center text-sm text-muted-foreground mt-6">
+                      Showing first 100 of {advancedSearchResults.length} words. Try a more specific search for better results.
+                    </p>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="grouped" className="mt-6 space-y-6">
+                  {Object.keys(groupedAdvancedResults)
+                    .sort((a, b) => Number(b) - Number(a))
+                    .map((length) => {
+                      const wordsInGroup = groupedAdvancedResults[Number(length)]
+                      const displayWords = wordsInGroup.slice(0, 20)
+
+                      return (
+                        <div key={length} className="space-y-3">
+                          <h3 className="text-xl font-semibold flex items-center gap-2">
+                            {length} Letter Words
+                            <Badge variant="outline">{wordsInGroup.length}</Badge>
+                          </h3>
+                          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                            {displayWords.map((word, index) => (
+                              <Card
+                                key={`${word}-${index}`}
+                                className="p-3 text-center hover:shadow-md hover:scale-105 transition-all cursor-pointer"
+                              >
+                                <span className="font-semibold uppercase">{word}</span>
+                              </Card>
+                            ))}
+                          </div>
+                          {wordsInGroup.length > 20 && (
+                            <p className="text-xs text-muted-foreground">
+                              Showing first 20 of {wordsInGroup.length} words
+                            </p>
+                          )}
+                        </div>
+                      )
+                    })}
+                </TabsContent>
+              </Tabs>
+            ) : (
+              <Card className="p-12 text-center border-dashed">
+                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-lg font-semibold mb-2">No words found</p>
+                <p className="text-sm text-muted-foreground">
+                  Try adjusting your search filters.
+                </p>
+              </Card>
+            )}
+          </div>
+        )}
 
         {/* Results */}
         {searched && (
