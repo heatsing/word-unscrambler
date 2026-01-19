@@ -11,5 +11,21 @@ export const metadata: Metadata = {
 
 export default function TwoLetterWordsPage() {
   const words = getWordsByLength(2)
-  return <WordsByLengthTemplate length={2} words={words} />
+
+  return (
+    <>
+      {/* SSR-rendered intro for SEO */}
+      <div className="container mx-auto px-4 pt-8">
+        <div className="max-w-4xl mx-auto text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">2 Letter Words</h1>
+          <p className="text-lg text-muted-foreground">
+            Complete list of {words.length} two-letter words for Scrabble, Words with Friends,
+            and other word games. Find the perfect word for any word puzzle.
+          </p>
+        </div>
+      </div>
+
+      <WordsByLengthTemplate length={2} words={words} />
+    </>
+  )
 }

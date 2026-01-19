@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Search, Sparkles, TrendingUp } from "lucide-react"
 import { unscrambleWord, type WordResult } from "@/lib/word-utils"
+import { WordDefinitionDialog } from "@/components/word-definition-dialog"
 
 export function WordSearch() {
   const [letters, setLetters] = useState("")
@@ -14,6 +15,8 @@ export function WordSearch() {
   const [isSearching, setIsSearching] = useState(false)
   const [minLength, setMinLength] = useState<number>(2)
   const [sortBy, setSortBy] = useState<"score" | "length" | "alpha">("score")
+  const [selectedWord, setSelectedWord] = useState<string>("")
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   const handleSearch = useCallback(() => {
     if (!letters.trim()) {
@@ -56,10 +59,15 @@ export function WordSearch() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Enter your letters here... (e.g., 'listen')"
+              placeholder="Enter your letters here... (e.g., 'listen' or 'create')"
               className="pl-10 h-12 text-lg"
               value={letters}
               onChange={(e) => setLetters(e.target.value.toLowerCase())}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSearch()
+                }
+              }}
               maxLength={15}
             />
           </div>
@@ -114,16 +122,32 @@ export function WordSearch() {
                 <h3 className="text-lg font-semibold">
                   Found {results.length} word{results.length !== 1 ? "s" : ""}
                 </h3>
-                <Badge variant="secondary" className="text-sm">
-                  {letters.toUpperCase()}
-                </Badge>
+                <div className="flex gap-2">
+                  <Badge variant="secondary" className="text-sm">
+                    {letters.toUpperCase()}
+                  </Badge>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      const wordList = results.map(r => r.word).join(', ')
+                      navigator.clipboard.writeText(wordList)
+                    }}
+                  >
+                    Copy All
+                  </Button>
+                </div>
               </div>
 
               <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                 {results.map((result, index) => (
                   <Card
                     key={`${result.word}-${index}`}
-                    className="hover:shadow-md transition-shadow hover:border-primary/50"
+                    className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer"
+                    onClick={() => {
+                      setSelectedWord(result.word)
+                      setDialogOpen(true)
+                    }}
                   >
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
@@ -156,12 +180,19 @@ export function WordSearch() {
           ) : letters.length >= 2 ? (
             <Card className="border-dashed">
               <CardContent className="pt-6 text-center">
-                <p className="text-muted-foreground">
-                  No words found with the letters "{letters.toUpperCase()}".
+                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-lg font-semibold mb-2">
+                  No words found with "{letters.toUpperCase()}"
                 </p>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Try using different letters or fewer filters.
+                <p className="text-sm text-muted-foreground mb-4">
+                  Try these tips:
                 </p>
+                <ul className="text-sm text-muted-foreground text-left max-w-xs mx-auto space-y-1">
+                  <li>• Use fewer letters (remove uncommon letters like Q, Z, X)</li>
+                  <li>• Lower the minimum length filter</li>
+                  <li>• Check for typos in your letters</li>
+                  <li>• Try different letter combinations</li>
+                </ul>
               </CardContent>
             </Card>
           ) : null}
@@ -176,6 +207,13 @@ export function WordSearch() {
           </p>
         </div>
       )}
+
+      {/* Word Definition Dialog */}
+      <WordDefinitionDialog
+        word={selectedWord}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </div>
   )
 }

@@ -11,5 +11,20 @@ export const metadata: Metadata = {
 
 export default function TenLetterWordsPage() {
   const words = getWordsByLength(10)
-  return <WordsByLengthTemplate length={10} words={words} />
+
+  return (
+    <>
+      <div className="container mx-auto px-4 pt-8">
+        <div className="max-w-4xl mx-auto text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">10 Letter Words</h1>
+          <p className="text-lg text-muted-foreground">
+            Complete list of {words.length} ten-letter words for advanced players.
+            Expand your vocabulary and dominate word games with long words.
+          </p>
+        </div>
+      </div>
+
+      <WordsByLengthTemplate length={10} words={words} />
+    </>
+  )
 }
