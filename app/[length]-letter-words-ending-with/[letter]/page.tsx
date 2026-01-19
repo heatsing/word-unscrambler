@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { DICTIONARY } from "@/lib/dictionary"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
+import { WordGridWithDefinition } from "@/components/word-grid-with-definition"
 
 type Props = {
   params: { length: string; letter: string }
@@ -65,12 +66,8 @@ export default async function WordsEndingWithPage({ params }: Props) {
         </div>
 
         {words.length > 0 ? (
-          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 mb-12">
-            {words.map((word, index) => (
-              <Card key={`${word}-${index}`} className="p-4 text-center hover:shadow-lg transition-all">
-                <span className="font-semibold uppercase">{word}</span>
-              </Card>
-            ))}
+          <div className="mb-12">
+            <WordGridWithDefinition words={words} />
           </div>
         ) : (
           <Card className="p-12 text-center">

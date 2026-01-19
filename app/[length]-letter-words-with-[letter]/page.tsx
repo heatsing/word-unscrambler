@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { DICTIONARY } from "@/lib/dictionary"
 import { Card } from "@/components/ui/card"
 import Link from "next/link"
+import { HighlightedWordGrid } from "@/components/highlighted-word-grid"
 
 type Props = {
   params: { length: string; letter: string }
@@ -65,23 +66,8 @@ export default async function WordsWithLetterPage({ params }: Props) {
         </div>
 
         {words.length > 0 ? (
-          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 mb-12">
-            {words.map((word, index) => {
-              const letterIndex = word.toLowerCase().indexOf(letter)
-              const before = word.slice(0, letterIndex)
-              const match = word.slice(letterIndex, letterIndex + 1)
-              const after = word.slice(letterIndex + 1)
-
-              return (
-                <Card key={`${word}-${index}`} className="p-4 text-center hover:shadow-lg transition-all">
-                  <span className="font-semibold uppercase">
-                    {before}
-                    <span className="text-primary font-bold">{match}</span>
-                    {after}
-                  </span>
-                </Card>
-              )
-            })}
+          <div className="mb-12">
+            <HighlightedWordGrid words={words} highlightLetter={letter} />
           </div>
         ) : (
           <Card className="p-12 text-center">
