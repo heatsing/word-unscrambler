@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ALL_WORDS } from "@/lib/dictionary"
 import { Search, Sparkles, Layers } from "lucide-react"
+import { WordDefinitionDialog } from "@/components/word-definition-dialog"
 
 const exampleSearches = [
   { letters: "qu", description: "Words with QU" },
@@ -22,6 +23,8 @@ export default function WordsWithLettersPage() {
   const [letters, setLetters] = useState("")
   const [searched, setSearched] = useState(false)
   const [lengthFilter, setLengthFilter] = useState<number | null>(null)
+  const [selectedWord, setSelectedWord] = useState<string>("")
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   useEffect(() => {
     const lettersParam = searchParams.get("letters")
@@ -194,6 +197,10 @@ export default function WordsWithLettersPage() {
                         <Card
                           key={`${word}-${index}`}
                           className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
+                          onClick={() => {
+                            setSelectedWord(word)
+                            setDialogOpen(true)
+                          }}
                         >
                           <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
                             {before}
@@ -232,6 +239,10 @@ export default function WordsWithLettersPage() {
                               <Card
                                 key={`${word}-${index}`}
                                 className="p-3 text-center hover:shadow-md hover:scale-105 transition-all cursor-pointer"
+                                onClick={() => {
+                                  setSelectedWord(word)
+                                  setDialogOpen(true)
+                                }}
                               >
                                 <span className="font-semibold uppercase">{word}</span>
                               </Card>
@@ -313,6 +324,13 @@ export default function WordsWithLettersPage() {
           </Card>
         </div>
       </div>
+
+      {/* Word Definition Dialog */}
+      <WordDefinitionDialog
+        word={selectedWord}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </div>
   )
 }

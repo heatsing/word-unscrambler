@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useState, useMemo, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
@@ -10,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ALL_WORDS } from "@/lib/dictionary"
 import { Search, ArrowLeft, Sparkles } from "lucide-react"
 import { AdvancedWordSearch } from "@/components/advanced-word-search"
+import { WordDefinitionDialog } from "@/components/word-definition-dialog"
 
 const commonEndings = ["ed", "ing", "ly", "er", "est", "tion", "ness", "ful", "less", "ment", "ity", "ous", "ive", "able", "ible", "al", "ic", "ical", "ish", "ize"]
 
@@ -20,6 +22,8 @@ export default function WordsEndingInPage() {
   const [lengthFilter, setLengthFilter] = useState<number | null>(null)
   const [advancedSearchResults, setAdvancedSearchResults] = useState<string[]>([])
   const [showAdvancedResults, setShowAdvancedResults] = useState(false)
+  const [selectedWord, setSelectedWord] = useState<string>("")
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   useEffect(() => {
     const lettersParam = searchParams.get("letters")
@@ -241,6 +245,10 @@ export default function WordsEndingInPage() {
                       <Card
                         key={`${word}-${index}`}
                         className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
+                        onClick={() => {
+                          setSelectedWord(word)
+                          setDialogOpen(true)
+                        }}
                       >
                         <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
                           {word}
@@ -276,6 +284,10 @@ export default function WordsEndingInPage() {
                               <Card
                                 key={`${word}-${index}`}
                                 className="p-3 text-center hover:shadow-md hover:scale-105 transition-all cursor-pointer"
+                                onClick={() => {
+                                  setSelectedWord(word)
+                                  setDialogOpen(true)
+                                }}
                               >
                                 <span className="font-semibold uppercase">{word}</span>
                               </Card>
@@ -335,6 +347,10 @@ export default function WordsEndingInPage() {
                       <Card
                         key={`${word}-${index}`}
                         className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
+                        onClick={() => {
+                          setSelectedWord(word)
+                          setDialogOpen(true)
+                        }}
                       >
                         <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
                           {word}
@@ -370,6 +386,10 @@ export default function WordsEndingInPage() {
                               <Card
                                 key={`${word}-${index}`}
                                 className="p-3 text-center hover:shadow-md hover:scale-105 transition-all cursor-pointer"
+                                onClick={() => {
+                                  setSelectedWord(word)
+                                  setDialogOpen(true)
+                                }}
                               >
                                 <span className="font-semibold uppercase">{word}</span>
                               </Card>
@@ -451,6 +471,13 @@ export default function WordsEndingInPage() {
           </Card>
         </div>
       </div>
+
+      {/* Word Definition Dialog */}
+      <WordDefinitionDialog
+        word={selectedWord}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </div>
   )
 }
