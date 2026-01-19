@@ -40,7 +40,6 @@ const legal = [
   { name: "Terms of Service", href: "/terms" },
   { name: "About Us", href: "/about" },
   { name: "Contact", href: "/contact" },
-  { name: "Sitemap", href: "/sitemap-page" },
 ]
 
 export function SiteFooter() {
