@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Search, Sparkles, TrendingUp } from "lucide-react"
 import { unscrambleWord, type WordResult } from "@/lib/word-utils"
+import { WordDefinitionDialog } from "@/components/word-definition-dialog"
 
 export function WordSearch() {
   const [letters, setLetters] = useState("")
@@ -14,6 +15,8 @@ export function WordSearch() {
   const [isSearching, setIsSearching] = useState(false)
   const [minLength, setMinLength] = useState<number>(2)
   const [sortBy, setSortBy] = useState<"score" | "length" | "alpha">("score")
+  const [selectedWord, setSelectedWord] = useState<string>("")
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   const handleSearch = useCallback(() => {
     if (!letters.trim()) {
@@ -140,7 +143,11 @@ export function WordSearch() {
                 {results.map((result, index) => (
                   <Card
                     key={`${result.word}-${index}`}
-                    className="hover:shadow-md transition-shadow hover:border-primary/50"
+                    className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer"
+                    onClick={() => {
+                      setSelectedWord(result.word)
+                      setDialogOpen(true)
+                    }}
                   >
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
@@ -200,6 +207,13 @@ export function WordSearch() {
           </p>
         </div>
       )}
+
+      {/* Word Definition Dialog */}
+      <WordDefinitionDialog
+        word={selectedWord}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </div>
   )
 }

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { BookOpen, Search, RefreshCw, Plus } from "lucide-react"
+import { WordDefinitionDialog } from "@/components/word-definition-dialog"
 
 interface WordsByLengthTemplateProps {
   length: number
@@ -32,6 +33,8 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
   const [endsWith, setEndsWith] = useState("")
   const [contains, setContains] = useState("")
   const [excludes, setExcludes] = useState("")
+  const [selectedWord, setSelectedWord] = useState<string>("")
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   // Get random words based on display count
   // Optimize: Only shuffle first 500 words instead of entire array for performance
@@ -202,6 +205,10 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
                   <Card
                     key={`${word}-${index}`}
                     className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
+                    onClick={() => {
+                      setSelectedWord(word)
+                      setDialogOpen(true)
+                    }}
                   >
                     <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
                       {word}
@@ -354,6 +361,13 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
           </Card>
         </div>
       </div>
+
+      {/* Word Definition Dialog */}
+      <WordDefinitionDialog
+        word={selectedWord}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </div>
   )
 }
