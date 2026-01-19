@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react"
 import { WordsGroupClient } from "./WordsGroupClient"
 
 interface Props {
-  params: { letter: string }
+  params: Promise<{ letter: string }>
 }
 
 export async function generateStaticParams() {
@@ -16,8 +16,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const letter = params.letter.toUpperCase()
-  const wordsCount = ALL_WORDS.filter((word) => word.endsWith(params.letter.toLowerCase())).length
+  const { letter: letterParam } = await params
+  const letter = letterParam.toUpperCase()
+  const wordsCount = ALL_WORDS.filter((word) => word.endsWith(letterParam.toLowerCase())).length
 
   return {
     title: `Words Ending in ${letter} | ${wordsCount} Words`,
@@ -25,8 +26,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default function WordsEndingInLetterPage({ params }: Props) {
-  const letter = params.letter.toLowerCase()
+export default async function WordsEndingInLetterPage({ params }: Props) {
+  const { letter: letterParam } = await params
+  const letter = letterParam.toLowerCase()
 
   // Filter words ending with this letter
   const wordsEndingWithLetter = ALL_WORDS.filter((word) => word.endsWith(letter))
