@@ -66,6 +66,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
+  // 生成 "words-ending-in/[letter]" 页面 (A-Z)
+  for (const letter of alphabet) {
+    letterPages.push(`/words-ending-in/${letter}`)
+  }
+
   // 合并所有页面
   const allPages = [...staticPages, ...wordLengthPages, ...letterPages]
 
@@ -74,6 +79,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: route === '' ? 1.0
+      : route.match(/^\/words-ending-in\/[a-z]$/) ? 0.7  // words-ending-in/a-z pages
       : route.includes('letter-words-starting-with') ||
         route.includes('letter-words-ending-with') ||
         route.includes('letter-words-with-') ? 0.6
