@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { useState, useMemo, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
@@ -148,27 +147,6 @@ export default function WordsEndingInPage() {
                 </Button>
               </div>
             )}
-          </CardContent>
-        </Card>
-
-        {/* A-Z Letter Navigation */}
-        <Card className="mb-8 shadow-lg">
-          <CardHeader>
-            <CardTitle>Words that End in A-Z</CardTitle>
-            <CardDescription>Browse words by ending letter</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-13 gap-2">
-              {Array.from("abcdefghijklmnopqrstuvwxyz").map((letter) => (
-                <Link
-                  key={letter}
-                  href={`/words-ending-in/${letter}`}
-                  className="flex items-center justify-center h-12 rounded-md border bg-background hover:bg-accent hover:text-accent-foreground font-semibold text-lg uppercase transition-colors"
-                >
-                  {letter}
-                </Link>
-              ))}
-            </div>
           </CardContent>
         </Card>
 

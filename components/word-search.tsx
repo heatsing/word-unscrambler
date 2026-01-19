@@ -77,7 +77,7 @@ export function WordSearch() {
               onChange={(e) => setMinLength(Number(e.target.value))}
               className="border rounded px-2 py-1 bg-background"
             >
-              {[2, 3, 4, 5, 6, 7, 8, 9, 10].map((len) => (
+              {[2, 3, 4, 5, 6, 7].map((len) => (
                 <option key={len} value={len}>
                   {len}+ letters
                 </option>

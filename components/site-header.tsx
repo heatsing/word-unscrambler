@@ -92,7 +92,7 @@ export function SiteHeader() {
                         <NavigationMenuLink key={item.href} asChild>
                           <Link
                             href={item.href}
-                            className="block rounded-lg p-2.5 text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                            className="rounded-lg p-2.5 hover:bg-accent transition-colors block"
                           >
                             <div className="text-sm font-medium">{item.name}</div>
                           </Link>
@@ -115,7 +115,7 @@ export function SiteHeader() {
                         <NavigationMenuLink key={item.href} asChild>
                           <Link
                             href={item.href}
-                            className="block rounded-lg p-2.5 text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                            className="rounded-lg p-2.5 hover:bg-accent transition-colors block"
                           >
                             <div className="text-sm font-medium">{item.name}</div>
                           </Link>
@@ -138,7 +138,7 @@ export function SiteHeader() {
                         <NavigationMenuLink key={item.href} asChild>
                           <Link
                             href={item.href}
-                            className="block flex items-center rounded-md p-2.5 text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                            className="flex items-center rounded-md p-2.5 hover:bg-accent transition-colors block"
                           >
                             <span className="text-sm font-medium">{item.name}</span>
                           </Link>
