@@ -181,7 +181,8 @@ export default function WordsEndingInPage() {
             <CardTitle>Words that End in A-Z</CardTitle>
             <CardDescription>Browse words by ending letter</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
+            {/* Letter Grid */}
             <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-13 gap-2">
               {Array.from("abcdefghijklmnopqrstuvwxyz").map((letter) => (
                 <Link
@@ -192,6 +193,21 @@ export default function WordsEndingInPage() {
                   {letter}
                 </Link>
               ))}
+            </div>
+
+            {/* Text Link List */}
+            <div className="border-t pt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                {Array.from("abcdefghijklmnopqrstuvwxyz").map((letter) => (
+                  <Link
+                    key={`text-${letter}`}
+                    href={`/words-ending-in/${letter}`}
+                    className="text-sm text-primary hover:underline hover:text-primary/80 transition-colors"
+                  >
+                    Words That End In {letter.toUpperCase()}
+                  </Link>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
