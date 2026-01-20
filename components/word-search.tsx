@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Search, Sparkles, TrendingUp } from "lucide-react"
-import { unscrambleWord, type WordResult } from "@/lib/word-utils"
+import { unscrambleWord, type WordResult, type DictionaryType } from "@/lib/word-utils"
+import { getAvailableDictionaries, DEFAULT_DICTIONARY } from "@/lib/dictionary-config"
 import { WordDefinitionDialog } from "@/components/word-definition-dialog"
 import { useSearchHistory } from "@/hooks/use-search-history"
 import { SearchHistory } from "@/components/search-history"
@@ -18,6 +19,7 @@ export function WordSearch() {
   const [isSearching, setIsSearching] = useState(false)
   const [minLength, setMinLength] = useState<number>(2)
   const [sortBy, setSortBy] = useState<"score" | "length" | "alpha">("score")
+  const [dictionaryType, setDictionaryType] = useState<DictionaryType>(DEFAULT_DICTIONARY)
   const [selectedWord, setSelectedWord] = useState<string>("")
   const [dialogOpen, setDialogOpen] = useState(false)
 
@@ -36,6 +38,7 @@ export function WordSearch() {
       const foundWords = unscrambleWord(letters, {
         minLength,
         sortBy,
+        dictionaryType,
       })
       setResults(foundWords.slice(0, 50)) // Limit to 50 results for performance
       setIsSearching(false)
@@ -45,7 +48,7 @@ export function WordSearch() {
         addToHistory(letters.trim())
       }
     }, 100)
-  }, [letters, minLength, sortBy, addToHistory])
+  }, [letters, minLength, sortBy, dictionaryType, addToHistory])
 
   // Real-time search as user types
   useEffect(() => {
@@ -98,6 +101,21 @@ export function WordSearch() {
         {/* Filters */}
         <div className="flex gap-4 flex-wrap items-center text-sm">
           <div className="flex items-center gap-2">
+            <span className="text-muted-foreground">Dictionary:</span>
+            <select
+              value={dictionaryType}
+              onChange={(e) => setDictionaryType(e.target.value as DictionaryType)}
+              className="border rounded px-2 py-1 bg-background"
+            >
+              {getAvailableDictionaries().map((dict) => (
+                <option key={dict.id} value={dict.id}>
+                  {dict.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Min Length:</span>
             <select
               value={minLength}
@@ -119,7 +137,7 @@ export function WordSearch() {
               onChange={(e) => setSortBy(e.target.value as "score" | "length" | "alpha")}
               className="border rounded px-2 py-1 bg-background"
             >
-              <option value="score">Scrabble Score</option>
+              <option value="score">Score</option>
               <option value="length">Word Length</option>
               <option value="alpha">Alphabetical</option>
             </select>

@@ -1,5 +1,9 @@
 // Utility functions for word manipulation and solving
 import { ALL_WORDS, WORD_SET, DICTIONARY } from "./dictionary"
+import { type DictionaryType, DEFAULT_DICTIONARY, calculateScore as calculateDictionaryScore } from "./dictionary-config"
+
+// Re-export DictionaryType for external use
+export type { DictionaryType }
 
 export interface WordResult {
   word: string
@@ -11,7 +15,7 @@ export interface WordResult {
  * Unscrambles letters to find all valid words that can be formed
  * Supports wildcards: ? or _ can represent any letter
  * @param letters - The letters to unscramble (can include ? or _ as wildcards)
- * @param options - Optional settings (minLength, maxLength, mustContain)
+ * @param options - Optional settings (minLength, maxLength, mustContain, dictionaryType)
  * @returns Array of words that can be formed from the letters
  */
 export function unscrambleWord(
@@ -21,6 +25,7 @@ export function unscrambleWord(
     maxLength?: number
     mustContain?: string
     sortBy?: "length" | "score" | "alpha"
+    dictionaryType?: DictionaryType
   }
 ): WordResult[] {
   if (!letters || letters.trim().length === 0) {
@@ -56,9 +61,10 @@ export function unscrambleWord(
     })
 
     // Convert to WordResult objects
+    const dictionaryType = options?.dictionaryType || DEFAULT_DICTIONARY
     const results: WordResult[] = validWords.map((word) => ({
       word,
-      score: calculateScrabbleScore(word),
+      score: calculateDictionaryScore(word, dictionaryType),
       length: word.length,
     }))
 
@@ -93,9 +99,10 @@ export function unscrambleWord(
     })
 
     // Convert to WordResult objects
+    const dictionaryType = options?.dictionaryType || DEFAULT_DICTIONARY
     const results: WordResult[] = validWords.map((word) => ({
       word,
-      score: calculateScrabbleScore(word),
+      score: calculateDictionaryScore(word, dictionaryType),
       length: word.length,
     }))
 
