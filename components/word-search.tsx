@@ -8,6 +8,9 @@ import { Badge } from "@/components/ui/badge"
 import { Search, Sparkles, TrendingUp } from "lucide-react"
 import { unscrambleWord, type WordResult } from "@/lib/word-utils"
 import { WordDefinitionDialog } from "@/components/word-definition-dialog"
+import { useSearchHistory } from "@/hooks/use-search-history"
+import { SearchHistory } from "@/components/search-history"
+import { ShareButton } from "@/components/share-button"
 
 export function WordSearch() {
   const [letters, setLetters] = useState("")
@@ -17,6 +20,8 @@ export function WordSearch() {
   const [sortBy, setSortBy] = useState<"score" | "length" | "alpha">("score")
   const [selectedWord, setSelectedWord] = useState<string>("")
   const [dialogOpen, setDialogOpen] = useState(false)
+
+  const { history, isLoaded, addToHistory, removeFromHistory, clearHistory } = useSearchHistory('word-unscrambler')
 
   const handleSearch = useCallback(() => {
     if (!letters.trim()) {
@@ -34,8 +39,13 @@ export function WordSearch() {
       })
       setResults(foundWords.slice(0, 50)) // Limit to 50 results for performance
       setIsSearching(false)
+
+      // Add to search history
+      if (foundWords.length > 0) {
+        addToHistory(letters.trim())
+      }
     }, 100)
-  }, [letters, minLength, sortBy])
+  }, [letters, minLength, sortBy, addToHistory])
 
   // Real-time search as user types
   useEffect(() => {
@@ -75,6 +85,15 @@ export function WordSearch() {
             Unscramble
           </Button>
         </div>
+
+        {/* Search History */}
+        <SearchHistory
+          history={history}
+          isLoaded={isLoaded}
+          onSelect={(query) => setLetters(query)}
+          onRemove={removeFromHistory}
+          onClearAll={clearHistory}
+        />
 
         {/* Filters */}
         <div className="flex gap-4 flex-wrap items-center text-sm">
@@ -136,6 +155,12 @@ export function WordSearch() {
                   >
                     Copy All
                   </Button>
+                  <ShareButton
+                    title="Word Unscrambler Results"
+                    text={`I found ${results.length} words from "${letters.toUpperCase()}"! Top words: ${results.slice(0, 5).map(r => r.word).join(', ')}`}
+                    variant="outline"
+                    size="sm"
+                  />
                 </div>
               </div>
 

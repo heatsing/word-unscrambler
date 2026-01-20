@@ -1,11 +1,22 @@
 import type React from "react"
 import type { Metadata } from "next"
 import Script from "next/script"
+// import { Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from "sonner"
 import "./globals.css"
+
+// Note: Google Fonts disabled due to build environment network restrictions
+// Uncomment in production if needed
+// const inter = Inter({
+//   subsets: ['latin'],
+//   display: 'swap',
+//   preload: true,
+//   variable: '--font-inter',
+// })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://wordunscrambler.cc'),
@@ -105,7 +116,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`font-sans antialiased`}>
+      <body className="font-sans antialiased">
         {/* Google Analytics */}
         <Script
           strategy="afterInteractive"
@@ -134,6 +145,7 @@ export default function RootLayout({
           <main className="min-h-screen">{children}</main>
           <SiteFooter />
           <Analytics />
+          <Toaster position="bottom-right" richColors />
         </ThemeProvider>
       </body>
     </html>
