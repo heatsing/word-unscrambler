@@ -4,25 +4,35 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { ErrorBoundary } from "@/components/error-boundary"
+import { WebVitals } from "@/components/web-vitals"
+import { brandConfig } from "@/lib/brand"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Word Unscrambler - Solve Word Games & Puzzles Instantly",
-  description:
-    "Free word unscrambler tool for Wordle, Scrabble, Words with Friends, and other word games. Find words from letters, solve anagrams, and win every game.",
-  keywords: [
-    "word unscrambler",
-    "anagram solver",
-    "wordle helper",
-    "scrabble word finder",
-    "word solver",
-    "unscramble words",
-    "word generator",
-  ],
+  title: brandConfig.seo.defaultTitle,
+  description: brandConfig.seo.defaultDescription,
+  keywords: brandConfig.seo.keywords,
   generator: "v0.app",
+  authors: [{ name: brandConfig.identity.name }],
+  creator: brandConfig.identity.name,
+  publisher: brandConfig.identity.name,
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://word-unscrambler.vercel.app'),
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    title: brandConfig.seo.defaultTitle,
+    description: brandConfig.seo.defaultDescription,
+    siteName: brandConfig.identity.name,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: brandConfig.seo.defaultTitle,
+    description: brandConfig.seo.defaultDescription,
+  },
   icons: {
     icon: [
       {
@@ -50,10 +60,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
-        <SiteHeader />
-        <main className="min-h-screen">{children}</main>
-        <SiteFooter />
+        <ErrorBoundary>
+          <SiteHeader />
+          <main className="min-h-screen">{children}</main>
+          <SiteFooter />
+        </ErrorBoundary>
         <Analytics />
+        <WebVitals />
       </body>
     </html>
   )

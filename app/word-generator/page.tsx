@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { generateRandomWords } from "@/lib/word-utils"
+import { brandConfig, getCategoryColor } from "@/lib/brand"
 import { Wand2, RefreshCw, Copy, Check, Sparkles, AlertCircle } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
