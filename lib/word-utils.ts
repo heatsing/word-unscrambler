@@ -11,11 +11,17 @@ export interface WordResult {
   length: number
 }
 
+export interface PositionConstraint {
+  position: number // 0-based position
+  letter: string // Required letter at this position
+  exclude?: boolean // If true, this letter must NOT be at this position
+}
+
 /**
  * Unscrambles letters to find all valid words that can be formed
  * Supports wildcards: ? or _ can represent any letter
  * @param letters - The letters to unscramble (can include ? or _ as wildcards)
- * @param options - Optional settings (minLength, maxLength, mustContain, dictionaryType)
+ * @param options - Optional settings (minLength, maxLength, mustContain, dictionaryType, positionConstraints)
  * @returns Array of words that can be formed from the letters
  */
 export function unscrambleWord(
@@ -26,6 +32,7 @@ export function unscrambleWord(
     mustContain?: string
     sortBy?: "length" | "score" | "alpha"
     dictionaryType?: DictionaryType
+    positionConstraints?: PositionConstraint[]
   }
 ): WordResult[] {
   if (!letters || letters.trim().length === 0) {
@@ -54,6 +61,11 @@ export function unscrambleWord(
       if (options?.mustContain) {
         const mustContainLower = options.mustContain.toLowerCase()
         if (!word.includes(mustContainLower)) return false
+      }
+
+      // Check position constraints
+      if (!satisfiesPositionConstraints(word, options?.positionConstraints)) {
+        return false
       }
 
       // Check if word matches the wildcard pattern
@@ -92,6 +104,11 @@ export function unscrambleWord(
       if (options?.mustContain) {
         const mustContainLower = options.mustContain.toLowerCase()
         if (!word.includes(mustContainLower)) return false
+      }
+
+      // Check position constraints
+      if (!satisfiesPositionConstraints(word, options?.positionConstraints)) {
+        return false
       }
 
       // Check if word can be formed from available letters
@@ -147,6 +164,47 @@ function canFormWord(word: string, availableLetters: Record<string, number>): bo
  */
 function hasWildcards(input: string): boolean {
   return input.includes("?") || input.includes("_")
+}
+
+/**
+ * Checks if a word satisfies position constraints
+ * @param word - The word to check
+ * @param constraints - Array of position constraints
+ * @returns true if word satisfies all constraints
+ */
+function satisfiesPositionConstraints(
+  word: string,
+  constraints: PositionConstraint[] | undefined
+): boolean {
+  if (!constraints || constraints.length === 0) {
+    return true
+  }
+
+  for (const constraint of constraints) {
+    const { position, letter, exclude } = constraint
+    const normalizedLetter = letter.toLowerCase()
+
+    // Position must be valid for this word
+    if (position < 0 || position >= word.length) {
+      continue // Skip invalid positions
+    }
+
+    const letterAtPosition = word[position]
+
+    if (exclude) {
+      // This letter must NOT be at this position
+      if (letterAtPosition === normalizedLetter) {
+        return false
+      }
+    } else {
+      // This letter MUST be at this position
+      if (letterAtPosition !== normalizedLetter) {
+        return false
+      }
+    }
+  }
+
+  return true
 }
 
 /**
