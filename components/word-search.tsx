@@ -69,7 +69,7 @@ export function WordSearch() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Enter your letters here... (e.g., 'listen' or 'create')"
+              placeholder="Enter letters... Use ? or _ for wildcards (e.g., 'h?ll?')"
               className="pl-10 h-12 text-lg"
               value={letters}
               onChange={(e) => setLetters(e.target.value.toLowerCase())}
@@ -213,6 +213,7 @@ export function WordSearch() {
                   Try these tips:
                 </p>
                 <ul className="text-sm text-muted-foreground text-left max-w-xs mx-auto space-y-1">
+                  <li>• Use wildcards: Replace unknown letters with ? or _</li>
                   <li>• Use fewer letters (remove uncommon letters like Q, Z, X)</li>
                   <li>• Lower the minimum length filter</li>
                   <li>• Check for typos in your letters</li>
@@ -226,10 +227,20 @@ export function WordSearch() {
 
       {/* Help Text */}
       {letters.length === 0 && (
-        <div className="text-center py-8 text-muted-foreground">
-          <p className="text-sm">
-            💡 <strong>Tip:</strong> Enter "listen" to find words like "silent", "enlist", "tinsel"
-          </p>
+        <div className="text-center py-8 space-y-3">
+          <div className="text-sm text-muted-foreground">
+            <p className="mb-2">
+              💡 <strong>Quick Start Examples:</strong>
+            </p>
+            <div className="space-y-1.5 max-w-xl mx-auto">
+              <p>• Enter <strong>"listen"</strong> to find anagrams like "silent", "enlist", "tinsel"</p>
+              <p>• Use <strong>"h?ll?"</strong> with wildcards to find "hello", "hallo", "hilly"</p>
+              <p>• Try <strong>"c_t"</strong> to discover "cat", "cot", "cut"</p>
+            </div>
+          </div>
+          <div className="pt-2 text-xs text-muted-foreground/80">
+            <p><strong>Wildcards:</strong> Use ? or _ for any letter</p>
+          </div>
         </div>
       )}
 
