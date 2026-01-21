@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react"
+import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown, Filter, X } from "lucide-react"
 import { unscrambleWord, type WordResult, type DictionaryType, type PositionConstraint, type SortOption, type SortDirection } from "@/lib/word-utils"
 import { getAvailableDictionaries, DEFAULT_DICTIONARY } from "@/lib/dictionary-config"
 import { WordDefinitionDialog } from "@/components/word-definition-dialog"
@@ -25,8 +25,103 @@ export function WordSearch() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [positionInput, setPositionInput] = useState<string>("")
+  const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set())
+  const [displayedResults, setDisplayedResults] = useState<WordResult[]>([])
 
   const { history, isLoaded, addToHistory, removeFromHistory, clearHistory } = useSearchHistory('word-unscrambler')
+
+  // Generate available quick filters based on results
+  const getAvailableFilters = useCallback((words: WordResult[]) => {
+    if (words.length === 0) return []
+
+    const filters: { id: string; label: string; count: number }[] = []
+    const lengthCounts: Record<number, number> = {}
+    let highScoreCount = 0
+    let rareLetterCount = 0
+    let commonOnlyCount = 0
+
+    const rareLetters = new Set(['q', 'z', 'j', 'x', 'k'])
+    const avgScore = words.reduce((sum, w) => sum + w.score, 0) / words.length
+
+    words.forEach((word) => {
+      // Count by length
+      lengthCounts[word.length] = (lengthCounts[word.length] || 0) + 1
+
+      // High score (above average)
+      if (word.score > avgScore) highScoreCount++
+
+      // Contains rare letters
+      if (word.word.split('').some(l => rareLetters.has(l))) rareLetterCount++
+
+      // Common letters only
+      if (!word.word.split('').some(l => rareLetters.has(l))) commonOnlyCount++
+    })
+
+    // Add length filters (only for lengths with 3+ words)
+    Object.entries(lengthCounts)
+      .filter(([_, count]) => count >= 3)
+      .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+      .forEach(([length, count]) => {
+        filters.push({
+          id: `length-${length}`,
+          label: `${length} letters`,
+          count,
+        })
+      })
+
+    // Add score filter
+    if (highScoreCount >= 3) {
+      filters.push({
+        id: 'high-score',
+        label: 'High Score',
+        count: highScoreCount,
+      })
+    }
+
+    // Add rare letter filter
+    if (rareLetterCount >= 3) {
+      filters.push({
+        id: 'rare-letters',
+        label: 'Rare Letters',
+        count: rareLetterCount,
+      })
+    }
+
+    // Add common only filter
+    if (commonOnlyCount >= 3) {
+      filters.push({
+        id: 'common-only',
+        label: 'Common Letters',
+        count: commonOnlyCount,
+      })
+    }
+
+    return filters
+  }, [])
+
+  // Apply quick filters to results
+  const applyQuickFilters = useCallback((words: WordResult[], filters: Set<string>) => {
+    if (filters.size === 0) return words
+
+    const rareLetters = new Set(['q', 'z', 'j', 'x', 'k'])
+    const avgScore = words.reduce((sum, w) => sum + w.score, 0) / words.length
+
+    return words.filter((word) => {
+      for (const filter of filters) {
+        if (filter.startsWith('length-')) {
+          const length = parseInt(filter.split('-')[1])
+          if (word.length !== length) return false
+        } else if (filter === 'high-score') {
+          if (word.score <= avgScore) return false
+        } else if (filter === 'rare-letters') {
+          if (!word.word.split('').some(l => rareLetters.has(l))) return false
+        } else if (filter === 'common-only') {
+          if (word.word.split('').some(l => rareLetters.has(l))) return false
+        }
+      }
+      return true
+    })
+  }, [])
 
   // Parse position input (format: "1:a,3:t" means position 1 is 'a', position 3 is 't')
   const parsePositionConstraints = useCallback((input: string): PositionConstraint[] => {
@@ -67,7 +162,9 @@ export function WordSearch() {
         dictionaryType,
         positionConstraints: positionConstraints.length > 0 ? positionConstraints : undefined,
       })
-      setResults(foundWords.slice(0, 50)) // Limit to 50 results for performance
+      setResults(foundWords.slice(0, 100)) // Limit to 100 results for performance
+      setDisplayedResults(foundWords.slice(0, 50)) // Show first 50 initially
+      setActiveFilters(new Set()) // Clear filters on new search
       setIsSearching(false)
 
       // Add to search history
@@ -76,6 +173,30 @@ export function WordSearch() {
       }
     }, 100)
   }, [letters, minLength, sortBy, sortDirection, dictionaryType, positionInput, parsePositionConstraints, addToHistory])
+
+  // Update displayed results when filters change
+  useEffect(() => {
+    const filtered = applyQuickFilters(results, activeFilters)
+    setDisplayedResults(filtered.slice(0, 50))
+  }, [activeFilters, results, applyQuickFilters])
+
+  // Toggle filter
+  const toggleFilter = useCallback((filterId: string) => {
+    setActiveFilters((prev) => {
+      const newFilters = new Set(prev)
+      if (newFilters.has(filterId)) {
+        newFilters.delete(filterId)
+      } else {
+        newFilters.add(filterId)
+      }
+      return newFilters
+    })
+  }, [])
+
+  // Clear all filters
+  const clearFilters = useCallback(() => {
+    setActiveFilters(new Set())
+  }, [])
 
   // Real-time search as user types
   useEffect(() => {
@@ -87,6 +208,8 @@ export function WordSearch() {
       return () => clearTimeout(timer)
     } else {
       setResults([])
+      setDisplayedResults([])
+      setActiveFilters(new Set())
     }
   }, [letters, handleSearch])
 
@@ -229,6 +352,7 @@ export function WordSearch() {
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">
                   Found {results.length} word{results.length !== 1 ? "s" : ""}
+                  {activeFilters.size > 0 && ` (showing ${displayedResults.length} filtered)`}
                 </h3>
                 <div className="flex gap-2">
                   <Badge variant="secondary" className="text-sm">
@@ -238,7 +362,7 @@ export function WordSearch() {
                     size="sm"
                     variant="outline"
                     onClick={() => {
-                      const wordList = results.map(r => r.word).join(', ')
+                      const wordList = displayedResults.map(r => r.word).join(', ')
                       navigator.clipboard.writeText(wordList)
                     }}
                   >
@@ -246,15 +370,46 @@ export function WordSearch() {
                   </Button>
                   <ShareButton
                     title="Word Unscrambler Results"
-                    text={`I found ${results.length} words from "${letters.toUpperCase()}"! Top words: ${results.slice(0, 5).map(r => r.word).join(', ')}`}
+                    text={`I found ${results.length} words from "${letters.toUpperCase()}"! Top words: ${displayedResults.slice(0, 5).map(r => r.word).join(', ')}`}
                     variant="outline"
                     size="sm"
                   />
                 </div>
               </div>
 
+              {/* Quick Filter Tags */}
+              {getAvailableFilters(results).length > 0 && (
+                <div className="flex flex-wrap gap-2 items-center p-3 bg-muted/30 rounded-lg border">
+                  <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                    <Filter className="h-3.5 w-3.5" />
+                    <span>Quick Filters:</span>
+                  </div>
+                  {getAvailableFilters(results).map((filter) => (
+                    <Badge
+                      key={filter.id}
+                      variant={activeFilters.has(filter.id) ? "default" : "outline"}
+                      className="cursor-pointer hover:bg-primary/80 transition-colors"
+                      onClick={() => toggleFilter(filter.id)}
+                    >
+                      {filter.label} ({filter.count})
+                    </Badge>
+                  ))}
+                  {activeFilters.size > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearFilters}
+                      className="h-6 px-2 text-xs"
+                    >
+                      <X className="h-3 w-3 mr-1" />
+                      Clear
+                    </Button>
+                  )}
+                </div>
+              )}
+
               <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                {results.map((result, index) => (
+                {displayedResults.map((result, index) => (
                   <Card
                     key={`${result.word}-${index}`}
                     className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer"
