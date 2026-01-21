@@ -5,11 +5,12 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown, Filter, X } from "lucide-react"
+import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown, Filter, X, Heart, Star } from "lucide-react"
 import { unscrambleWord, type WordResult, type DictionaryType, type PositionConstraint, type SortOption, type SortDirection } from "@/lib/word-utils"
 import { getAvailableDictionaries, DEFAULT_DICTIONARY } from "@/lib/dictionary-config"
 import { WordDefinitionDialog } from "@/components/word-definition-dialog"
 import { useSearchHistory } from "@/hooks/use-search-history"
+import { useFavoriteWords } from "@/hooks/use-favorite-words"
 import { SearchHistory } from "@/components/search-history"
 import { ShareButton } from "@/components/share-button"
 
@@ -27,8 +28,10 @@ export function WordSearch() {
   const [positionInput, setPositionInput] = useState<string>("")
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set())
   const [displayedResults, setDisplayedResults] = useState<WordResult[]>([])
+  const [showFavorites, setShowFavorites] = useState(false)
 
   const { history, isLoaded, addToHistory, removeFromHistory, clearHistory } = useSearchHistory('word-unscrambler')
+  const { favorites, isFavorite, toggleFavorite, clearFavorites } = useFavoriteWords()
 
   // Generate available quick filters based on results
   const getAvailableFilters = useCallback((words: WordResult[]) => {
@@ -339,8 +342,78 @@ export function WordSearch() {
         </div>
       </div>
 
+      {/* Favorites Section */}
+      {showFavorites && favorites.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
+              <Heart className="h-5 w-5 fill-red-500 text-red-500" />
+              Favorite Words ({favorites.length})
+            </h3>
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setShowFavorites(false)}
+              >
+                Back to Results
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={clearFavorites}
+              >
+                Clear All
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+            {favorites.map((fav, index) => (
+              <Card
+                key={`${fav.word}-${index}`}
+                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group"
+              >
+                <div onClick={() => {
+                  setSelectedWord(fav.word)
+                  setDialogOpen(true)
+                }}>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-xl font-bold capitalize">
+                      {fav.word}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="flex gap-4 text-sm">
+                      <div className="flex items-center gap-1">
+                        <Sparkles className="h-4 w-4 text-yellow-500" />
+                        <span className="font-semibold">{fav.score} pts</span>
+                      </div>
+                      <div className="text-muted-foreground">
+                        {fav.length} letters
+                      </div>
+                    </div>
+                  </CardContent>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    toggleFavorite(fav.word, fav.score, fav.length, fav.dictionaryType)
+                  }}
+                >
+                  <Heart className="h-4 w-4 fill-red-500 text-red-500" />
+                </Button>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Results Section */}
-      {letters.length > 0 && (
+      {!showFavorites && letters.length > 0 && (
         <div className="space-y-4">
           {isSearching ? (
             <div className="text-center py-12">
@@ -358,6 +431,14 @@ export function WordSearch() {
                   <Badge variant="secondary" className="text-sm">
                     {letters.toUpperCase()}
                   </Badge>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setShowFavorites(!showFavorites)}
+                  >
+                    <Heart className={`h-4 w-4 mr-1 ${showFavorites ? 'fill-red-500 text-red-500' : ''}`} />
+                    Favorites ({favorites.length})
+                  </Button>
                   <Button
                     size="sm"
                     variant="outline"
@@ -409,41 +490,62 @@ export function WordSearch() {
               )}
 
               <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                {displayedResults.map((result, index) => (
-                  <Card
-                    key={`${result.word}-${index}`}
-                    className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer"
-                    onClick={() => {
-                      setSelectedWord(result.word)
-                      setDialogOpen(true)
-                    }}
-                  >
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start justify-between">
-                        <CardTitle className="text-xl font-bold capitalize">
-                          {result.word}
-                        </CardTitle>
-                        {index < 3 && (
-                          <Badge variant="default" className="ml-2">
-                            <TrendingUp className="h-3 w-3 mr-1" />
-                            Top
-                          </Badge>
-                        )}
+                {displayedResults.map((result, index) => {
+                  const isWordFavorited = isFavorite(result.word)
+                  return (
+                    <Card
+                      key={`${result.word}-${index}`}
+                      className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group"
+                    >
+                      <div onClick={() => {
+                        setSelectedWord(result.word)
+                        setDialogOpen(true)
+                      }}>
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start justify-between">
+                            <CardTitle className="text-xl font-bold capitalize">
+                              {result.word}
+                            </CardTitle>
+                            <div className="flex items-center gap-1">
+                              {index < 3 && (
+                                <Badge variant="default" className="ml-2">
+                                  <TrendingUp className="h-3 w-3 mr-1" />
+                                  Top
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-0">
+                          <div className="flex gap-4 text-sm items-center justify-between">
+                            <div className="flex gap-4">
+                              <div className="flex items-center gap-1">
+                                <Sparkles className="h-4 w-4 text-yellow-500" />
+                                <span className="font-semibold">{result.score} pts</span>
+                              </div>
+                              <div className="text-muted-foreground">
+                                {result.length} letters
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
                       </div>
-                    </CardHeader>
-                    <CardContent className="pt-0">
-                      <div className="flex gap-4 text-sm">
-                        <div className="flex items-center gap-1">
-                          <Sparkles className="h-4 w-4 text-yellow-500" />
-                          <span className="font-semibold">{result.score} pts</span>
-                        </div>
-                        <div className="text-muted-foreground">
-                          {result.length} letters
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          toggleFavorite(result.word, result.score, result.length, dictionaryType)
+                        }}
+                      >
+                        <Heart
+                          className={`h-4 w-4 ${isWordFavorited ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`}
+                        />
+                      </Button>
+                    </Card>
+                  )
+                })}
               </div>
             </>
           ) : letters.length >= 2 ? (
