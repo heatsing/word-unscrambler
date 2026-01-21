@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown, Filter, X, Heart, Star, Brain, GraduationCap } from "lucide-react"
+import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown, Filter, X, Heart, Star, Brain, GraduationCap, Grid3x3, List, BarChart3 } from "lucide-react"
 import { unscrambleWord, type WordResult, type DictionaryType, type PositionConstraint, type SortOption, type SortDirection } from "@/lib/word-utils"
 import { getAvailableDictionaries, DEFAULT_DICTIONARY } from "@/lib/dictionary-config"
 import { WordDefinitionDialog } from "@/components/word-definition-dialog"
@@ -14,6 +14,8 @@ import { useFavoriteWords } from "@/hooks/use-favorite-words"
 import { useWordLearning } from "@/hooks/use-word-learning"
 import { SearchHistory } from "@/components/search-history"
 import { ShareButton } from "@/components/share-button"
+
+type ViewMode = "list" | "groupByLength" | "groupByLetter"
 
 export function WordSearch() {
   const [letters, setLetters] = useState("")
@@ -35,6 +37,7 @@ export function WordSearch() {
   const [displayedResults, setDisplayedResults] = useState<WordResult[]>([])
   const [showFavorites, setShowFavorites] = useState(false)
   const [showLearning, setShowLearning] = useState(false)
+  const [viewMode, setViewMode] = useState<ViewMode>("list")
 
   const { history, isLoaded, addToHistory, removeFromHistory, clearHistory } = useSearchHistory('word-unscrambler')
   const { favorites, isFavorite, toggleFavorite, clearFavorites } = useFavoriteWords()
@@ -131,6 +134,60 @@ export function WordSearch() {
       }
       return true
     })
+  }, [])
+
+  // Group words by length
+  const groupByLength = useCallback((words: WordResult[]) => {
+    const groups: Record<number, WordResult[]> = {}
+    words.forEach(word => {
+      if (!groups[word.length]) {
+        groups[word.length] = []
+      }
+      groups[word.length].push(word)
+    })
+    return groups
+  }, [])
+
+  // Group words by first letter
+  const groupByFirstLetter = useCallback((words: WordResult[]) => {
+    const groups: Record<string, WordResult[]> = {}
+    words.forEach(word => {
+      const firstLetter = word.word[0].toUpperCase()
+      if (!groups[firstLetter]) {
+        groups[firstLetter] = []
+      }
+      groups[firstLetter].push(word)
+    })
+    return groups
+  }, [])
+
+  // Calculate statistics
+  const getResultStatistics = useCallback((words: WordResult[]) => {
+    if (words.length === 0) return null
+
+    const totalWords = words.length
+    const totalScore = words.reduce((sum, w) => sum + w.score, 0)
+    const avgScore = Math.round(totalScore / totalWords)
+    const maxScore = Math.max(...words.map(w => w.score))
+    const minScore = Math.min(...words.map(w => w.score))
+    const avgLength = Math.round(words.reduce((sum, w) => sum + w.length, 0) / totalWords * 10) / 10
+    const maxLength = Math.max(...words.map(w => w.length))
+    const minLength = Math.min(...words.map(w => w.length))
+
+    const highestScoringWord = words.reduce((max, w) => w.score > max.score ? w : max, words[0])
+    const longestWord = words.reduce((max, w) => w.length > max.length ? w : max, words[0])
+
+    return {
+      totalWords,
+      avgScore,
+      maxScore,
+      minScore,
+      avgLength,
+      maxLength,
+      minLength,
+      highestScoringWord,
+      longestWord,
+    }
   }, [])
 
   // Parse position input (format: "1:a,3:t" means position 1 is 'a', position 3 is 't')
@@ -705,7 +762,81 @@ export function WordSearch() {
                 </div>
               )}
 
-              <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+              {/* Statistics Panel */}
+              {(() => {
+                const stats = getResultStatistics(displayedResults)
+                if (!stats) return null
+
+                return (
+                  <Card className="bg-muted/30 border-2">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-base flex items-center gap-2">
+                        <BarChart3 className="h-4 w-4 text-primary" />
+                        Results Statistics
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground">Total Words</p>
+                        <p className="text-xl font-bold text-primary">{stats.totalWords}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground">Avg Score</p>
+                        <p className="text-xl font-bold">{stats.avgScore}</p>
+                        <p className="text-xs text-muted-foreground">Range: {stats.minScore}-{stats.maxScore}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground">Avg Length</p>
+                        <p className="text-xl font-bold">{stats.avgLength}</p>
+                        <p className="text-xs text-muted-foreground">Range: {stats.minLength}-{stats.maxLength}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground">Best Word</p>
+                        <p className="text-lg font-bold capitalize">{stats.highestScoringWord.word}</p>
+                        <p className="text-xs text-muted-foreground">{stats.highestScoringWord.score} pts</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })()}
+
+              {/* View Mode Toggle */}
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-semibold text-muted-foreground">Display Mode</h4>
+                <div className="flex gap-1 border rounded-lg p-1">
+                  <Button
+                    size="sm"
+                    variant={viewMode === "list" ? "default" : "ghost"}
+                    onClick={() => setViewMode("list")}
+                    className="h-8 px-3"
+                  >
+                    <List className="h-4 w-4 mr-1" />
+                    List
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={viewMode === "groupByLength" ? "default" : "ghost"}
+                    onClick={() => setViewMode("groupByLength")}
+                    className="h-8 px-3"
+                  >
+                    <Grid3x3 className="h-4 w-4 mr-1" />
+                    By Length
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={viewMode === "groupByLetter" ? "default" : "ghost"}
+                    onClick={() => setViewMode("groupByLetter")}
+                    className="h-8 px-3"
+                  >
+                    <BarChart3 className="h-4 w-4 mr-1" />
+                    By Letter
+                  </Button>
+                </div>
+              </div>
+
+              {/* List View */}
+              {viewMode === "list" && (
+                <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                 {displayedResults.map((result, index) => {
                   const isWordFavorited = isFavorite(result.word)
                   return (
@@ -763,7 +894,137 @@ export function WordSearch() {
                     </Card>
                   )
                 })}
-              </div>
+                </div>
+              )}
+
+              {/* Group By Length View */}
+              {viewMode === "groupByLength" && (() => {
+                const groups = groupByLength(displayedResults)
+                const sortedLengths = Object.keys(groups).map(Number).sort((a, b) => b - a)
+
+                return (
+                  <div className="space-y-4">
+                    {sortedLengths.map(length => (
+                      <div key={length} className="space-y-2">
+                        <h4 className="font-semibold text-sm flex items-center gap-2 sticky top-0 bg-background py-2 z-10">
+                          <Badge variant="secondary">{length} Letters</Badge>
+                          <span className="text-muted-foreground text-xs">({groups[length].length} words)</span>
+                        </h4>
+                        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                          {groups[length].map((result, index) => {
+                            const isWordFavorited = isFavorite(result.word)
+                            return (
+                              <Card
+                                key={`${result.word}-${index}`}
+                                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group"
+                              >
+                                <div onClick={() => {
+                                  setSelectedWord(result.word)
+                                  setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
+                                  setDialogOpen(true)
+                                }}>
+                                  <CardHeader className="pb-3">
+                                    <CardTitle className="text-xl font-bold capitalize">
+                                      {result.word}
+                                    </CardTitle>
+                                  </CardHeader>
+                                  <CardContent className="pt-0">
+                                    <div className="flex gap-4 text-sm">
+                                      <div className="flex items-center gap-1">
+                                        <Sparkles className="h-4 w-4 text-yellow-500" />
+                                        <span className="font-semibold">{result.score} pts</span>
+                                      </div>
+                                    </div>
+                                  </CardContent>
+                                </div>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    toggleFavorite(result.word, result.score, result.length, dictionaryType)
+                                  }}
+                                >
+                                  <Heart
+                                    className={`h-4 w-4 ${isWordFavorited ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`}
+                                  />
+                                </Button>
+                              </Card>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )
+              })()}
+
+              {/* Group By Letter View */}
+              {viewMode === "groupByLetter" && (() => {
+                const groups = groupByFirstLetter(displayedResults)
+                const sortedLetters = Object.keys(groups).sort()
+
+                return (
+                  <div className="space-y-4">
+                    {sortedLetters.map(letter => (
+                      <div key={letter} className="space-y-2">
+                        <h4 className="font-semibold text-sm flex items-center gap-2 sticky top-0 bg-background py-2 z-10">
+                          <Badge variant="secondary" className="text-lg w-10 h-10 flex items-center justify-center">{letter}</Badge>
+                          <span className="text-muted-foreground text-xs">({groups[letter].length} words)</span>
+                        </h4>
+                        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                          {groups[letter].map((result, index) => {
+                            const isWordFavorited = isFavorite(result.word)
+                            return (
+                              <Card
+                                key={`${result.word}-${index}`}
+                                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group"
+                              >
+                                <div onClick={() => {
+                                  setSelectedWord(result.word)
+                                  setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
+                                  setDialogOpen(true)
+                                }}>
+                                  <CardHeader className="pb-3">
+                                    <CardTitle className="text-xl font-bold capitalize">
+                                      {result.word}
+                                    </CardTitle>
+                                  </CardHeader>
+                                  <CardContent className="pt-0">
+                                    <div className="flex gap-4 text-sm">
+                                      <div className="flex items-center gap-1">
+                                        <Sparkles className="h-4 w-4 text-yellow-500" />
+                                        <span className="font-semibold">{result.score} pts</span>
+                                      </div>
+                                      <div className="text-muted-foreground">
+                                        {result.length} letters
+                                      </div>
+                                    </div>
+                                  </CardContent>
+                                </div>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    toggleFavorite(result.word, result.score, result.length, dictionaryType)
+                                  }}
+                                >
+                                  <Heart
+                                    className={`h-4 w-4 ${isWordFavorited ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`}
+                                  />
+                                </Button>
+                              </Card>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )
+              })()}
             </>
           ) : letters.length >= 2 ? (
             <Card className="border-dashed">
