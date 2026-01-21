@@ -5,12 +5,13 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown, Filter, X, Heart, Star } from "lucide-react"
+import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown, Filter, X, Heart, Star, Brain, GraduationCap } from "lucide-react"
 import { unscrambleWord, type WordResult, type DictionaryType, type PositionConstraint, type SortOption, type SortDirection } from "@/lib/word-utils"
 import { getAvailableDictionaries, DEFAULT_DICTIONARY } from "@/lib/dictionary-config"
 import { WordDefinitionDialog } from "@/components/word-definition-dialog"
 import { useSearchHistory } from "@/hooks/use-search-history"
 import { useFavoriteWords } from "@/hooks/use-favorite-words"
+import { useWordLearning } from "@/hooks/use-word-learning"
 import { SearchHistory } from "@/components/search-history"
 import { ShareButton } from "@/components/share-button"
 
@@ -23,15 +24,18 @@ export function WordSearch() {
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc")
   const [dictionaryType, setDictionaryType] = useState<DictionaryType>(DEFAULT_DICTIONARY)
   const [selectedWord, setSelectedWord] = useState<string>("")
+  const [selectedWordData, setSelectedWordData] = useState<{ score: number; length: number; dictionaryType?: string }>({ score: 0, length: 0 })
   const [dialogOpen, setDialogOpen] = useState(false)
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [positionInput, setPositionInput] = useState<string>("")
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set())
   const [displayedResults, setDisplayedResults] = useState<WordResult[]>([])
   const [showFavorites, setShowFavorites] = useState(false)
+  const [showLearning, setShowLearning] = useState(false)
 
   const { history, isLoaded, addToHistory, removeFromHistory, clearHistory } = useSearchHistory('word-unscrambler')
   const { favorites, isFavorite, toggleFavorite, clearFavorites } = useFavoriteWords()
+  const { learningWords, isLearning, removeFromLearning, clearLearningData, getStatistics, getDueWords } = useWordLearning()
 
   // Generate available quick filters based on results
   const getAvailableFilters = useCallback((words: WordResult[]) => {
@@ -376,6 +380,7 @@ export function WordSearch() {
               >
                 <div onClick={() => {
                   setSelectedWord(fav.word)
+                  setSelectedWordData({ score: fav.score, length: fav.length, dictionaryType: fav.dictionaryType })
                   setDialogOpen(true)
                 }}>
                   <CardHeader className="pb-3">
@@ -412,8 +417,119 @@ export function WordSearch() {
         </div>
       )}
 
+      {/* Learning Words Section */}
+      {showLearning && learningWords.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold flex items-center gap-2">
+                <Brain className="h-5 w-5 text-primary" />
+                Learning Words ({learningWords.length})
+              </h3>
+              <div className="flex gap-4 mt-2 text-sm text-muted-foreground">
+                {(() => {
+                  const stats = getStatistics()
+                  const dueWords = getDueWords()
+                  return (
+                    <>
+                      <span>New: {stats.newWords}</span>
+                      <span>Learning: {stats.learningCount}</span>
+                      <span>Familiar: {stats.familiarCount}</span>
+                      <span>Mastered: {stats.masteredCount}</span>
+                      <span className="text-primary font-medium">Due: {dueWords.length}</span>
+                    </>
+                  )
+                })()}
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setShowLearning(false)}
+              >
+                Back to Results
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={clearLearningData}
+              >
+                Clear All
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+            {learningWords.map((word, index) => (
+              <Card
+                key={`${word.word}-${index}`}
+                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group"
+              >
+                <div onClick={() => {
+                  setSelectedWord(word.word)
+                  setSelectedWordData({ score: word.score, length: word.length, dictionaryType: word.dictionaryType })
+                  setDialogOpen(true)
+                }}>
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <CardTitle className="text-xl font-bold capitalize">
+                        {word.word}
+                      </CardTitle>
+                      <Badge
+                        variant={
+                          word.masteryLevel === 'mastered' ? 'default' :
+                          word.masteryLevel === 'familiar' ? 'secondary' :
+                          'outline'
+                        }
+                        className="text-xs"
+                      >
+                        {word.masteryLevel}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="flex gap-4 text-sm">
+                      <div className="flex items-center gap-1">
+                        <Sparkles className="h-4 w-4 text-yellow-500" />
+                        <span className="font-semibold">{word.score} pts</span>
+                      </div>
+                      <div className="text-muted-foreground">
+                        {word.length} letters
+                      </div>
+                    </div>
+                    <div className="mt-2 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <GraduationCap className="h-3 w-3" />
+                        <span>Reviewed {word.reviewCount} times</span>
+                      </div>
+                      {word.lastReviewed && (
+                        <div className="mt-1">
+                          Last: {new Date(word.lastReviewed).toLocaleDateString()}
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="absolute top-2 right-14 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    removeFromLearning(word.word)
+                  }}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Results Section */}
-      {!showFavorites && letters.length > 0 && (
+      {!showFavorites && !showLearning && letters.length > 0 && (
         <div className="space-y-4">
           {isSearching ? (
             <div className="text-center py-12">
@@ -434,10 +550,24 @@ export function WordSearch() {
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => setShowFavorites(!showFavorites)}
+                    onClick={() => {
+                      setShowFavorites(!showFavorites)
+                      setShowLearning(false)
+                    }}
                   >
                     <Heart className={`h-4 w-4 mr-1 ${showFavorites ? 'fill-red-500 text-red-500' : ''}`} />
                     Favorites ({favorites.length})
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setShowLearning(!showLearning)
+                      setShowFavorites(false)
+                    }}
+                  >
+                    <Brain className={`h-4 w-4 mr-1 ${showLearning ? 'text-primary' : ''}`} />
+                    Learning ({learningWords.length})
                   </Button>
                   <Button
                     size="sm"
@@ -499,6 +629,7 @@ export function WordSearch() {
                     >
                       <div onClick={() => {
                         setSelectedWord(result.word)
+                        setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
                         setDialogOpen(true)
                       }}>
                         <CardHeader className="pb-3">
@@ -595,6 +726,9 @@ export function WordSearch() {
         word={selectedWord}
         open={dialogOpen}
         onOpenChange={setDialogOpen}
+        score={selectedWordData.score}
+        length={selectedWordData.length}
+        dictionaryType={selectedWordData.dictionaryType}
       />
     </div>
   )
