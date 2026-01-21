@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, Sparkles, TrendingUp } from "lucide-react"
-import { unscrambleWord, type WordResult, type DictionaryType, type PositionConstraint } from "@/lib/word-utils"
+import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react"
+import { unscrambleWord, type WordResult, type DictionaryType, type PositionConstraint, type SortOption, type SortDirection } from "@/lib/word-utils"
 import { getAvailableDictionaries, DEFAULT_DICTIONARY } from "@/lib/dictionary-config"
 import { WordDefinitionDialog } from "@/components/word-definition-dialog"
 import { useSearchHistory } from "@/hooks/use-search-history"
@@ -18,7 +18,8 @@ export function WordSearch() {
   const [results, setResults] = useState<WordResult[]>([])
   const [isSearching, setIsSearching] = useState(false)
   const [minLength, setMinLength] = useState<number>(2)
-  const [sortBy, setSortBy] = useState<"score" | "length" | "alpha">("score")
+  const [sortBy, setSortBy] = useState<SortOption>("score")
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc")
   const [dictionaryType, setDictionaryType] = useState<DictionaryType>(DEFAULT_DICTIONARY)
   const [selectedWord, setSelectedWord] = useState<string>("")
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -62,6 +63,7 @@ export function WordSearch() {
       const foundWords = unscrambleWord(letters, {
         minLength,
         sortBy,
+        sortDirection,
         dictionaryType,
         positionConstraints: positionConstraints.length > 0 ? positionConstraints : undefined,
       })
@@ -73,7 +75,7 @@ export function WordSearch() {
         addToHistory(letters.trim())
       }
     }, 100)
-  }, [letters, minLength, sortBy, dictionaryType, positionInput, parsePositionConstraints, addToHistory])
+  }, [letters, minLength, sortBy, sortDirection, dictionaryType, positionInput, parsePositionConstraints, addToHistory])
 
   // Real-time search as user types
   useEffect(() => {
@@ -160,13 +162,27 @@ export function WordSearch() {
               <span className="text-muted-foreground">Sort by:</span>
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as "score" | "length" | "alpha")}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
                 className="border rounded px-2 py-1 bg-background"
               >
                 <option value="score">Score</option>
-                <option value="length">Word Length</option>
-                <option value="alpha">Alphabetical</option>
+                <option value="length">Length</option>
+                <option value="alpha">A-Z</option>
+                <option value="rarity">Rarity</option>
               </select>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSortDirection(sortDirection === "desc" ? "asc" : "desc")}
+                className="h-8 w-8 p-0"
+                title={sortDirection === "desc" ? "Descending (High to Low)" : "Ascending (Low to High)"}
+              >
+                {sortDirection === "desc" ? (
+                  <ArrowDown className="h-4 w-4" />
+                ) : (
+                  <ArrowUp className="h-4 w-4" />
+                )}
+              </Button>
             </div>
 
             <Button

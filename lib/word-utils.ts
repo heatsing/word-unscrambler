@@ -17,6 +17,9 @@ export interface PositionConstraint {
   exclude?: boolean // If true, this letter must NOT be at this position
 }
 
+export type SortOption = "score" | "length" | "alpha" | "rarity"
+export type SortDirection = "asc" | "desc"
+
 /**
  * Unscrambles letters to find all valid words that can be formed
  * Supports wildcards: ? or _ can represent any letter
@@ -30,7 +33,8 @@ export function unscrambleWord(
     minLength?: number
     maxLength?: number
     mustContain?: string
-    sortBy?: "length" | "score" | "alpha"
+    sortBy?: SortOption
+    sortDirection?: SortDirection
     dictionaryType?: DictionaryType
     positionConstraints?: PositionConstraint[]
   }
@@ -81,14 +85,11 @@ export function unscrambleWord(
     }))
 
     // Sort results
-    const sortBy = options?.sortBy || "score"
-    results.sort((a, b) => {
-      if (sortBy === "score") return b.score - a.score
-      if (sortBy === "length") return b.length - a.length
-      return a.word.localeCompare(b.word)
-    })
-
-    return results
+    return sortWordResults(
+      results,
+      options?.sortBy || "score",
+      options?.sortDirection || "desc"
+    )
   } else {
     // Normal unscramble mode (original behavior)
     const normalizedLetters = inputLower.replace(/[^a-z]/g, "")
@@ -124,14 +125,11 @@ export function unscrambleWord(
     }))
 
     // Sort results
-    const sortBy = options?.sortBy || "score"
-    results.sort((a, b) => {
-      if (sortBy === "score") return b.score - a.score
-      if (sortBy === "length") return b.length - a.length
-      return a.word.localeCompare(b.word)
-    })
-
-    return results
+    return sortWordResults(
+      results,
+      options?.sortBy || "score",
+      options?.sortDirection || "desc"
+    )
   }
 }
 
@@ -144,6 +142,70 @@ function countLetters(str: string): Record<string, number> {
     counts[char] = (counts[char] || 0) + 1
   }
   return counts
+}
+
+/**
+ * Calculate rarity score based on uncommon letters
+ * Higher score = more rare/valuable letters
+ */
+function calculateRarityScore(word: string): number {
+  const rarityValues: Record<string, number> = {
+    // Very rare letters (10 points)
+    q: 10, z: 10, j: 8, x: 8,
+    // Rare letters (5 points)
+    k: 5, v: 5, w: 5,
+    // Uncommon letters (3 points)
+    f: 3, h: 3, y: 3, b: 3, p: 3, m: 3,
+    // Common letters (1-2 points)
+    g: 2, c: 2, d: 2,
+    // Very common letters (1 point)
+    u: 1, l: 1, n: 1, r: 1, s: 1, t: 1,
+    // Most common vowels (0 points)
+    a: 0, e: 0, i: 0, o: 0,
+  }
+
+  return word
+    .toLowerCase()
+    .split("")
+    .reduce((sum, letter) => sum + (rarityValues[letter] || 0), 0)
+}
+
+/**
+ * Sort word results based on criteria and direction
+ */
+function sortWordResults(
+  results: WordResult[],
+  sortBy: SortOption = "score",
+  sortDirection: SortDirection = "desc"
+): WordResult[] {
+  const directionMultiplier = sortDirection === "desc" ? -1 : 1
+
+  results.sort((a, b) => {
+    let comparison = 0
+
+    switch (sortBy) {
+      case "score":
+        comparison = (b.score - a.score) * directionMultiplier
+        break
+      case "length":
+        comparison = (b.length - a.length) * directionMultiplier
+        break
+      case "alpha":
+        comparison = a.word.localeCompare(b.word) * directionMultiplier
+        break
+      case "rarity":
+        const rarityA = calculateRarityScore(a.word)
+        const rarityB = calculateRarityScore(b.word)
+        comparison = (rarityB - rarityA) * directionMultiplier
+        break
+      default:
+        comparison = (b.score - a.score) * directionMultiplier
+    }
+
+    return comparison
+  })
+
+  return results
 }
 
 /**
