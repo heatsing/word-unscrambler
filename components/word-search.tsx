@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown, Filter, X, Heart, Star, Brain, GraduationCap, Grid3x3, List, BarChart3 } from "lucide-react"
+import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown, Filter, X, Heart, Star, Brain, GraduationCap, Grid3x3, List, BarChart3, Activity, Download, FileText, Table } from "lucide-react"
 import { unscrambleWord, type WordResult, type DictionaryType, type PositionConstraint, type SortOption, type SortDirection } from "@/lib/word-utils"
 import { getAvailableDictionaries, DEFAULT_DICTIONARY } from "@/lib/dictionary-config"
 import { WordDefinitionDialog } from "@/components/word-definition-dialog"
@@ -188,6 +188,74 @@ export function WordSearch() {
       highestScoringWord,
       longestWord,
     }
+  }, [])
+
+  // Analyze letter frequency and value
+  const analyzeLetters = useCallback((inputLetters: string) => {
+    if (!inputLetters.trim()) return null
+
+    const letterValues: Record<string, number> = {
+      q: 10, z: 10, j: 8, x: 8,
+      k: 5, v: 5, w: 5, y: 5,
+      f: 4, h: 4, b: 3, p: 3, m: 3,
+      g: 2, c: 2, d: 2, u: 2, l: 2,
+      n: 1, r: 1, s: 1, t: 1,
+      a: 1, e: 1, i: 1, o: 1,
+    }
+
+    const normalized = inputLetters.toLowerCase().replace(/[^a-z]/g, '')
+    const letterCounts: Record<string, number> = {}
+    let totalValue = 0
+
+    for (const letter of normalized) {
+      letterCounts[letter] = (letterCounts[letter] || 0) + 1
+      totalValue += letterValues[letter] || 0
+    }
+
+    const sortedLetters = Object.entries(letterCounts)
+      .sort(([, a], [, b]) => b - a)
+
+    const highValueLetters = Object.entries(letterCounts)
+      .filter(([letter]) => (letterValues[letter] || 0) >= 5)
+
+    const allLetters = 'abcdefghijklmnopqrstuvwxyz'
+    const unusedLetters = allLetters.split('').filter(l => !letterCounts[l])
+
+    return {
+      letterCounts,
+      sortedLetters,
+      totalValue,
+      averageValue: normalized.length > 0 ? Math.round(totalValue / normalized.length * 10) / 10 : 0,
+      highValueLetters,
+      unusedLetters: unusedLetters.slice(0, 10),
+      totalLetters: normalized.length,
+    }
+  }, [])
+
+  // Export results to CSV
+  const exportToCSV = useCallback((words: WordResult[]) => {
+    const headers = ['Word', 'Score', 'Length']
+    const rows = words.map(w => [w.word, w.score.toString(), w.length.toString()])
+    const csv = [headers, ...rows].map(row => row.join(',')).join('\n')
+
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `word-unscrambler-results-${Date.now()}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }, [])
+
+  // Copy results as table
+  const copyAsTable = useCallback((words: WordResult[]) => {
+    const headers = 'Word\tScore\tLength'
+    const rows = words.map(w => `${w.word}\t${w.score}\t${w.length}`)
+    const table = [headers, ...rows].join('\n')
+
+    navigator.clipboard.writeText(table).then(() => {
+      // Could show a toast notification here
+    })
   }, [])
 
   // Parse position input (format: "1:a,3:t" means position 1 is 'a', position 3 is 't')
@@ -799,6 +867,118 @@ export function WordSearch() {
                   </Card>
                 )
               })()}
+
+              {/* Letter Analysis Panel */}
+              {(() => {
+                const analysis = analyzeLetters(letters)
+                if (!analysis) return null
+
+                return (
+                  <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-2 border-primary/20">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-base flex items-center gap-2">
+                        <Activity className="h-4 w-4 text-primary" />
+                        Letter Analysis
+                      </CardTitle>
+                      <CardDescription className="text-xs">
+                        Frequency and value analysis of your input letters
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {/* Letter Frequency */}
+                      <div className="space-y-2">
+                        <h5 className="text-xs font-semibold text-muted-foreground">Letter Frequency</h5>
+                        <div className="flex flex-wrap gap-1.5">
+                          {analysis.sortedLetters.map(([letter, count]) => (
+                            <Badge key={letter} variant="secondary" className="text-xs">
+                              {letter.toUpperCase()} × {count}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Value Stats */}
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 border-t">
+                        <div className="space-y-1">
+                          <p className="text-xs text-muted-foreground">Total Letters</p>
+                          <p className="text-lg font-bold">{analysis.totalLetters}</p>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-xs text-muted-foreground">Total Value</p>
+                          <p className="text-lg font-bold text-primary">{analysis.totalValue}</p>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-xs text-muted-foreground">Avg Value</p>
+                          <p className="text-lg font-bold">{analysis.averageValue}</p>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-xs text-muted-foreground">High Value</p>
+                          <p className="text-lg font-bold text-yellow-600">{analysis.highValueLetters.length}</p>
+                        </div>
+                      </div>
+
+                      {/* High Value Letters */}
+                      {analysis.highValueLetters.length > 0 && (
+                        <div className="space-y-2 pt-2 border-t">
+                          <h5 className="text-xs font-semibold text-muted-foreground">High Value Letters (5+ pts)</h5>
+                          <div className="flex flex-wrap gap-1.5">
+                            {analysis.highValueLetters.map(([letter, count]) => (
+                              <Badge key={letter} variant="default" className="text-xs bg-yellow-600">
+                                {letter.toUpperCase()} × {count}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Unused Letters Suggestions */}
+                      {analysis.unusedLetters.length > 0 && (
+                        <div className="space-y-2 pt-2 border-t">
+                          <h5 className="text-xs font-semibold text-muted-foreground">Suggested Letters to Add</h5>
+                          <div className="flex flex-wrap gap-1.5">
+                            {analysis.unusedLetters.map((letter) => (
+                              <Badge key={letter} variant="outline" className="text-xs opacity-60">
+                                {letter.toUpperCase()}
+                              </Badge>
+                            ))}
+                          </div>
+                          <p className="text-xs text-muted-foreground italic">
+                            Try adding these common letters to find more words
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                )
+              })()}
+
+              {/* Export Options */}
+              <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg border">
+                <div className="flex items-center gap-2">
+                  <Download className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">Export Results</span>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => exportToCSV(displayedResults)}
+                    disabled={displayedResults.length === 0}
+                  >
+                    <FileText className="h-3 w-3 mr-1" />
+                    CSV
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => copyAsTable(displayedResults)}
+                    disabled={displayedResults.length === 0}
+                  >
+                    <Table className="h-3 w-3 mr-1" />
+                    Copy Table
+                  </Button>
+                </div>
+              </div>
 
               {/* View Mode Toggle */}
               <div className="flex items-center justify-between">
