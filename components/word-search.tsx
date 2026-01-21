@@ -28,6 +28,9 @@ export function WordSearch() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [positionInput, setPositionInput] = useState<string>("")
+  const [startsWithInput, setStartsWithInput] = useState<string>("")
+  const [containsSequenceInput, setContainsSequenceInput] = useState<string>("")
+  const [mustNotContainInput, setMustNotContainInput] = useState<string>("")
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set())
   const [displayedResults, setDisplayedResults] = useState<WordResult[]>([])
   const [showFavorites, setShowFavorites] = useState(false)
@@ -168,6 +171,9 @@ export function WordSearch() {
         sortDirection,
         dictionaryType,
         positionConstraints: positionConstraints.length > 0 ? positionConstraints : undefined,
+        startsWith: startsWithInput.trim() || undefined,
+        containsSequence: containsSequenceInput.trim() || undefined,
+        mustNotContain: mustNotContainInput.trim() || undefined,
       })
       setResults(foundWords.slice(0, 100)) // Limit to 100 results for performance
       setDisplayedResults(foundWords.slice(0, 50)) // Show first 50 initially
@@ -179,7 +185,7 @@ export function WordSearch() {
         addToHistory(letters.trim())
       }
     }, 100)
-  }, [letters, minLength, sortBy, sortDirection, dictionaryType, positionInput, parsePositionConstraints, addToHistory])
+  }, [letters, minLength, sortBy, sortDirection, dictionaryType, positionInput, startsWithInput, containsSequenceInput, mustNotContainInput, parsePositionConstraints, addToHistory])
 
   // Update displayed results when filters change
   useEffect(() => {
@@ -327,20 +333,100 @@ export function WordSearch() {
 
           {/* Advanced Options */}
           {showAdvanced && (
-            <div className="border rounded-lg p-3 bg-muted/30 space-y-2">
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-muted-foreground font-medium min-w-[100px]">Position Filter:</span>
-                <Input
-                  type="text"
-                  placeholder="e.g., 1:h,5:o (position:letter)"
-                  value={positionInput}
-                  onChange={(e) => setPositionInput(e.target.value.toLowerCase())}
-                  className="h-8 text-sm flex-1"
-                />
+            <div className="border rounded-lg p-4 bg-muted/30 space-y-3">
+              <h4 className="text-sm font-semibold flex items-center gap-2">
+                <Filter className="h-4 w-4" />
+                Advanced Search Filters
+              </h4>
+
+              <div className="grid gap-3 md:grid-cols-2">
+                {/* Starts With */}
+                <div className="space-y-1">
+                  <label className="text-xs text-muted-foreground font-medium">
+                    Starts With
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="e.g., ca"
+                    value={startsWithInput}
+                    onChange={(e) => setStartsWithInput(e.target.value.toLowerCase())}
+                    className="h-8 text-sm"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Words beginning with these letters
+                  </p>
+                </div>
+
+                {/* Contains Sequence */}
+                <div className="space-y-1">
+                  <label className="text-xs text-muted-foreground font-medium">
+                    Contains Sequence
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="e.g., ing"
+                    value={containsSequenceInput}
+                    onChange={(e) => setContainsSequenceInput(e.target.value.toLowerCase())}
+                    className="h-8 text-sm"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Words with this letter sequence
+                  </p>
+                </div>
+
+                {/* Must NOT Contain */}
+                <div className="space-y-1">
+                  <label className="text-xs text-muted-foreground font-medium">
+                    Must NOT Contain
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="e.g., xyz"
+                    value={mustNotContainInput}
+                    onChange={(e) => setMustNotContainInput(e.target.value.toLowerCase())}
+                    className="h-8 text-sm"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Exclude words with these letters
+                  </p>
+                </div>
+
+                {/* Position Filter */}
+                <div className="space-y-1">
+                  <label className="text-xs text-muted-foreground font-medium">
+                    Position Filter
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="e.g., 1:h,5:o"
+                    value={positionInput}
+                    onChange={(e) => setPositionInput(e.target.value.toLowerCase())}
+                    className="h-8 text-sm"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Letter at specific positions
+                  </p>
+                </div>
               </div>
-              <p className="text-xs text-muted-foreground pl-[108px]">
-                Specify letter positions (1-based). Example: <strong>1:c,3:t</strong> finds words with 'c' at position 1 and 't' at position 3.
-              </p>
+
+              {/* Clear All Advanced Filters Button */}
+              {(startsWithInput || containsSequenceInput || mustNotContainInput || positionInput) && (
+                <div className="flex justify-end pt-2 border-t">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      setStartsWithInput("")
+                      setContainsSequenceInput("")
+                      setMustNotContainInput("")
+                      setPositionInput("")
+                    }}
+                  >
+                    <X className="h-3 w-3 mr-1" />
+                    Clear All Filters
+                  </Button>
+                </div>
+              )}
             </div>
           )}
         </div>

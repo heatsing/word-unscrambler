@@ -24,7 +24,7 @@ export type SortDirection = "asc" | "desc"
  * Unscrambles letters to find all valid words that can be formed
  * Supports wildcards: ? or _ can represent any letter
  * @param letters - The letters to unscramble (can include ? or _ as wildcards)
- * @param options - Optional settings (minLength, maxLength, mustContain, dictionaryType, positionConstraints)
+ * @param options - Optional settings (minLength, maxLength, mustContain, dictionaryType, positionConstraints, startsWith, containsSequence, mustNotContain)
  * @returns Array of words that can be formed from the letters
  */
 export function unscrambleWord(
@@ -37,6 +37,9 @@ export function unscrambleWord(
     sortDirection?: SortDirection
     dictionaryType?: DictionaryType
     positionConstraints?: PositionConstraint[]
+    startsWith?: string
+    containsSequence?: string
+    mustNotContain?: string
   }
 ): WordResult[] {
   if (!letters || letters.trim().length === 0) {
@@ -65,6 +68,26 @@ export function unscrambleWord(
       if (options?.mustContain) {
         const mustContainLower = options.mustContain.toLowerCase()
         if (!word.includes(mustContainLower)) return false
+      }
+
+      // Check if word starts with specific letters
+      if (options?.startsWith) {
+        const startsWithLower = options.startsWith.toLowerCase()
+        if (!word.startsWith(startsWithLower)) return false
+      }
+
+      // Check if word contains specific sequence
+      if (options?.containsSequence) {
+        const sequenceLower = options.containsSequence.toLowerCase()
+        if (!word.includes(sequenceLower)) return false
+      }
+
+      // Check if word must NOT contain certain letters
+      if (options?.mustNotContain) {
+        const excludedLetters = options.mustNotContain.toLowerCase().replace(/[^a-z]/g, "")
+        for (const letter of excludedLetters) {
+          if (word.includes(letter)) return false
+        }
       }
 
       // Check position constraints
@@ -105,6 +128,26 @@ export function unscrambleWord(
       if (options?.mustContain) {
         const mustContainLower = options.mustContain.toLowerCase()
         if (!word.includes(mustContainLower)) return false
+      }
+
+      // Check if word starts with specific letters
+      if (options?.startsWith) {
+        const startsWithLower = options.startsWith.toLowerCase()
+        if (!word.startsWith(startsWithLower)) return false
+      }
+
+      // Check if word contains specific sequence
+      if (options?.containsSequence) {
+        const sequenceLower = options.containsSequence.toLowerCase()
+        if (!word.includes(sequenceLower)) return false
+      }
+
+      // Check if word must NOT contain certain letters
+      if (options?.mustNotContain) {
+        const excludedLetters = options.mustNotContain.toLowerCase().replace(/[^a-z]/g, "")
+        for (const letter of excludedLetters) {
+          if (word.includes(letter)) return false
+        }
       }
 
       // Check position constraints
