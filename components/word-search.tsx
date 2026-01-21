@@ -5,8 +5,9 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, Sparkles, TrendingUp } from "lucide-react"
-import { unscrambleWord, type WordResult } from "@/lib/word-utils"
+import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react"
+import { unscrambleWord, type WordResult, type DictionaryType, type PositionConstraint, type SortOption, type SortDirection } from "@/lib/word-utils"
+import { getAvailableDictionaries, DEFAULT_DICTIONARY } from "@/lib/dictionary-config"
 import { WordDefinitionDialog } from "@/components/word-definition-dialog"
 import { useSearchHistory } from "@/hooks/use-search-history"
 import { SearchHistory } from "@/components/search-history"
@@ -17,11 +18,36 @@ export function WordSearch() {
   const [results, setResults] = useState<WordResult[]>([])
   const [isSearching, setIsSearching] = useState(false)
   const [minLength, setMinLength] = useState<number>(2)
-  const [sortBy, setSortBy] = useState<"score" | "length" | "alpha">("score")
+  const [sortBy, setSortBy] = useState<SortOption>("score")
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc")
+  const [dictionaryType, setDictionaryType] = useState<DictionaryType>(DEFAULT_DICTIONARY)
   const [selectedWord, setSelectedWord] = useState<string>("")
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [showAdvanced, setShowAdvanced] = useState(false)
+  const [positionInput, setPositionInput] = useState<string>("")
 
   const { history, isLoaded, addToHistory, removeFromHistory, clearHistory } = useSearchHistory('word-unscrambler')
+
+  // Parse position input (format: "1:a,3:t" means position 1 is 'a', position 3 is 't')
+  const parsePositionConstraints = useCallback((input: string): PositionConstraint[] => {
+    if (!input.trim()) return []
+
+    const constraints: PositionConstraint[] = []
+    const parts = input.split(',').map(p => p.trim())
+
+    for (const part of parts) {
+      const match = part.match(/^(\d+):([a-z])$/i)
+      if (match) {
+        const position = parseInt(match[1]) - 1 // Convert to 0-based
+        const letter = match[2].toLowerCase()
+        if (position >= 0) {
+          constraints.push({ position, letter })
+        }
+      }
+    }
+
+    return constraints
+  }, [])
 
   const handleSearch = useCallback(() => {
     if (!letters.trim()) {
@@ -33,9 +59,13 @@ export function WordSearch() {
 
     // Simulate async search (in case we add API calls later)
     setTimeout(() => {
+      const positionConstraints = parsePositionConstraints(positionInput)
       const foundWords = unscrambleWord(letters, {
         minLength,
         sortBy,
+        sortDirection,
+        dictionaryType,
+        positionConstraints: positionConstraints.length > 0 ? positionConstraints : undefined,
       })
       setResults(foundWords.slice(0, 50)) // Limit to 50 results for performance
       setIsSearching(false)
@@ -45,7 +75,7 @@ export function WordSearch() {
         addToHistory(letters.trim())
       }
     }, 100)
-  }, [letters, minLength, sortBy, addToHistory])
+  }, [letters, minLength, sortBy, sortDirection, dictionaryType, positionInput, parsePositionConstraints, addToHistory])
 
   // Real-time search as user types
   useEffect(() => {
@@ -69,7 +99,7 @@ export function WordSearch() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Enter your letters here... (e.g., 'listen' or 'create')"
+              placeholder="Enter letters... Use ? or _ for wildcards (e.g., 'h?ll?')"
               className="pl-10 h-12 text-lg"
               value={letters}
               onChange={(e) => setLetters(e.target.value.toLowerCase())}
@@ -96,34 +126,93 @@ export function WordSearch() {
         />
 
         {/* Filters */}
-        <div className="flex gap-4 flex-wrap items-center text-sm">
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">Min Length:</span>
-            <select
-              value={minLength}
-              onChange={(e) => setMinLength(Number(e.target.value))}
-              className="border rounded px-2 py-1 bg-background"
+        <div className="space-y-3">
+          <div className="flex gap-4 flex-wrap items-center text-sm">
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">Dictionary:</span>
+              <select
+                value={dictionaryType}
+                onChange={(e) => setDictionaryType(e.target.value as DictionaryType)}
+                className="border rounded px-2 py-1 bg-background"
+              >
+                {getAvailableDictionaries().map((dict) => (
+                  <option key={dict.id} value={dict.id}>
+                    {dict.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">Min Length:</span>
+              <select
+                value={minLength}
+                onChange={(e) => setMinLength(Number(e.target.value))}
+                className="border rounded px-2 py-1 bg-background"
+              >
+                {[2, 3, 4, 5, 6, 7].map((len) => (
+                  <option key={len} value={len}>
+                    {len}+ letters
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">Sort by:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                className="border rounded px-2 py-1 bg-background"
+              >
+                <option value="score">Score</option>
+                <option value="length">Length</option>
+                <option value="alpha">A-Z</option>
+                <option value="rarity">Rarity</option>
+              </select>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSortDirection(sortDirection === "desc" ? "asc" : "desc")}
+                className="h-8 w-8 p-0"
+                title={sortDirection === "desc" ? "Descending (High to Low)" : "Ascending (Low to High)"}
+              >
+                {sortDirection === "desc" ? (
+                  <ArrowDown className="h-4 w-4" />
+                ) : (
+                  <ArrowUp className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="ml-auto"
             >
-              {[2, 3, 4, 5, 6, 7].map((len) => (
-                <option key={len} value={len}>
-                  {len}+ letters
-                </option>
-              ))}
-            </select>
+              {showAdvanced ? "Hide" : "Show"} Advanced
+            </Button>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">Sort by:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as "score" | "length" | "alpha")}
-              className="border rounded px-2 py-1 bg-background"
-            >
-              <option value="score">Scrabble Score</option>
-              <option value="length">Word Length</option>
-              <option value="alpha">Alphabetical</option>
-            </select>
-          </div>
+          {/* Advanced Options */}
+          {showAdvanced && (
+            <div className="border rounded-lg p-3 bg-muted/30 space-y-2">
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-muted-foreground font-medium min-w-[100px]">Position Filter:</span>
+                <Input
+                  type="text"
+                  placeholder="e.g., 1:h,5:o (position:letter)"
+                  value={positionInput}
+                  onChange={(e) => setPositionInput(e.target.value.toLowerCase())}
+                  className="h-8 text-sm flex-1"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground pl-[108px]">
+                Specify letter positions (1-based). Example: <strong>1:c,3:t</strong> finds words with 'c' at position 1 and 't' at position 3.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -213,6 +302,7 @@ export function WordSearch() {
                   Try these tips:
                 </p>
                 <ul className="text-sm text-muted-foreground text-left max-w-xs mx-auto space-y-1">
+                  <li>• Use wildcards: Replace unknown letters with ? or _</li>
                   <li>• Use fewer letters (remove uncommon letters like Q, Z, X)</li>
                   <li>• Lower the minimum length filter</li>
                   <li>• Check for typos in your letters</li>
@@ -226,10 +316,20 @@ export function WordSearch() {
 
       {/* Help Text */}
       {letters.length === 0 && (
-        <div className="text-center py-8 text-muted-foreground">
-          <p className="text-sm">
-            💡 <strong>Tip:</strong> Enter "listen" to find words like "silent", "enlist", "tinsel"
-          </p>
+        <div className="text-center py-8 space-y-3">
+          <div className="text-sm text-muted-foreground">
+            <p className="mb-2">
+              💡 <strong>Quick Start Examples:</strong>
+            </p>
+            <div className="space-y-1.5 max-w-xl mx-auto">
+              <p>• Enter <strong>"listen"</strong> to find anagrams like "silent", "enlist", "tinsel"</p>
+              <p>• Use <strong>"h?ll?"</strong> with wildcards to find "hello", "hallo", "hilly"</p>
+              <p>• Try <strong>"c_t"</strong> to discover "cat", "cot", "cut"</p>
+            </div>
+          </div>
+          <div className="pt-2 text-xs text-muted-foreground/80">
+            <p><strong>Wildcards:</strong> Use ? or _ for any letter</p>
+          </div>
         </div>
       )}
 

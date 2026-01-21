@@ -1,5 +1,9 @@
 // Utility functions for word manipulation and solving
 import { ALL_WORDS, WORD_SET, DICTIONARY } from "./dictionary"
+import { type DictionaryType, DEFAULT_DICTIONARY, calculateScore as calculateDictionaryScore } from "./dictionary-config"
+
+// Re-export DictionaryType for external use
+export type { DictionaryType }
 
 export interface WordResult {
   word: string
@@ -7,10 +11,20 @@ export interface WordResult {
   length: number
 }
 
+export interface PositionConstraint {
+  position: number // 0-based position
+  letter: string // Required letter at this position
+  exclude?: boolean // If true, this letter must NOT be at this position
+}
+
+export type SortOption = "score" | "length" | "alpha" | "rarity"
+export type SortDirection = "asc" | "desc"
+
 /**
  * Unscrambles letters to find all valid words that can be formed
- * @param letters - The letters to unscramble
- * @param options - Optional settings (minLength, maxLength, mustContain)
+ * Supports wildcards: ? or _ can represent any letter
+ * @param letters - The letters to unscramble (can include ? or _ as wildcards)
+ * @param options - Optional settings (minLength, maxLength, mustContain, dictionaryType, positionConstraints)
  * @returns Array of words that can be formed from the letters
  */
 export function unscrambleWord(
@@ -19,48 +33,104 @@ export function unscrambleWord(
     minLength?: number
     maxLength?: number
     mustContain?: string
-    sortBy?: "length" | "score" | "alpha"
+    sortBy?: SortOption
+    sortDirection?: SortDirection
+    dictionaryType?: DictionaryType
+    positionConstraints?: PositionConstraint[]
   }
 ): WordResult[] {
   if (!letters || letters.trim().length === 0) {
     return []
   }
 
-  const normalizedLetters = letters.toLowerCase().replace(/[^a-z]/g, "")
-  const letterCounts = countLetters(normalizedLetters)
+  const inputLower = letters.toLowerCase()
 
-  // Find all valid words
-  const validWords = ALL_WORDS.filter((word) => {
-    // Apply length filters
-    if (options?.minLength && word.length < options.minLength) return false
-    if (options?.maxLength && word.length > options.maxLength) return false
+  // Check if input contains wildcards
+  const containsWildcards = hasWildcards(inputLower)
 
-    // Check if word must contain certain letters
-    if (options?.mustContain) {
-      const mustContainLower = options.mustContain.toLowerCase()
-      if (!word.includes(mustContainLower)) return false
-    }
+  if (containsWildcards) {
+    // Wildcard pattern matching mode
+    // Extract only letters (not wildcards) for available letter counting
+    const availableLetters = inputLower.replace(/[^a-z]/g, "")
+    const letterCounts = countLetters(availableLetters)
+    const pattern = inputLower.replace(/[^a-z?_]/g, "")
 
-    // Check if word can be formed from available letters
-    return canFormWord(word, letterCounts)
-  })
+    // Find all valid words matching the pattern
+    const validWords = ALL_WORDS.filter((word) => {
+      // Apply length filters
+      if (options?.minLength && word.length < options.minLength) return false
+      if (options?.maxLength && word.length > options.maxLength) return false
 
-  // Convert to WordResult objects
-  const results: WordResult[] = validWords.map((word) => ({
-    word,
-    score: calculateScrabbleScore(word),
-    length: word.length,
-  }))
+      // Check if word must contain certain letters
+      if (options?.mustContain) {
+        const mustContainLower = options.mustContain.toLowerCase()
+        if (!word.includes(mustContainLower)) return false
+      }
 
-  // Sort results
-  const sortBy = options?.sortBy || "score"
-  results.sort((a, b) => {
-    if (sortBy === "score") return b.score - a.score
-    if (sortBy === "length") return b.length - a.length
-    return a.word.localeCompare(b.word)
-  })
+      // Check position constraints
+      if (!satisfiesPositionConstraints(word, options?.positionConstraints)) {
+        return false
+      }
 
-  return results
+      // Check if word matches the wildcard pattern
+      return matchesWildcardPattern(word, pattern, letterCounts)
+    })
+
+    // Convert to WordResult objects
+    const dictionaryType = options?.dictionaryType || DEFAULT_DICTIONARY
+    const results: WordResult[] = validWords.map((word) => ({
+      word,
+      score: calculateDictionaryScore(word, dictionaryType),
+      length: word.length,
+    }))
+
+    // Sort results
+    return sortWordResults(
+      results,
+      options?.sortBy || "score",
+      options?.sortDirection || "desc"
+    )
+  } else {
+    // Normal unscramble mode (original behavior)
+    const normalizedLetters = inputLower.replace(/[^a-z]/g, "")
+    const letterCounts = countLetters(normalizedLetters)
+
+    // Find all valid words
+    const validWords = ALL_WORDS.filter((word) => {
+      // Apply length filters
+      if (options?.minLength && word.length < options.minLength) return false
+      if (options?.maxLength && word.length > options.maxLength) return false
+
+      // Check if word must contain certain letters
+      if (options?.mustContain) {
+        const mustContainLower = options.mustContain.toLowerCase()
+        if (!word.includes(mustContainLower)) return false
+      }
+
+      // Check position constraints
+      if (!satisfiesPositionConstraints(word, options?.positionConstraints)) {
+        return false
+      }
+
+      // Check if word can be formed from available letters
+      return canFormWord(word, letterCounts)
+    })
+
+    // Convert to WordResult objects
+    const dictionaryType = options?.dictionaryType || DEFAULT_DICTIONARY
+    const results: WordResult[] = validWords.map((word) => ({
+      word,
+      score: calculateDictionaryScore(word, dictionaryType),
+      length: word.length,
+    }))
+
+    // Sort results
+    return sortWordResults(
+      results,
+      options?.sortBy || "score",
+      options?.sortDirection || "desc"
+    )
+  }
 }
 
 /**
@@ -75,6 +145,70 @@ function countLetters(str: string): Record<string, number> {
 }
 
 /**
+ * Calculate rarity score based on uncommon letters
+ * Higher score = more rare/valuable letters
+ */
+function calculateRarityScore(word: string): number {
+  const rarityValues: Record<string, number> = {
+    // Very rare letters (10 points)
+    q: 10, z: 10, j: 8, x: 8,
+    // Rare letters (5 points)
+    k: 5, v: 5, w: 5,
+    // Uncommon letters (3 points)
+    f: 3, h: 3, y: 3, b: 3, p: 3, m: 3,
+    // Common letters (1-2 points)
+    g: 2, c: 2, d: 2,
+    // Very common letters (1 point)
+    u: 1, l: 1, n: 1, r: 1, s: 1, t: 1,
+    // Most common vowels (0 points)
+    a: 0, e: 0, i: 0, o: 0,
+  }
+
+  return word
+    .toLowerCase()
+    .split("")
+    .reduce((sum, letter) => sum + (rarityValues[letter] || 0), 0)
+}
+
+/**
+ * Sort word results based on criteria and direction
+ */
+function sortWordResults(
+  results: WordResult[],
+  sortBy: SortOption = "score",
+  sortDirection: SortDirection = "desc"
+): WordResult[] {
+  const directionMultiplier = sortDirection === "desc" ? -1 : 1
+
+  results.sort((a, b) => {
+    let comparison = 0
+
+    switch (sortBy) {
+      case "score":
+        comparison = (b.score - a.score) * directionMultiplier
+        break
+      case "length":
+        comparison = (b.length - a.length) * directionMultiplier
+        break
+      case "alpha":
+        comparison = a.word.localeCompare(b.word) * directionMultiplier
+        break
+      case "rarity":
+        const rarityA = calculateRarityScore(a.word)
+        const rarityB = calculateRarityScore(b.word)
+        comparison = (rarityB - rarityA) * directionMultiplier
+        break
+      default:
+        comparison = (b.score - a.score) * directionMultiplier
+    }
+
+    return comparison
+  })
+
+  return results
+}
+
+/**
  * Checks if a word can be formed from available letters
  */
 function canFormWord(word: string, availableLetters: Record<string, number>): boolean {
@@ -84,6 +218,102 @@ function canFormWord(word: string, availableLetters: Record<string, number>): bo
       return false
     }
   }
+  return true
+}
+
+/**
+ * Checks if input contains wildcards (? or _)
+ */
+function hasWildcards(input: string): boolean {
+  return input.includes("?") || input.includes("_")
+}
+
+/**
+ * Checks if a word satisfies position constraints
+ * @param word - The word to check
+ * @param constraints - Array of position constraints
+ * @returns true if word satisfies all constraints
+ */
+function satisfiesPositionConstraints(
+  word: string,
+  constraints: PositionConstraint[] | undefined
+): boolean {
+  if (!constraints || constraints.length === 0) {
+    return true
+  }
+
+  for (const constraint of constraints) {
+    const { position, letter, exclude } = constraint
+    const normalizedLetter = letter.toLowerCase()
+
+    // Position must be valid for this word
+    if (position < 0 || position >= word.length) {
+      continue // Skip invalid positions
+    }
+
+    const letterAtPosition = word[position]
+
+    if (exclude) {
+      // This letter must NOT be at this position
+      if (letterAtPosition === normalizedLetter) {
+        return false
+      }
+    } else {
+      // This letter MUST be at this position
+      if (letterAtPosition !== normalizedLetter) {
+        return false
+      }
+    }
+  }
+
+  return true
+}
+
+/**
+ * Matches a word against a pattern with wildcards
+ * @param word - The word to check
+ * @param pattern - Pattern with wildcards (? or _ for any letter)
+ * @param availableLetters - Letters available for non-wildcard positions
+ * @returns true if word matches the pattern
+ */
+function matchesWildcardPattern(
+  word: string,
+  pattern: string,
+  availableLetters: Record<string, number>
+): boolean {
+  // Normalize pattern: convert ? to _
+  const normalizedPattern = pattern.toLowerCase().replace(/\?/g, "_")
+
+  // Word must match the pattern length
+  if (word.length !== normalizedPattern.length) {
+    return false
+  }
+
+  // Track which letters from availableLetters we've used
+  const usedLetters: Record<string, number> = {}
+
+  // Check each position
+  for (let i = 0; i < normalizedPattern.length; i++) {
+    const patternChar = normalizedPattern[i]
+    const wordChar = word[i]
+
+    if (patternChar === "_") {
+      // Wildcard - any letter is allowed, no letter consumption needed
+      continue
+    } else if (patternChar === wordChar) {
+      // Exact match required - consume this letter from available letters
+      usedLetters[wordChar] = (usedLetters[wordChar] || 0) + 1
+
+      // Check if we have enough of this letter
+      if (usedLetters[wordChar] > (availableLetters[wordChar] || 0)) {
+        return false
+      }
+    } else {
+      // Pattern specifies a letter but word has different letter
+      return false
+    }
+  }
+
   return true
 }
 
