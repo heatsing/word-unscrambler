@@ -667,13 +667,26 @@ export function WordSearch() {
             {favorites.map((fav, index) => (
               <Card
                 key={`${fav.word}-${index}`}
-                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group"
+                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
               >
-                <div onClick={() => {
-                  setSelectedWord(fav.word)
-                  setSelectedWordData({ score: fav.score, length: fav.length, dictionaryType: fav.dictionaryType })
-                  setDialogOpen(true)
-                }}>
+                <div
+                  onClick={() => {
+                    setSelectedWord(fav.word)
+                    setSelectedWordData({ score: fav.score, length: fav.length, dictionaryType: fav.dictionaryType })
+                    setDialogOpen(true)
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      setSelectedWord(fav.word)
+                      setSelectedWordData({ score: fav.score, length: fav.length, dictionaryType: fav.dictionaryType })
+                      setDialogOpen(true)
+                    }
+                  }}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`${fav.word}, ${fav.score} points, ${fav.length} letters`}
+                >
                   <CardHeader className="pb-3">
                     <CardTitle className="text-xl font-bold capitalize">
                       {fav.word}
@@ -755,13 +768,26 @@ export function WordSearch() {
             {learningWords.map((word, index) => (
               <Card
                 key={`${word.word}-${index}`}
-                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group"
+                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
               >
-                <div onClick={() => {
-                  setSelectedWord(word.word)
-                  setSelectedWordData({ score: word.score, length: word.length, dictionaryType: word.dictionaryType })
-                  setDialogOpen(true)
-                }}>
+                <div
+                  onClick={() => {
+                    setSelectedWord(word.word)
+                    setSelectedWordData({ score: word.score, length: word.length, dictionaryType: word.dictionaryType })
+                    setDialogOpen(true)
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      setSelectedWord(word.word)
+                      setSelectedWordData({ score: word.score, length: word.length, dictionaryType: word.dictionaryType })
+                      setDialogOpen(true)
+                    }
+                  }}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`${word.word}, ${word.score} points, ${word.length} letters, ${word.masteryLevel} level`}
+                >
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
                       <CardTitle className="text-xl font-bold capitalize">
@@ -941,8 +967,17 @@ export function WordSearch() {
                     <Badge
                       key={filter.id}
                       variant={activeFilters.has(filter.id) ? "default" : "outline"}
-                      className="cursor-pointer hover:bg-primary/80 transition-colors"
+                      className="cursor-pointer hover:bg-primary/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                       onClick={() => toggleFilter(filter.id)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          toggleFilter(filter.id)
+                        }
+                      }}
+                      tabIndex={0}
+                      role="button"
+                      aria-pressed={activeFilters.has(filter.id)}
                     >
                       {filter.label} ({filter.count})
                     </Badge>
@@ -1154,19 +1189,36 @@ export function WordSearch() {
                   return (
                     <Card
                       key={`${result.word}-${index}`}
-                      className={`hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group ${
+                      className={`hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
                         isSelected ? 'ring-2 ring-primary bg-primary/5' : ''
                       }`}
                     >
-                      <div onClick={() => {
-                        if (compareMode) {
-                          toggleWordSelection(result.word)
-                        } else {
-                          setSelectedWord(result.word)
-                          setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
-                          setDialogOpen(true)
-                        }
-                      }}>
+                      <div
+                        onClick={() => {
+                          if (compareMode) {
+                            toggleWordSelection(result.word)
+                          } else {
+                            setSelectedWord(result.word)
+                            setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
+                            setDialogOpen(true)
+                          }
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            if (compareMode) {
+                              toggleWordSelection(result.word)
+                            } else {
+                              setSelectedWord(result.word)
+                              setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
+                              setDialogOpen(true)
+                            }
+                          }
+                        }}
+                        tabIndex={0}
+                        role="button"
+                        aria-label={`${result.word}, ${result.score} points, ${result.length} letters${compareMode ? (isSelected ? ', selected' : ', not selected') : ''}`}
+                      >
                         <CardHeader className="pb-3">
                           <div className="flex items-start justify-between">
                             <div className="flex items-center gap-2">
@@ -1245,13 +1297,26 @@ export function WordSearch() {
                             return (
                               <Card
                                 key={`${result.word}-${index}`}
-                                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group"
+                                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
                               >
-                                <div onClick={() => {
-                                  setSelectedWord(result.word)
-                                  setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
-                                  setDialogOpen(true)
-                                }}>
+                                <div
+                                  onClick={() => {
+                                    setSelectedWord(result.word)
+                                    setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
+                                    setDialogOpen(true)
+                                  }}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                      e.preventDefault()
+                                      setSelectedWord(result.word)
+                                      setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
+                                      setDialogOpen(true)
+                                    }
+                                  }}
+                                  tabIndex={0}
+                                  role="button"
+                                  aria-label={`${result.word}, ${result.score} points, ${result.length} letters`}
+                                >
                                   <CardHeader className="pb-3">
                                     <CardTitle className="text-xl font-bold capitalize">
                                       {result.word}
@@ -1308,13 +1373,26 @@ export function WordSearch() {
                             return (
                               <Card
                                 key={`${result.word}-${index}`}
-                                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group"
+                                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
                               >
-                                <div onClick={() => {
-                                  setSelectedWord(result.word)
-                                  setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
-                                  setDialogOpen(true)
-                                }}>
+                                <div
+                                  onClick={() => {
+                                    setSelectedWord(result.word)
+                                    setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
+                                    setDialogOpen(true)
+                                  }}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                      e.preventDefault()
+                                      setSelectedWord(result.word)
+                                      setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
+                                      setDialogOpen(true)
+                                    }
+                                  }}
+                                  tabIndex={0}
+                                  role="button"
+                                  aria-label={`${result.word}, ${result.score} points, ${result.length} letters`}
+                                >
                                   <CardHeader className="pb-3">
                                     <CardTitle className="text-xl font-bold capitalize">
                                       {result.word}
