@@ -5,10 +5,11 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown, Filter, X, Heart, Star, Brain, GraduationCap, Grid3x3, List, BarChart3, Activity, Download, FileText, Table } from "lucide-react"
+import { Search, Sparkles, TrendingUp, ArrowUpDown, ArrowUp, ArrowDown, Filter, X, Heart, Star, Brain, GraduationCap, Grid3x3, List, BarChart3, Activity, Download, FileText, Table, CheckSquare, Square, GitCompare } from "lucide-react"
 import { unscrambleWord, type WordResult, type DictionaryType, type PositionConstraint, type SortOption, type SortDirection } from "@/lib/word-utils"
 import { getAvailableDictionaries, DEFAULT_DICTIONARY } from "@/lib/dictionary-config"
 import { WordDefinitionDialog } from "@/components/word-definition-dialog"
+import { WordCompareDialog } from "@/components/word-compare-dialog"
 import { useSearchHistory } from "@/hooks/use-search-history"
 import { useFavoriteWords } from "@/hooks/use-favorite-words"
 import { useWordLearning } from "@/hooks/use-word-learning"
@@ -38,6 +39,9 @@ export function WordSearch() {
   const [showFavorites, setShowFavorites] = useState(false)
   const [showLearning, setShowLearning] = useState(false)
   const [viewMode, setViewMode] = useState<ViewMode>("list")
+  const [compareMode, setCompareMode] = useState(false)
+  const [selectedForCompare, setSelectedForCompare] = useState<Set<string>>(new Set())
+  const [showCompareDialog, setShowCompareDialog] = useState(false)
 
   const { history, isLoaded, addToHistory, removeFromHistory, clearHistory } = useSearchHistory('word-unscrambler')
   const { favorites, isFavorite, toggleFavorite, clearFavorites } = useFavoriteWords()
@@ -311,6 +315,33 @@ export function WordSearch() {
       }
     }, 100)
   }, [letters, minLength, sortBy, sortDirection, dictionaryType, positionInput, startsWithInput, containsSequenceInput, mustNotContainInput, parsePositionConstraints, addToHistory])
+
+  // Toggle word selection for comparison
+  const toggleWordSelection = useCallback((word: string) => {
+    setSelectedForCompare(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(word)) {
+        newSet.delete(word)
+      } else {
+        if (newSet.size >= 5) {
+          // Limit to 5 words for comparison
+          return prev
+        }
+        newSet.add(word)
+      }
+      return newSet
+    })
+  }, [])
+
+  // Clear all selections
+  const clearSelection = useCallback(() => {
+    setSelectedForCompare(new Set())
+  }, [])
+
+  // Get selected words data
+  const getSelectedWordsData = useCallback(() => {
+    return displayedResults.filter(w => selectedForCompare.has(w.word))
+  }, [displayedResults, selectedForCompare])
 
   // Update displayed results when filters change
   useEffect(() => {
@@ -790,6 +821,30 @@ export function WordSearch() {
                   >
                     Copy All
                   </Button>
+                  <Button
+                    size="sm"
+                    variant={compareMode ? "default" : "outline"}
+                    onClick={() => {
+                      setCompareMode(!compareMode)
+                      if (compareMode) {
+                        clearSelection()
+                      }
+                    }}
+                  >
+                    <GitCompare className="h-4 w-4 mr-1" />
+                    {compareMode ? 'Exit Compare' : 'Compare'}
+                  </Button>
+                  {compareMode && selectedForCompare.size > 0 && (
+                    <Button
+                      size="sm"
+                      variant="default"
+                      onClick={() => setShowCompareDialog(true)}
+                      disabled={selectedForCompare.size < 2}
+                    >
+                      <CheckSquare className="h-4 w-4 mr-1" />
+                      Compare ({selectedForCompare.size})
+                    </Button>
+                  )}
                   <ShareButton
                     title="Word Unscrambler Results"
                     text={`I found ${results.length} words from "${letters.toUpperCase()}"! Top words: ${displayedResults.slice(0, 5).map(r => r.word).join(', ')}`}
@@ -798,6 +853,23 @@ export function WordSearch() {
                   />
                 </div>
               </div>
+
+              {/* Compare Mode Info */}
+              {compareMode && (
+                <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <GitCompare className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                    <p className="text-sm text-blue-900 dark:text-blue-100">
+                      Select 2-5 words to compare. Click on words to select them.
+                    </p>
+                  </div>
+                  {selectedForCompare.size > 0 && (
+                    <Button size="sm" variant="ghost" onClick={clearSelection}>
+                      Clear Selection
+                    </Button>
+                  )}
+                </div>
+              )}
 
               {/* Quick Filter Tags */}
               {getAvailableFilters(results).length > 0 && (
@@ -1019,23 +1091,41 @@ export function WordSearch() {
                 <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                 {displayedResults.map((result, index) => {
                   const isWordFavorited = isFavorite(result.word)
+                  const isSelected = selectedForCompare.has(result.word)
                   return (
                     <Card
                       key={`${result.word}-${index}`}
-                      className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group"
+                      className={`hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group ${
+                        isSelected ? 'ring-2 ring-primary bg-primary/5' : ''
+                      }`}
                     >
                       <div onClick={() => {
-                        setSelectedWord(result.word)
-                        setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
-                        setDialogOpen(true)
+                        if (compareMode) {
+                          toggleWordSelection(result.word)
+                        } else {
+                          setSelectedWord(result.word)
+                          setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
+                          setDialogOpen(true)
+                        }
                       }}>
                         <CardHeader className="pb-3">
                           <div className="flex items-start justify-between">
-                            <CardTitle className="text-xl font-bold capitalize">
-                              {result.word}
-                            </CardTitle>
+                            <div className="flex items-center gap-2">
+                              {compareMode && (
+                                <div className="flex-shrink-0">
+                                  {isSelected ? (
+                                    <CheckSquare className="h-5 w-5 text-primary" />
+                                  ) : (
+                                    <Square className="h-5 w-5 text-muted-foreground" />
+                                  )}
+                                </div>
+                              )}
+                              <CardTitle className="text-xl font-bold capitalize">
+                                {result.word}
+                              </CardTitle>
+                            </div>
                             <div className="flex items-center gap-1">
-                              {index < 3 && (
+                              {index < 3 && !compareMode && (
                                 <Badge variant="default" className="ml-2">
                                   <TrendingUp className="h-3 w-3 mr-1" />
                                   Top
@@ -1256,6 +1346,14 @@ export function WordSearch() {
         score={selectedWordData.score}
         length={selectedWordData.length}
         dictionaryType={selectedWordData.dictionaryType}
+      />
+
+      {/* Word Compare Dialog */}
+      <WordCompareDialog
+        words={getSelectedWordsData()}
+        open={showCompareDialog}
+        onOpenChange={setShowCompareDialog}
+        dictionaryType={dictionaryType}
       />
     </div>
   )
