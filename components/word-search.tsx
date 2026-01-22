@@ -15,6 +15,7 @@ import { useFavoriteWords } from "@/hooks/use-favorite-words"
 import { useWordLearning } from "@/hooks/use-word-learning"
 import { SearchHistory } from "@/components/search-history"
 import { ShareButton } from "@/components/share-button"
+import { toast } from "sonner"
 
 type ViewMode = "list" | "groupByLength" | "groupByLetter"
 
@@ -42,6 +43,8 @@ export function WordSearch() {
   const [compareMode, setCompareMode] = useState(false)
   const [selectedForCompare, setSelectedForCompare] = useState<Set<string>>(new Set())
   const [showCompareDialog, setShowCompareDialog] = useState(false)
+  const [itemsToShow, setItemsToShow] = useState(20)
+  const [allFilteredResults, setAllFilteredResults] = useState<WordResult[]>([])
 
   const { history, isLoaded, addToHistory, removeFromHistory, clearHistory } = useSearchHistory('word-unscrambler')
   const { favorites, isFavorite, toggleFavorite, clearFavorites } = useFavoriteWords()
@@ -238,17 +241,23 @@ export function WordSearch() {
 
   // Export results to CSV
   const exportToCSV = useCallback((words: WordResult[]) => {
-    const headers = ['Word', 'Score', 'Length']
-    const rows = words.map(w => [w.word, w.score.toString(), w.length.toString()])
-    const csv = [headers, ...rows].map(row => row.join(',')).join('\n')
+    try {
+      const headers = ['Word', 'Score', 'Length']
+      const rows = words.map(w => [w.word, w.score.toString(), w.length.toString()])
+      const csv = [headers, ...rows].map(row => row.join(',')).join('\n')
 
-    const blob = new Blob([csv], { type: 'text/csv' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `word-unscrambler-results-${Date.now()}.csv`
-    a.click()
-    URL.revokeObjectURL(url)
+      const blob = new Blob([csv], { type: 'text/csv' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `word-unscrambler-results-${Date.now()}.csv`
+      a.click()
+      URL.revokeObjectURL(url)
+
+      toast.success(`Exported ${words.length} words to CSV`)
+    } catch (error) {
+      toast.error('Failed to export CSV')
+    }
   }, [])
 
   // Copy results as table
@@ -258,9 +267,29 @@ export function WordSearch() {
     const table = [headers, ...rows].join('\n')
 
     navigator.clipboard.writeText(table).then(() => {
-      // Could show a toast notification here
+      toast.success(`Copied ${words.length} words to clipboard`)
+    }).catch(() => {
+      toast.error('Failed to copy to clipboard')
     })
   }, [])
+
+  // Toggle favorite with toast notification
+  const handleToggleFavorite = useCallback((word: string, score: number, length: number, dictionaryType?: string) => {
+    const wasFavorite = isFavorite(word)
+    toggleFavorite(word, score, length, dictionaryType)
+
+    if (wasFavorite) {
+      toast.success(`Removed "${word}" from favorites`)
+    } else {
+      toast.success(`Added "${word}" to favorites`)
+    }
+  }, [isFavorite, toggleFavorite])
+
+  // Handle remove from learning with toast notification
+  const handleRemoveFromLearning = useCallback((word: string) => {
+    removeFromLearning(word)
+    toast.success(`Removed "${word}" from learning list`)
+  }, [removeFromLearning])
 
   // Parse position input (format: "1:a,3:t" means position 1 is 'a', position 3 is 't')
   const parsePositionConstraints = useCallback((input: string): PositionConstraint[] => {
@@ -304,8 +333,10 @@ export function WordSearch() {
         containsSequence: containsSequenceInput.trim() || undefined,
         mustNotContain: mustNotContainInput.trim() || undefined,
       })
-      setResults(foundWords.slice(0, 100)) // Limit to 100 results for performance
-      setDisplayedResults(foundWords.slice(0, 50)) // Show first 50 initially
+      setResults(foundWords)
+      setAllFilteredResults(foundWords)
+      setDisplayedResults(foundWords.slice(0, 20)) // Show first 20 initially
+      setItemsToShow(20) // Reset pagination
       setActiveFilters(new Set()) // Clear filters on new search
       setIsSearching(false)
 
@@ -346,8 +377,16 @@ export function WordSearch() {
   // Update displayed results when filters change
   useEffect(() => {
     const filtered = applyQuickFilters(results, activeFilters)
-    setDisplayedResults(filtered.slice(0, 50))
-  }, [activeFilters, results, applyQuickFilters])
+    setAllFilteredResults(filtered)
+    setDisplayedResults(filtered.slice(0, itemsToShow))
+  }, [activeFilters, results, applyQuickFilters, itemsToShow])
+
+  // Load more results
+  const loadMore = useCallback(() => {
+    const newItemsToShow = itemsToShow + 20
+    setItemsToShow(newItemsToShow)
+    setDisplayedResults(allFilteredResults.slice(0, newItemsToShow))
+  }, [itemsToShow, allFilteredResults])
 
   // Toggle filter
   const toggleFilter = useCallback((filterId: string) => {
@@ -403,8 +442,18 @@ export function WordSearch() {
               maxLength={15}
             />
           </div>
-          <Button size="lg" className="h-12 px-8" onClick={handleSearch}>
-            Unscramble
+          <Button size="lg" className="h-12 px-8" onClick={handleSearch} disabled={isSearching}>
+            {isSearching ? (
+              <>
+                <div className="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white/30 border-t-white mr-2"></div>
+                Searching...
+              </>
+            ) : (
+              <>
+                <Search className="h-5 w-5 mr-2" />
+                Unscramble
+              </>
+            )}
           </Button>
         </div>
 
@@ -466,13 +515,13 @@ export function WordSearch() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setSortDirection(sortDirection === "desc" ? "asc" : "desc")}
-                className="h-8 w-8 p-0"
+                className="h-11 w-11 p-0"
                 title={sortDirection === "desc" ? "Descending (High to Low)" : "Ascending (Low to High)"}
               >
                 {sortDirection === "desc" ? (
-                  <ArrowDown className="h-4 w-4" />
+                  <ArrowDown className="h-5 w-5" />
                 ) : (
-                  <ArrowUp className="h-4 w-4" />
+                  <ArrowUp className="h-5 w-5" />
                 )}
               </Button>
             </div>
@@ -645,10 +694,10 @@ export function WordSearch() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 right-2 h-11 w-11 p-0 opacity-0 group-hover:opacity-100 transition-opacity md:opacity-100"
                   onClick={(e) => {
                     e.stopPropagation()
-                    toggleFavorite(fav.word, fav.score, fav.length, fav.dictionaryType)
+                    handleToggleFavorite(fav.word, fav.score, fav.length, fav.dictionaryType)
                   }}
                 >
                   <Heart className="h-4 w-4 fill-red-500 text-red-500" />
@@ -756,10 +805,10 @@ export function WordSearch() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="absolute top-2 right-14 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 right-14 h-11 w-11 p-0 opacity-0 group-hover:opacity-100 transition-opacity md:opacity-100"
                   onClick={(e) => {
                     e.stopPropagation()
-                    removeFromLearning(word.word)
+                    handleRemoveFromLearning(word.word)
                   }}
                 >
                   <X className="h-4 w-4" />
@@ -774,9 +823,19 @@ export function WordSearch() {
       {!showFavorites && !showLearning && letters.length > 0 && (
         <div className="space-y-4">
           {isSearching ? (
-            <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-              <p className="mt-4 text-muted-foreground">Searching for words...</p>
+            <div className="text-center py-16">
+              <div className="flex flex-col items-center gap-4">
+                <div className="relative">
+                  <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-primary/30 border-t-primary"></div>
+                  <Search className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-6 w-6 text-primary" />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-lg font-medium text-foreground">Searching for words...</p>
+                  <p className="text-sm text-muted-foreground">
+                    Analyzing your letters and finding matches
+                  </p>
+                </div>
+              </div>
             </div>
           ) : results.length > 0 ? (
             <>
@@ -1060,7 +1119,7 @@ export function WordSearch() {
                     size="sm"
                     variant={viewMode === "list" ? "default" : "ghost"}
                     onClick={() => setViewMode("list")}
-                    className="h-8 px-3"
+                    className="h-11 px-3"
                   >
                     <List className="h-4 w-4 mr-1" />
                     List
@@ -1069,7 +1128,7 @@ export function WordSearch() {
                     size="sm"
                     variant={viewMode === "groupByLength" ? "default" : "ghost"}
                     onClick={() => setViewMode("groupByLength")}
-                    className="h-8 px-3"
+                    className="h-11 px-3"
                   >
                     <Grid3x3 className="h-4 w-4 mr-1" />
                     By Length
@@ -1078,7 +1137,7 @@ export function WordSearch() {
                     size="sm"
                     variant={viewMode === "groupByLetter" ? "default" : "ghost"}
                     onClick={() => setViewMode("groupByLetter")}
-                    className="h-8 px-3"
+                    className="h-11 px-3"
                   >
                     <BarChart3 className="h-4 w-4 mr-1" />
                     By Letter
@@ -1154,7 +1213,7 @@ export function WordSearch() {
                         className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
                         onClick={(e) => {
                           e.stopPropagation()
-                          toggleFavorite(result.word, result.score, result.length, dictionaryType)
+                          handleToggleFavorite(result.word, result.score, result.length, dictionaryType)
                         }}
                       >
                         <Heart
@@ -1295,6 +1354,29 @@ export function WordSearch() {
                   </div>
                 )
               })()}
+
+              {/* Pagination Controls */}
+              {allFilteredResults.length > 0 && (
+                <div className="mt-6 space-y-4">
+                  <div className="text-center">
+                    <p className="text-sm text-muted-foreground">
+                      Showing {displayedResults.length} of {allFilteredResults.length} results
+                    </p>
+                  </div>
+                  {displayedResults.length < allFilteredResults.length && (
+                    <div className="flex justify-center">
+                      <Button
+                        onClick={loadMore}
+                        variant="outline"
+                        size="lg"
+                        className="h-11 px-8"
+                      >
+                        Load More ({Math.min(20, allFilteredResults.length - displayedResults.length)} more)
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              )}
             </>
           ) : letters.length >= 2 ? (
             <Card className="border-dashed">

@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useWordLearning, type MasteryLevel } from "@/hooks/use-word-learning"
 import { useFavoriteWords } from "@/hooks/use-favorite-words"
+import { toast } from "sonner"
 
 interface WordDefinition {
   word: string
@@ -88,6 +89,7 @@ export function WordDefinitionDialog({
       } catch (err) {
         setError("No definition found for this word")
         setDefinition(null)
+        toast.error(`Could not find definition for "${word}"`)
       } finally {
         setLoading(false)
       }
@@ -95,6 +97,27 @@ export function WordDefinitionDialog({
 
     fetchDefinition()
   }, [word, open])
+
+  const handleAddToLearning = () => {
+    addToLearning(word, score, length, dictionaryType)
+    toast.success(`Added "${word}" to learning list`)
+  }
+
+  const handleRemoveFromLearning = () => {
+    removeFromLearning(word)
+    toast.success(`Removed "${word}" from learning list`)
+  }
+
+  const handleToggleFavorite = () => {
+    const wasFavorite = isWordFavorite
+    toggleFavorite(word, score, length, dictionaryType)
+
+    if (wasFavorite) {
+      toast.success(`Removed "${word}" from favorites`)
+    } else {
+      toast.success(`Added "${word}" to favorites`)
+    }
+  }
 
   const playAudio = (audioUrl: string) => {
     const audio = new Audio(audioUrl)
@@ -284,7 +307,7 @@ export function WordDefinitionDialog({
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => addToLearning(word, score, length, dictionaryType)}
+                        onClick={handleAddToLearning}
                       >
                         <Brain className="h-4 w-4 mr-2" />
                         Add to Learning List
@@ -294,7 +317,7 @@ export function WordDefinitionDialog({
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => removeFromLearning(word)}
+                          onClick={handleRemoveFromLearning}
                         >
                           Remove from Learning
                         </Button>
