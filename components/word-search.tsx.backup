@@ -16,16 +16,8 @@ import { useWordLearning } from "@/hooks/use-word-learning"
 import { SearchHistory } from "@/components/search-history"
 import { ShareButton } from "@/components/share-button"
 import { toast } from "sonner"
-import {
-  QuickFilters,
-  LetterAnalysisPanel,
-  ResultsStats,
-  ViewModeToggle,
-  LoadingState,
-  EmptyState,
-  WordGrid,
-  type ViewMode,
-} from "@/components/word-search/index"
+
+type ViewMode = "list" | "groupByLength" | "groupByLetter"
 
 export function WordSearch() {
   const [letters, setLetters] = useState("")
@@ -857,7 +849,20 @@ export function WordSearch() {
       {!showFavorites && !showLearning && letters.length > 0 && (
         <div className="space-y-4">
           {isSearching ? (
-            <LoadingState />
+            <div className="text-center py-16">
+              <div className="flex flex-col items-center gap-4">
+                <div className="relative">
+                  <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-primary/30 border-t-primary"></div>
+                  <Search className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-6 w-6 text-primary" />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-lg font-medium text-foreground">Searching for words...</p>
+                  <p className="text-sm text-muted-foreground">
+                    Analyzing your letters and finding matches
+                  </p>
+                </div>
+              </div>
+            </div>
           ) : results.length > 0 ? (
             <>
               <div className="flex items-center justify-between">
@@ -952,12 +957,44 @@ export function WordSearch() {
               )}
 
               {/* Quick Filter Tags */}
-              <QuickFilters
-                filters={getAvailableFilters(results)}
-                activeFilters={activeFilters}
-                onToggleFilter={toggleFilter}
-                onClearFilters={clearFilters}
-              />
+              {getAvailableFilters(results).length > 0 && (
+                <div className="flex flex-wrap gap-2 items-center p-3 bg-muted/30 rounded-lg border">
+                  <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                    <Filter className="h-3.5 w-3.5" />
+                    <span>Quick Filters:</span>
+                  </div>
+                  {getAvailableFilters(results).map((filter) => (
+                    <Badge
+                      key={filter.id}
+                      variant={activeFilters.has(filter.id) ? "default" : "outline"}
+                      className="cursor-pointer hover:bg-primary/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      onClick={() => toggleFilter(filter.id)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          toggleFilter(filter.id)
+                        }
+                      }}
+                      tabIndex={0}
+                      role="button"
+                      aria-pressed={activeFilters.has(filter.id)}
+                    >
+                      {filter.label} ({filter.count})
+                    </Badge>
+                  ))}
+                  {activeFilters.size > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearFilters}
+                      className="h-6 px-2 text-xs"
+                    >
+                      <X className="h-3 w-3 mr-1" />
+                      Clear
+                    </Button>
+                  )}
+                </div>
+              )}
 
               {/* Statistics Panel */}
               {(() => {
@@ -1420,7 +1457,24 @@ export function WordSearch() {
               )}
             </>
           ) : letters.length >= 2 ? (
-            <EmptyState letters={letters} />
+            <Card className="border-dashed">
+              <CardContent className="pt-6 text-center">
+                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-lg font-semibold mb-2">
+                  No words found with "{letters.toUpperCase()}"
+                </p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Try these tips:
+                </p>
+                <ul className="text-sm text-muted-foreground text-left max-w-xs mx-auto space-y-1">
+                  <li>• Use wildcards: Replace unknown letters with ? or _</li>
+                  <li>• Use fewer letters (remove uncommon letters like Q, Z, X)</li>
+                  <li>• Lower the minimum length filter</li>
+                  <li>• Check for typos in your letters</li>
+                  <li>• Try different letter combinations</li>
+                </ul>
+              </CardContent>
+            </Card>
           ) : null}
         </div>
       )}
