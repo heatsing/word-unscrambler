@@ -69,7 +69,7 @@ export function WordCard({
                   )}
                 </div>
               )}
-              <CardTitle className="text-xl font-bold capitalize">
+              <CardTitle className="text-lg sm:text-xl font-bold capitalize">
                 {word.word}
               </CardTitle>
             </div>

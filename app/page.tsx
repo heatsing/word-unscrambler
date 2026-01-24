@@ -17,11 +17,11 @@ export default function HomePage() {
     <div className="container mx-auto px-4 py-12">
       {/* Hero Section */}
       <section className="text-center mb-16">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-balance bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+        <div className="max-w-4xl mx-auto px-2">
+          <h1 className="text-fluid-3xl md:text-6xl font-bold mb-4 md:mb-6 text-balance bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
             Word Unscrambler & Word Game Solver
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground mb-12 text-pretty">
+          <p className="text-fluid-base md:text-xl text-muted-foreground mb-8 md:mb-12 text-pretty leading-relaxed-mobile">
             Unscramble letters, solve word puzzles, and dominate your favorite word games. Get instant solutions for
             Wordle, Scrabble, Words with Friends, and more.
           </p>
@@ -34,8 +34,8 @@ export default function HomePage() {
       </section>
 
       {/* Features Grid */}
-      <section className="mb-16">
-        <h2 className="text-3xl font-bold text-center mb-8">Popular Word Tools</h2>
+      <section className="mb-12 md:mb-16 px-2">
+        <h2 className="text-fluid-2xl md:text-3xl font-bold text-center mb-6 md:mb-8">Popular Word Tools</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
@@ -142,8 +142,8 @@ export default function HomePage() {
       </section>
 
       {/* Word Lists Section */}
-      <section className="mb-16">
-        <h2 className="text-3xl font-bold text-center mb-8">Browse Words by Length</h2>
+      <section className="mb-12 md:mb-16 px-2">
+        <h2 className="text-fluid-2xl md:text-3xl font-bold text-center mb-6 md:mb-8">Browse Words by Length</h2>
         <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 max-w-4xl mx-auto">
           {[2, 3, 4, 5, 6, 7, 8, 9, 10].map((length) => (
             <Link key={length} href={`/${length}-letter-words`}>
@@ -159,16 +159,16 @@ export default function HomePage() {
       </section>
 
       {/* Info Section */}
-      <section className="bg-muted/30 rounded-lg p-8 md:p-12">
+      <section className="bg-muted/30 rounded-lg p-6 md:p-8 lg:p-12 mx-2">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6">How to Use Word Unscrambler</h2>
-          <div className="space-y-4 text-muted-foreground">
-            <p className="leading-relaxed">
+          <h2 className="text-fluid-2xl md:text-3xl font-bold mb-4 md:mb-6">How to Use Word Unscrambler</h2>
+          <div className="space-y-4 text-muted-foreground text-fluid-sm md:text-base">
+            <p className="leading-relaxed-mobile">
               Our word unscrambler is the perfect tool for solving word puzzles and games. Simply enter your letters,
               and we'll instantly find all valid words you can make. Whether you're stuck on a Wordle puzzle, looking
               for high-scoring Scrabble words, or need help with Words with Friends, we've got you covered.
             </p>
-            <p className="leading-relaxed">
+            <p className="leading-relaxed-mobile">
               The tool supports advanced filters like word length, starting letters, and patterns. Our comprehensive
               dictionary includes over 100,000 words, ensuring you'll find the perfect solution every time.
             </p>

@@ -445,7 +445,7 @@ export function WordSearch() {
             <Input
               type="text"
               placeholder="Enter letters... Use ? or _ for wildcards (e.g., 'h?ll?')"
-              className="pl-10 h-12 text-lg"
+              className="pl-10 h-11 sm:h-12 text-base sm:text-lg"
               value={letters}
               onChange={(e) => setLetters(e.target.value.toLowerCase())}
               onKeyDown={(e) => {
@@ -456,7 +456,7 @@ export function WordSearch() {
               maxLength={15}
             />
           </div>
-          <Button size="lg" className="h-12 px-8" onClick={handleSearch} disabled={isSearching}>
+          <Button size="lg" className="h-11 sm:h-12 px-6 sm:px-8 text-sm sm:text-base" onClick={handleSearch} disabled={isSearching}>
             {isSearching ? (
               <>
                 <div className="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white/30 border-t-white mr-2"></div>
