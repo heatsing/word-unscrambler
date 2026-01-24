@@ -24,6 +24,10 @@ import {
   LoadingState,
   EmptyState,
   WordGrid,
+  AdvancedFilters,
+  ActionButtons,
+  CompareModeBanner,
+  PaginationControls,
   type ViewMode,
 } from "@/components/word-search/index"
 
@@ -534,114 +538,20 @@ export function WordSearch() {
               </Button>
             </div>
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowAdvanced(!showAdvanced)}
-              className="ml-auto"
-            >
-              {showAdvanced ? "Hide" : "Show"} Advanced
-            </Button>
           </div>
 
-          {/* Advanced Options */}
-          {showAdvanced && (
-            <div className="border rounded-lg p-4 bg-muted/30 space-y-3">
-              <h4 className="text-sm font-semibold flex items-center gap-2">
-                <Filter className="h-4 w-4" />
-                Advanced Search Filters
-              </h4>
-
-              <div className="grid gap-3 md:grid-cols-2">
-                {/* Starts With */}
-                <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground font-medium">
-                    Starts With
-                  </label>
-                  <Input
-                    type="text"
-                    placeholder="e.g., ca"
-                    value={startsWithInput}
-                    onChange={(e) => setStartsWithInput(e.target.value.toLowerCase())}
-                    className="h-8 text-sm"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Words beginning with these letters
-                  </p>
-                </div>
-
-                {/* Contains Sequence */}
-                <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground font-medium">
-                    Contains Sequence
-                  </label>
-                  <Input
-                    type="text"
-                    placeholder="e.g., ing"
-                    value={containsSequenceInput}
-                    onChange={(e) => setContainsSequenceInput(e.target.value.toLowerCase())}
-                    className="h-8 text-sm"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Words with this letter sequence
-                  </p>
-                </div>
-
-                {/* Must NOT Contain */}
-                <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground font-medium">
-                    Must NOT Contain
-                  </label>
-                  <Input
-                    type="text"
-                    placeholder="e.g., xyz"
-                    value={mustNotContainInput}
-                    onChange={(e) => setMustNotContainInput(e.target.value.toLowerCase())}
-                    className="h-8 text-sm"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Exclude words with these letters
-                  </p>
-                </div>
-
-                {/* Position Filter */}
-                <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground font-medium">
-                    Position Filter
-                  </label>
-                  <Input
-                    type="text"
-                    placeholder="e.g., 1:h,5:o"
-                    value={positionInput}
-                    onChange={(e) => setPositionInput(e.target.value.toLowerCase())}
-                    className="h-8 text-sm"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Letter at specific positions
-                  </p>
-                </div>
-              </div>
-
-              {/* Clear All Advanced Filters Button */}
-              {(startsWithInput || containsSequenceInput || mustNotContainInput || positionInput) && (
-                <div className="flex justify-end pt-2 border-t">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => {
-                      setStartsWithInput("")
-                      setContainsSequenceInput("")
-                      setMustNotContainInput("")
-                      setPositionInput("")
-                    }}
-                  >
-                    <X className="h-3 w-3 mr-1" />
-                    Clear All Filters
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
+          <AdvancedFilters
+            showAdvanced={showAdvanced}
+            onToggleAdvanced={() => setShowAdvanced(!showAdvanced)}
+            startsWithInput={startsWithInput}
+            onStartsWithChange={setStartsWithInput}
+            containsSequenceInput={containsSequenceInput}
+            onContainsSequenceChange={setContainsSequenceInput}
+            mustNotContainInput={mustNotContainInput}
+            onMustNotContainChange={setMustNotContainInput}
+            positionInput={positionInput}
+            onPositionChange={setPositionInput}
+          />
         </div>
       </div>
 
@@ -935,21 +845,7 @@ export function WordSearch() {
               </div>
 
               {/* Compare Mode Info */}
-              {compareMode && (
-                <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <GitCompare className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                    <p className="text-sm text-blue-900 dark:text-blue-100">
-                      Select 2-5 words to compare. Click on words to select them.
-                    </p>
-                  </div>
-                  {selectedForCompare.size > 0 && (
-                    <Button size="sm" variant="ghost" onClick={clearSelection}>
-                      Clear Selection
-                    </Button>
-                  )}
-                </div>
-              )}
+              {compareMode && <CompareModeBanner selectedCount={selectedForCompare.size} />}
 
               {/* Quick Filter Tags */}
               <QuickFilters
@@ -1113,33 +1009,7 @@ export function WordSearch() {
               <div className="flex items-center justify-between">
                 <h4 className="text-sm font-semibold text-muted-foreground">Display Mode</h4>
                 <div className="flex gap-1 border rounded-lg p-1">
-                  <Button
-                    size="sm"
-                    variant={viewMode === "list" ? "default" : "ghost"}
-                    onClick={() => setViewMode("list")}
-                    className="h-11 px-3"
-                  >
-                    <List className="h-4 w-4 mr-1" />
-                    List
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant={viewMode === "groupByLength" ? "default" : "ghost"}
-                    onClick={() => setViewMode("groupByLength")}
-                    className="h-11 px-3"
-                  >
-                    <Grid3x3 className="h-4 w-4 mr-1" />
-                    By Length
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant={viewMode === "groupByLetter" ? "default" : "ghost"}
-                    onClick={() => setViewMode("groupByLetter")}
-                    className="h-11 px-3"
-                  >
-                    <BarChart3 className="h-4 w-4 mr-1" />
-                    By Letter
-                  </Button>
+                  <ViewModeToggle viewMode={viewMode} onViewModeChange={setViewMode} />
                 </div>
               </div>
 
@@ -1397,27 +1267,11 @@ export function WordSearch() {
               })()}
 
               {/* Pagination Controls */}
-              {allFilteredResults.length > 0 && (
-                <div className="mt-6 space-y-4">
-                  <div className="text-center">
-                    <p className="text-sm text-muted-foreground">
-                      Showing {displayedResults.length} of {allFilteredResults.length} results
-                    </p>
-                  </div>
-                  {displayedResults.length < allFilteredResults.length && (
-                    <div className="flex justify-center">
-                      <Button
-                        onClick={loadMore}
-                        variant="outline"
-                        size="lg"
-                        className="h-11 px-8"
-                      >
-                        Load More ({Math.min(20, allFilteredResults.length - displayedResults.length)} more)
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              )}
+              <PaginationControls
+                displayedCount={displayedResults.length}
+                totalCount={allFilteredResults.length}
+                onLoadMore={loadMore}
+              />
             </>
           ) : letters.length >= 2 ? (
             <EmptyState letters={letters} />
