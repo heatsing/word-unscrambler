@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useState, useMemo, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
@@ -9,15 +10,18 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ALL_WORDS } from "@/lib/dictionary"
 import { Search, ArrowRight, Sparkles } from "lucide-react"
+import { AdvancedWordSearch } from "@/components/advanced-word-search"
 import { WordDefinitionDialog } from "@/components/word-definition-dialog"
 
-const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+const commonPrefixes = ["un", "re", "in", "dis", "en", "non", "pre", "pro", "anti", "de", "over", "mis", "sub", "inter", "fore", "auto", "co", "ex", "trans", "super"]
 
 export default function WordsStartWithPage() {
   const searchParams = useSearchParams()
   const [prefix, setPrefix] = useState("")
   const [searched, setSearched] = useState(false)
   const [lengthFilter, setLengthFilter] = useState<number | null>(null)
+  const [advancedSearchResults, setAdvancedSearchResults] = useState<string[]>([])
+  const [showAdvancedResults, setShowAdvancedResults] = useState(false)
   const [selectedWord, setSelectedWord] = useState<string>("")
   const [dialogOpen, setDialogOpen] = useState(false)
 
@@ -52,9 +56,15 @@ export default function WordsStartWithPage() {
     }
   }
 
-  const handleLetterClick = (letter: string) => {
-    setPrefix(letter)
+  const handlePrefixClick = (prefixStr: string) => {
+    setPrefix(prefixStr)
     setSearched(true)
+  }
+
+  const handleAdvancedSearch = (results: string[]) => {
+    setAdvancedSearchResults(results)
+    setShowAdvancedResults(true)
+    setSearched(false) // Hide simple search results
   }
 
   const groupedResults = useMemo(() => {
@@ -66,7 +76,17 @@ export default function WordsStartWithPage() {
     }, {} as Record<number, string[]>)
   }, [results])
 
+  const groupedAdvancedResults = useMemo(() => {
+    return advancedSearchResults.reduce((acc, word) => {
+      const len = word.length
+      if (!acc[len]) acc[len] = []
+      acc[len].push(word)
+      return acc
+    }, {} as Record<number, string[]>)
+  }, [advancedSearchResults])
+
   const displayResults = results.slice(0, 100)
+  const displayAdvancedResults = advancedSearchResults.slice(0, 100)
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -88,6 +108,11 @@ export default function WordsStartWithPage() {
               Filtered by {lengthFilter}-letter words
             </Badge>
           )}
+        </div>
+
+        {/* Advanced Search Module */}
+        <div className="mb-8 animate-scale-in">
+          <AdvancedWordSearch onSearch={handleAdvancedSearch} />
         </div>
 
         {/* Search Interface */}
@@ -124,17 +149,17 @@ export default function WordsStartWithPage() {
             </form>
 
             <div>
-              <p className="text-sm font-semibold mb-3 text-center">Quick Search by Letter:</p>
+              <p className="text-sm font-semibold mb-3 text-center">Common Prefixes:</p>
               <div className="flex flex-wrap justify-center gap-2">
-                {alphabet.map((letter) => (
+                {commonPrefixes.map((prefixStr) => (
                   <Button
-                    key={letter}
+                    key={prefixStr}
                     variant="outline"
                     size="sm"
-                    onClick={() => handleLetterClick(letter)}
-                    className="w-10 h-10 p-0 font-bold uppercase hover:bg-primary hover:text-primary-foreground"
+                    onClick={() => handlePrefixClick(prefixStr)}
+                    className="font-medium hover:bg-primary hover:text-primary-foreground"
                   >
-                    {letter}
+                    {prefixStr}-
                   </Button>
                 ))}
               </div>
@@ -153,6 +178,143 @@ export default function WordsStartWithPage() {
             )}
           </CardContent>
         </Card>
+
+        {/* A-Z Letter Navigation */}
+        <Card className="mb-8 shadow-lg">
+          <CardHeader>
+            <CardTitle>Words that Start with A-Z</CardTitle>
+            <CardDescription>Browse words by starting letter</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Letter Grid */}
+            <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-13 gap-2">
+              {Array.from("abcdefghijklmnopqrstuvwxyz").map((letter) => (
+                <Link
+                  key={letter}
+                  href={`/words-starting-with/${letter}`}
+                  className="flex items-center justify-center h-12 rounded-md border bg-background hover:bg-accent hover:text-accent-foreground font-semibold text-lg uppercase transition-colors"
+                >
+                  {letter}
+                </Link>
+              ))}
+            </div>
+
+            {/* Text Link List */}
+            <div className="border-t pt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                {Array.from("abcdefghijklmnopqrstuvwxyz").map((letter) => (
+                  <Link
+                    key={`text-${letter}`}
+                    href={`/words-starting-with/${letter}`}
+                    className="text-sm text-primary hover:underline hover:text-primary/80 transition-colors"
+                  >
+                    Words That Start With {letter.toUpperCase()}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Advanced Search Results */}
+        {showAdvancedResults && (
+          <div className="space-y-6 animate-fade-in">
+            <div className="flex items-center justify-between">
+              <h2 className="text-3xl font-bold">Search Results</h2>
+              <div className="flex gap-2">
+                <Badge variant="secondary" className="text-sm">
+                  Total: {advancedSearchResults.length}
+                </Badge>
+                {advancedSearchResults.length > 100 && (
+                  <Badge variant="default" className="text-sm">
+                    Showing first 100
+                  </Badge>
+                )}
+              </div>
+            </div>
+
+            {advancedSearchResults.length > 0 ? (
+              <Tabs defaultValue="all" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="all">All Words</TabsTrigger>
+                  <TabsTrigger value="grouped">By Length</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="all" className="mt-6">
+                  <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                    {displayAdvancedResults.map((word, index) => (
+                      <Card
+                        key={`${word}-${index}`}
+                        className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
+                        onClick={() => {
+                          setSelectedWord(word)
+                          setDialogOpen(true)
+                        }}
+                      >
+                        <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
+                          {word}
+                        </span>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {word.length} letter{word.length !== 1 ? "s" : ""}
+                        </p>
+                      </Card>
+                    ))}
+                  </div>
+                  {advancedSearchResults.length > 100 && (
+                    <p className="text-center text-sm text-muted-foreground mt-6">
+                      Showing first 100 of {advancedSearchResults.length} words. Try a more specific search for better results.
+                    </p>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="grouped" className="mt-6 space-y-6">
+                  {Object.keys(groupedAdvancedResults)
+                    .sort((a, b) => Number(b) - Number(a))
+                    .map((length) => {
+                      const wordsInGroup = groupedAdvancedResults[Number(length)]
+                      const displayWords = wordsInGroup.slice(0, 20)
+
+                      return (
+                        <div key={length} className="space-y-3">
+                          <h3 className="text-xl font-semibold flex items-center gap-2">
+                            {length} Letter Words
+                            <Badge variant="outline">{wordsInGroup.length}</Badge>
+                          </h3>
+                          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                            {displayWords.map((word, index) => (
+                              <Card
+                                key={`${word}-${index}`}
+                                className="p-3 text-center hover:shadow-md hover:scale-105 transition-all cursor-pointer"
+                                onClick={() => {
+                                  setSelectedWord(word)
+                                  setDialogOpen(true)
+                                }}
+                              >
+                                <span className="font-semibold uppercase">{word}</span>
+                              </Card>
+                            ))}
+                          </div>
+                          {wordsInGroup.length > 20 && (
+                            <p className="text-xs text-muted-foreground">
+                              Showing first 20 of {wordsInGroup.length} words
+                            </p>
+                          )}
+                        </div>
+                      )
+                    })}
+                </TabsContent>
+              </Tabs>
+            ) : (
+              <Card className="p-12 text-center border-dashed">
+                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-lg font-semibold mb-2">No words found</p>
+                <p className="text-sm text-muted-foreground">
+                  Try adjusting your search filters.
+                </p>
+              </Card>
+            )}
+          </div>
+        )}
 
         {/* Results */}
         {searched && (
@@ -268,7 +430,7 @@ export default function WordsStartWithPage() {
             <CardContent className="text-sm text-muted-foreground space-y-2">
               <p>1. Enter the starting letter(s) in the search box</p>
               <p>2. Click "Search" or press Enter to find words</p>
-              <p>3. Or click any letter from the alphabet grid for quick search</p>
+              <p>3. Or click any common prefix for quick search</p>
               <p>4. Browse results in grid view or grouped by length</p>
             </CardContent>
           </Card>
@@ -299,12 +461,13 @@ export default function WordsStartWithPage() {
               <p>
                 Simply enter any starting letters (like "app", "str", or "con") and instantly see all matching words
                 from our extensive dictionary. You can view results in a complete list or organized by word length for
-                easier browsing. Perfect for word game players and puzzle enthusiasts alike.
+                easier browsing. Use our common prefix buttons (like "un-", "re-", "pre-") for quick searches, or try
+                the advanced search for more specific pattern matching.
               </p>
               <p>
-                With thousands of words in our database, you'll find everything from common words to rare gems. Use the
-                quick letter buttons for fast searches, or type custom letter combinations for more specific results.
-                Our tool is free, fast, and perfect for any word-related challenge.
+                With thousands of words in our database, you'll find everything from common words to rare gems. Browse
+                by letter using our A-Z navigation, or use the advanced filters to search by length, position, and
+                specific letter patterns. Our tool is free, fast, and perfect for any word-related challenge.
               </p>
             </div>
           </Card>
