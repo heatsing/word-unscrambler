@@ -208,3 +208,29 @@
     }
   }
 }
+
+/* Navigation Performance Optimizations */
+@layer components {
+  /* GPU acceleration for navigation menus */
+  [role="menubar"],
+  [role="menu"] {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* Smooth scroll for mobile menu */
+  [data-radix-scroll-area-viewport] {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Optimize link hover states */
+  a[href]:hover {
+    will-change: transform, background-color;
+  }
+
+  /* Contain navigation dropdown repaints */
+  [data-radix-navigation-menu-content] {
+    contain: layout style paint;
+  }
+}

@@ -14,7 +14,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Badge } from "@/components/ui/badge"
-import { useState } from "react"
+import { useState, memo, useMemo } from "react"
 
 // Navigation 1: Word Finders (18 tools)
 const wordFinders = [
@@ -59,11 +59,42 @@ const wordsByLength = [
   { name: "2-Letter Words", href: "/2-letter-words", count: "31" },
 ]
 
+// Memoized Navigation Link Component
+const NavLink = memo(({ href, name, onClick }: { href: string; name: string; onClick?: () => void }) => (
+  <NavigationMenuLink asChild>
+    <Link
+      href={href}
+      onClick={onClick}
+      className="rounded-lg p-2.5 hover:bg-accent transition-colors block will-change-transform"
+    >
+      <div className="text-sm font-medium">{name}</div>
+    </Link>
+  </NavigationMenuLink>
+))
+NavLink.displayName = "NavLink"
+
+// Memoized Mobile Link Component
+const MobileNavLink = memo(({ href, name, onClick }: { href: string; name: string; onClick: () => void }) => (
+  <Link
+    href={href}
+    onClick={onClick}
+    className="text-sm px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors will-change-transform"
+  >
+    {name}
+  </Link>
+))
+MobileNavLink.displayName = "MobileNavLink"
+
 export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
+  // Memoize handlers to prevent re-renders
+  const closeMobile = useMemo(() => () => setMobileOpen(false), [])
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm"
+      style={{ contain: 'layout style' }}
+    >
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -80,23 +111,16 @@ export function SiteHeader() {
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden lg:flex">
             <NavigationMenuList className="gap-1">
-              {/* Navigation 1: Word Finders */}
+              {/* Navigation 1: Word Finders - Optimized with columns */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm">
                   Word Finders
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[280px] p-4">
-                    <div className="space-y-1">
+                  <div className="w-[560px] p-4" style={{ contain: 'layout' }}>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                       {wordFinders.map((item) => (
-                        <NavigationMenuLink key={item.href} asChild>
-                          <Link
-                            href={item.href}
-                            className="rounded-lg p-2.5 hover:bg-accent transition-colors block"
-                          >
-                            <div className="text-sm font-medium">{item.name}</div>
-                          </Link>
-                        </NavigationMenuLink>
+                        <NavLink key={item.href} href={item.href} name={item.name} />
                       ))}
                     </div>
                   </div>
@@ -109,40 +133,26 @@ export function SiteHeader() {
                   List of Words
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[280px] p-4">
+                  <div className="w-[280px] p-4" style={{ contain: 'layout' }}>
                     <div className="space-y-1">
                       {wordLists.map((item) => (
-                        <NavigationMenuLink key={item.href} asChild>
-                          <Link
-                            href={item.href}
-                            className="rounded-lg p-2.5 hover:bg-accent transition-colors block"
-                          >
-                            <div className="text-sm font-medium">{item.name}</div>
-                          </Link>
-                        </NavigationMenuLink>
+                        <NavLink key={item.href} href={item.href} name={item.name} />
                       ))}
                     </div>
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
-              {/* Navigation 3: Words by Length */}
+              {/* Navigation 3: Words by Length - Grid layout for efficiency */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm">
                   Words by Length
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[240px] p-4">
-                    <div className="space-y-1">
+                  <div className="w-[400px] p-4" style={{ contain: 'layout' }}>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                       {wordsByLength.map((item) => (
-                        <NavigationMenuLink key={item.href} asChild>
-                          <Link
-                            href={item.href}
-                            className="flex items-center rounded-md p-2.5 hover:bg-accent transition-colors block"
-                          >
-                            <span className="text-sm font-medium">{item.name}</span>
-                          </Link>
-                        </NavigationMenuLink>
+                        <NavLink key={item.href} href={item.href} name={item.name} />
                       ))}
                     </div>
                   </div>
@@ -164,7 +174,7 @@ export function SiteHeader() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu - Optimized */}
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild className="lg:hidden">
                 <Button variant="ghost" size="icon">
@@ -172,26 +182,28 @@ export function SiteHeader() {
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px] overflow-y-auto">
+              <SheetContent
+                side="right"
+                className="w-[300px] sm:w-[400px] overflow-y-auto"
+                style={{ contain: 'layout style paint' }}
+              >
                 <SheetHeader>
                   <SheetTitle>Menu</SheetTitle>
                 </SheetHeader>
-                <nav className="flex flex-col gap-6 mt-8">
-                  {/* Word Finders */}
+                <nav className="flex flex-col gap-6 mt-8" style={{ willChange: 'scroll-position' }}>
+                  {/* Word Finders - Grid layout for mobile */}
                   <div>
                     <h3 className="font-semibold text-sm text-muted-foreground mb-3">
                       WORD FINDERS
                     </h3>
-                    <div className="flex flex-col gap-1">
+                    <div className="grid grid-cols-2 gap-2">
                       {wordFinders.map((item) => (
-                        <Link
+                        <MobileNavLink
                           key={item.href}
                           href={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-sm px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
-                        >
-                          {item.name}
-                        </Link>
+                          name={item.name.replace(" Solver", "").replace(" Finder", "")}
+                          onClick={closeMobile}
+                        />
                       ))}
                     </div>
                   </div>
@@ -203,30 +215,28 @@ export function SiteHeader() {
                     </h3>
                     <div className="flex flex-col gap-1">
                       {wordLists.map((item) => (
-                        <Link
+                        <MobileNavLink
                           key={item.href}
                           href={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-sm px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
-                        >
-                          {item.name}
-                        </Link>
+                          name={item.name}
+                          onClick={closeMobile}
+                        />
                       ))}
                     </div>
                   </div>
 
-                  {/* Words by Length */}
+                  {/* Words by Length - Compact grid */}
                   <div>
                     <h3 className="font-semibold text-sm text-muted-foreground mb-3">
                       WORDS BY LENGTH
                     </h3>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-3 gap-2">
                       {wordsByLength.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="text-sm px-3 py-2 rounded-md hover:bg-accent transition-colors text-center"
+                          onClick={closeMobile}
+                          className="text-sm px-2 py-2 rounded-md hover:bg-accent transition-colors text-center will-change-transform"
                         >
                           {item.name.replace(" Words", "")}
                         </Link>
@@ -237,8 +247,8 @@ export function SiteHeader() {
                   {/* About */}
                   <Link
                     href="/about"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-3 text-lg font-semibold hover:text-primary transition-colors pt-4 border-t"
+                    onClick={closeMobile}
+                    className="flex items-center gap-3 text-lg font-semibold hover:text-primary transition-colors pt-4 border-t will-change-transform"
                   >
                     About
                   </Link>
