@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowRight, Search, Sparkles, Zap } from "lucide-react"
 import { WordSearch } from "@/components/word-search"
+import { ErrorBoundary } from "@/components/error-boundary"
 
 export const metadata = {
   title: "Word Unscrambler & Word Game Solver - Unscramble Words Instantly",
@@ -26,7 +27,9 @@ export default function HomePage() {
           </p>
 
           {/* Interactive Search Component */}
-          <WordSearch />
+          <ErrorBoundary>
+            <WordSearch />
+          </ErrorBoundary>
         </div>
       </section>
 

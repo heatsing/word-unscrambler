@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { ThemeProvider } from "@/components/theme-provider"
+import { ErrorBoundary } from "@/components/error-boundary"
 import { Toaster } from "sonner"
 import "./globals.css"
 
@@ -142,7 +143,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SiteHeader />
-          <main className="min-h-screen">{children}</main>
+          <ErrorBoundary>
+            <main className="min-h-screen">{children}</main>
+          </ErrorBoundary>
           <SiteFooter />
           <Analytics />
           <Toaster position="bottom-right" richColors />
