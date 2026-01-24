@@ -24,6 +24,7 @@ import {
   LoadingState,
   EmptyState,
   WordGrid,
+  WordGridVirtualized,
   AdvancedFilters,
   ActionButtons,
   CompareModeBanner,
@@ -1013,265 +1014,53 @@ export function WordSearch() {
                 </div>
               </div>
 
-              {/* List View */}
-              {viewMode === "list" && (
-                <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                {displayedResults.map((result, index) => {
-                  const isWordFavorited = isFavorite(result.word)
-                  const isSelected = selectedForCompare.has(result.word)
-                  return (
-                    <Card
-                      key={`${result.word}-${index}`}
-                      className={`hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
-                        isSelected ? 'ring-2 ring-primary bg-primary/5' : ''
-                      }`}
-                    >
-                      <div
-                        onClick={() => {
-                          if (compareMode) {
-                            toggleWordSelection(result.word)
-                          } else {
-                            setSelectedWord(result.word)
-                            setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
-                            setDialogOpen(true)
-                          }
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault()
-                            if (compareMode) {
-                              toggleWordSelection(result.word)
-                            } else {
-                              setSelectedWord(result.word)
-                              setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
-                              setDialogOpen(true)
-                            }
-                          }
-                        }}
-                        tabIndex={0}
-                        role="button"
-                        aria-label={`${result.word}, ${result.score} points, ${result.length} letters${compareMode ? (isSelected ? ', selected' : ', not selected') : ''}`}
-                      >
-                        <CardHeader className="pb-3">
-                          <div className="flex items-start justify-between">
-                            <div className="flex items-center gap-2">
-                              {compareMode && (
-                                <div className="flex-shrink-0">
-                                  {isSelected ? (
-                                    <CheckSquare className="h-5 w-5 text-primary" />
-                                  ) : (
-                                    <Square className="h-5 w-5 text-muted-foreground" />
-                                  )}
-                                </div>
-                              )}
-                              <CardTitle className="text-xl font-bold capitalize">
-                                {result.word}
-                              </CardTitle>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              {index < 3 && !compareMode && (
-                                <Badge variant="default" className="ml-2">
-                                  <TrendingUp className="h-3 w-3 mr-1" />
-                                  Top
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="pt-0">
-                          <div className="flex gap-4 text-sm items-center justify-between">
-                            <div className="flex gap-4">
-                              <div className="flex items-center gap-1">
-                                <Sparkles className="h-4 w-4 text-yellow-500" />
-                                <span className="font-semibold">{result.score} pts</span>
-                              </div>
-                              <div className="text-muted-foreground">
-                                {result.length} letters
-                              </div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleToggleFavorite(result.word, result.score, result.length, dictionaryType)
-                        }}
-                      >
-                        <Heart
-                          className={`h-4 w-4 ${isWordFavorited ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`}
-                        />
-                      </Button>
-                    </Card>
-                  )
-                })}
-                </div>
+              {/* Render Results - Use virtualization for large lists */}
+              {allFilteredResults.length > 100 ? (
+                <WordGridVirtualized
+                  words={allFilteredResults}
+                  viewMode={viewMode}
+                  compareMode={compareMode}
+                  selectedForCompare={selectedForCompare}
+                  dictionaryType={dictionaryType}
+                  isFavorite={isFavorite}
+                  onWordClick={(word) => {
+                    setSelectedWord(word.word)
+                    setSelectedWordData({ score: word.score, length: word.length, dictionaryType })
+                    setDialogOpen(true)
+                  }}
+                  onFavoriteClick={(word, score, length, dict) => {
+                    toggleFavorite(word, score, length, dict)
+                  }}
+                  onCompareToggle={toggleWordSelection}
+                />
+              ) : (
+                <WordGrid
+                  words={displayedResults}
+                  viewMode={viewMode}
+                  compareMode={compareMode}
+                  selectedForCompare={selectedForCompare}
+                  dictionaryType={dictionaryType}
+                  isFavorite={isFavorite}
+                  onWordClick={(word) => {
+                    setSelectedWord(word.word)
+                    setSelectedWordData({ score: word.score, length: word.length, dictionaryType })
+                    setDialogOpen(true)
+                  }}
+                  onFavoriteClick={(word, score, length, dict) => {
+                    toggleFavorite(word, score, length, dict)
+                  }}
+                  onCompareToggle={toggleWordSelection}
+                />
               )}
 
-              {/* Group By Length View */}
-              {viewMode === "groupByLength" && (() => {
-                const groups = groupByLength(displayedResults)
-                const sortedLengths = Object.keys(groups).map(Number).sort((a, b) => b - a)
-
-                return (
-                  <div className="space-y-4">
-                    {sortedLengths.map(length => (
-                      <div key={length} className="space-y-2">
-                        <h4 className="font-semibold text-sm flex items-center gap-2 sticky top-0 bg-background py-2 z-10">
-                          <Badge variant="secondary">{length} Letters</Badge>
-                          <span className="text-muted-foreground text-xs">({groups[length].length} words)</span>
-                        </h4>
-                        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                          {groups[length].map((result, index) => {
-                            const isWordFavorited = isFavorite(result.word)
-                            return (
-                              <Card
-                                key={`${result.word}-${index}`}
-                                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-                              >
-                                <div
-                                  onClick={() => {
-                                    setSelectedWord(result.word)
-                                    setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
-                                    setDialogOpen(true)
-                                  }}
-                                  onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                      e.preventDefault()
-                                      setSelectedWord(result.word)
-                                      setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
-                                      setDialogOpen(true)
-                                    }
-                                  }}
-                                  tabIndex={0}
-                                  role="button"
-                                  aria-label={`${result.word}, ${result.score} points, ${result.length} letters`}
-                                >
-                                  <CardHeader className="pb-3">
-                                    <CardTitle className="text-xl font-bold capitalize">
-                                      {result.word}
-                                    </CardTitle>
-                                  </CardHeader>
-                                  <CardContent className="pt-0">
-                                    <div className="flex gap-4 text-sm">
-                                      <div className="flex items-center gap-1">
-                                        <Sparkles className="h-4 w-4 text-yellow-500" />
-                                        <span className="font-semibold">{result.score} pts</span>
-                                      </div>
-                                    </div>
-                                  </CardContent>
-                                </div>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    toggleFavorite(result.word, result.score, result.length, dictionaryType)
-                                  }}
-                                >
-                                  <Heart
-                                    className={`h-4 w-4 ${isWordFavorited ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`}
-                                  />
-                                </Button>
-                              </Card>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )
-              })()}
-
-              {/* Group By Letter View */}
-              {viewMode === "groupByLetter" && (() => {
-                const groups = groupByFirstLetter(displayedResults)
-                const sortedLetters = Object.keys(groups).sort()
-
-                return (
-                  <div className="space-y-4">
-                    {sortedLetters.map(letter => (
-                      <div key={letter} className="space-y-2">
-                        <h4 className="font-semibold text-sm flex items-center gap-2 sticky top-0 bg-background py-2 z-10">
-                          <Badge variant="secondary" className="text-lg w-10 h-10 flex items-center justify-center">{letter}</Badge>
-                          <span className="text-muted-foreground text-xs">({groups[letter].length} words)</span>
-                        </h4>
-                        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                          {groups[letter].map((result, index) => {
-                            const isWordFavorited = isFavorite(result.word)
-                            return (
-                              <Card
-                                key={`${result.word}-${index}`}
-                                className="hover:shadow-md transition-shadow hover:border-primary/50 cursor-pointer relative group focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-                              >
-                                <div
-                                  onClick={() => {
-                                    setSelectedWord(result.word)
-                                    setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
-                                    setDialogOpen(true)
-                                  }}
-                                  onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                      e.preventDefault()
-                                      setSelectedWord(result.word)
-                                      setSelectedWordData({ score: result.score, length: result.length, dictionaryType })
-                                      setDialogOpen(true)
-                                    }
-                                  }}
-                                  tabIndex={0}
-                                  role="button"
-                                  aria-label={`${result.word}, ${result.score} points, ${result.length} letters`}
-                                >
-                                  <CardHeader className="pb-3">
-                                    <CardTitle className="text-xl font-bold capitalize">
-                                      {result.word}
-                                    </CardTitle>
-                                  </CardHeader>
-                                  <CardContent className="pt-0">
-                                    <div className="flex gap-4 text-sm">
-                                      <div className="flex items-center gap-1">
-                                        <Sparkles className="h-4 w-4 text-yellow-500" />
-                                        <span className="font-semibold">{result.score} pts</span>
-                                      </div>
-                                      <div className="text-muted-foreground">
-                                        {result.length} letters
-                                      </div>
-                                    </div>
-                                  </CardContent>
-                                </div>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    toggleFavorite(result.word, result.score, result.length, dictionaryType)
-                                  }}
-                                >
-                                  <Heart
-                                    className={`h-4 w-4 ${isWordFavorited ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`}
-                                  />
-                                </Button>
-                              </Card>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )
-              })()}
-
-              {/* Pagination Controls */}
-              <PaginationControls
-                displayedCount={displayedResults.length}
-                totalCount={allFilteredResults.length}
-                onLoadMore={loadMore}
-              />
+              {/* Pagination Controls - Only for non-virtualized lists */}
+              {allFilteredResults.length <= 100 && (
+                <PaginationControls
+                  displayedCount={displayedResults.length}
+                  totalCount={allFilteredResults.length}
+                  onLoadMore={loadMore}
+                />
+              )}
             </>
           ) : letters.length >= 2 ? (
             <EmptyState letters={letters} />
