@@ -6,6 +6,8 @@ import { Analytics } from "@vercel/analytics/next"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { ThemeProvider } from "@/components/theme-provider"
+import { ErrorBoundary } from "@/components/error-boundary"
+import { OnboardingProvider } from "@/components/onboarding"
 import { Toaster } from "sonner"
 import "./globals.css"
 
@@ -135,18 +137,22 @@ export default function RootLayout({
           }}
         />
 
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <SiteHeader />
-          <main className="min-h-screen">{children}</main>
-          <SiteFooter />
-          <Analytics />
-          <Toaster position="bottom-right" richColors />
-        </ThemeProvider>
+        <OnboardingProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SiteHeader />
+            <ErrorBoundary>
+              <main className="min-h-screen">{children}</main>
+            </ErrorBoundary>
+            <SiteFooter />
+            <Analytics />
+            <Toaster position="bottom-right" richColors />
+          </ThemeProvider>
+        </OnboardingProvider>
       </body>
     </html>
   )

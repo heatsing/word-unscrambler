@@ -124,4 +124,87 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Fluid Typography - Better mobile scaling */
+  html {
+    font-size: clamp(14px, 0.875rem + 0.25vw, 16px);
+  }
+
+  /* Heading optimizations for mobile */
+  h1 {
+    font-size: clamp(1.75rem, 2vw + 1rem, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 1.5vw + 0.875rem, 2.5rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 1vw + 0.75rem, 1.875rem);
+    line-height: 1.3;
+  }
+
+  h4 {
+    font-size: clamp(1.125rem, 0.5vw + 0.875rem, 1.5rem);
+    line-height: 1.4;
+  }
+
+  /* Improved paragraph spacing */
+  p {
+    line-height: 1.6;
+  }
+
+  /* Better mobile readability */
+  @media (max-width: 640px) {
+    body {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+  }
+}
+
+/* Utility classes for responsive typography */
+@layer utilities {
+  .text-fluid-xs {
+    font-size: clamp(0.75rem, 0.5vw + 0.625rem, 0.875rem);
+  }
+
+  .text-fluid-sm {
+    font-size: clamp(0.875rem, 0.5vw + 0.75rem, 1rem);
+  }
+
+  .text-fluid-base {
+    font-size: clamp(1rem, 0.5vw + 0.875rem, 1.125rem);
+  }
+
+  .text-fluid-lg {
+    font-size: clamp(1.125rem, 1vw + 0.875rem, 1.5rem);
+  }
+
+  .text-fluid-xl {
+    font-size: clamp(1.25rem, 1.5vw + 0.875rem, 1.875rem);
+  }
+
+  .text-fluid-2xl {
+    font-size: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+  }
+
+  .text-fluid-3xl {
+    font-size: clamp(1.875rem, 2.5vw + 1.125rem, 3rem);
+  }
+
+  /* Better line height for readability */
+  .leading-relaxed-mobile {
+    line-height: 1.7;
+  }
+
+  @media (min-width: 768px) {
+    .leading-relaxed-mobile {
+      line-height: 1.625;
+    }
+  }
 }
