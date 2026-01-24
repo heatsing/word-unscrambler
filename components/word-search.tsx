@@ -29,6 +29,7 @@ import {
   ActionButtons,
   CompareModeBanner,
   PaginationControls,
+  HeaderActions,
   type ViewMode,
 } from "@/components/word-search/index"
 
@@ -771,78 +772,47 @@ export function WordSearch() {
             <LoadingState />
           ) : results.length > 0 ? (
             <>
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">
-                  Found {results.length} word{results.length !== 1 ? "s" : ""}
-                  {activeFilters.size > 0 && ` (showing ${displayedResults.length} filtered)`}
-                </h3>
-                <div className="flex gap-2">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-semibold">
+                    Found {results.length} word{results.length !== 1 ? "s" : ""}
+                    {activeFilters.size > 0 && ` (showing ${displayedResults.length} filtered)`}
+                  </h3>
                   <Badge variant="secondary" className="text-sm">
                     {letters.toUpperCase()}
                   </Badge>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      setShowFavorites(!showFavorites)
-                      setShowLearning(false)
-                    }}
-                  >
-                    <Heart className={`h-4 w-4 mr-1 ${showFavorites ? 'fill-red-500 text-red-500' : ''}`} />
-                    Favorites ({favorites.length})
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      setShowLearning(!showLearning)
-                      setShowFavorites(false)
-                    }}
-                  >
-                    <Brain className={`h-4 w-4 mr-1 ${showLearning ? 'text-primary' : ''}`} />
-                    Learning ({learningWords.length})
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      const wordList = displayedResults.map(r => r.word).join(', ')
-                      navigator.clipboard.writeText(wordList)
-                    }}
-                  >
-                    Copy All
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant={compareMode ? "default" : "outline"}
-                    onClick={() => {
-                      setCompareMode(!compareMode)
-                      if (compareMode) {
-                        clearSelection()
-                      }
-                    }}
-                  >
-                    <GitCompare className="h-4 w-4 mr-1" />
-                    {compareMode ? 'Exit Compare' : 'Compare'}
-                  </Button>
-                  {compareMode && selectedForCompare.size > 0 && (
-                    <Button
-                      size="sm"
-                      variant="default"
-                      onClick={() => setShowCompareDialog(true)}
-                      disabled={selectedForCompare.size < 2}
-                    >
-                      <CheckSquare className="h-4 w-4 mr-1" />
-                      Compare ({selectedForCompare.size})
-                    </Button>
-                  )}
-                  <ShareButton
-                    title="Word Unscrambler Results"
-                    text={`I found ${results.length} words from "${letters.toUpperCase()}"! Top words: ${displayedResults.slice(0, 5).map(r => r.word).join(', ')}`}
-                    variant="outline"
-                    size="sm"
-                  />
                 </div>
+                <HeaderActions
+                  favoritesCount={favorites.length}
+                  learningCount={learningWords.length}
+                  showFavorites={showFavorites}
+                  showLearning={showLearning}
+                  compareMode={compareMode}
+                  selectedCount={selectedForCompare.size}
+                  displayedResultsCount={displayedResults.length}
+                  onToggleFavorites={() => {
+                    setShowFavorites(!showFavorites)
+                    setShowLearning(false)
+                  }}
+                  onToggleLearning={() => {
+                    setShowLearning(!showLearning)
+                    setShowFavorites(false)
+                  }}
+                  onCopyAll={() => {
+                    const wordList = displayedResults.map(r => r.word).join(', ')
+                    navigator.clipboard.writeText(wordList)
+                    toast.success('Copied all words to clipboard')
+                  }}
+                  onToggleCompareMode={() => {
+                    setCompareMode(!compareMode)
+                    if (compareMode) {
+                      clearSelection()
+                    }
+                  }}
+                  onShowCompareDialog={() => setShowCompareDialog(true)}
+                  shareTitle="Word Unscrambler Results"
+                  shareText={`I found ${results.length} words from "${letters.toUpperCase()}"! Top words: ${displayedResults.slice(0, 5).map(r => r.word).join(', ')}`}
+                />
               </div>
 
               {/* Compare Mode Info */}
