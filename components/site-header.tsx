@@ -159,6 +159,15 @@ export function SiteHeader() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
+              {/* Learning Dashboard */}
+              <NavigationMenuItem>
+                <Link href="/learning-dashboard" legacyBehavior passHref>
+                  <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                    Learning
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+
               {/* About */}
               <NavigationMenuItem>
                 <Link href="/about" legacyBehavior passHref>
@@ -244,11 +253,20 @@ export function SiteHeader() {
                     </div>
                   </div>
 
+                  {/* Learning Dashboard */}
+                  <Link
+                    href="/learning-dashboard"
+                    onClick={closeMobile}
+                    className="flex items-center gap-3 text-lg font-semibold hover:text-primary transition-colors pt-4 border-t will-change-transform"
+                  >
+                    Learning Dashboard
+                  </Link>
+
                   {/* About */}
                   <Link
                     href="/about"
                     onClick={closeMobile}
-                    className="flex items-center gap-3 text-lg font-semibold hover:text-primary transition-colors pt-4 border-t will-change-transform"
+                    className="flex items-center gap-3 text-lg font-semibold hover:text-primary transition-colors will-change-transform"
                   >
                     About
                   </Link>
