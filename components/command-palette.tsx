@@ -11,7 +11,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command"
-import { Search, Sparkles, TrendingUp, Hash, List, BookOpen } from "lucide-react"
+import { Search, Type, Target, Grid3x3, List, BookOpen, FileText } from "lucide-react"
 
 interface CommandPaletteProps {
   open: boolean
@@ -19,10 +19,10 @@ interface CommandPaletteProps {
 }
 
 const tools = [
-  { name: "Word Unscrambler", href: "/word-unscrambler", icon: Sparkles },
-  { name: "Wordle Solver", href: "/wordle-solver", icon: TrendingUp },
+  { name: "Word Unscrambler", href: "/word-unscrambler", icon: Type },
+  { name: "Wordle Solver", href: "/wordle-solver", icon: Target },
   { name: "Anagram Solver", href: "/anagram-solver", icon: Search },
-  { name: "Scrabble Word Finder", href: "/scrabble", icon: Hash },
+  { name: "Scrabble Word Finder", href: "/scrabble", icon: Grid3x3 },
   { name: "Words with Friends", href: "/words-with-friends", icon: BookOpen },
   { name: "Jumble Solver", href: "/jumble-solver", icon: List },
 ]
@@ -69,7 +69,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
               <CommandItem
                 onSelect={() => handleSelect(`/anagram-solver?q=${searchQuery}`)}
               >
-                <Sparkles className="mr-2 h-4 w-4" />
+                <FileText className="mr-2 h-4 w-4" />
                 <span>Find anagrams of "{searchQuery}"</span>
               </CommandItem>
             </CommandGroup>

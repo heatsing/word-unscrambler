@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { KeyboardShortcutsProvider } from "@/components/keyboard-shortcuts-provider"
 import { WebVitals } from "@/components/web-vitals"
+import { ServiceWorkerRegister } from "@/components/service-worker-register"
 import { Toaster } from "sonner"
 import "./globals.css"
 
@@ -152,6 +153,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <KeyboardShortcutsProvider>
+            <ServiceWorkerRegister />
             <WebVitals />
             <SiteHeader />
             <ErrorBoundary>
