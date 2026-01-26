@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowRight, Search, Sparkles, Zap } from "lucide-react"
+import { ArrowRight, Search, Type, Target, Grid3x3, BookOpen } from "lucide-react"
 import { WordSearch } from "@/components/word-search"
 import { ErrorBoundary } from "@/components/error-boundary"
 
@@ -40,7 +40,7 @@ export default function HomePage() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                <Sparkles className="h-6 w-6 text-primary" />
+                <Type className="h-6 w-6 text-primary" />
               </div>
               <CardTitle>Word Unscrambler</CardTitle>
               <CardDescription>Turn jumbled letters into valid words instantly</CardDescription>
@@ -57,7 +57,7 @@ export default function HomePage() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                <Zap className="h-6 w-6 text-primary" />
+                <Target className="h-6 w-6 text-primary" />
               </div>
               <CardTitle>Wordle Solver</CardTitle>
               <CardDescription>Get the best word suggestions for Wordle puzzles</CardDescription>
@@ -91,7 +91,7 @@ export default function HomePage() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                <Sparkles className="h-6 w-6 text-primary" />
+                <Grid3x3 className="h-6 w-6 text-primary" />
               </div>
               <CardTitle>Scrabble Word Finder</CardTitle>
               <CardDescription>Find high-scoring Scrabble words from your tiles</CardDescription>
@@ -108,7 +108,7 @@ export default function HomePage() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                <Zap className="h-6 w-6 text-primary" />
+                <BookOpen className="h-6 w-6 text-primary" />
               </div>
               <CardTitle>Words with Friends Help</CardTitle>
               <CardDescription>Get word suggestions for Words with Friends</CardDescription>

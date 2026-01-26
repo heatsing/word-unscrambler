@@ -7,16 +7,20 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ErrorBoundary } from "@/components/error-boundary"
+import { KeyboardShortcutsProvider } from "@/components/keyboard-shortcuts-provider"
+import { WebVitals } from "@/components/web-vitals"
+import { ServiceWorkerRegister } from "@/components/service-worker-register"
 import { Toaster } from "sonner"
 import "./globals.css"
 
-// Note: Google Fonts disabled due to build environment network restrictions
-// Uncomment in production if needed
+// Note: next/font disabled due to build environment network restrictions
+// In production, consider using a self-hosted font or enable in deployment
 // const inter = Inter({
 //   subsets: ['latin'],
 //   display: 'swap',
 //   preload: true,
 //   variable: '--font-inter',
+//   fallback: ['system-ui', 'arial'],
 // })
 
 export const metadata: Metadata = {
@@ -69,6 +73,12 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'google-site-verification-code', // 请替换为实际的验证码
+  },
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Word Unscrambler',
   },
 }
 
@@ -142,13 +152,17 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SiteHeader />
-          <ErrorBoundary>
-            <main className="min-h-screen">{children}</main>
-          </ErrorBoundary>
-          <SiteFooter />
-          <Analytics />
-          <Toaster position="bottom-right" richColors />
+          <KeyboardShortcutsProvider>
+            <ServiceWorkerRegister />
+            <WebVitals />
+            <SiteHeader />
+            <ErrorBoundary>
+              <main className="min-h-screen">{children}</main>
+            </ErrorBoundary>
+            <SiteFooter />
+            <Analytics />
+            <Toaster position="bottom-right" richColors />
+          </KeyboardShortcutsProvider>
         </ThemeProvider>
       </body>
     </html>
