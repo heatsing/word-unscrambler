@@ -3,9 +3,11 @@
 import { useState } from "react"
 import { WordInput } from "@/components/word-input"
 import { WordList } from "@/components/word-list"
+import { ScrabbleBoard } from "@/components/scrabble-board"
 import { unscrambleWord, calculateScrabbleScore } from "@/lib/word-utils"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Trophy } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Trophy, Grid3x3 } from "lucide-react"
 
 export default function ScrabblePage() {
   const [results, setResults] = useState<string[]>([])
@@ -21,7 +23,7 @@ export default function ScrabblePage() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-lg mb-4">
             <Trophy className="h-8 w-8 text-primary" />
@@ -32,16 +34,35 @@ export default function ScrabblePage() {
           </p>
         </div>
 
-        <div className="mb-12">
-          <WordInput onSearch={handleSearch} placeholder="Enter your Scrabble tiles..." buttonText="Find Words" />
-        </div>
+        <Tabs defaultValue="finder" className="mb-12">
+          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
+            <TabsTrigger value="finder">
+              <Trophy className="h-4 w-4 mr-2" />
+              Word Finder
+            </TabsTrigger>
+            <TabsTrigger value="board">
+              <Grid3x3 className="h-4 w-4 mr-2" />
+              Visual Board
+            </TabsTrigger>
+          </TabsList>
 
-        {searched && (
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">Found {results.length} words (sorted by score)</h2>
-            <WordList words={results} showScore calculateScore={calculateScrabbleScore} />
-          </div>
-        )}
+          <TabsContent value="finder" className="space-y-8">
+            <div>
+              <WordInput onSearch={handleSearch} placeholder="Enter your Scrabble tiles..." buttonText="Find Words" />
+            </div>
+
+            {searched && (
+              <div>
+                <h2 className="text-2xl font-bold mb-6">Found {results.length} words (sorted by score)</h2>
+                <WordList words={results} showScore calculateScore={calculateScrabbleScore} />
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="board" className="space-y-8">
+            <ScrabbleBoard />
+          </TabsContent>
+        </Tabs>
 
         <Card className="mt-12">
           <CardHeader>

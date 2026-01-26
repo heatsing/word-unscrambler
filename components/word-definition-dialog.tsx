@@ -9,12 +9,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Volume2, BookOpen, Brain, GraduationCap, Sparkles, Lightbulb } from "lucide-react"
+import { Loader2, Volume2, BookOpen, Brain, GraduationCap, Sparkles, Lightbulb, Database } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useWordLearning, type MasteryLevel } from "@/hooks/use-word-learning"
 import { useFavoriteWords } from "@/hooks/use-favorite-words"
 import { toast } from "sonner"
+import { getLocalDefinition } from "@/lib/local-dictionary"
 
 interface WordDefinition {
   word: string
@@ -58,6 +59,7 @@ export function WordDefinitionDialog({
   const [definition, setDefinition] = useState<WordDefinition | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isLocalFallback, setIsLocalFallback] = useState(false)
 
   const { isLearning, getLearningInfo, addToLearning, removeFromLearning, updateMasteryLevel } = useWordLearning()
   const { isFavorite, toggleFavorite } = useFavoriteWords()
@@ -74,22 +76,37 @@ export function WordDefinitionDialog({
     const fetchDefinition = async () => {
       setLoading(true)
       setError(null)
+      setIsLocalFallback(false)
 
       try {
+        // Try fetching from online API first
         const response = await fetch(
           `https://api.dictionaryapi.dev/api/v2/entries/en/${word.toLowerCase()}`
         )
 
         if (!response.ok) {
-          throw new Error("Definition not found")
+          throw new Error("Definition not found in online dictionary")
         }
 
         const data = await response.json()
         setDefinition(data[0])
       } catch (err) {
-        setError("No definition found for this word")
-        setDefinition(null)
-        toast.error(`Could not find definition for "${word}"`)
+        // Fallback to local dictionary
+        const localDef = getLocalDefinition(word)
+
+        if (localDef) {
+          // Convert local definition to API format
+          setDefinition({
+            word: localDef.word,
+            phonetic: localDef.phonetic,
+            meanings: localDef.meanings
+          })
+          setIsLocalFallback(true)
+        } else {
+          setError("No definition found for this word")
+          setDefinition(null)
+          toast.error(`Could not find definition for "${word}"`)
+        }
       } finally {
         setLoading(false)
       }
@@ -344,8 +361,15 @@ export function WordDefinitionDialog({
         </div>
 
         <div className="pt-4 border-t">
-          <p className="text-xs text-muted-foreground text-center">
-            Powered by Free Dictionary API
+          <p className="text-xs text-muted-foreground text-center flex items-center justify-center gap-2">
+            {isLocalFallback ? (
+              <>
+                <Database className="h-3 w-3" />
+                Local Dictionary (Offline Available)
+              </>
+            ) : (
+              <>Powered by Free Dictionary API</>
+            )}
           </p>
         </div>
       </DialogContent>
