@@ -44,7 +44,7 @@ export function WordSearch() {
   const [selectedWord, setSelectedWord] = useState<string>("")
   const [selectedWordData, setSelectedWordData] = useState<{ score: number; length: number; dictionaryType?: string }>({ score: 0, length: 0 })
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [showAdvanced, setShowAdvanced] = useState(false)
+  const [showAdvanced, setShowAdvanced] = useState(true)
   const [positionInput, setPositionInput] = useState<string>("")
   const [startsWithInput, setStartsWithInput] = useState<string>("")
   const [containsSequenceInput, setContainsSequenceInput] = useState<string>("")
@@ -553,6 +553,8 @@ export function WordSearch() {
             onMustNotContainChange={setMustNotContainInput}
             positionInput={positionInput}
             onPositionChange={setPositionInput}
+            minLength={minLength}
+            onMinLengthChange={setMinLength}
           />
         </div>
       </div>
