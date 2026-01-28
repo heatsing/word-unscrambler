@@ -76,7 +76,56 @@ export const seoConfig = {
     description: "Unscramble words and letters quickly. Enter jumbled letters and find all valid word combinations. Free unscramble tool for word games.",
     keywords: ["unscramble", "unscramble words", "unscramble letters", "letter unscrambler", "word unscrambler"],
     canonical: "/unscramble"
-  }
+  },
+  wordSolver: {
+    title: "Word Solver - Solve Any Word Puzzle From Letters",
+    description:
+      "Universal word solver for Scrabble, Wordle, crosswords and more. Enter your letters and get instant valid word solutions.",
+    keywords: ["word solver", "solve word puzzle", "letter solver", "word game solver", "find words from letters"],
+    canonical: "/word-solver",
+  },
+  wordleHub: {
+    title: "Wordle Helper - Daily Tips, Strategy & Word Suggestions",
+    description:
+      "Wordle helper hub with smart suggestions and strategy. Enter your green/yellow/gray clues and get better guesses for today's Wordle.",
+    keywords: ["wordle helper", "wordle tips", "wordle strategy", "wordle hints", "daily wordle"],
+    canonical: "/wordle",
+  },
+  wordscapes: {
+    title: "Wordscapes Help - Daily Answers, Tips & Word Finder",
+    description:
+      "Get Wordscapes help with daily answers, tips, and word-finding strategies. Use our tools to solve levels faster and find extra words.",
+    keywords: ["wordscapes help", "wordscapes answers", "wordscapes cheats", "wordscapes solver", "extra words"],
+    canonical: "/wordscapes",
+  },
+  wordCookies: {
+    title: "Word Cookies Answers - Daily Help & Word Finder",
+    description:
+      "Find Word Cookies answers and daily help. Enter letters to discover all possible words and solve levels quickly.",
+    keywords: ["word cookies answers", "word cookies solver", "word cookies help", "word cookies cheats", "find words"],
+    canonical: "/word-cookies",
+  },
+  wordfeud: {
+    title: "Wordfeud Helper - Best Words, Tips & Word Finder",
+    description:
+      "Wordfeud helper with tips and word-finding tools. Discover high-scoring words, improve your strategy, and win more games.",
+    keywords: ["wordfeud helper", "wordfeud tips", "wordfeud cheat", "wordfeud word finder", "high scoring words"],
+    canonical: "/wordfeud",
+  },
+  scrabbleGo: {
+    title: "Scrabble GO Helper - Find High Scoring Words Fast",
+    description:
+      "Scrabble GO helper tool to find high-scoring words from your letters. Improve your plays and win more matches.",
+    keywords: ["scrabble go helper", "scrabble go cheat", "scrabble go word finder", "scrabble go words"],
+    canonical: "/scrabble-go",
+  },
+  scrabbleCheat: {
+    title: "Scrabble Cheat - Word Finder & High Score Plays",
+    description:
+      "Scrabble cheat and word finder to discover high-scoring plays from your tiles. Works with official word lists and common rules.",
+    keywords: ["scrabble cheat", "scrabble word finder", "scrabble helper", "scrabble high scoring words"],
+    canonical: "/scrabble-cheat",
+  },
 }
 
 export const faqSchemas = {

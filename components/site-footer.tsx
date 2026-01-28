@@ -75,7 +75,7 @@ export function SiteFooter() {
   }, [userRating])
 
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-zinc-950 text-white">
       {/* Rating / Review block */}
       <section className="border-b border-white/10">
         <div className="container mx-auto px-4 py-12 md:py-16">

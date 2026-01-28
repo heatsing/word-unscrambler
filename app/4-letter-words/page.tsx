@@ -14,16 +14,6 @@ export default function FourLetterWordsPage() {
 
   return (
     <>
-      <div className="container mx-auto px-4 pt-8">
-        <div className="max-w-4xl mx-auto text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">4 Letter Words</h1>
-          <p className="text-lg text-muted-foreground">
-            Complete database of {words.length} four-letter words for Scrabble, Words with Friends,
-            Wordle, and crossword puzzles. Find the perfect word instantly.
-          </p>
-        </div>
-      </div>
-
       <WordsByLengthTemplate length={4} words={words} />
     </>
   )
