@@ -75,17 +75,17 @@ export function SiteFooter() {
   }, [userRating])
 
   return (
-    <footer className="border-t border-border bg-muted/30">
+    <footer className="bg-black text-white">
       {/* Rating / Review block */}
-      <section className="border-b border-border/60 bg-muted/30">
-        <div className="container mx-auto px-4 py-10">
+      <section className="border-b border-white/10">
+        <div className="container mx-auto px-4 py-12 md:py-16">
           <div className="mx-auto max-w-3xl text-center">
-            <div className="text-2xl md:text-3xl font-bold tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
               Rate WordUnscrambler.cc
-            </div>
+            </h2>
 
             <div
-              className="mt-5 flex items-center justify-center gap-2"
+              className="mt-6 flex items-center justify-center gap-2"
               role="radiogroup"
               aria-label="Rate this site"
               onMouseLeave={() => setHoverRating(null)}
@@ -99,7 +99,7 @@ export function SiteFooter() {
                   <button
                     key={value}
                     type="button"
-                    className="rounded-md p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="rounded-md p-1 min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-all duration-200 cursor-pointer touch-manipulation"
                     role="radio"
                     aria-checked={userRating === value}
                     aria-label={`${value} star${value === 1 ? '' : 's'}`}
@@ -117,8 +117,8 @@ export function SiteFooter() {
                   >
                     <Star
                       className={[
-                        "h-10 w-10 transition-colors",
-                        filled ? "text-yellow-400 fill-yellow-400" : "text-yellow-400/40",
+                        "h-10 w-10 transition-colors duration-200",
+                        filled ? "text-yellow-400 fill-yellow-400" : "text-white/30",
                       ].join(" ")}
                       aria-hidden="true"
                     />
@@ -127,43 +127,43 @@ export function SiteFooter() {
               })}
             </div>
 
-            <div className="mt-4 text-3xl font-semibold">
-              {average} <span className="text-base font-medium text-muted-foreground">/ 5</span>
+            <div className="mt-6 text-3xl md:text-4xl font-semibold text-white">
+              {average} <span className="text-lg md:text-xl font-medium text-white/70">/ 5</span>
             </div>
-            <div className="mt-1 text-sm text-muted-foreground">{votes.toLocaleString()} votes</div>
+            <div className="mt-2 text-sm md:text-base text-white/60">{votes.toLocaleString()} votes</div>
           </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Word Finders - Inline style with bullet separators */}
+      {/* Main Footer Content */}
+      <div className="container mx-auto px-4 py-12 md:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          {/* Word Finders */}
           <div>
-            <h3 className="font-semibold mb-4 text-sm">Word Finders</h3>
-            <div className="text-sm text-muted-foreground space-y-2">
-              {wordFinders.map((link, index) => (
-                <span key={link.href}>
+            <h3 className="font-semibold mb-5 text-base text-white">Word Finders</h3>
+            <ul className="space-y-3">
+              {wordFinders.map((link) => (
+                <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="hover:text-foreground transition-colors"
+                    className="text-sm text-white/70 hover:text-white transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-sm"
                   >
                     {link.name}
                   </Link>
-                  {index < wordFinders.length - 1 && <span className="mx-2">•</span>}
-                </span>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
           {/* List of Words */}
           <div>
-            <h3 className="font-semibold mb-4 text-sm">List of Words</h3>
+            <h3 className="font-semibold mb-5 text-base text-white">List of Words</h3>
             <ul className="space-y-3">
               {wordLists.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-sm text-white/70 hover:text-white transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-sm"
                   >
                     {link.name}
                   </Link>
@@ -174,13 +174,13 @@ export function SiteFooter() {
 
           {/* Words by Length */}
           <div>
-            <h3 className="font-semibold mb-4 text-sm">Words by Length</h3>
+            <h3 className="font-semibold mb-5 text-base text-white">Words by Length</h3>
             <ul className="space-y-3">
               {wordsByLength.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-sm text-white/70 hover:text-white transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-sm"
                   >
                     {link.name}
                   </Link>
@@ -191,13 +191,13 @@ export function SiteFooter() {
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold mb-4 text-sm">Legal</h3>
+            <h3 className="font-semibold mb-5 text-base text-white">Legal</h3>
             <ul className="space-y-3">
               {legal.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-sm text-white/70 hover:text-white transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-sm"
                   >
                     {link.name}
                   </Link>
@@ -207,12 +207,13 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-border">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-muted-foreground text-center md:text-left">
+        {/* Copyright Section */}
+        <div className="mt-12 pt-8 border-t border-white/10">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-sm text-white/70 text-center md:text-left">
               © {new Date().getFullYear()} Word Unscrambler. All rights reserved.
             </p>
-            <p className="text-xs text-muted-foreground text-center md:text-right max-w-md">
+            <p className="text-xs text-white/60 text-center md:text-right max-w-md leading-relaxed">
               Scrabble® is a registered trademark. Words with Friends® is a registered trademark. This site is not
               affiliated with Scrabble®, Words with Friends®, or any other game.
             </p>
