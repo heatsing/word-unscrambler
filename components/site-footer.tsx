@@ -1,8 +1,8 @@
-\"use client\"
+"use client"
 
-import Link from \"next/link\"
+import Link from "next/link"
 import { Star } from "lucide-react"
-import { useEffect, useMemo, useState } from \"react\"
+import { useEffect, useMemo, useState } from "react"
 
 // Sync with site-header.tsx
 const wordFinders = [
