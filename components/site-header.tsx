@@ -19,23 +19,31 @@ import { useState, memo, useMemo } from "react"
 // Navigation 1: Word Finders (18 tools)
 const wordFinders = [
   { name: "Word Unscrambler", href: "/word-unscrambler", description: "Unscramble any letters" },
-  { name: "Wordle Solver", href: "/wordle-solver", description: "Solve Wordle puzzles" },
   { name: "Anagram Solver", href: "/anagram-solver", description: "Find anagrams" },
   { name: "Scrabble Word Finder", href: "/scrabble", description: "High-scoring words" },
   { name: "Scrabble Go", href: "/scrabble-go", description: "Scrabble Go helper" },
   { name: "Words with Friends", href: "/words-with-friends", description: "WWF cheat tool" },
-  { name: "Jumble Solver", href: "/jumble-solver", description: "Solve jumbles" },
   { name: "Word Generator", href: "/word-generator", description: "Random words" },
   { name: "Word Scramble", href: "/word-scramble", description: "Scramble solver" },
-  { name: "Wordscapes", href: "/wordscapes", description: "Wordscapes help" },
-  { name: "Word Cookies", href: "/word-cookies", description: "Cookie answers" },
-  { name: "Wordfeud", href: "/wordfeud", description: "Wordfeud cheat" },
-  { name: "Text Twist", href: "/text-twist", description: "Text Twist solver" },
   { name: "Boggle Solver", href: "/boggle-solver", description: "Solve Boggle grids" },
   { name: "Crossword Solver", href: "/crossword-solver", description: "Crossword help" },
+  { name: "Word Finder", href: "/word-finder", description: "Find words by letters" },
+  { name: "Descrambler", href: "/descrambler", description: "Descramble letters fast" },
+  { name: "Unscramble", href: "/unscramble", description: "Unscramble words quickly" },
+  { name: "Text Twist", href: "/text-twist", description: "Text Twist solver" },
   { name: "Word Search Solver", href: "/word-search-solver", description: "Find hidden words" },
   { name: "Hangman Solver", href: "/hangman-solver", description: "Hangman helper" },
-  { name: "Letter Boxed Solver", href: "/letter-boxed-solver", description: "NYT Letter Boxed" },
+  { name: "Letter Boxed Solver", href: "/letter-boxed-solver", description: "Letter Boxed helper" },
+]
+
+// Navigation: Daily Game Hints（更偏“每日游戏提示/答案”的页面）
+const dailyGameHints = [
+  { name: "Wordle", href: "/wordle", description: "Daily Wordle hub" },
+  { name: "Wordle Solver", href: "/wordle-solver", description: "Solve today's Wordle" },
+  { name: "Jumble Solver", href: "/jumble-solver", description: "Daily Jumble answers" },
+  { name: "Wordscapes", href: "/wordscapes", description: "Daily Wordscapes help" },
+  { name: "Word Cookies", href: "/word-cookies", description: "Daily Word Cookies answers" },
+  { name: "Wordfeud", href: "/wordfeud", description: "Wordfeud tips & help" },
 ]
 
 // Navigation 2: List of Words (5 categories)
@@ -111,13 +119,16 @@ export function SiteHeader() {
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden lg:flex">
             <NavigationMenuList className="gap-1">
-              {/* Navigation 1: Word Finders - Optimized with columns */}
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-sm">
+              {/* Navigation 1: Word Finders - 对应 wordFinders 数组 */}
+              <NavigationMenuItem value="word-finders">
+                <NavigationMenuTrigger className="text-sm" id="nav-word-finders-trigger">
                   Word Finders
                 </NavigationMenuTrigger>
-                <NavigationMenuContent>
+                <NavigationMenuContent aria-labelledby="nav-word-finders-trigger">
                   <div className="w-[560px] p-4" style={{ contain: 'layout' }}>
+                    <div className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                      Word Finders
+                    </div>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                       {wordFinders.map((item) => (
                         <NavLink key={item.href} href={item.href} name={item.name} />
@@ -127,13 +138,35 @@ export function SiteHeader() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
-              {/* Navigation 2: List of Words */}
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-sm">
+              {/* Navigation: Daily Game Hints - 从 Word Finders 中迁移的“每日游戏提示” */}
+              <NavigationMenuItem value="daily-game-hints">
+                <NavigationMenuTrigger className="text-sm" id="nav-daily-game-hints-trigger">
+                  Daily Game Hints
+                </NavigationMenuTrigger>
+                <NavigationMenuContent aria-labelledby="nav-daily-game-hints-trigger">
+                  <div className="w-[360px] p-4" style={{ contain: 'layout' }}>
+                    <div className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                      Daily Game Hints
+                    </div>
+                    <div className="grid grid-cols-1 gap-y-1">
+                      {dailyGameHints.map((item) => (
+                        <NavLink key={item.href} href={item.href} name={item.name} />
+                      ))}
+                    </div>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+
+              {/* Navigation 2: List of Words - 对应 wordLists 数组 */}
+              <NavigationMenuItem value="list-of-words">
+                <NavigationMenuTrigger className="text-sm" id="nav-list-of-words-trigger">
                   List of Words
                 </NavigationMenuTrigger>
-                <NavigationMenuContent>
+                <NavigationMenuContent aria-labelledby="nav-list-of-words-trigger">
                   <div className="w-[280px] p-4" style={{ contain: 'layout' }}>
+                    <div className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                      List of Words
+                    </div>
                     <div className="space-y-1">
                       {wordLists.map((item) => (
                         <NavLink key={item.href} href={item.href} name={item.name} />
@@ -143,13 +176,16 @@ export function SiteHeader() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
-              {/* Navigation 3: Words by Length - Grid layout for efficiency */}
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-sm">
+              {/* Navigation 3: Words by Length - 对应 wordsByLength 数组 */}
+              <NavigationMenuItem value="words-by-length">
+                <NavigationMenuTrigger className="text-sm" id="nav-words-by-length-trigger">
                   Words by Length
                 </NavigationMenuTrigger>
-                <NavigationMenuContent>
+                <NavigationMenuContent aria-labelledby="nav-words-by-length-trigger">
                   <div className="w-[400px] p-4" style={{ contain: 'layout' }}>
+                    <div className="mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                      Words by Length
+                    </div>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                       {wordsByLength.map((item) => (
                         <NavLink key={item.href} href={item.href} name={item.name} />
@@ -159,7 +195,7 @@ export function SiteHeader() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
-              {/* About */}
+              {/* About - 无下拉菜单 */}
               <NavigationMenuItem>
                 <Link href="/about" legacyBehavior passHref>
                   <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
@@ -202,6 +238,23 @@ export function SiteHeader() {
                           key={item.href}
                           href={item.href}
                           name={item.name.replace(" Solver", "").replace(" Finder", "")}
+                          onClick={closeMobile}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Daily Game Hints */}
+                  <div>
+                    <h3 className="font-semibold text-sm text-muted-foreground mb-3">
+                      DAILY GAME HINTS
+                    </h3>
+                    <div className="grid grid-cols-2 gap-2">
+                      {dailyGameHints.map((item) => (
+                        <MobileNavLink
+                          key={item.href}
+                          href={item.href}
+                          name={item.name}
                           onClick={closeMobile}
                         />
                       ))}

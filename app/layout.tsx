@@ -58,18 +58,36 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
+    alternateLocale: ['en_GB', 'en_CA', 'en_AU', 'en_NZ'],
     url: 'https://wordunscrambler.cc',
     siteName: 'Word Unscrambler',
     title: 'Word Unscrambler - Solve Wordle, Scrabble & Word Games Fast',
     description: 'Free word unscrambler & anagram solver for Wordle, Scrabble, Words with Friends. Instantly find valid words from letters.',
+    images: [
+      {
+        url: 'https://wordunscrambler.cc/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'Word Unscrambler - Word Game Solver',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Word Unscrambler - Solve Wordle, Scrabble & Word Games Fast',
     description: 'Free word unscrambler & anagram solver. Instantly find valid words from letters.',
+    images: ['https://wordunscrambler.cc/opengraph-image'],
   },
   alternates: {
     canonical: 'https://wordunscrambler.cc',
+    languages: {
+      'en-US': 'https://wordunscrambler.cc',
+      'en-GB': 'https://wordunscrambler.cc',
+      'en-CA': 'https://wordunscrambler.cc',
+      'en-AU': 'https://wordunscrambler.cc',
+      'en-NZ': 'https://wordunscrambler.cc',
+      'x-default': 'https://wordunscrambler.cc',
+    },
   },
   verification: {
     google: 'google-site-verification-code', // 请替换为实际的验证码
@@ -94,6 +112,11 @@ export default function RootLayout({
     "url": "https://wordunscrambler.cc",
     "logo": "https://wordunscrambler.cc/opengraph-image",
     "description": "Free word unscrambler and anagram solver for word games",
+    "foundingDate": "2024",
+    "areaServed": {
+      "@type": "Place",
+      "name": "Worldwide"
+    },
     "sameAs": [
       // 社交媒体链接
     ]
@@ -105,6 +128,7 @@ export default function RootLayout({
     "name": "Word Unscrambler",
     "url": "https://wordunscrambler.cc",
     "description": "Free word unscrambler & anagram solver for Wordle, Scrabble, Words with Friends",
+    "inLanguage": ["en-US", "en-GB", "en-CA", "en-AU"],
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
@@ -115,9 +139,45 @@ export default function RootLayout({
     }
   }
 
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Word Unscrambler Service",
+    "description": "Free online word unscrambler and anagram solver tool for word games",
+    "provider": {
+      "@type": "Organization",
+      "name": "Word Unscrambler",
+      "url": "https://wordunscrambler.cc"
+    },
+    "serviceType": "Online Word Game Solver",
+    "areaServed": {
+      "@type": "Place",
+      "name": "Worldwide"
+    },
+    "availableChannel": {
+      "@type": "ServiceChannel",
+      "serviceUrl": "https://wordunscrambler.cc",
+      "serviceType": "Online"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Hreflang tags for GEO targeting */}
+        <link rel="alternate" hreflang="en-US" href="https://wordunscrambler.cc" />
+        <link rel="alternate" hreflang="en-GB" href="https://wordunscrambler.cc" />
+        <link rel="alternate" hreflang="en-CA" href="https://wordunscrambler.cc" />
+        <link rel="alternate" hreflang="en-AU" href="https://wordunscrambler.cc" />
+        <link rel="alternate" hreflang="en-NZ" href="https://wordunscrambler.cc" />
+        <link rel="alternate" hreflang="x-default" href="https://wordunscrambler.cc" />
+        
+        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -125,6 +185,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
         />
       </head>
       <body className="font-sans antialiased">

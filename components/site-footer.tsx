@@ -1,4 +1,8 @@
-import Link from "next/link"
+\"use client\"
+
+import Link from \"next/link\"
+import { Star } from "lucide-react"
+import { useEffect, useMemo, useState } from \"react\"
 
 // Sync with site-header.tsx
 const wordFinders = [
@@ -43,8 +47,94 @@ const legal = [
 ]
 
 export function SiteFooter() {
+  const storageKey = "wu_footer_rating_v1"
+  const baseVotes = 2960
+  const baseAverage = 4.6
+
+  const [hoverRating, setHoverRating] = useState<number | null>(null)
+  const [userRating, setUserRating] = useState<number | null>(null)
+
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(storageKey)
+      if (!stored) return
+      const parsed = Number(stored)
+      if (Number.isFinite(parsed) && parsed >= 1 && parsed <= 5) {
+        setUserRating(parsed)
+      }
+    } catch {
+      // ignore
+    }
+  }, [])
+
+  const votes = baseVotes + (userRating ? 1 : 0)
+  const average = useMemo(() => {
+    if (!userRating) return baseAverage
+    const avg = (baseAverage * baseVotes + userRating) / (baseVotes + 1)
+    return Math.round(avg * 10) / 10
+  }, [userRating])
+
   return (
     <footer className="border-t border-border bg-muted/30">
+      {/* Rating / Review block */}
+      <section className="border-b border-border/60 bg-muted/30">
+        <div className="container mx-auto px-4 py-10">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="text-2xl md:text-3xl font-bold tracking-tight">
+              Rate WordUnscrambler.cc
+            </div>
+
+            <div
+              className="mt-5 flex items-center justify-center gap-2"
+              role="radiogroup"
+              aria-label="Rate this site"
+              onMouseLeave={() => setHoverRating(null)}
+            >
+              {Array.from({ length: 5 }).map((_, idx) => {
+                const value = idx + 1
+                const activeValue = hoverRating ?? userRating ?? 0
+                const filled = value <= activeValue
+
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    className="rounded-md p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    role="radio"
+                    aria-checked={userRating === value}
+                    aria-label={`${value} star${value === 1 ? '' : 's'}`}
+                    onMouseEnter={() => setHoverRating(value)}
+                    onFocus={() => setHoverRating(value)}
+                    onBlur={() => setHoverRating(null)}
+                    onClick={() => {
+                      setUserRating(value)
+                      try {
+                        window.localStorage.setItem(storageKey, String(value))
+                      } catch {
+                        // ignore
+                      }
+                    }}
+                  >
+                    <Star
+                      className={[
+                        "h-10 w-10 transition-colors",
+                        filled ? "text-yellow-400 fill-yellow-400" : "text-yellow-400/40",
+                      ].join(" ")}
+                      aria-hidden="true"
+                    />
+                  </button>
+                )
+              })}
+            </div>
+
+            <div className="mt-4 text-3xl font-semibold">
+              {average} <span className="text-base font-medium text-muted-foreground">/ 5</span>
+            </div>
+            <div className="mt-1 text-sm text-muted-foreground">{votes.toLocaleString()} votes</div>
+          </div>
+        </div>
+      </section>
+
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Word Finders - Inline style with bullet separators */}
