@@ -12,6 +12,12 @@ import { WebVitals } from "@/components/web-vitals"
 import { ServiceWorkerRegister } from "@/components/service-worker-register"
 import { Toaster } from "sonner"
 import "./globals.css"
+import {
+  getOrganizationSchema,
+  getServiceSchema,
+  getWebApplicationSchema,
+  getWebsiteSchema,
+} from "@/lib/structured-data"
 
 // Note: next/font disabled due to build environment network restrictions
 // In production, consider using a self-hosted font or enable in deployment
@@ -90,7 +96,9 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'google-site-verification-code', // 请替换为实际的验证码
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
   },
   manifest: '/manifest.json',
   appleWebApp: {
@@ -98,6 +106,8 @@ export const metadata: Metadata = {
     statusBarStyle: 'default',
     title: 'Word Unscrambler',
   },
+  category: "games",
+  applicationName: "Word Unscrambler",
 }
 
 export default function RootLayout({
@@ -105,66 +115,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Word Unscrambler",
-    "url": "https://wordunscrambler.cc",
-    "logo": "https://wordunscrambler.cc/opengraph-image",
-    "description": "Free word unscrambler and anagram solver for word games",
-    "foundingDate": "2024",
-    "areaServed": {
-      "@type": "Place",
-      "name": "Worldwide"
-    },
-    "sameAs": [
-      // 社交媒体链接
-    ]
-  }
+  // Keep these values in sync with the footer's default display.
+  const baseVotes = 2960
+  const baseAverage = 4.6
 
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Word Unscrambler",
-    "url": "https://wordunscrambler.cc",
-    "description": "Free word unscrambler & anagram solver for Wordle, Scrabble, Words with Friends",
-    "inLanguage": ["en-US", "en-GB", "en-CA", "en-AU"],
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://wordunscrambler.cc/word-unscrambler?q={search_term_string}"
-      },
-      "query-input": "required name=search_term_string"
-    }
-  }
-
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Word Unscrambler Service",
-    "description": "Free online word unscrambler and anagram solver tool for word games",
-    "provider": {
-      "@type": "Organization",
-      "name": "Word Unscrambler",
-      "url": "https://wordunscrambler.cc"
-    },
-    "serviceType": "Online Word Game Solver",
-    "areaServed": {
-      "@type": "Place",
-      "name": "Worldwide"
-    },
-    "availableChannel": {
-      "@type": "ServiceChannel",
-      "serviceUrl": "https://wordunscrambler.cc",
-      "serviceType": "Online"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
-  }
+  const organizationSchema = getOrganizationSchema()
+  const websiteSchema = getWebsiteSchema()
+  const serviceSchema = getServiceSchema()
+  const webAppSchema = getWebApplicationSchema({ ratingValue: baseAverage, ratingCount: baseVotes })
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -189,6 +147,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
         />
       </head>
       <body className="font-sans antialiased">
