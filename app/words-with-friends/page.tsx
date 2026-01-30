@@ -1,27 +1,13 @@
-"use client"
-
-import { useState } from "react"
-import { WordInput } from "@/components/word-input"
-import { WordList } from "@/components/word-list"
-import { unscrambleWord, calculateScrabbleScore } from "@/lib/word-utils"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from "next/link"
 import { Gamepad2 } from "lucide-react"
+import { WordsWithFriendsTool } from "@/components/words-with-friends-tool"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function WordsWithFriendsPage() {
-  const [results, setResults] = useState<string[]>([])
-  const [searched, setSearched] = useState(false)
-
-  const handleSearch = (letters: string) => {
-    const words = unscrambleWord(letters)
-    const sortedWords = words.sort((a, b) => calculateScrabbleScore(b.word) - calculateScrabbleScore(a.word))
-    setResults(sortedWords.map((w) => w.word))
-    setSearched(true)
-  }
-
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
+        <header className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-lg mb-4">
             <Gamepad2 className="h-8 w-8 text-primary" />
           </div>
@@ -29,20 +15,11 @@ export default function WordsWithFriendsPage() {
           <p className="text-lg text-muted-foreground text-pretty max-w-2xl mx-auto">
             Find the best words for Words with Friends. Enter your tiles and get word suggestions sorted by score.
           </p>
-        </div>
+        </header>
 
-        <div className="mb-12">
-          <WordInput onSearch={handleSearch} placeholder="Enter your tiles..." buttonText="Find Words" />
-        </div>
+        <WordsWithFriendsTool />
 
-        {searched && (
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">Found {results.length} words (sorted by score)</h2>
-            <WordList words={results} showScore calculateScore={calculateScrabbleScore} />
-          </div>
-        )}
-
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2 mt-12">
           <Card>
             <CardHeader>
               <CardTitle>Words with Friends Tips</CardTitle>
@@ -54,7 +31,6 @@ export default function WordsWithFriendsPage() {
               <p>• Save S and blank tiles for strategic plays</p>
             </CardContent>
           </Card>
-
           <Card>
             <CardHeader>
               <CardTitle>Scoring Strategy</CardTitle>
@@ -62,7 +38,7 @@ export default function WordsWithFriendsPage() {
             <CardContent className="text-sm text-muted-foreground space-y-2">
               <p>• Look for opportunities to create multiple words</p>
               <p>• Use all 7 tiles for a 35-point bonus</p>
-              <p>• Block opponent's access to triple word scores</p>
+              <p>• Block opponent&apos;s access to triple word scores</p>
               <p>• Learn common 2 and 3-letter words for tight spots</p>
             </CardContent>
           </Card>

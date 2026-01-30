@@ -1,47 +1,25 @@
-"use client"
-
-import { useState } from "react"
-import { WordInput } from "@/components/word-input"
-import { WordList } from "@/components/word-list"
-import { unscrambleWord } from "@/lib/word-utils"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from "next/link"
 import { Puzzle } from "lucide-react"
+import { WordscapesTool } from "@/components/wordscapes-tool"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function WordscapesPage() {
-  const [results, setResults] = useState<string[]>([])
-  const [searched, setSearched] = useState(false)
-
-  const handleSearch = (letters: string) => {
-    const words = unscrambleWord(letters)
-    setResults(words.map((w) => w.word))
-    setSearched(true)
-  }
-
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
+        <header className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-lg mb-4">
             <Puzzle className="h-8 w-8 text-primary" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Wordscapes Cheats & Answers</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Wordscapes Cheats &amp; Answers</h1>
           <p className="text-lg text-muted-foreground text-pretty max-w-2xl mx-auto">
             Stuck on a Wordscapes level? Enter your letters and find all possible words to complete the puzzle.
           </p>
-        </div>
+        </header>
 
-        <div className="mb-12">
-          <WordInput onSearch={handleSearch} placeholder="Enter Wordscapes letters..." buttonText="Get Answers" />
-        </div>
+        <WordscapesTool />
 
-        {searched && (
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">Found {results.length} possible words</h2>
-            <WordList words={results} />
-          </div>
-        )}
-
-        <Card>
+        <Card className="mt-12">
           <CardHeader>
             <CardTitle>About Wordscapes</CardTitle>
           </CardHeader>
@@ -52,9 +30,9 @@ export default function WordscapesPage() {
               varying lengths, and you need to find all the words to complete the level.
             </p>
             <p>
-              Use this tool when you're stuck on a level. Simply enter the letters provided in the puzzle, and we'll
-              show you all possible words you can make. Remember, Wordscapes levels often have bonus words that aren't
-              required to complete the puzzle but still earn you coins!
+              Use this tool when you&apos;re stuck on a level. Simply enter the letters provided in the puzzle, and we&apos;ll
+              show you all possible words you can make. Remember, Wordscapes levels often have bonus words that aren&apos;t
+              required to complete the puzzle but still earn you coins! Try our <Link href="/word-unscrambler" className="text-primary font-medium hover:underline">word unscrambler</Link> or <Link href="/word-cookies" className="text-primary font-medium hover:underline">Word Cookies answers</Link> for similar games.
             </p>
           </CardContent>
         </Card>

@@ -1,27 +1,13 @@
-"use client"
-
-import { useState } from "react"
-import { WordInput } from "@/components/word-input"
-import { WordList } from "@/components/word-list"
-import { unscrambleWord, calculateScrabbleScore } from "@/lib/word-utils"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from "next/link"
 import { Zap } from "lucide-react"
+import { ScrabbleCheatTool } from "@/components/scrabble-cheat-tool"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function ScrabbleCheatPage() {
-  const [results, setResults] = useState<string[]>([])
-  const [searched, setSearched] = useState(false)
-
-  const handleSearch = (letters: string) => {
-    const words = unscrambleWord(letters)
-    const sortedWords = words.sort((a, b) => calculateScrabbleScore(b.word) - calculateScrabbleScore(a.word))
-    setResults(sortedWords.map((w) => w.word))
-    setSearched(true)
-  }
-
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
+        <header className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-lg mb-4">
             <Zap className="h-8 w-8 text-primary" />
           </div>
@@ -29,20 +15,11 @@ export default function ScrabbleCheatPage() {
           <p className="text-lg text-muted-foreground text-pretty max-w-2xl mx-auto">
             Get instant word suggestions for Scrabble and Scrabble GO. Find the highest-scoring plays every time.
           </p>
-        </div>
+        </header>
 
-        <div className="mb-12">
-          <WordInput onSearch={handleSearch} placeholder="Enter your tiles..." buttonText="Get Words" />
-        </div>
+        <ScrabbleCheatTool />
 
-        {searched && (
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">Highest-Scoring Words ({results.length} found)</h2>
-            <WordList words={results} showScore calculateScore={calculateScrabbleScore} />
-          </div>
-        )}
-
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2 mt-12">
           <Card>
             <CardHeader>
               <CardTitle>Advanced Scrabble Tips</CardTitle>
@@ -54,7 +31,6 @@ export default function ScrabbleCheatPage() {
               <p>• Use S strategically for plurals and verb forms</p>
             </CardContent>
           </Card>
-
           <Card>
             <CardHeader>
               <CardTitle>High-Value Plays</CardTitle>
