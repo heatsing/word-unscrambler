@@ -1,6 +1,5 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import InternalLinks from '@/components/InternalLinks.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import { getMeta } from '@/lib/meta';
 import { getSoftwareApplicationSchema, getFAQPageSchema } from '@/lib/schema';
@@ -17,37 +16,35 @@ const faqSchema = getFAQPageSchema(faqs);
 
 <Layout meta={meta}>
   <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold mb-4">Unscramble Words</h1>
-    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Unscramble Words</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
       Enter your letters below. We'll find all valid words you can make.
     </p>
   </header>
 
   <UnscrambleTool client:load />
 
-  <section class="mt-12 p-6 rounded-lg border border-gray-200 bg-white">
-    <h2 class="text-2xl font-bold mb-4">Why Unscramble Words?</h2>
-    <p class="text-gray-600 mb-4">
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">Why Unscramble Words?</h2>
+    <p class="text-muted-foreground mb-4">
       Unscrambling improves pattern recognition and vocabulary. Our tool shows every possible word from your letters—ideal for Wordle, Scrabble, and word puzzles.
     </p>
-    <p class="text-gray-600">
+    <p class="text-muted-foreground">
       For advanced filters, try our <a href="/word-unscrambler" class="text-primary hover:underline">Word Unscrambler</a> or <a href="/anagram-solver" class="text-primary hover:underline">Anagram Solver</a>.
     </p>
   </section>
 
   <section class="mt-8">
-    <h2 class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+    <h2 class="text-xl font-bold mb-3 text-foreground">Frequently Asked Questions</h2>
     <dl class="space-y-4 text-sm">
       {faqs.map((faq) => (
         <div>
-          <dt class="font-semibold text-gray-900">{faq.question}</dt>
-          <dd class="text-gray-600 mt-1">{faq.answer}</dd>
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-1">{faq.answer}</dd>
         </div>
       ))}
     </dl>
   </section>
-
-  <InternalLinks />
 
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />

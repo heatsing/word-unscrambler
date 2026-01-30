@@ -47,12 +47,6 @@ export const seoConfig = {
     keywords: ["boggle solver", "boggle word finder", "boggle game", "boggle helper", "word hunt solver"],
     canonical: "/boggle-solver"
   },
-  crosswordSolver: {
-    title: "Crossword Solver - Find Crossword Puzzle Answers Quickly",
-    description: "Free crossword puzzle solver. Enter pattern with known letters and find answers. Solve NYT crossword, cryptic & themed puzzles instantly.",
-    keywords: ["crossword solver", "crossword answers", "crossword helper", "crossword clue solver"],
-    canonical: "/crossword-solver"
-  },
   wordFinder: {
     title: "Word Finder - Scrabble & Words With Friends Cheat Tool",
     description: "Advanced word finder for Scrabble and Words With Friends. Enter your letters and find the highest scoring words. Free word cheat tool.",

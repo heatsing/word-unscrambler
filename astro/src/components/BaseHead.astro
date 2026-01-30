@@ -1,0 +1,20 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  noindex?: boolean;
+}
+const { title, description, canonical, noindex = false } = Astro.props;
+const fullTitle = title.includes('|') ? title : `${title} | Word Unscrambler`;
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex ? <meta name="robots" content="noindex, follow" /> : null}
+<meta property="og:type" content="website" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />

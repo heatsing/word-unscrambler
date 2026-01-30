@@ -1,0 +1,112 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { getMeta } from '@/lib/meta';
+
+const meta = getMeta(
+  '/words-by-length',
+  'Words By Length - Find Words by Letter Count | Word Finder',
+  'Browse words by length. Find 2-letter to 10-letter words for Wordle, Scrabble, Words with Friends, and word games.'
+);
+
+const lengthsData = [
+  { length: 2, title: '2 Letter Words' },
+  { length: 3, title: '3 Letter Words' },
+  { length: 4, title: '4 Letter Words' },
+  { length: 5, title: '5 Letter Words' },
+  { length: 6, title: '6 Letter Words' },
+  { length: 7, title: '7 Letter Words' },
+  { length: 8, title: '8 Letter Words' },
+  { length: 9, title: '9 Letter Words' },
+  { length: 10, title: '10 Letter Words' },
+];
+---
+
+<Layout meta={meta}>
+  <section class="text-center mb-12">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Words By Length</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+      Browse our dictionary by word length. Choose a length below to see 2-letter through 10-letter words for Wordle, Scrabble, and word games.
+    </p>
+  </section>
+
+  <section class="mb-12" aria-labelledby="length-cards-heading">
+    <h2 id="length-cards-heading" class="sr-only">Choose word length</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {lengthsData.map((item) => (
+        <a
+          href={`/${item.length}-letter-words`}
+          class="p-5 rounded-lg border border-border bg-card shadow hover:bg-muted transition-colors block text-left group"
+        >
+          <span class="font-semibold text-lg text-foreground group-hover:text-primary transition-colors">{item.title}</span>
+          <span class="block text-sm text-muted-foreground mt-1">Browse words</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="grid gap-6 sm:grid-cols-2 mb-12">
+    <div class="p-5 rounded-lg border border-border bg-card">
+      <h2 class="text-xl font-bold mb-3 text-foreground">How to Use</h2>
+      <ul class="text-muted-foreground text-sm space-y-2 list-none pl-0">
+        <li>1. Click any word length card above</li>
+        <li>2. Browse words for that length</li>
+        <li>3. Use <a href="/unscramble" class="text-primary hover:underline">Unscramble</a> to find words from your letters</li>
+      </ul>
+    </div>
+    <div class="p-5 rounded-lg border border-border bg-card">
+      <h2 class="text-xl font-bold mb-3 text-foreground">Word Length Guide</h2>
+      <ul class="text-muted-foreground text-sm space-y-1 list-none pl-0">
+        <li>• 2–4 letters: Short, common words</li>
+        <li>• 5 letters: Perfect for Wordle</li>
+        <li>• 6–7 letters: Versatile game words</li>
+        <li>• 8–10 letters: High-scoring words</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="p-5 rounded-lg border border-border bg-card mb-12">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Popular Categories</h2>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <h3 class="font-semibold mb-2 text-foreground">Best for Wordle</h3>
+        <a href="/5-letter-words" class="text-primary hover:underline">5-Letter Words</a>
+        <p class="text-xs text-muted-foreground mt-1">Valid Wordle words</p>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2 text-foreground">Best for Scrabble</h3>
+        <a href="/7-letter-words" class="text-primary hover:underline">7-Letter Words</a>
+        <p class="text-xs text-muted-foreground mt-1">Bingo words for bonus points</p>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2 text-foreground">Short Words</h3>
+        <span class="flex flex-wrap gap-2">
+          <a href="/2-letter-words" class="text-primary hover:underline">2-Letter</a>
+          <a href="/3-letter-words" class="text-primary hover:underline">3-Letter</a>
+          <a href="/4-letter-words" class="text-primary hover:underline">4-Letter</a>
+        </span>
+        <p class="text-xs text-muted-foreground mt-1">Quick plays</p>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2 text-foreground">Long Words</h3>
+        <span class="flex flex-wrap gap-2">
+          <a href="/8-letter-words" class="text-primary hover:underline">8-Letter</a>
+          <a href="/9-letter-words" class="text-primary hover:underline">9-Letter</a>
+          <a href="/10-letter-words" class="text-primary hover:underline">10-Letter</a>
+        </span>
+        <p class="text-xs text-muted-foreground mt-1">High-scoring</p>
+      </div>
+    </div>
+  </section>
+
+  <article class="p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">Complete Word Length Dictionary</h2>
+    <div class="text-muted-foreground leading-relaxed space-y-4">
+      <p>
+        Our Words By Length index organizes English words by letter count. Whether you play Wordle, Scrabble, Words with Friends, or crosswords, you can jump to 2-letter through 10-letter words from the cards above.
+      </p>
+      <p>
+        Each length links to a page of words for that count. Use our <a href="/unscramble" class="text-primary hover:underline">Unscramble</a> tool to find words from your letters, or <a href="/words-start-with" class="text-primary hover:underline">Words Start With</a>, <a href="/words-with-letters" class="text-primary hover:underline">Words With Letters</a>, and <a href="/words-ending-in" class="text-primary hover:underline">Words Ending In</a> for more filters.
+      </p>
+    </div>
+  </article>
+</Layout>

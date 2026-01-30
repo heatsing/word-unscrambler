@@ -1,7 +1,10 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import InternalLinks from '@/components/InternalLinks.astro';
 import { getMeta } from '@/lib/meta';
+import { getWordsByLength } from '@/lib/words-data';
+import { getScrabbleScore } from '@/lib/unscramble';
+import { wordFinders, dailyGameHints } from '@/lib/nav-links';
+import WordFinderByLength from '@/components/WordFinderByLength';
 
 export function getStaticPaths() {
   return [2, 3, 4, 5, 6, 7, 8, 9, 10].map((length) => ({
@@ -11,15 +14,201 @@ export function getStaticPaths() {
 }
 
 const { length } = Astro.props;
-const meta = getMeta(`/${length}-letter-words`, `${length} Letter Words`, `Browse ${length}-letter words. Useful for Wordle, Scrabble, Words with Friends, and word games.`);
+const words = getWordsByLength(length);
+
+const INITIAL_SHOW = 200;
+const hasMore = words.length > INITIAL_SHOW;
+const initialWords = words.slice(0, INITIAL_SHOW);
+const restWords = words.slice(INITIAL_SHOW);
+
+const wordsByAlpha = [...initialWords].sort((a, b) => a.localeCompare(b));
+const restByAlpha = [...restWords].sort((a, b) => a.localeCompare(b));
+const wordsByPoints = [...initialWords].sort((a, b) => getScrabbleScore(b) - getScrabbleScore(a));
+const restByPoints = [...restWords].sort((a, b) => getScrabbleScore(b) - getScrabbleScore(a));
+
+const meta = getMeta(
+  `/${length}-letter-words`,
+  `${length} Letter Words - Complete List | Word Unscrambler`,
+  `Browse ${words.length} ${length}-letter words. Useful for Wordle, Scrabble, Words with Friends, and word games.`
+);
+
+const lengthsNav = [10, 9, 8, 7, 6, 5, 4, 3, 2];
+const frequentSearches = length === 5
+  ? ['wordle', 'crane', 'slate', 'trace', 'audio']
+  : length === 7
+  ? ['scrabble', 'bingo', 'letters', 'anagram', 'unscramble']
+  : ['words', 'letters', 'finder', 'unscramble', 'games'];
+
+const wordFindersList = [...dailyGameHints, ...wordFinders];
 ---
 
-<Layout meta={meta}>
-  <article>
-    <h1 class="text-4xl font-bold mb-4">{length} Letter Words</h1>
-    <p class="text-lg text-gray-600 mb-8">
-      Browse our list of {length}-letter words. Use the <a href="/unscramble" class="text-primary hover:underline">Unscramble</a> tool to find words from your letters, or <a href="/words-by-length" class="text-primary hover:underline">Words By Length</a> to explore other lengths.
-    </p>
-  </article>
-  <InternalLinks />
+<Layout meta={meta} wide>
+  <!--
+  ┌───────────────┬───────────────────────────────┐
+  │ Tool Sidebar  │ Main Content (N-letter words)  │
+  │ Search form   │ SEO text + word list           │
+  │ Other tools   │                               │
+  └───────────────┴───────────────────────────────┘
+  -->
+  <div class="w-full grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4 md:gap-6">
+    <aside class="md:col-start-1 md:row-start-1 flex flex-col gap-4 md:gap-6 sticky top-20 md:top-24 self-start w-full md:min-w-0 md:border-l-4 md:border-l-primary/30 md:pl-4" aria-label="Tool sidebar: search and other tools">
+      <nav class="rounded-lg border border-border bg-card p-4">
+        <h2 class="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">Word length</h2>
+        <ul class="space-y-1 list-none pl-0">
+          {lengthsNav.map((len) => (
+            <li>
+              <a
+                href={`/${len}-letter-words`}
+                class:list={[
+                  'block rounded-md px-3 py-2.5 text-sm font-medium transition-colors',
+                  len === length ? 'bg-primary text-white' : 'text-foreground hover:bg-muted hover:text-primary',
+                ]}
+              >
+                {len}-Letter Words
+              </a>
+            </li>
+          ))}
+        </ul>
+        <h2 class="text-sm font-semibold text-muted-foreground uppercase tracking-wide mt-6 mb-3">Frequent Searches</h2>
+        <ul class="space-y-1 list-none pl-0">
+          {frequentSearches.map((term) => (
+            <li>
+              <a
+                href={`/unscramble?q=${encodeURIComponent(term)}`}
+                class="block rounded-md px-3 py-2 text-sm text-foreground hover:bg-muted hover:text-primary transition-colors"
+              >
+                {term}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-4 pt-4 border-t border-border text-xs text-muted-foreground">
+          <a href="/words-by-length" class="text-primary hover:underline">All lengths</a>
+        </p>
+      </nav>
+      <section class="rounded-lg border border-border bg-card overflow-hidden" aria-label="Word Finder">
+        <WordFinderByLength client:load length={length} />
+      </section>
+      <section class="rounded-lg border border-border bg-card p-4">
+        <h2 class="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">Word Finders</h2>
+        <ul class="space-y-2 list-none pl-0 text-sm">
+          {wordFindersList.map((item) => (
+            <li>
+              <a href={item.href} class="text-foreground hover:text-primary transition-colors block">
+                {item.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <article class="rounded-lg border border-border bg-card p-4 text-muted-foreground leading-relaxed text-sm">
+        <h2 class="text-base font-semibold text-foreground mb-2">About {length}-letter words</h2>
+        <p>
+          <strong class="text-foreground">{length}-letter words</strong> are useful for Wordle, Scrabble, Words with Friends, and crosswords. Use the finder above or <a href="/unscramble" class="text-primary hover:underline">Unscramble</a> to find words from your letters.
+        </p>
+      </article>
+    </aside>
+
+    <div class="md:col-start-2 md:row-start-1 min-w-0 w-full" role="region" aria-label="Main content: SEO text and word list">
+      <header class="mb-6">
+        <h1 class="text-3xl md:text-4xl font-bold text-foreground mb-3">{length} Letter Words</h1>
+        <p class="text-muted-foreground leading-relaxed max-w-2xl">
+          Word games like Words with Friends, Scrabble, and Wordle are more popular than ever. {length}-letter words are a great fit for daily puzzles and board games. Browse the full list below or use the word finder on the left to search by letters and filters.
+        </p>
+      </header>
+
+      <section class="mb-8" aria-labelledby="word-list-heading">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <h2 id="word-list-heading" class="text-xl font-semibold text-foreground">{length} letter words</h2>
+          <div class="flex items-center gap-2">
+            <label for="sort-words" class="text-sm text-muted-foreground">Sort:</label>
+            <select id="sort-words" class="rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary" aria-label="Sort word list">
+              <option value="alpha">A–Z</option>
+              <option value="points">Points</option>
+            </select>
+          </div>
+        </div>
+        <div id="word-list-grid" class="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          {wordsByAlpha.map((w) => (
+            <a
+              href={`/unscramble?q=${encodeURIComponent(w)}`}
+              class="word-card p-3 rounded-lg border border-border bg-card hover:bg-muted hover:border-primary text-foreground text-center font-medium lowercase transition-colors"
+              data-word={w}
+              data-points={getScrabbleScore(w)}
+            >
+              <span class="word-label">{w}</span>
+              <span class="word-points text-muted-foreground text-xs ml-1" aria-hidden="true">{getScrabbleScore(w)}</span>
+            </a>
+          ))}
+        </div>
+        {hasMore && (
+          <div class="mt-4" id="more-container">
+            <button
+              type="button"
+              id="load-more-btn"
+              class="px-5 py-2.5 rounded-lg bg-primary text-white font-medium hover:opacity-90 transition-opacity"
+            >
+              Load more
+            </button>
+          </div>
+        )}
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-lg font-semibold text-foreground mb-3">Quick filters</h2>
+        <ul class="flex flex-wrap gap-2 list-none pl-0 text-sm">
+          <li><a href={`/${length}-letter-words-starting-with/a`} class="text-primary hover:underline">{length}-letter words starting with...</a></li>
+          <li><a href={`/${length}-letter-words-ending-with/a`} class="text-primary hover:underline">{length}-letter words ending in...</a></li>
+          <li><a href={`/${length}-letter-words-with-a`} class="text-primary hover:underline">{length}-letter words containing...</a></li>
+          <li><a href="/words-by-length" class="text-primary hover:underline">Browse all word lengths</a></li>
+        </ul>
+      </section>
+
+      <script define:vars={{ wordsByAlpha, wordsByPoints, restByAlpha, restByPoints, hasMore }}>
+        (function () {
+          const grid = document.getElementById('word-list-grid');
+          const sortSelect = document.getElementById('sort-words');
+          const loadBtn = document.getElementById('load-more-btn');
+          if (!grid || !sortSelect) return;
+
+          var SCRABBLE = { a:1,b:3,c:3,d:2,e:1,f:4,g:2,h:4,i:1,j:8,k:5,l:1,m:3,n:1,o:1,p:3,q:10,r:1,s:1,t:1,u:1,v:4,w:4,x:8,y:4,z:10 };
+          function score(w) {
+            var s = 0;
+            for (var i = 0; i < w.length; i++) s += SCRABBLE[w[i]] || 0;
+            return s;
+          }
+          function wordCardHtml(w, pts) {
+            return '<a href="/unscramble?q=' + encodeURIComponent(w) + '" class="word-card p-3 rounded-lg border border-border bg-card hover:bg-muted hover:border-primary text-foreground text-center font-medium lowercase transition-colors"><span class="word-label">' + w + '</span><span class="word-points text-muted-foreground text-xs ml-1" aria-hidden="true">' + pts + '</span></a>';
+          }
+          function renderList(words) {
+            return words.map(function (w) { return wordCardHtml(w, score(w)); }).join('');
+          }
+
+          var loaded = false;
+          var sortBy = sortSelect.value;
+
+          function getInitial() { return sortBy === 'points' ? wordsByPoints : wordsByAlpha; }
+          function getRest() { return sortBy === 'points' ? restByPoints : restByAlpha; }
+
+          function refreshGrid() {
+            grid.innerHTML = renderList(getInitial());
+            if (loaded && hasMore) grid.innerHTML += renderList(getRest());
+          }
+
+          sortSelect.addEventListener('change', function () {
+            sortBy = this.value;
+            refreshGrid();
+          });
+
+          if (loadBtn && hasMore) {
+            loadBtn.addEventListener('click', function () {
+              grid.innerHTML += renderList(getRest());
+              loadBtn.remove();
+              loaded = true;
+            });
+          }
+        })();
+      </script>
+    </div>
+  </div>
 </Layout>

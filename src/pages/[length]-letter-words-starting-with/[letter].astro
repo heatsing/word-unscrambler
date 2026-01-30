@@ -1,0 +1,88 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { getMeta } from '@/lib/meta';
+import { getWordsByLength } from '@/lib/words-data';
+
+export function getStaticPaths() {
+  const lengths = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  const paths: { params: { length: string; letter: string }; props: { lengthNum: number; letter: string } }[] = [];
+  for (const len of lengths) {
+    for (const letter of letters) {
+      paths.push({
+        params: { length: `${len}-letter-words-starting-with`, letter },
+        props: { lengthNum: len, letter },
+      });
+    }
+  }
+  return paths;
+}
+
+const { lengthNum, letter } = Astro.props;
+const letterUpper = letter.toUpperCase();
+const allWords = getWordsByLength(lengthNum);
+const words = allWords.filter((w) => w.toLowerCase().startsWith(letter));
+
+const meta = getMeta(
+  `/${lengthNum}-letter-words-starting-with/${letter}`,
+  `${lengthNum} Letter Words Starting with ${letterUpper} | Word Finder`,
+  `Complete list of ${lengthNum}-letter words that start with ${letterUpper}. Perfect for Scrabble, Wordle, Words with Friends, and word puzzles.`
+);
+
+const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+---
+
+<Layout meta={meta}>
+  <nav class="mb-6">
+    <a href={`/${lengthNum}-letter-words`} class="text-sm text-muted-foreground hover:text-primary">← {lengthNum} Letter Words</a>
+  </nav>
+
+  <header class="mb-8">
+    <h1 class="text-4xl font-bold text-foreground mb-2">{lengthNum} Letter Words Starting with {letterUpper}</h1>
+    <p class="text-muted-foreground">{words.length} words</p>
+  </header>
+
+  <nav aria-label="Letter A–Z" class="mb-8">
+    <ul class="flex flex-wrap gap-2 list-none pl-0">
+      {alphabet.map((l) => (
+        <li>
+          <a
+            href={`/${lengthNum}-letter-words-starting-with/${l}`}
+            class:list={[
+              'inline-flex items-center justify-center w-10 h-10 rounded-lg border font-semibold uppercase transition-colors',
+              l === letter ? 'bg-primary text-white border-primary' : 'border-border bg-card hover:bg-muted hover:border-primary text-foreground',
+            ]}
+          >
+            {l}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  {words.length > 0 ? (
+    <section class="mb-8">
+      <h2 class="text-xl font-semibold text-foreground mb-4">All {lengthNum}-letter words starting with {letterUpper}</h2>
+      <div class="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        {words.map((w) => (
+          <a
+            href={`/unscramble?q=${encodeURIComponent(w)}`}
+            class="p-3 rounded-lg border border-border bg-card hover:bg-muted hover:border-primary text-foreground text-center font-medium lowercase transition-colors"
+          >
+            {w}
+          </a>
+        ))}
+      </div>
+    </section>
+  ) : (
+    <p class="text-lg text-muted-foreground rounded-lg border border-border bg-card p-8 text-center">
+      No {lengthNum}-letter words found starting with &quot;{letterUpper}&quot;.
+    </p>
+  )}
+
+  <article class="rounded-lg border border-border bg-card p-6 text-muted-foreground leading-relaxed">
+    <p>
+      Use <a href="/unscramble" class="text-primary hover:underline">Unscramble</a> to find words from your letters, or browse <a href="/words-by-length" class="text-primary hover:underline">Words By Length</a>.
+    </p>
+  </article>
+</Layout>

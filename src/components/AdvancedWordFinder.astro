@@ -1,0 +1,188 @@
+---
+interface Props {
+  length: number;
+}
+const { length } = Astro.props;
+const UNKNOWN_SLOTS = 5;
+const EXCLUDE_SLOTS = 5;
+---
+
+<div
+  class="advanced-word-finder rounded-xl border border-border bg-card p-4 md:p-6"
+  data-advanced-word-finder
+  data-length={length}
+>
+  <h2 class="text-lg font-semibold text-foreground mb-4">Word Finder & Unscrambler</h2>
+
+  <section class="mb-4">
+    <h3 class="text-sm font-medium text-foreground mb-1">Position known</h3>
+    <p class="text-xs text-muted-foreground mb-2">Letters in order</p>
+    <div class="flex flex-wrap gap-2" data-known-container>
+      {Array.from({ length }, (_, i) => (
+        <div class="flex flex-col items-center gap-0.5">
+          <span class="text-xs text-muted-foreground">{i + 1}</span>
+          <input
+            type="text"
+            maxlength={1}
+            data-known
+            data-index={i}
+            class="h-10 w-10 rounded border border-border bg-background text-center text-lg font-medium uppercase text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-label={`Position ${i + 1}`}
+          />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-4">
+    <h3 class="text-sm font-medium text-foreground mb-1">Position unknown</h3>
+    <p class="text-xs text-muted-foreground mb-2">Letters in any order</p>
+    <div class="flex flex-wrap gap-2" data-unknown-container>
+      {Array.from({ length: UNKNOWN_SLOTS }, (_, i) => (
+        <input
+          type="text"
+          maxlength={1}
+          data-unknown
+          data-index={i}
+          placeholder="?"
+          class="h-10 w-10 rounded border border-border bg-background text-center text-lg font-medium text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          aria-label={`Unknown letter ${i + 1}`}
+        />
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-4">
+    <h3 class="text-sm font-medium text-foreground mb-1">Exclude</h3>
+    <p class="text-xs text-muted-foreground mb-2">Letters not in word</p>
+    <div class="flex flex-wrap gap-2" data-exclude-container>
+      {Array.from({ length: EXCLUDE_SLOTS }, (_, i) => (
+        <input
+          type="text"
+          maxlength={1}
+          data-exclude
+          data-index={i}
+          placeholder="X"
+          class="h-10 w-10 rounded border border-border bg-background text-center text-lg font-medium text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          aria-label={`Exclude letter ${i + 1}`}
+        />
+      ))}
+    </div>
+  </section>
+
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <button
+      type="button"
+      data-reset
+      class="rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+    >
+      Reset
+    </button>
+    <button
+      type="button"
+      data-find
+      class="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+    >
+      Find Words
+    </button>
+  </div>
+
+  <div class="mt-4 hidden rounded-lg border border-border bg-muted/30 p-4" data-results-wrap>
+    <h3 class="text-sm font-medium text-foreground mb-2" data-results-heading>0 words</h3>
+    <div class="flex flex-wrap gap-2 max-h-48 overflow-y-auto" data-results-grid></div>
+  </div>
+</div>
+
+<script>
+  import { filterWords } from '@/lib/advancedFilter';
+
+  function init() {
+    const root = document.querySelector('[data-advanced-word-finder]');
+    if (!root) return;
+    const len = parseInt(root.getAttribute('data-length') || '5', 10);
+    if (len < 2 || len > 10) return;
+
+    const knownInputs = root.querySelectorAll('[data-known]');
+    const unknownInputs = root.querySelectorAll('[data-unknown]');
+    const excludeInputs = root.querySelectorAll('[data-exclude]');
+    const resetBtn = root.querySelector('[data-reset]');
+    const findBtn = root.querySelector('[data-find]');
+    const resultsWrap = root.querySelector('[data-results-wrap]');
+    const resultsHeading = root.querySelector('[data-results-heading]');
+    const resultsGrid = root.querySelector('[data-results-grid]');
+
+    if (!findBtn || !resultsWrap || !resultsHeading || !resultsGrid) return;
+
+    let wordList: string[] = [];
+
+    function getKnown(): string[] {
+      return Array.from(knownInputs).map((i) => (i.value || '').trim().toLowerCase().slice(0, 1));
+    }
+    function getUnknown(): string {
+      return Array.from(unknownInputs)
+        .map((i) => (i.value || '').trim().toLowerCase().slice(0, 1))
+        .join('');
+    }
+    function getExclude(): string {
+      return Array.from(excludeInputs)
+        .map((i) => (i.value || '').trim().toLowerCase().slice(0, 1))
+        .join('');
+    }
+
+    function runFilter() {
+      const known = getKnown();
+      const unknownLetters = getUnknown();
+      const excludeLetters = getExclude();
+      const filtered = filterWords(wordList, len, {
+        known,
+        unknownLetters,
+        excludeLetters,
+      });
+      const sorted = filtered.sort((a, b) => a.localeCompare(b));
+      resultsHeading.textContent = `${sorted.length} word${sorted.length !== 1 ? 's' : ''}`;
+      resultsGrid.innerHTML = sorted
+        .slice(0, 200)
+        .map(
+          (w) =>
+            `<a href="/unscramble?q=${encodeURIComponent(w)}" class="inline-block rounded border border-border bg-card px-2.5 py-1 text-sm font-medium text-foreground hover:bg-muted hover:border-primary transition-colors">${w}</a>`
+        )
+        .join('');
+      if (sorted.length > 200) {
+        resultsGrid.innerHTML += `<span class="text-xs text-muted-foreground">… and ${sorted.length - 200} more</span>`;
+      }
+      resultsWrap.classList.remove('hidden');
+    }
+
+    findBtn.addEventListener('click', () => {
+      if (wordList.length === 0) {
+        findBtn.disabled = true;
+        findBtn.textContent = 'Loading…';
+        fetch(`/data/words_${len}.json`)
+          .then((r) => (r.ok ? r.json() : []))
+          .catch(() => [])
+          .then((arr: string[]) => {
+            wordList = Array.isArray(arr) ? arr : [];
+            findBtn.disabled = false;
+            findBtn.textContent = 'Find Words';
+            runFilter();
+          });
+      } else {
+        runFilter();
+      }
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      knownInputs.forEach((i) => (i.value = ''));
+      unknownInputs.forEach((i) => (i.value = ''));
+      excludeInputs.forEach((i) => (i.value = ''));
+      resultsWrap.classList.add('hidden');
+      resultsGrid.innerHTML = '';
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

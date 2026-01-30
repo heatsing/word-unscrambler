@@ -1,6 +1,5 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import InternalLinks from '@/components/InternalLinks.astro';
 import { getMeta } from '@/lib/meta';
 
 interface Props {
@@ -14,10 +13,9 @@ const meta = getMeta(path, title, description);
 
 <Layout meta={meta}>
   <article>
-    <h1 class="text-4xl font-bold mb-4">{title}</h1>
-    <div class="text-gray-600 text-lg mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">{title}</h1>
+    <div class="text-muted-foreground text-lg mb-8">
       <slot />
     </div>
   </article>
-  <InternalLinks />
 </Layout>

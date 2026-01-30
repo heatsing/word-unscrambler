@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
+import tailwindcss from '@tailwindcss/vite';
 
 const SITE = 'https://wordunscrambler.cc';
 
@@ -17,6 +18,7 @@ export default defineConfig({
     inlineStylesheets: 'auto',
   },
   vite: {
+    plugins: [tailwindcss()],
     build: {
       rollupOptions: {
         output: {

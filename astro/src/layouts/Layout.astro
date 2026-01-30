@@ -1,0 +1,37 @@
+---
+import BaseHead from '@/components/BaseHead.astro';
+import { getMeta } from '@/lib/meta';
+import type { PageMeta } from '@/lib/meta';
+import '@/styles/global.css';
+
+interface Props {
+  meta: PageMeta;
+  title?: string;
+}
+const { meta } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={meta.title} description={meta.description} canonical={meta.canonical} />
+  </head>
+  <body class="min-h-screen bg-gray-50 text-gray-900 antialiased">
+    <header class="border-b border-gray-200 bg-white">
+      <div class="container mx-auto px-4 py-4 flex items-center justify-between max-w-4xl">
+        <a href="/" class="text-xl font-bold text-primary">Word Unscrambler</a>
+        <nav class="flex gap-4 text-sm">
+          <a href="/" class="hover:underline">Home</a>
+          <a href="/unscramble" class="hover:underline font-medium">Unscramble</a>
+        </nav>
+      </div>
+    </header>
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+      <slot />
+    </main>
+    <footer class="border-t border-gray-200 bg-white mt-12">
+      <div class="container mx-auto px-4 py-6 max-w-4xl text-sm text-gray-600">
+        <slot name="footer" />
+      </div>
+    </footer>
+  </body>
+</html>

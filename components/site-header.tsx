@@ -18,7 +18,6 @@ const wordFinders = [
   { name: "Word Generator", href: "/word-generator", description: "Random words" },
   { name: "Word Scramble", href: "/word-scramble", description: "Scramble solver" },
   { name: "Boggle Solver", href: "/boggle-solver", description: "Solve Boggle grids" },
-  { name: "Crossword Solver", href: "/crossword-solver", description: "Crossword help" },
   { name: "Word Finder", href: "/word-finder", description: "Find words by letters" },
   { name: "Descrambler", href: "/descrambler", description: "Descramble letters fast" },
   { name: "Unscramble", href: "/unscramble", description: "Unscramble words quickly" },

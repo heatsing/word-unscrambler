@@ -87,7 +87,7 @@ export default function UnscrambleTool() {
     <div className="unscramble-tool">
       <div className="mb-6 flex gap-3 flex-wrap items-end">
         <div className="flex-1 min-w-[200px]">
-          <label htmlFor="letters" className="block text-sm font-medium text-gray-700 mb-1">Letters</label>
+          <label htmlFor="letters" className="block text-sm font-medium text-foreground mb-1">Letters</label>
           <input
             id="letters"
             ref={inputRef}
@@ -146,7 +146,7 @@ export default function UnscrambleTool() {
             )}
           </div>
           {results.length === 0 && !loading && (
-            <p className="text-gray-600">No words found for these letters. Try different letters or length range.</p>
+            <p className="text-muted-foreground">No words found for these letters. Try different letters or length range.</p>
           )}
           {results.length > 0 && (
             <div className="grid gap-6">
@@ -154,10 +154,10 @@ export default function UnscrambleTool() {
                 .sort((a, b) => b[0] - a[0])
                 .map(([len, words]) => (
                   <div key={len}>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">{len} letter{len !== 1 ? 's' : ''}</h3>
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">{len} letter{len !== 1 ? 's' : ''}</h3>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                       {words.map((r) => (
-                        <div key={r.word} className="p-4 rounded-lg border border-gray-200 bg-white shadow cursor-pointer hover:bg-primary/10 transition-colors text-center font-medium" title={`Score: ${r.score}`}>
+                        <div key={r.word} className="p-4 rounded-lg border border-border bg-card shadow cursor-pointer hover:bg-primary/10 transition-colors text-center font-medium text-foreground" title={`Score: ${r.score}`}>
                           {r.word}
                         </div>
                       ))}

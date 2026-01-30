@@ -2,7 +2,7 @@
 
 **Word Unscrambler** is a fast, free online word unscramble tool that helps you solve anagrams, word scrambles, and spelling challenges. Generate valid English words from scrambled letters, filter by length, and quickly find the best matches for learning, games, and teaching.
 
-The **main site** is built with [Astro](https://astro.build) (static output). The `app/` folder contains legacy Next.js code and is not used for the current build.
+The site is built with [Astro](https://astro.build) (static output) only. All routes (tool pages, words-by-length, words-start-with, words-ending-in, N-letter-words-with-X, etc.) are generated from `src/pages/`.
 
 ## 🚀 Key Features
 
@@ -36,7 +36,7 @@ npm run build     # builds dict + Astro → dist/
 npm run preview   # serve dist/
 ```
 
-- **Dictionary**: Put `words.txt` (one word per line) in the project root, or leave it out to use the built-in sample. Run `npm run build:dict` to regenerate `public/data/words_*.json`.
+- **Dictionary**: Put `words.txt` (one word per line) in the project root, or leave it out to use the built-in sample. Run `npm run build:dict` to regenerate `public/data/words_*.json`. For a much larger 2–10 letter dictionary, run once (with network): `npx tsx scripts/download-words-alpha.ts` to fetch a public word list into `words_alpha.txt`; the build will merge it automatically. Use `SKIP_REMOTE_DICT=1` to skip network fetch and use only `words.txt` plus optional `words_alpha.txt` or the bundled subset.
 
 ## 📦 Deployment
 

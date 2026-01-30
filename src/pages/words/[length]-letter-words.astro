@@ -1,0 +1,75 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { getMeta } from '@/lib/meta';
+import { getWordsByLength } from '@/lib/words-data';
+import AdvancedWordFinder from '@/components/AdvancedWordFinder.astro';
+
+export function getStaticPaths() {
+  return [3, 4, 5, 6, 7, 8, 9, 10].map((length) => ({
+    params: { length: length.toString() },
+    props: { length },
+  }));
+}
+
+const { length } = Astro.props;
+const allWords = getWordsByLength(length);
+const LIST_SIZE = 600;
+const displayWords = allWords.slice(0, LIST_SIZE);
+
+const meta = getMeta(
+  `/words/${length}-letter-words`,
+  `${length}-Letter Words`,
+  `Browse ${length}-letter words. Use the word finder to search by position, required letters, and exclusions.`
+);
+
+const otherLengths = [3, 4, 5, 6, 7, 8, 9, 10].filter((n) => n !== length);
+---
+
+<Layout meta={meta}>
+  <article class="max-w-4xl mx-auto">
+    <section class="mb-8">
+      <AdvancedWordFinder length={length} />
+    </section>
+
+    <header class="mb-6">
+      <nav class="flex flex-wrap gap-2 mb-4 text-sm" aria-label="Word length">
+        {otherLengths.map((n) => (
+          <a
+            href={`/words/${n}-letter-words`}
+            class:list={[
+              'rounded px-3 py-1.5 font-medium transition-colors',
+              n === length ? 'bg-primary text-white' : 'text-foreground hover:bg-muted hover:text-primary',
+            ]}
+          >
+            {n}-Letter
+          </a>
+        ))}
+      </nav>
+      <h1 class="text-3xl font-bold text-foreground mb-3">{length}-Letter Words</h1>
+      <p class="text-muted-foreground leading-relaxed">
+        Find {length}-letter words for word games and puzzles. Use the tool above to filter by known positions, letters that must appear somewhere, and letters to exclude. The list below shows up to {displayWords.length} words.
+      </p>
+    </header>
+
+    <section class="mb-8" aria-labelledby="word-list-heading">
+      <h2 id="word-list-heading" class="text-xl font-semibold text-foreground mb-4">
+        {length}-letter words ({displayWords.length} shown)
+      </h2>
+      <div class="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        {displayWords.map((w) => (
+          <a
+            href={`/unscramble?q=${encodeURIComponent(w)}`}
+            class="p-2.5 rounded-lg border border-border bg-card hover:bg-muted hover:border-primary text-foreground text-center text-sm font-medium lowercase transition-colors"
+          >
+            {w}
+          </a>
+        ))}
+      </div>
+      {allWords.length > LIST_SIZE && (
+        <p class="mt-3 text-sm text-muted-foreground">
+          Showing top {LIST_SIZE} of {allWords.length} words. Use the Word Finder at the top to narrow results.
+        </p>
+      )}
+    </section>
+  </article>
+</Layout>

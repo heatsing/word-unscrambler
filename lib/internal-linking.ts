@@ -22,7 +22,7 @@ export const siteArchitecture = {
   tier3: [
     { url: '/jumble-solver', title: 'Jumble Solver', priority: 0.8 },
     { url: '/boggle-solver', title: 'Boggle Solver', priority: 0.8 },
-    { url: '/crossword-solver', title: 'Crossword Solver', priority: 0.8 },
+    { url: '/word-finder', title: 'Word Finder', priority: 0.8 },
     { url: '/words-by-length', title: 'Words By Length', priority: 0.8 },
     { url: '/words-start-with', title: 'Words Start With', priority: 0.8 },
     { url: '/words-ending-in', title: 'Words Ending In', priority: 0.8 },

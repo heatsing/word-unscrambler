@@ -3,7 +3,8 @@ import ContentPage from '@/components/ContentPage.astro';
 import { TOOL_PAGES } from '@/lib/tool-pages';
 
 export function getStaticPaths() {
-  return TOOL_PAGES.map((p) => ({
+  const exclude = ['/words-ending-in', '/words-by-length', '/words-start-with', '/words-with-letters'];
+  return TOOL_PAGES.filter((p) => !exclude.includes(p.path)).map((p) => ({
     params: { slug: p.path.slice(1) },
     props: p,
   }));
