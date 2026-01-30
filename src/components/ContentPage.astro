@@ -6,16 +6,21 @@ interface Props {
   path: string;
   title: string;
   description: string;
+  contentHtml?: string;
 }
-const { path, title, description } = Astro.props;
+const { path, title, description, contentHtml } = Astro.props;
 const meta = getMeta(path, title, description);
 ---
 
 <Layout meta={meta}>
   <article>
     <h1 class="text-4xl font-bold mb-4 text-foreground">{title}</h1>
-    <div class="text-muted-foreground text-lg mb-8">
-      <slot />
+    <div class="text-muted-foreground text-lg mb-8 [&_a]:text-primary [&_a]:hover:underline">
+      {contentHtml ? (
+        <div set:html={contentHtml} />
+      ) : (
+        <slot />
+      )}
     </div>
   </article>
 </Layout>

@@ -51,7 +51,7 @@ const wordFindersList = [...dailyGameHints, ...wordFinders];
   └───────────────┴───────────────────────────────┘
   -->
   <div class="letter-words-grid">
-    <aside class="md:col-start-1 md:row-start-1 flex flex-col gap-4 md:gap-6 sticky top-20 md:top-24 self-start w-full md:min-w-0 md:border-l-4 md:border-l-primary/30 md:pl-4" aria-label="Tool sidebar: search and other tools">
+    <aside class="md:col-start-1 md:row-start-1 flex flex-col gap-4 md:gap-6 sticky top-20 md:top-24 self-start w-full md:min-w-0 md:border-l md:border-border md:pl-4" aria-label="Tool sidebar: search and other tools">
       <section class="rounded-lg border border-border bg-card overflow-hidden" aria-label="Word Finder">
         <WordFinderByLength client:load length={length} />
       </section>
@@ -146,7 +146,7 @@ const wordFindersList = [...dailyGameHints, ...wordFinders];
             <button
               type="button"
               id="load-more-btn"
-              class="px-5 py-2.5 rounded-lg bg-primary text-white font-medium hover:opacity-90 transition-opacity"
+              class="px-5 py-2.5 rounded-lg bg-primary text-white font-medium border border-primary hover:bg-primary/90 transition-colors min-h-[2.75rem]"
             >
               Load more
             </button>

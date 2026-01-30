@@ -38,7 +38,7 @@ const faqSchema = getFAQPageSchema(homeFaqs);
       Same structure as the menu: pick a category below to get started.
     </p>
     <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="rounded-lg border border-border bg-card p-5 shadow-sm">
+      <div class="rounded-lg border border-border bg-card p-5">
         <h3 class="font-semibold text-lg mb-3 text-foreground">Word Finders</h3>
         <ul class="space-y-2 text-sm">
           {wordFinders.slice(0, 6).map((item) => (
@@ -47,7 +47,7 @@ const faqSchema = getFAQPageSchema(homeFaqs);
           <li><a href="/word-unscrambler" class="text-muted-foreground hover:text-primary text-xs">View all →</a></li>
         </ul>
       </div>
-      <div class="rounded-lg border border-border bg-card p-5 shadow-sm">
+      <div class="rounded-lg border border-border bg-card p-5">
         <h3 class="font-semibold text-lg mb-3 text-foreground">List of Words</h3>
         <ul class="space-y-2 text-sm">
           {wordLists.map((item) => (
@@ -55,7 +55,7 @@ const faqSchema = getFAQPageSchema(homeFaqs);
           ))}
         </ul>
       </div>
-      <div class="rounded-lg border border-border bg-card p-5 shadow-sm">
+      <div class="rounded-lg border border-border bg-card p-5">
         <h3 class="font-semibold text-lg mb-3 text-foreground">Words by Length</h3>
         <ul class="space-y-2 text-sm">
           {wordsByLength.slice(0, 6).map((item) => (
@@ -64,7 +64,7 @@ const faqSchema = getFAQPageSchema(homeFaqs);
           <li><a href="/words-by-length" class="text-muted-foreground hover:text-primary text-xs">View all →</a></li>
         </ul>
       </div>
-      <div class="rounded-lg border border-border bg-card p-5 shadow-sm">
+      <div class="rounded-lg border border-border bg-card p-5">
         <h3 class="font-semibold text-lg mb-3 text-foreground">Daily Game Hints</h3>
         <ul class="space-y-2 text-sm">
           {dailyGameHints.map((item) => (

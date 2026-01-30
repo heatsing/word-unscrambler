@@ -157,7 +157,7 @@ export default function UnscrambleTool() {
                     <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">{len} letter{len !== 1 ? 's' : ''}</h3>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                       {words.map((r) => (
-                        <div key={r.word} className="p-4 rounded-lg border border-border bg-card shadow cursor-pointer hover:bg-primary/10 transition-colors text-center font-medium text-foreground" title={`Score: ${r.score}`}>
+                        <div key={r.word} className="p-4 rounded-lg border border-border bg-card cursor-pointer hover:bg-muted transition-colors text-center font-medium text-foreground" title={`Score: ${r.score}`}>
                           {r.word}
                         </div>
                       ))}

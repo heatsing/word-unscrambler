@@ -1,6 +1,7 @@
 ---
 import ContentPage from '@/components/ContentPage.astro';
 import { TOOL_PAGES } from '@/lib/tool-pages';
+import { getToolPageContent } from '@/lib/tool-page-content';
 
 export function getStaticPaths() {
   const exclude = ['/words-ending-in', '/words-by-length', '/words-start-with', '/words-with-letters'];
@@ -11,8 +12,7 @@ export function getStaticPaths() {
 }
 
 const { path, title, description } = Astro.props;
+const contentHtml = getToolPageContent(path);
 ---
 
-<ContentPage path={path} title={title} description={description}>
-  <p>Use our <a href="/unscramble" class="text-primary hover:underline">Unscramble</a> tool to enter your letters and find all valid words. This page is part of our word game tools for Wordle, Scrabble, Words with Friends, and more.</p>
-</ContentPage>
+<ContentPage path={path} title={title} description={description} contentHtml={contentHtml} />

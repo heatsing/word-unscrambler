@@ -96,7 +96,7 @@ export default function WordFinderByLength({ length }: WordFinderByLengthProps) 
   const hasAny = knownStr || unknownStr || excludeStr;
 
   return (
-    <div className="word-finder-by-length rounded-xl border border-border bg-card p-6 shadow-sm">
+    <div className="word-finder-by-length rounded-lg border border-border bg-card p-6">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-2xl font-bold text-foreground">
           Word Finder <span className="text-muted-foreground">& Unscrambler</span>
@@ -124,7 +124,7 @@ export default function WordFinderByLength({ length }: WordFinderByLengthProps) 
                 maxLength={1}
                 value={v}
                 onChange={(e) => setKnownAt(i, e.target.value)}
-                className="h-12 w-12 rounded-lg border border-border bg-background text-center text-xl font-semibold uppercase text-foreground focus:outline-none focus:ring-2"
+                className="h-12 w-12 rounded-lg border border-border bg-background text-center text-xl font-semibold uppercase text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                 aria-label={`Position ${i + 1} known letter`}
               />
             </div>
@@ -151,7 +151,7 @@ export default function WordFinderByLength({ length }: WordFinderByLengthProps) 
                 value={v}
                 onChange={(e) => setUnknownAt(i, e.target.value)}
                 placeholder="?"
-                className="h-12 w-12 rounded-lg border border-border bg-background text-center text-xl font-semibold text-muted-foreground focus:outline-none focus:ring-2"
+                className="h-12 w-12 rounded-lg border border-border bg-background text-center text-xl font-semibold text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                 aria-label={`Unknown letter ${i + 1}`}
               />
             </div>
@@ -178,7 +178,7 @@ export default function WordFinderByLength({ length }: WordFinderByLengthProps) 
                 value={v}
                 onChange={(e) => setExcludeAt(i, e.target.value)}
                 placeholder="X"
-                className="h-12 w-12 rounded-lg border border-border bg-background text-center text-xl font-semibold text-muted-foreground focus:outline-none focus:ring-2"
+                className="h-12 w-12 rounded-lg border border-border bg-background text-center text-xl font-semibold text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                 aria-label={`Exclude letter ${i + 1}`}
               />
             </div>
@@ -199,7 +199,7 @@ export default function WordFinderByLength({ length }: WordFinderByLengthProps) 
           type="button"
           onClick={findWords}
           disabled={loading}
-          className="rounded-lg bg-gradient-to-r from-primary to-primary/80 px-6 py-3 text-sm font-semibold text-white shadow hover:opacity-90 disabled:opacity-50 transition-opacity"
+          className="rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white border border-primary hover:bg-primary/90 disabled:opacity-50 transition-colors min-h-[2.75rem]"
         >
           {loading ? 'Searching…' : 'Find Words'}
         </button>
