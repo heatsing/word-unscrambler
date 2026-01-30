@@ -24,7 +24,7 @@ export default function TextTwistPage() {
       return
     }
     const words = unscrambleWord(input)
-    setResults(words)
+    setResults(words.map((w) => w.word))
     setSearched(true)
   }
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { Card } from "@/components/ui/card"
 import { Info } from "lucide-react"
 
@@ -25,9 +26,9 @@ export default function AboutPage() {
             <section>
               <h2 className="text-2xl font-bold text-foreground mb-3">Our Mission</h2>
               <p className="leading-relaxed">
-                Word Unscrambler is dedicated to helping word game enthusiasts, puzzle solvers, and language learners
-                find the perfect words for any situation. Whether you're stuck on a Wordle puzzle, looking for
-                high-scoring Scrabble words, or simply want to expand your vocabulary, we're here to help.
+                <strong>Word Unscrambler</strong> is dedicated to helping word game enthusiasts, puzzle solvers, and language learners
+                find the perfect words for any situation. Whether you&apos;re stuck on a <Link href="/wordle-solver" className="text-primary font-medium hover:underline">Wordle puzzle</Link>, looking for
+                high-scoring <Link href="/scrabble" className="text-primary font-medium hover:underline">Scrabble words</Link>, or simply want to expand your vocabulary, we&apos;re here to help.
               </p>
             </section>
 
@@ -35,11 +36,11 @@ export default function AboutPage() {
               <h2 className="text-2xl font-bold text-foreground mb-3">What We Offer</h2>
               <p className="leading-relaxed mb-3">Our comprehensive suite of word tools includes:</p>
               <ul className="list-disc pl-6 space-y-2">
-                <li>Word Unscrambler - Turn jumbled letters into valid words</li>
-                <li>Anagram Solver - Find all anagrams of any word</li>
-                <li>Wordle Solver - Get the best word suggestions for Wordle</li>
-                <li>Scrabble Word Finder - Discover high-scoring words</li>
-                <li>Words by Length - Browse comprehensive word lists</li>
+                <li><Link href="/word-unscrambler" className="text-primary font-medium hover:underline">Word Unscrambler</Link> — Turn jumbled letters into valid words</li>
+                <li><Link href="/anagram-solver" className="text-primary font-medium hover:underline">Anagram Solver</Link> — Find all anagrams of any word</li>
+                <li><Link href="/wordle-solver" className="text-primary font-medium hover:underline">Wordle Solver</Link> — Get the best word suggestions for Wordle</li>
+                <li><Link href="/scrabble" className="text-primary font-medium hover:underline">Scrabble Word Finder</Link> — Discover high-scoring words</li>
+                <li><Link href="/words-by-length" className="text-primary font-medium hover:underline">Words by Length</Link> — Browse comprehensive word lists</li>
                 <li>And many more specialized tools</li>
               </ul>
             </section>
@@ -48,8 +49,8 @@ export default function AboutPage() {
               <h2 className="text-2xl font-bold text-foreground mb-3">Our Technology</h2>
               <p className="leading-relaxed">
                 We maintain an extensive dictionary database with over 100,000 valid words. Our algorithms quickly
-                search through this database to find the best matches for your query, whether you're unscrambling
-                letters, finding anagrams, or searching for words by pattern.
+                search through this database to find the best matches for your query, whether you&apos;re <strong>unscrambling letters</strong>,
+                finding anagrams with our <Link href="/anagram-solver" className="text-primary font-medium hover:underline">anagram solver</Link>, or searching for <Link href="/words-start-with" className="text-primary font-medium hover:underline">words starting with</Link> or <Link href="/words-ending-in" className="text-primary font-medium hover:underline">words ending in</Link> specific letters.
               </p>
             </section>
 
@@ -65,7 +66,7 @@ export default function AboutPage() {
             <section>
               <h2 className="text-2xl font-bold text-foreground mb-3">Contact Us</h2>
               <p className="leading-relaxed">
-                Have questions, suggestions, or feedback? We'd love to hear from you! Visit our contact page to get in
+                Have questions, suggestions, or feedback? We&apos;d love to hear from you! <Link href="/contact" className="text-primary font-medium hover:underline">Contact us</Link> to get in
                 touch with our team.
               </p>
             </section>

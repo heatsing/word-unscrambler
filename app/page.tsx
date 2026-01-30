@@ -22,8 +22,7 @@ export default function HomePage() {
             Word Unscrambler & Word Game Solver
           </h1>
           <p className="text-fluid-base md:text-xl text-muted-foreground mb-8 md:mb-12 text-pretty leading-relaxed-mobile">
-            Unscramble letters, solve word puzzles, and dominate your favorite word games. Get instant solutions for
-            Wordle, Scrabble, Words with Friends, and more.
+            Use our <strong>word unscrambler</strong> to unscramble letters, solve word puzzles, and dominate your favorite word games. Get instant solutions for <strong>Wordle</strong>, <strong>Scrabble</strong>, <strong>Words with Friends</strong>, and more.
           </p>
 
           {/* Interactive Search Component */}
@@ -43,7 +42,7 @@ export default function HomePage() {
                 <Type className="h-6 w-6 text-primary" />
               </div>
               <CardTitle>Word Unscrambler</CardTitle>
-              <CardDescription>Turn jumbled letters into valid words instantly</CardDescription>
+              <CardDescription>Turn jumbled letters into valid words with our <strong>letter unscrambler</strong></CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/word-unscrambler">
@@ -60,7 +59,7 @@ export default function HomePage() {
                 <Target className="h-6 w-6 text-primary" />
               </div>
               <CardTitle>Wordle Solver</CardTitle>
-              <CardDescription>Get the best word suggestions for Wordle puzzles</CardDescription>
+              <CardDescription>Get the best <strong>5 letter words</strong> and suggestions for Wordle puzzles</CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/wordle-solver">
@@ -77,7 +76,7 @@ export default function HomePage() {
                 <Search className="h-6 w-6 text-primary" />
               </div>
               <CardTitle>Anagram Solver</CardTitle>
-              <CardDescription>Find all possible anagrams from your letters</CardDescription>
+              <CardDescription>Find all possible anagrams with our <strong>anagram solver</strong></CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/anagram-solver">
@@ -94,7 +93,7 @@ export default function HomePage() {
                 <Grid3x3 className="h-6 w-6 text-primary" />
               </div>
               <CardTitle>Scrabble Word Finder</CardTitle>
-              <CardDescription>Find high-scoring Scrabble words from your tiles</CardDescription>
+              <CardDescription>Find high-scoring words with our <strong>Scrabble word finder</strong></CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/scrabble">
@@ -111,7 +110,7 @@ export default function HomePage() {
                 <BookOpen className="h-6 w-6 text-primary" />
               </div>
               <CardTitle>Words with Friends Help</CardTitle>
-              <CardDescription>Get word suggestions for Words with Friends</CardDescription>
+              <CardDescription>Get word suggestions with our <strong>Words with Friends cheat</strong></CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/words-with-friends">
@@ -158,19 +157,22 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Info Section */}
+      {/* Info Section - SEO/GEO: keyword emphasis + dofollow internal links */}
       <section className="bg-muted/30 rounded-lg p-6 md:p-8 lg:p-12 mx-2">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-fluid-2xl md:text-3xl font-bold mb-4 md:mb-6">How to Use Word Unscrambler</h2>
+          <h2 className="text-fluid-2xl md:text-3xl font-bold mb-4 md:mb-6">How to Use Our Word Unscrambler</h2>
           <div className="space-y-4 text-muted-foreground text-fluid-sm md:text-base">
             <p className="leading-relaxed-mobile">
-              Our word unscrambler is the perfect tool for solving word puzzles and games. Simply enter your letters,
-              and we'll instantly find all valid words you can make. Whether you're stuck on a Wordle puzzle, looking
-              for high-scoring Scrabble words, or need help with Words with Friends, we've got you covered.
+              Our <strong>word unscrambler</strong> is the perfect tool for solving word puzzles and games. Simply enter your letters,
+              and we&apos;ll instantly find all valid words you can make. Whether you&apos;re stuck on a <Link href="/wordle-solver" className="text-primary font-medium hover:underline">Wordle puzzle</Link>, looking
+              for high-scoring <Link href="/scrabble" className="text-primary font-medium hover:underline">Scrabble words</Link>, or need help with <Link href="/words-with-friends" className="text-primary font-medium hover:underline">Words with Friends</Link>, we&apos;ve got you covered.
             </p>
             <p className="leading-relaxed-mobile">
-              The tool supports advanced filters like word length, starting letters, and patterns. Our comprehensive
-              dictionary includes over 100,000 words, ensuring you'll find the perfect solution every time.
+              The tool supports advanced filters like word length, starting letters, and patterns. Browse <Link href="/words-by-length" className="text-primary font-medium hover:underline">words by length</Link> or use our <Link href="/anagram-solver" className="text-primary font-medium hover:underline">anagram solver</Link> for more options. Our comprehensive
+              dictionary includes over 100,000 words, ensuring you&apos;ll find the perfect solution every time.
+            </p>
+            <p className="leading-relaxed-mobile">
+              Need <strong>5 letter words</strong> for Wordle? Check our <Link href="/5-letter-words" className="text-primary font-medium hover:underline">5 letter words list</Link>. Playing Scrabble? Explore <Link href="/7-letter-words" className="text-primary font-medium hover:underline">7 letter words</Link> for bingo plays. For any jumbled letters, try our <Link href="/word-unscrambler" className="text-primary font-medium hover:underline">letter unscrambler</Link> or <Link href="/descrambler" className="text-primary font-medium hover:underline">word descrambler</Link>.
             </p>
           </div>
         </div>

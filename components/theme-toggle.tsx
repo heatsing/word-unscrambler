@@ -15,28 +15,26 @@ export function ThemeToggle() {
 
   if (!mounted) return null
 
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light")
+  }
+
+  const isLight = theme === "light"
+
   return (
-    <div className="flex items-center gap-2">
-      <Button
-        type="button"
-        size="sm"
-        variant="outline"
-        className="min-w-[88px] bg-white text-black border border-input hover:bg-muted"
-        aria-pressed={theme === "light"}
-        onClick={() => setTheme("light")}
-      >
-        Light
-      </Button>
-      <Button
-        type="button"
-        size="sm"
-        className="min-w-[88px] bg-black text-white hover:bg-black/90"
-        aria-pressed={theme === "dark"}
-        onClick={() => setTheme("dark")}
-      >
-        Dark
-      </Button>
-    </div>
+    <Button
+      type="button"
+      size="sm"
+      className={`min-w-[88px] transition-colors duration-200 ${
+        isLight
+          ? "bg-white text-black border border-input hover:bg-muted"
+          : "bg-black text-white hover:bg-black/90"
+      }`}
+      aria-label={isLight ? "切换到暗色模式" : "切换到亮色模式"}
+      onClick={toggleTheme}
+    >
+      {isLight ? "Light" : "Dark"}
+    </Button>
   )
 }
 

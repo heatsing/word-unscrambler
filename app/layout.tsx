@@ -128,12 +128,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Hreflang tags for GEO targeting */}
-        <link rel="alternate" hreflang="en-US" href="https://wordunscrambler.cc" />
-        <link rel="alternate" hreflang="en-GB" href="https://wordunscrambler.cc" />
-        <link rel="alternate" hreflang="en-CA" href="https://wordunscrambler.cc" />
-        <link rel="alternate" hreflang="en-AU" href="https://wordunscrambler.cc" />
-        <link rel="alternate" hreflang="en-NZ" href="https://wordunscrambler.cc" />
-        <link rel="alternate" hreflang="x-default" href="https://wordunscrambler.cc" />
+        <link rel="alternate" hrefLang="en-US" href="https://wordunscrambler.cc" />
+        <link rel="alternate" hrefLang="en-GB" href="https://wordunscrambler.cc" />
+        <link rel="alternate" hrefLang="en-CA" href="https://wordunscrambler.cc" />
+        <link rel="alternate" hrefLang="en-AU" href="https://wordunscrambler.cc" />
+        <link rel="alternate" hrefLang="en-NZ" href="https://wordunscrambler.cc" />
+        <link rel="alternate" hrefLang="x-default" href="https://wordunscrambler.cc" />
         
         {/* Structured Data */}
         <script

@@ -105,10 +105,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   // 转换为 sitemap 格式
+  type ChangeFreq = MetadataRoute.Sitemap[number]['changeFrequency']
   return allPages.map((page) => ({
     url: `${baseUrl}${page.url}`,
     lastModified: currentDate,
-    changeFrequency: page.changefreq,
+    changeFrequency: page.changefreq as ChangeFreq,
     priority: page.priority,
   }))
 }

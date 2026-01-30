@@ -13,7 +13,7 @@ export default function WordFinderPage() {
 
   const handleSearch = (letters: string) => {
     const words = unscrambleWord(letters)
-    setResults(words)
+    setResults(words.map((w) => w.word))
     setSearched(true)
   }
 

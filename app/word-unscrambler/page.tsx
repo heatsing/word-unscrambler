@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -379,22 +380,22 @@ export default function WordUnscramblerPage() {
           </Card>
         </div>
 
-        {/* SEO Content */}
+        {/* SEO/GEO: keyword emphasis + dofollow internal links */}
         <div className="mt-12 prose prose-sm max-w-none">
           <h2 className="text-2xl font-bold mb-4">Ultimate Word Unscrambler Tool</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">
-            Our advanced word unscrambler is the most powerful tool for solving word puzzles and dominating word games.
-            Whether you're playing Scrabble, Words with Friends, solving crossword puzzles, or exploring anagrams, our
+            Our advanced <strong>word unscrambler</strong> is the most powerful tool for solving word puzzles and dominating word games.
+            Whether you&apos;re playing <Link href="/scrabble" className="text-primary font-medium hover:underline">Scrabble</Link>, <Link href="/words-with-friends" className="text-primary font-medium hover:underline">Words with Friends</Link>, solving crossword puzzles, or exploring anagrams with our <Link href="/anagram-solver" className="text-primary font-medium hover:underline">anagram solver</Link>, our
             comprehensive dictionary and smart filtering system will help you find every possible word from your letters.
           </p>
           <p className="text-muted-foreground leading-relaxed mb-4">
             With advanced features like starts-with, ends-with, and contains filters, you can precisely target the words
             you need. Our Scrabble-based scoring system helps you identify the highest-value words, giving you a
-            competitive edge in any word game. The tool supports wildcards for blank tiles and allows you to set custom
+            competitive edge in any word game. Need <strong>5 letter words</strong> for <Link href="/wordle-solver" className="text-primary font-medium hover:underline">Wordle</Link>? Browse our <Link href="/5-letter-words" className="text-primary font-medium hover:underline">5 letter words list</Link>. The tool supports wildcards for blank tiles and allows you to set custom
             length constraints.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            Perfect for word game enthusiasts, puzzle solvers, and anyone looking to expand their vocabulary. Our
+            Perfect for word game enthusiasts, puzzle solvers, and anyone looking to expand their vocabulary. Use our <Link href="/word-finder" className="text-primary font-medium hover:underline">word finder</Link> or <Link href="/descrambler" className="text-primary font-medium hover:underline">word descrambler</Link> for more options. Our
             extensive dictionary includes thousands of valid words, regularly updated to ensure accuracy and
             completeness.
           </p>

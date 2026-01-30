@@ -32,16 +32,17 @@ export const sentryConfig = {
   ],
 
   // Before send hook - scrub sensitive data
-  beforeSend(event, hint) {
+  beforeSend(event: unknown, hint: unknown) {
     // Don't send errors in development
     if (process.env.NODE_ENV === 'development') {
       return null
     }
 
     // Scrub sensitive information
-    if (event.request) {
-      delete event.request.cookies
-      delete event.request.headers
+    const ev = event as { request?: { cookies?: unknown; headers?: unknown } }
+    if (ev.request) {
+      delete ev.request.cookies
+      delete ev.request.headers
     }
 
     return event

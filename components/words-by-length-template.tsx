@@ -253,7 +253,7 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
                   <div className="text-center mt-8">
                     <Button onClick={handleLoadMore} size="lg" variant="outline">
                       <Plus className="mr-2 h-4 w-4" />
-                      Load More Words ({words.length - displayCount} remaining)
+                      Load More Words
                     </Button>
                   </div>
                 )}
@@ -267,6 +267,172 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
             )}
           </div>
         </div>
+
+        {/* SEO & FAQ section */}
+        <section className="mb-12 space-y-8">
+          {length === 5 ? (
+            <>
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle>About 5-Letter Words in Word Games</CardTitle>
+                  <CardDescription>
+                    Why five-letter words matter so much in Wordle, Scrabble, and other puzzles.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+                  <p>
+                    Other than bingos, <strong>five letter words</strong> are some of the rarest plays in word games like <Link href="/words-with-friends" className="text-primary hover:underline">Words With Friends</Link> and <Link href="/scrabble" className="text-primary hover:underline">Scrabble</Link>. Most of the time, they have a less-than-average scoring ratio, but players
+                    use them to clear their rack of troublesome letters so that they can make easier bingos in later
+                    turns.
+                  </p>
+                  <h3 className="text-base font-semibold">Which are the most popular five-letter words?</h3>
+                  <p>
+                    OTHER, WHICH and THERE are among the most common five-letter words. The word WHICH, in particular,
+                    is a fine play to ditch both Hs, a W, and a C for decent points and to get more bingo-friendly
+                    letters in your rack. OTHER and THERE, however, use up strong bingo letters for relatively few
+                    points and are often better avoided.
+                  </p>
+                  <h3 className="text-base font-semibold">Strategy for 5-letter words</h3>
+                  <p>
+                    One of the chief strategies for 5-letter words is using the S tile to create two words at once by
+                    placing the S on a double or triple letter/word square. Remember that keeping two great letters in
+                    your rack after playing a five-letter word is often more important than squeezing out a couple of
+                    extra points while leaving yourself with awkward tiles.
+                  </p>
+                  <p>
+                    For example, if your rack is S, C, O, W, S, A, and T, you could hook{' '}
+                    <span className="font-semibold">scow</span> onto an existing word and keep S, A, and T in your rack.
+                    Even if you can score a few more points by playing the second S, it is usually not worth it because
+                    you would be giving up a great bingo setup. Other strong five-letter hooks starting with S include
+                    SLOJD, STOOK, and SIZAR.
+                  </p>
+                  <p>
+                    Another important group is five-letter words starting with C. There are only three Cs in the bag,
+                    but they&apos;re valuable in five-letter plays because C is a three-point tile that doesn&apos;t
+                    appear in any two-letter words. CHYME, CLOZE, and CIVVY are excellent ways to clear difficult
+                    consonants. CLOZE is especially strong because you can hook the Z to an A to make ZA and score at
+                    least 27 points even without a premium square.
+                  </p>
+                  <p>
+                    Five-letter words starting with E shine in the endgame because E is one of the best hooking
+                    letters, with EX, EL, EH, EN, ER, ES, ET, and EF all available. EERIE, EAGLE, and ETHER are all good
+                    examples of flexible, useful plays.
+                  </p>
+                  <h3 className="text-base font-semibold">Five-letter words and Wordle</h3>
+                  <p>
+                    Mastering <strong>five-letter words</strong> is crucial for solving the daily Wordle puzzle. You need to know how to
+                    spell a wide range of <strong>5 letter words</strong>, think about how letters combine, and quickly recall strong
+                    candidates as the feedback narrows your options. That&apos;s exactly why our <Link href="/wordle-solver" className="text-primary hover:underline">Wordle solver</Link>
+                    and <Link href="/5-letter-words" className="text-primary hover:underline">five-letter word list</Link> are so powerful for practice.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle>5-Letter Words FAQ</CardTitle>
+                  <CardDescription>Common questions about five-letter words in word games.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 text-sm text-muted-foreground leading-relaxed">
+                  <div>
+                    <h3 className="font-semibold">How many five-letter words are there?</h3>
+                    <p>
+                      There are 8,996 five-letter words in the Official Scrabble Players Dictionary, Volume 6. Your
+                      exact playable list may vary slightly depending on the word list used by your game or app.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">What are some five-letter words that start with E?</h3>
+                    <p>
+                      Popular examples include EAGLE, EVENS, EXTRA, ENURE, and ENEMY. These words are especially useful
+                      in both mid-game and endgame scenarios thanks to the flexible letter E.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">What are strong five-letter words that start with S?</h3>
+                    <p>
+                      Words like SHADY, SEXTS, SEVEN, SHEER, and SIZES can be excellent plays. Many S-starting words
+                      create hooks on existing words, helping you score well while opening new lanes on the board.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">
+                      How do five-letter words help me set up bingos in Scrabble and similar games?
+                    </h3>
+                    <p>
+                      A strong <Link href="/scrabble" className="text-primary hover:underline">Scrabble</Link> vocabulary focuses on bingos, but managing <strong>five-letter words</strong> starting with key
+                      letters like C, S, or E helps you keep a balanced rack. Well-chosen five-letter plays clear
+                      awkward tiles while leaving you with premium consonants and vowels for high-scoring <Link href="/7-letter-words" className="text-primary hover:underline">seven-letter words</Link>
+                      bingos on future turns.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          ) : (
+            <>
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle>About {length}-Letter Words</CardTitle>
+                  <CardDescription>
+                    Learn how {length}-letter words fit into your word game strategy.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+                  <p>
+                    <strong>{length}-letter words</strong> are an essential part of every strong word-game vocabulary. They bridge the
+                    gap between short utility words and full-length bingos, helping you score well while keeping a
+                    balanced rack for future plays.
+                  </p>
+                  <p>
+                    Use this list to explore new words, spot patterns, and discover fresh options when you&apos;re
+                    stuck. Filter by <Link href={`/words-start-with?length=${length}`} className="text-primary hover:underline">words starting with</Link>, <Link href={`/words-ending-in?length=${length}`} className="text-primary hover:underline">words ending in</Link>, or <Link href={`/words-with-letters?length=${length}`} className="text-primary hover:underline">words with letters</Link> to find
+                    playable {length}-letter words that fit your current board.
+                  </p>
+                  <p>
+                    Whether you&apos;re preparing for <Link href="/scrabble" className="text-primary hover:underline">Scrabble</Link>, <Link href="/words-with-friends" className="text-primary hover:underline">Words With Friends</Link>, crosswords, or other puzzles,
+                    try our <Link href="/word-unscrambler" className="text-primary hover:underline">word unscrambler</Link> or <Link href="/anagram-solver" className="text-primary hover:underline">anagram solver</Link> for more help.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle>{length}-Letter Words FAQ</CardTitle>
+                  <CardDescription>Helpful tips for using {length}-letter words effectively.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 text-sm text-muted-foreground leading-relaxed">
+                  <div>
+                    <h3 className="font-semibold">How many {length}-letter words are there?</h3>
+                    <p>
+                      There are thousands of {length}-letter words in common English word lists. The exact number
+                      depends on which dictionary your game uses, but this page gives you a practical, game-ready
+                      sample to study and play with.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">When should I play a {length}-letter word?</h3>
+                    <p>
+                      {length}-letter words are ideal when you want solid points without burning all of your premium
+                      tiles. They often hit double or triple word scores while leaving you with enough strong letters to
+                      threaten a bingo on the next turn.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">
+                      How can I practice and memorize more {length}-letter words?
+                    </h3>
+                    <p>
+                      Use the filters on this page to focus on specific patterns, like words starting with certain
+                      letters or containing key letter combinations. Regularly scanning and replaying these lists will
+                      quickly grow your {length}-letter word bank.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          )}
+        </section>
 
         {/* Letter Navigation Sections */}
         <div className="space-y-8 mb-12">
@@ -344,10 +510,9 @@ export function WordsByLengthTemplate({ length, words }: WordsByLengthTemplatePr
             {otherLengths.map((len) => (
               <Link key={len} href={`/${len}-letter-words`}>
                 <Card className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer group">
-                  <div className="text-3xl font-bold text-primary group-hover:scale-110 transition-transform">
-                    {len}
+                  <div className="text-sm font-semibold text-muted-foreground group-hover:text-primary transition-colors">
+                    {len} letter words
                   </div>
-                  <div className="text-xs text-muted-foreground mt-1">Letter Words</div>
                 </Card>
               </Link>
             ))}

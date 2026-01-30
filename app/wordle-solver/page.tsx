@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -79,8 +80,8 @@ export default function WordleSolverPage() {
         </div>
 
         {/* Solver Interface */}
-        <div className="grid gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2 space-y-6">
+        <div className="grid gap-6 lg:grid-cols-5">
+          <div className="lg:col-span-3 space-y-6">
             <Card className="animate-scale-in shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -238,7 +239,7 @@ export default function WordleSolverPage() {
           </div>
 
           {/* Sidebar - Tips & Starter Words */}
-          <div className="space-y-6">
+          <div className="lg:col-span-2 space-y-6">
             <Card className="shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -331,23 +332,23 @@ export default function WordleSolverPage() {
           </div>
         </div>
 
-        {/* SEO Content */}
+        {/* SEO/GEO: keyword emphasis + dofollow internal links */}
         <div className="mt-12 prose prose-sm max-w-none">
           <h2 className="text-2xl font-bold mb-4">Advanced Wordle Solver & Helper</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">
-            Our Wordle solver is the ultimate tool for cracking today's Wordle puzzle. Using advanced algorithms and a
-            comprehensive word database, we help you find the perfect word based on your clues. Whether you're stuck on
-            your last guess or want to improve your Wordle strategy, our solver provides instant, accurate suggestions.
+            Our <strong>Wordle solver</strong> is the ultimate tool for cracking today&apos;s Wordle puzzle. Using advanced algorithms and a
+            comprehensive <strong>5 letter words</strong> database, we help you find the perfect word based on your clues. Whether you&apos;re stuck on
+            your last guess or want to improve your Wordle strategy, our solver provides instant, accurate suggestions. Browse our <Link href="/5-letter-words" className="text-primary font-medium hover:underline">5 letter words list</Link> for more options.
           </p>
           <p className="text-muted-foreground leading-relaxed mb-4">
             The solver supports all Wordle color combinations: green tiles (correct letter, correct position), yellow
             tiles (correct letter, wrong position), and gray tiles (letter not in word). Simply input your clues and
-            get a curated list of possible words ranked by likelihood and strategic value.
+            get a curated list of possible words ranked by likelihood and strategic value. Need to <strong>unscramble letters</strong>? Try our <Link href="/word-unscrambler" className="text-primary font-medium hover:underline">word unscrambler</Link> or <Link href="/anagram-solver" className="text-primary font-medium hover:underline">anagram solver</Link>.
           </p>
           <p className="text-muted-foreground leading-relaxed">
             Perfect for daily Wordle players, word game enthusiasts, and anyone looking to maintain their winning
             streak. Our tool also suggests optimal starter words with excellent letter coverage to maximize your
-            chances of solving the puzzle efficiently.
+            chances of solving the puzzle efficiently. For <Link href="/scrabble" className="text-primary font-medium hover:underline">Scrabble</Link> and <Link href="/words-with-friends" className="text-primary font-medium hover:underline">Words with Friends</Link>, use our <Link href="/word-finder" className="text-primary font-medium hover:underline">word finder</Link>.
           </p>
         </div>
       </div>

@@ -13,8 +13,8 @@ export default function WordsWithFriendsPage() {
 
   const handleSearch = (letters: string) => {
     const words = unscrambleWord(letters)
-    const sortedWords = words.sort((a, b) => calculateScrabbleScore(b) - calculateScrabbleScore(a))
-    setResults(sortedWords)
+    const sortedWords = words.sort((a, b) => calculateScrabbleScore(b.word) - calculateScrabbleScore(a.word))
+    setResults(sortedWords.map((w) => w.word))
     setSearched(true)
   }
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -266,24 +267,24 @@ export default function AnagramSolverPage() {
           </div>
         </div>
 
-        {/* SEO Content */}
+        {/* SEO/GEO: keyword emphasis + dofollow internal links */}
         <div className="mt-12 prose prose-sm max-w-none">
           <h2 className="text-2xl font-bold mb-4">Complete Anagram Solver & Generator</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">
-            Our anagram solver is the most comprehensive tool for finding anagrams of any word. Using an extensive
+            Our <strong>anagram solver</strong> is the most comprehensive tool for finding anagrams of any word. Using an extensive
             dictionary database, we can quickly identify all valid anagrams by rearranging the letters of your input
-            word. Whether you're solving word puzzles, playing word games, or just exploring the fascinating world of
+            word. Whether you&apos;re solving word puzzles with our <Link href="/word-unscrambler" className="text-primary font-medium hover:underline">word unscrambler</Link>, playing <Link href="/wordle-solver" className="text-primary font-medium hover:underline">Wordle</Link> or <Link href="/scrabble" className="text-primary font-medium hover:underline">Scrabble</Link>, or just exploring the fascinating world of
             anagrams, our tool provides instant, accurate results.
           </p>
           <p className="text-muted-foreground leading-relaxed mb-4">
             Anagrams have been used throughout history in literature, wordplay, and cryptography. They appear in word
-            games like Scrabble and crossword puzzles, making this tool invaluable for word game enthusiasts. Our
-            solver not only finds anagrams but also organizes them by length and frequency for easy browsing.
+            games like <Link href="/scrabble" className="text-primary font-medium hover:underline">Scrabble</Link> and crossword puzzles, making this tool invaluable for word game enthusiasts. Our
+            solver not only finds anagrams but also organizes them by length and frequency for easy browsing. Need <strong>5 letter words</strong>? See our <Link href="/5-letter-words" className="text-primary font-medium hover:underline">5 letter words list</Link>.
           </p>
           <p className="text-muted-foreground leading-relaxed">
             Perfect for students, writers, puzzle enthusiasts, and anyone who loves playing with words. Discover hidden
-            meanings, create clever wordplay, or simply explore the many ways letters can be rearranged to form new
-            words. Our anagram solver makes it easy and fun to unlock the potential of any word.
+            meanings, create clever wordplay, or simply <strong>unscramble letters</strong> to form new
+            words. Try our <Link href="/descrambler" className="text-primary font-medium hover:underline">word descrambler</Link> or <Link href="/word-finder" className="text-primary font-medium hover:underline">word finder</Link> for more options.
           </p>
         </div>
       </div>

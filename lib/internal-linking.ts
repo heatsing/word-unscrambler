@@ -140,10 +140,10 @@ export const recommendedLinks = {
   }
 }
 
-// 内部链接最佳实践
+// 内部链接最佳实践（SEO/GEO：自然锚文本 + dofollow 传递权重）
 export const linkingBestPractices = {
   maxLinksPerPage: 100,
-  contextualLinksPerPage: 5-10,
+  contextualLinksPerPage: 8, // 每页 5–10 条情境内链为宜
   navigationLinks: true,
   footerLinks: true,
   breadcrumbs: true,
