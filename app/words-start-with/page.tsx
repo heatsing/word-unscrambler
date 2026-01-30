@@ -115,69 +115,209 @@ export default function WordsStartWithPage() {
           <AdvancedWordSearch onSearch={handleAdvancedSearch} />
         </div>
 
-        {/* Search Interface */}
-        <Card className="mb-8 shadow-lg animate-scale-in">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Search className="h-5 w-5" />
-              Search Words by Starting Letters
-            </CardTitle>
-            <CardDescription>Enter letters to find all words that begin with them</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault()
-                handleSearch()
-              }}
-              className="flex gap-3"
-            >
-              <div className="relative flex-1">
-                <Input
-                  type="text"
-                  value={prefix}
-                  onChange={(e) => setPrefix(e.target.value.toLowerCase())}
-                  placeholder="Enter starting letters (e.g., app, str, con)"
-                  className="h-12 text-lg"
-                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                />
+        {/* Two columns: Words Ending In (left) | Search Words by Starting Letters (right) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Left: Words Ending In */}
+          <Card className="shadow-lg animate-scale-in h-fit">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ArrowRight className="h-5 w-5 rotate-180" />
+                Words Ending In
+              </CardTitle>
+              <CardDescription>
+                Find words that end with specific letters. Browse by ending letter or use the search on the Words Ending In page.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Link
+                href="/words-ending-in"
+                className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
+              >
+                Words Ending In – main tool
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <div className="border-t pt-4">
+                <p className="text-sm font-semibold mb-3 text-muted-foreground">Browse by ending letter (A–Z):</p>
+                <div className="grid grid-cols-6 sm:grid-cols-8 gap-2">
+                  {Array.from("abcdefghijklmnopqrstuvwxyz").map((letter) => (
+                    <Link
+                      key={letter}
+                      href={`/words-ending-in/${letter}`}
+                      className="flex items-center justify-center h-10 rounded-md border bg-background hover:bg-accent hover:text-accent-foreground font-semibold text-sm uppercase transition-colors"
+                    >
+                      {letter}
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <Button type="submit" size="lg" className="h-12 px-8">
-                <Search className="mr-2 h-4 w-4" />
-                Search
-              </Button>
-            </form>
+            </CardContent>
+          </Card>
 
-            <div>
-              <p className="text-sm font-semibold mb-3 text-center">Common Prefixes:</p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {commonPrefixes.map((prefixStr) => (
-                  <Button
-                    key={prefixStr}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handlePrefixClick(prefixStr)}
-                    className="font-medium hover:bg-primary hover:text-primary-foreground"
-                  >
-                    {prefixStr}-
+          {/* Right: Search Words by Starting Letters */}
+          <Card className="shadow-lg animate-scale-in h-fit">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Search className="h-5 w-5" />
+                Search Words by Starting Letters
+              </CardTitle>
+              <CardDescription>Enter letters to find all words that begin with them</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  handleSearch()
+                }}
+                className="space-y-4"
+              >
+                <div className="flex gap-3">
+                  <Input
+                    type="text"
+                    value={prefix}
+                    onChange={(e) => setPrefix(e.target.value.toLowerCase())}
+                    placeholder="Enter starting letters (e.g., app, str, con)"
+                    className="h-12 text-lg flex-1"
+                    onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                  />
+                  <Button type="submit" size="lg" className="h-12 px-8">
+                    <Search className="mr-2 h-4 w-4" />
+                    Search
                   </Button>
-                ))}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold mb-2 text-muted-foreground">Common Prefixes:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {commonPrefixes.map((prefixStr) => (
+                      <Button
+                        key={prefixStr}
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handlePrefixClick(prefixStr)}
+                        className="font-medium hover:bg-primary hover:text-primary-foreground"
+                      >
+                        {prefixStr}-
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                {lengthFilter && (
+                  <div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setLengthFilter(null)}
+                    >
+                      Clear length filter
+                    </Button>
+                  </div>
+                )}
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Search results for "Search Words by Starting Letters" – show below the two columns */}
+        {searched && (
+          <div className="space-y-6 animate-fade-in mb-8">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold">
+                Words starting with &quot;{prefix}&quot;{lengthFilter ? ` (${lengthFilter} letters)` : ""}
+              </h2>
+              <div className="flex gap-2">
+                <Badge variant="secondary" className="text-sm">
+                  Total: {results.length}
+                </Badge>
+                {results.length > 100 && (
+                  <Badge variant="default" className="text-sm">
+                    Showing first 100
+                  </Badge>
+                )}
               </div>
             </div>
 
-            {lengthFilter && (
-              <div className="text-center">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setLengthFilter(null)}
-                >
-                  Clear length filter
-                </Button>
-              </div>
+            {results.length > 0 ? (
+              <Tabs defaultValue="all" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="all">All Words</TabsTrigger>
+                  <TabsTrigger value="grouped">By Length</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="all" className="mt-6">
+                  <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                    {displayResults.map((word, index) => (
+                      <Card
+                        key={`${word}-${index}`}
+                        className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
+                        onClick={() => {
+                          setSelectedWord(word)
+                          setDialogOpen(true)
+                        }}
+                      >
+                        <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
+                          {word}
+                        </span>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {word.length} letter{word.length !== 1 ? "s" : ""}
+                        </p>
+                      </Card>
+                    ))}
+                  </div>
+                  {results.length > 100 && (
+                    <p className="text-center text-sm text-muted-foreground mt-6">
+                      Showing first 100 of {results.length} words. Try a more specific search for better results.
+                    </p>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="grouped" className="mt-6 space-y-6">
+                  {Object.keys(groupedResults)
+                    .sort((a, b) => Number(a) - Number(b))
+                    .map((length) => {
+                      const wordsInGroup = groupedResults[Number(length)]
+                      const displayWords = wordsInGroup.slice(0, 20)
+                      return (
+                        <div key={length} className="space-y-3">
+                          <h3 className="text-xl font-semibold flex items-center gap-2">
+                            {length} Letter Words
+                            <Badge variant="outline">{wordsInGroup.length}</Badge>
+                          </h3>
+                          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                            {displayWords.map((word, index) => (
+                              <Card
+                                key={`${word}-${index}`}
+                                className="p-3 text-center hover:shadow-md hover:scale-105 transition-all cursor-pointer"
+                                onClick={() => {
+                                  setSelectedWord(word)
+                                  setDialogOpen(true)
+                                }}
+                              >
+                                <span className="font-semibold uppercase">{word}</span>
+                              </Card>
+                            ))}
+                          </div>
+                          {wordsInGroup.length > 20 && (
+                            <p className="text-xs text-muted-foreground">
+                              Showing first 20 of {wordsInGroup.length} words
+                            </p>
+                          )}
+                        </div>
+                      )
+                    })}
+                </TabsContent>
+              </Tabs>
+            ) : (
+              <Card className="p-12 text-center border-dashed">
+                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-lg font-semibold mb-2">No words found</p>
+                <p className="text-sm text-muted-foreground">
+                  No words start with &quot;{prefix}&quot;. Try different letters.
+                </p>
+              </Card>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        )}
 
         {/* A-Z Letter Navigation */}
         <Card className="mb-8 shadow-lg">
@@ -310,108 +450,6 @@ export default function WordsStartWithPage() {
                 <p className="text-lg font-semibold mb-2">No words found</p>
                 <p className="text-sm text-muted-foreground">
                   Try adjusting your search filters.
-                </p>
-              </Card>
-            )}
-          </div>
-        )}
-
-        {/* Results */}
-        {searched && (
-          <div className="space-y-6 animate-fade-in">
-            <div className="flex items-center justify-between">
-              <h2 className="text-3xl font-bold">
-                Words starting with "{prefix}"{lengthFilter ? ` (${lengthFilter} letters)` : ""}
-              </h2>
-              <div className="flex gap-2">
-                <Badge variant="secondary" className="text-sm">
-                  Total: {results.length}
-                </Badge>
-                {results.length > 100 && (
-                  <Badge variant="default" className="text-sm">
-                    Showing first 100
-                  </Badge>
-                )}
-              </div>
-            </div>
-
-            {results.length > 0 ? (
-              <Tabs defaultValue="all" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="all">All Words</TabsTrigger>
-                  <TabsTrigger value="grouped">By Length</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="all" className="mt-6">
-                  <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                    {displayResults.map((word, index) => (
-                      <Card
-                        key={`${word}-${index}`}
-                        className="p-4 text-center hover:shadow-lg hover:scale-105 transition-all cursor-pointer hover-lift group"
-                        onClick={() => {
-                          setSelectedWord(word)
-                          setDialogOpen(true)
-                        }}
-                      >
-                        <span className="font-semibold text-sm md:text-base uppercase group-hover:text-primary transition-colors">
-                          {word}
-                        </span>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {word.length} letter{word.length !== 1 ? "s" : ""}
-                        </p>
-                      </Card>
-                    ))}
-                  </div>
-                  {results.length > 100 && (
-                    <p className="text-center text-sm text-muted-foreground mt-6">
-                      Showing first 100 of {results.length} words. Try a more specific search for better results.
-                    </p>
-                  )}
-                </TabsContent>
-
-                <TabsContent value="grouped" className="mt-6 space-y-6">
-                  {Object.keys(groupedResults)
-                    .sort((a, b) => Number(a) - Number(b))
-                    .map((length) => {
-                      const wordsInGroup = groupedResults[Number(length)]
-                      const displayWords = wordsInGroup.slice(0, 20)
-
-                      return (
-                        <div key={length} className="space-y-3">
-                          <h3 className="text-xl font-semibold flex items-center gap-2">
-                            {length} Letter Words
-                            <Badge variant="outline">{wordsInGroup.length}</Badge>
-                          </h3>
-                          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                            {displayWords.map((word, index) => (
-                              <Card
-                                key={`${word}-${index}`}
-                                className="p-3 text-center hover:shadow-md hover:scale-105 transition-all cursor-pointer"
-                                onClick={() => {
-                                  setSelectedWord(word)
-                                  setDialogOpen(true)
-                                }}
-                              >
-                                <span className="font-semibold uppercase">{word}</span>
-                              </Card>
-                            ))}
-                          </div>
-                          {wordsInGroup.length > 20 && (
-                            <p className="text-xs text-muted-foreground">
-                              Showing first 20 of {wordsInGroup.length} words
-                            </p>
-                          )}
-                        </div>
-                      )
-                    })}
-                </TabsContent>
-              </Tabs>
-            ) : (
-              <Card className="p-12 text-center border-dashed">
-                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-lg font-semibold mb-2">No words found</p>
-                <p className="text-sm text-muted-foreground">
-                  No words start with "{prefix}". Try different letters.
                 </p>
               </Card>
             )}

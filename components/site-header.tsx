@@ -3,20 +3,12 @@
 import Link from "next/link"
 import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { Badge } from "@/components/ui/badge"
-import { useState, memo, useMemo } from "react"
+import { NavDropdown, NavDropdownLink } from "@/components/nav-dropdown"
+import { useState, useMemo } from "react"
 
-// Navigation 1: Word Finders (18 tools)
+// Navigation 1: Word Finders
 const wordFinders = [
   { name: "Word Unscrambler", href: "/word-unscrambler", description: "Unscramble any letters" },
   { name: "Anagram Solver", href: "/anagram-solver", description: "Find anagrams" },
@@ -36,7 +28,6 @@ const wordFinders = [
   { name: "Letter Boxed Solver", href: "/letter-boxed-solver", description: "Letter Boxed helper" },
 ]
 
-// Navigation: Daily Game Hints???????????????????
 const dailyGameHints = [
   { name: "Wordle", href: "/wordle", description: "Daily Wordle hub" },
   { name: "Wordle Solver", href: "/wordle-solver", description: "Solve today's Wordle" },
@@ -46,7 +37,6 @@ const dailyGameHints = [
   { name: "Wordfeud", href: "/wordfeud", description: "Wordfeud tips & help" },
 ]
 
-// Navigation 2: List of Words (5 categories)
 const wordLists = [
   { name: "Words by Length", href: "/words-by-length", description: "Browse words by letter count" },
   { name: "Words Start With", href: "/words-start-with", description: "Words beginning with specific letters" },
@@ -54,7 +44,6 @@ const wordLists = [
   { name: "Words Ending In", href: "/words-ending-in", description: "Words ending with specific letters" },
 ]
 
-// Navigation 3: Words by Length (10-letter to 2-letter)
 const wordsByLength = [
   { name: "10-Letter Words", href: "/10-letter-words", count: "400+" },
   { name: "9-Letter Words", href: "/9-letter-words", count: "400+" },
@@ -67,49 +56,40 @@ const wordsByLength = [
   { name: "2-Letter Words", href: "/2-letter-words", count: "31" },
 ]
 
-// Memoized Navigation Link Component - ?? UI/UX
-const NavLink = memo(({ href, name, onClick }: { href: string; name: string; onClick?: () => void }) => (
-  <NavigationMenuLink asChild>
+function MobileNavLink({
+  href,
+  name,
+  onClick,
+}: {
+  href: string
+  name: string
+  onClick: () => void
+}) {
+  return (
     <Link
       href={href}
       onClick={onClick}
-      className="rounded-lg p-2.5 min-h-[44px] min-w-[44px] flex items-center hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors duration-200 cursor-pointer block will-change-transform"
+      className="text-sm px-3 py-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground active:bg-accent/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors duration-200 cursor-pointer touch-manipulation"
       aria-label={name}
     >
-      <div className="text-sm font-medium">{name}</div>
+      {name}
     </Link>
-  </NavigationMenuLink>
-))
-NavLink.displayName = "NavLink"
-
-// Memoized Mobile Link Component - ????????
-const MobileNavLink = memo(({ href, name, onClick }: { href: string; name: string; onClick: () => void }) => (
-  <Link
-    href={href}
-    onClick={onClick}
-    className="text-sm px-3 py-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground active:bg-accent/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors duration-200 cursor-pointer touch-manipulation will-change-transform"
-    aria-label={name}
-  >
-    {name}
-  </Link>
-))
-MobileNavLink.displayName = "MobileNavLink"
+  )
+}
 
 export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false)
-
-  // Memoize handlers to prevent re-renders
   const closeMobile = useMemo(() => () => setMobileOpen(false), [])
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm"
-      style={{ contain: 'layout style' }}
+    <header
+      className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm"
+      style={{ contain: "layout style" }}
     >
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo - ?? hover ??????*/}
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="flex items-center gap-3 group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md transition-colors duration-200"
             aria-label="Word Unscrambler Home"
           >
@@ -122,106 +102,99 @@ export function SiteHeader() {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList className="gap-1">
-              {/* Navigation 1: Word Finders - ?? wordFinders ?? */}
-              <NavigationMenuItem value="word-finders">
-                <NavigationMenuTrigger className="text-sm cursor-pointer transition-colors duration-200" id="nav-word-finders-trigger">
-                  Word Finders
-                </NavigationMenuTrigger>
-                <NavigationMenuContent aria-labelledby="nav-word-finders-trigger">
-                  <div className="w-[560px] p-4" style={{ contain: 'layout' }}>
-                    <div className="mb-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                      Word Finders
-                    </div>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-                      {wordFinders.map((item) => (
-                        <NavLink key={item.href} href={item.href} name={item.name} />
-                      ))}
-                    </div>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
+          {/* Desktop Navigation: NavDropdown per menu, no shared viewport */}
+          <nav
+            className="hidden lg:flex items-center gap-1"
+            role="navigation"
+            aria-label="Main navigation"
+          >
+            <NavDropdown
+              id="nav-word-finders"
+              label="Word Finders"
+              className="shrink-0"
+              panelClassName="w-[560px] p-4"
+            >
+              <div className="mb-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Word Finders
+              </div>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                {wordFinders.map((item) => (
+                  <NavDropdownLink key={item.href} href={item.href}>
+                    {item.name}
+                  </NavDropdownLink>
+                ))}
+              </div>
+            </NavDropdown>
 
+            <NavDropdown
+              id="nav-list-of-words"
+              label="List of Words"
+              className="shrink-0"
+              panelClassName="w-[280px] p-4"
+            >
+              <div className="mb-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                List of Words
+              </div>
+              <div className="space-y-1">
+                {wordLists.map((item) => (
+                  <NavDropdownLink key={item.href} href={item.href}>
+                    {item.name}
+                  </NavDropdownLink>
+                ))}
+              </div>
+            </NavDropdown>
 
-              {/* Navigation 2: List of Words - ?? wordLists ?? */}
-              <NavigationMenuItem value="list-of-words">
-                <NavigationMenuTrigger className="text-sm cursor-pointer transition-colors duration-200" id="nav-list-of-words-trigger">
-                  List of Words
-                </NavigationMenuTrigger>
-                <NavigationMenuContent aria-labelledby="nav-list-of-words-trigger">
-                  <div className="w-[280px] p-4" style={{ contain: 'layout' }}>
-                    <div className="mb-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                      List of Words
-                    </div>
-                    <div className="space-y-2">
-                      {wordLists.map((item) => (
-                        <NavLink key={item.href} href={item.href} name={item.name} />
-                      ))}
-                    </div>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
+            <NavDropdown
+              id="nav-words-by-length"
+              label="Words by Length"
+              className="shrink-0"
+              panelClassName="w-[400px] p-4"
+            >
+              <div className="mb-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Words by Length
+              </div>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                {wordsByLength.map((item) => (
+                  <NavDropdownLink key={item.href} href={item.href}>
+                    {item.name}
+                  </NavDropdownLink>
+                ))}
+              </div>
+            </NavDropdown>
 
-              {/* Navigation 3: Words by Length - ?? wordsByLength ?? */}
-              <NavigationMenuItem value="words-by-length">
-                <NavigationMenuTrigger className="text-sm cursor-pointer transition-colors duration-200" id="nav-words-by-length-trigger">
-                  Words by Length
-                </NavigationMenuTrigger>
-                <NavigationMenuContent aria-labelledby="nav-words-by-length-trigger">
-                  <div className="w-[400px] p-4" style={{ contain: 'layout' }}>
-                    <div className="mb-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                      Words by Length
-                    </div>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-                      {wordsByLength.map((item) => (
-                        <NavLink key={item.href} href={item.href} name={item.name} />
-                      ))}
-                    </div>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
+            <NavDropdown
+              id="nav-daily-game-hints"
+              label="Daily Game Hints"
+              className="shrink-0"
+              panelClassName="w-[360px] p-4"
+            >
+              <div className="mb-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                Daily Game Hints
+              </div>
+              <div className="space-y-1">
+                {dailyGameHints.map((item) => (
+                  <NavDropdownLink key={item.href} href={item.href}>
+                    {item.name}
+                  </NavDropdownLink>
+                ))}
+              </div>
+            </NavDropdown>
 
-              {/* Navigation: Daily Game Hints - ? Word Finders ????"??????" */}
-              <NavigationMenuItem value="daily-game-hints">
-                <NavigationMenuTrigger className="text-sm cursor-pointer transition-colors duration-200" id="nav-daily-game-hints-trigger">
-                  Daily Game Hints
-                </NavigationMenuTrigger>
-                <NavigationMenuContent aria-labelledby="nav-daily-game-hints-trigger">
-                  <div className="w-[360px] p-4" style={{ contain: 'layout' }}>
-                    <div className="mb-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                      Daily Game Hints
-                    </div>
-                    <div className="grid grid-cols-1 gap-y-2">
-                      {dailyGameHints.map((item) => (
-                        <NavLink key={item.href} href={item.href} name={item.name} />
-                      ))}
-                    </div>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
+            <Link
+              href="/about"
+              className="inline-flex h-9 min-w-[44px] items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors duration-200 cursor-pointer"
+            >
+              About
+            </Link>
+          </nav>
 
-              {/* About - ????? */}
-              <NavigationMenuItem>
-                <Link href="/about" legacyBehavior passHref>
-                  <NavigationMenuLink className="group inline-flex h-10 min-w-[44px] items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:bg-accent/80 cursor-pointer disabled:pointer-events-none disabled:opacity-50">
-                    About
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-
-          {/* Right Side Actions */}
           <div className="flex items-center gap-2">
             <ThemeToggle />
 
-            {/* Mobile Menu - ?????? */}
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild className="lg:hidden">
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   size="icon"
                   className="min-h-[44px] min-w-[44px] cursor-pointer touch-manipulation transition-colors duration-200"
                   aria-label="Toggle navigation menu"
@@ -233,13 +206,16 @@ export function SiteHeader() {
               <SheetContent
                 side="right"
                 className="w-[300px] sm:w-[400px] overflow-y-auto"
-                style={{ contain: 'layout style paint' }}
+                style={{ contain: "layout style paint" }}
               >
                 <SheetHeader>
                   <SheetTitle>Menu</SheetTitle>
                 </SheetHeader>
-                <nav className="flex flex-col gap-6 mt-8" style={{ willChange: 'scroll-position' }} role="navigation" aria-label="Main navigation">
-                  {/* Word Finders - Grid layout for mobile */}
+                <nav
+                  className="flex flex-col gap-6 mt-8"
+                  role="navigation"
+                  aria-label="Main navigation"
+                >
                   <div>
                     <h3 className="font-semibold text-sm text-muted-foreground mb-3">
                       WORD FINDERS
@@ -256,7 +232,6 @@ export function SiteHeader() {
                     </div>
                   </div>
 
-                  {/* Daily Game Hints */}
                   <div>
                     <h3 className="font-semibold text-sm text-muted-foreground mb-3">
                       DAILY GAME HINTS
@@ -273,7 +248,6 @@ export function SiteHeader() {
                     </div>
                   </div>
 
-                  {/* List of Words */}
                   <div>
                     <h3 className="font-semibold text-sm text-muted-foreground mb-3">
                       LIST OF WORDS
@@ -290,7 +264,6 @@ export function SiteHeader() {
                     </div>
                   </div>
 
-                  {/* Words by Length - Compact grid */}
                   <div>
                     <h3 className="font-semibold text-sm text-muted-foreground mb-3">
                       WORDS BY LENGTH
@@ -301,7 +274,7 @@ export function SiteHeader() {
                           key={item.href}
                           href={item.href}
                           onClick={closeMobile}
-                          className="text-sm px-2 py-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground active:bg-accent/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors duration-200 cursor-pointer touch-manipulation text-center will-change-transform"
+                          className="text-sm px-2 py-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground active:bg-accent/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors duration-200 cursor-pointer touch-manipulation text-center"
                           aria-label={`${item.name.replace(" Words", "")} letter words`}
                         >
                           {item.name.replace(" Words", "")}
@@ -310,11 +283,10 @@ export function SiteHeader() {
                     </div>
                   </div>
 
-                  {/* About */}
                   <Link
                     href="/about"
                     onClick={closeMobile}
-                    className="flex items-center gap-3 text-lg font-semibold min-h-[44px] hover:text-primary hover:bg-accent/50 rounded-md px-2 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors duration-200 cursor-pointer pt-4 border-t will-change-transform"
+                    className="flex items-center gap-3 text-lg font-semibold min-h-[44px] hover:text-primary hover:bg-accent/50 rounded-md px-2 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors duration-200 cursor-pointer pt-4 border-t"
                     aria-label="About page"
                   >
                     About
