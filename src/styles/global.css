@@ -349,7 +349,21 @@ a[href].rounded-lg:focus-visible {
 
 .page-main { color: var(--foreground); }
 
-/* N-letter-words page: left = title + Word length + Finder + About, right = 词库 + Quick filters */
+/* N-letter-words page: grid left:right = 1:2 */
+.letter-words-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .letter-words-grid {
+    grid-template-columns: 1fr 2fr;
+    gap: 1.5rem;
+  }
+}
+
+/* Legacy N-letter-words (unused if page uses .letter-words-grid) */
 .letter-words-page {
   display: flex;
   flex-direction: column;

@@ -16,7 +16,7 @@ export function getStaticPaths() {
 const { length } = Astro.props;
 const words = getWordsByLength(length);
 
-const INITIAL_SHOW = 200;
+const INITIAL_SHOW = 80;
 const hasMore = words.length > INITIAL_SHOW;
 const initialWords = words.slice(0, INITIAL_SHOW);
 const restWords = words.slice(INITIAL_SHOW);
@@ -50,8 +50,11 @@ const wordFindersList = [...dailyGameHints, ...wordFinders];
   │ Other tools   │                               │
   └───────────────┴───────────────────────────────┘
   -->
-  <div class="w-full grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4 md:gap-6">
+  <div class="letter-words-grid">
     <aside class="md:col-start-1 md:row-start-1 flex flex-col gap-4 md:gap-6 sticky top-20 md:top-24 self-start w-full md:min-w-0 md:border-l-4 md:border-l-primary/30 md:pl-4" aria-label="Tool sidebar: search and other tools">
+      <section class="rounded-lg border border-border bg-card overflow-hidden" aria-label="Word Finder">
+        <WordFinderByLength client:load length={length} />
+      </section>
       <nav class="rounded-lg border border-border bg-card p-4">
         <h2 class="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">Word length</h2>
         <ul class="space-y-1 list-none pl-0">
@@ -86,9 +89,6 @@ const wordFindersList = [...dailyGameHints, ...wordFinders];
           <a href="/words-by-length" class="text-primary hover:underline">All lengths</a>
         </p>
       </nav>
-      <section class="rounded-lg border border-border bg-card overflow-hidden" aria-label="Word Finder">
-        <WordFinderByLength client:load length={length} />
-      </section>
       <section class="rounded-lg border border-border bg-card p-4">
         <h2 class="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">Word Finders</h2>
         <ul class="space-y-2 list-none pl-0 text-sm">
@@ -128,7 +128,7 @@ const wordFindersList = [...dailyGameHints, ...wordFinders];
             </select>
           </div>
         </div>
-        <div id="word-list-grid" class="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <div id="word-list-grid" class="grid gap-2 grid-cols-2 sm:grid-cols-4">
           {wordsByAlpha.map((w) => (
             <a
               href={`/unscramble?q=${encodeURIComponent(w)}`}
