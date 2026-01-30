@@ -1,0 +1,54 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import InternalLinks from '@/components/InternalLinks.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import { getMeta } from '@/lib/meta';
+import { getSoftwareApplicationSchema, getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta('/unscramble', 'Unscramble Words - Letter Unscrambler & Word Solver', 'Unscramble words and letters quickly. Enter jumbled letters and find all valid word combinations. Free unscramble tool for word games.');
+const appSchema = getSoftwareApplicationSchema();
+const faqs = [
+  { question: 'How does the unscramble tool work?', answer: 'Enter your letters in the box. The tool loads a word list by length and finds all valid words that can be formed from your letters. Results are sorted by Scrabble score by default.' },
+  { question: 'Can I use wildcards?', answer: 'The basic version uses only the letters you type. For wildcard support (e.g. ? for any letter), use our full Word Unscrambler tool.' },
+  { question: 'Is it free?', answer: 'Yes. The unscramble tool is free to use with no sign-up required.' },
+];
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4">Unscramble Words</h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+      Enter your letters below. We'll find all valid words you can make.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <section class="mt-12 p-6 rounded-lg border border-gray-200 bg-white">
+    <h2 class="text-2xl font-bold mb-4">Why Unscramble Words?</h2>
+    <p class="text-gray-600 mb-4">
+      Unscrambling improves pattern recognition and vocabulary. Our tool shows every possible word from your letters—ideal for Wordle, Scrabble, and word puzzles.
+    </p>
+    <p class="text-gray-600">
+      For advanced filters, try our <a href="/word-unscrambler" class="text-primary hover:underline">Word Unscrambler</a> or <a href="/anagram-solver" class="text-primary hover:underline">Anagram Solver</a>.
+    </p>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-3">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div>
+          <dt class="font-semibold text-gray-900">{faq.question}</dt>
+          <dd class="text-gray-600 mt-1">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <InternalLinks />
+
+  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

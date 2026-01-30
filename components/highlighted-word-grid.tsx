@@ -19,9 +19,9 @@ export function HighlightedWordGrid({ words, highlightLetter, className }: Highl
       <div className={className || "grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"}>
         {words.map((word, index) => {
           const letterIndex = word.toLowerCase().indexOf(highlightLetter.toLowerCase())
-          const before = word.slice(0, letterIndex)
-          const match = word.slice(letterIndex, letterIndex + 1)
-          const after = word.slice(letterIndex + 1)
+          const before = letterIndex >= 0 ? word.slice(0, letterIndex) : word
+          const match = letterIndex >= 0 ? word.slice(letterIndex, letterIndex + 1) : ""
+          const after = letterIndex >= 0 ? word.slice(letterIndex + 1) : ""
 
           return (
             <Card

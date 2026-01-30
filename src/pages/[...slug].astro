@@ -1,0 +1,17 @@
+---
+import ContentPage from '@/components/ContentPage.astro';
+import { TOOL_PAGES } from '@/lib/tool-pages';
+
+export function getStaticPaths() {
+  return TOOL_PAGES.map((p) => ({
+    params: { slug: p.path.slice(1) },
+    props: p,
+  }));
+}
+
+const { path, title, description } = Astro.props;
+---
+
+<ContentPage path={path} title={title} description={description}>
+  <p>Use our <a href="/unscramble" class="text-primary hover:underline">Unscramble</a> tool to enter your letters and find all valid words. This page is part of our word game tools for Wordle, Scrabble, Words with Friends, and more.</p>
+</ContentPage>

@@ -5,32 +5,50 @@ import { Card } from "@/components/ui/card"
 import Link from "next/link"
 import { HighlightedWordGrid } from "@/components/highlighted-word-grid"
 
+// Next.js may pass one segment as a single param or separate length/letter; normalize both.
+const SEGMENT_REGEX = /^(\d+)-letter-words-with-([a-z])$/
+
+async function parseParams(
+  p: Promise<{ length?: string; letter?: string }> | { length?: string; letter?: string }
+): Promise<{ length: string; letter: string } | null> {
+  const raw = await Promise.resolve(p)
+  const segment = typeof raw.length === "string" ? raw.length : ""
+  const m = SEGMENT_REGEX.exec(segment)
+  if (m) {
+    return { length: m[1], letter: m[2] }
+  }
+  if (
+    typeof raw.length === "string" &&
+    typeof raw.letter === "string" &&
+    /^\d+$/.test(raw.length) &&
+    /^[a-z]$/.test(raw.letter)
+  ) {
+    return { length: raw.length, letter: raw.letter }
+  }
+  return null
+}
+
 type Props = {
-  params: { length: string; letter: string }
+  params: Promise<{ length?: string; letter?: string }> | { length?: string; letter?: string }
 }
 
 export async function generateStaticParams() {
   const lengths = [2, 3, 4, 5, 6, 7, 8, 9, 10]
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
-
-  const paths = []
-
+  const alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
+  const paths: { length: string; letter: string }[] = []
   for (const length of lengths) {
     for (const letter of alphabet) {
-      paths.push({
-        length: length.toString(),
-        letter: letter,
-      })
+      paths.push({ length: length.toString(), letter })
     }
   }
-
   return paths
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { length, letter } = await params
+  const parsed = await parseParams(params)
+  if (!parsed) notFound()
+  const { length, letter } = parsed
   const letterUpper = letter.toUpperCase()
-
   return {
     title: `${length} Letter Words Containing ${letterUpper} | Word Finder`,
     description: `Complete list of ${length}-letter words that contain the letter ${letterUpper}. Perfect for Scrabble, Wordle, Words with Friends, and word puzzles.`,
@@ -38,8 +56,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function WordsWithLetterPage({ params }: Props) {
-  const { length, letter } = await params
-  const wordLength = parseInt(length)
+  const parsed = await parseParams(params)
+  if (!parsed) notFound()
+  const { length, letter } = parsed
+  const wordLength = parseInt(length, 10)
 
   if (isNaN(wordLength) || wordLength < 2 || wordLength > 10) {
     notFound()

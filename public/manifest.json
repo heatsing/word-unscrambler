@@ -9,14 +9,14 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
     {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
       "type": "image/png",
       "purpose": "any maskable"
     }
@@ -26,14 +26,6 @@
     "games",
     "utilities"
   ],
-  "screenshots": [
-    {
-      "src": "/screenshot-1.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "label": "Word Unscrambler main interface"
-    }
-  ],
   "shortcuts": [
     {
       "name": "Word Unscrambler",
@@ -42,9 +34,9 @@
       "url": "/word-unscrambler",
       "icons": [
         {
-          "src": "/icon-192.png",
-          "sizes": "192x192",
-          "type": "image/png"
+          "src": "/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
         }
       ]
     },
@@ -55,9 +47,9 @@
       "url": "/wordle-solver",
       "icons": [
         {
-          "src": "/icon-192.png",
-          "sizes": "192x192",
-          "type": "image/png"
+          "src": "/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
         }
       ]
     }
