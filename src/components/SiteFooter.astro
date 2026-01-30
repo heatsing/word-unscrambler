@@ -5,16 +5,96 @@ const baseVotes = 2960;
 const baseAverage = 4.6;
 ---
 <footer class="site-footer">
-  <section class="border-b border-border">
+  <section class="border-b border-border" id="rate-section" data-base-votes={baseVotes} data-base-average={baseAverage}>
     <div class="container mx-auto px-4 py-12 md:py-16">
       <div class="mx-auto max-w-3xl text-center">
         <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-foreground">Rate WordUnscrambler.cc</h2>
-        <div class="rating-stars" role="img" aria-label="4.6 out of 5 stars">★★★★☆</div>
-        <div class="text-3xl md:text-4xl font-semibold text-foreground">{baseAverage} <span class="text-lg md:text-xl font-medium text-muted-foreground">/ 5</span></div>
-        <div class="rating-note">{baseVotes.toLocaleString()} votes</div>
+        <div class="rating-stars-wrap mt-4 flex justify-center gap-0.5 text-3xl" role="group" aria-label="Rate 1 to 5 stars">
+          {[1, 2, 3, 4, 5].map((n) => (
+            <button
+              type="button"
+              class="rating-star bg-transparent border-0 cursor-pointer p-0.5 text-muted-foreground/30 hover:text-yellow-500 focus:outline-none focus:ring-2 focus:ring-primary rounded transition-colors"
+              data-rating={n}
+              aria-label={`${n} star${n > 1 ? 's' : ''}`}
+              title={`${n} star${n > 1 ? 's' : ''}`}
+            >
+              ★
+            </button>
+          ))}
+        </div>
+        <div id="rate-score" class="text-2xl md:text-3xl font-bold text-foreground mt-2">{baseAverage} <span class="text-lg md:text-xl font-medium text-muted-foreground">/ 5</span></div>
+        <div id="rate-votes" class="text-sm text-muted-foreground mt-1">{baseVotes.toLocaleString()} votes</div>
+        <p id="rate-message" class="text-sm text-muted-foreground mt-2 min-h-[1.25rem]" aria-live="polite"></p>
       </div>
     </div>
   </section>
+
+  <script>
+    (function () {
+      const RATE_KEY = 'wordunscrambler-rate';
+      const section = document.getElementById('rate-section');
+      const stars = document.querySelectorAll('.rating-star');
+      const scoreEl = document.getElementById('rate-score');
+      const votesEl = document.getElementById('rate-votes');
+      const messageEl = document.getElementById('rate-message');
+      if (!section || !stars.length || !scoreEl || !votesEl) return;
+
+      const baseVotes = parseInt(section.getAttribute('data-base-votes') || '2960', 10);
+      const baseAverage = parseFloat(section.getAttribute('data-base-average') || '4.6');
+      const stored = typeof localStorage !== 'undefined' ? localStorage.getItem(RATE_KEY) : null;
+      const userRating = stored ? parseInt(stored, 10) : 0;
+
+      function filledClass() { return 'text-yellow-500'; }
+      function emptyClass() { return 'text-muted-foreground/30'; }
+
+      function renderStars(upTo, readOnly) {
+        var disable = readOnly || (userRating >= 1 && userRating <= 5);
+        stars.forEach((el, i) => {
+          const n = i + 1;
+          el.classList.remove(filledClass(), emptyClass());
+          el.classList.add(n <= upTo ? filledClass() : emptyClass());
+          el.disabled = disable;
+          el.style.cursor = disable ? 'default' : 'pointer';
+        });
+      }
+
+      function updateDisplay(votes, avg, isUserRated) {
+        scoreEl.innerHTML = avg.toFixed(1) + ' <span class="text-lg md:text-xl font-medium text-muted-foreground">/ 5</span>';
+        votesEl.textContent = votes.toLocaleString() + ' votes';
+        if (isUserRated && userRating) {
+          messageEl.textContent = 'You rated ' + userRating + '/5. Thanks!';
+        } else {
+          messageEl.textContent = '';
+        }
+      }
+
+      var hasRated = userRating >= 1 && userRating <= 5;
+
+      if (hasRated) {
+        var totalVotes = baseVotes + 1;
+        var newAvg = (baseAverage * baseVotes + userRating) / totalVotes;
+        renderStars(userRating);
+        updateDisplay(totalVotes, newAvg, true);
+      } else {
+        renderStars(0);
+        updateDisplay(baseVotes, baseAverage, false);
+
+        stars.forEach((el, i) => {
+          el.addEventListener('click', function () {
+            if (hasRated) return;
+            hasRated = true;
+            var rating = i + 1;
+            try { localStorage.setItem(RATE_KEY, String(rating)); } catch (e) {}
+            var totalVotes = baseVotes + 1;
+            var newAvg = (baseAverage * baseVotes + rating) / totalVotes;
+            renderStars(rating, true);
+            updateDisplay(totalVotes, newAvg, true);
+            if (messageEl) messageEl.textContent = 'Thanks! You rated ' + rating + '/5.';
+          });
+        });
+      }
+    })();
+  </script>
 
   <div class="container mx-auto px-4 py-12 md:py-16">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">

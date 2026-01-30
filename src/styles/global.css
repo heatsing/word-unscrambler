@@ -347,7 +347,11 @@ a[href].rounded-lg:focus-visible {
 .site-footer .copyright .disclaimer { font-size: 0.75rem; color: var(--muted-foreground); max-width: 28rem; }
 .site-footer .border-b { border-bottom-color: var(--border); }
 
-.page-main { color: var(--foreground); }
+.page-main {
+  color: var(--foreground);
+  background: var(--background);
+  min-height: 40vh;
+}
 
 /* N-letter-words page: grid left:right = 1:2 */
 .letter-words-grid {
