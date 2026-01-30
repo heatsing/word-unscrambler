@@ -1,0 +1,151 @@
+---
+import { wordFinders, dailyGameHints, wordLists, wordsByLength } from '@/lib/nav-links';
+---
+<header class="site-header">
+  <div class="container mx-auto flex h-16 items-center justify-between">
+    <a href="/" class="flex items-center gap-3 rounded-md transition-shadow hover:opacity-90" aria-label="Word Unscrambler Home">
+      <div class="logo-box">W</div>
+      <div class="hidden sm:block">
+        <div class="font-bold text-lg leading-none">Word Unscrambler</div>
+        <div class="text-xs text-gray-500 dark:text-[var(--muted-foreground)]">Solve any word game</div>
+      </div>
+    </a>
+
+    <nav class="nav-desktop hidden lg:flex items-center gap-1" role="navigation" aria-label="Main navigation">
+      <div class="nav-dropdown">
+        <details>
+          <summary class="nav-trigger">Word Finders</summary>
+          <div class="nav-panel">
+            <h3>Word Finders</h3>
+            <div class="grid-2">
+              {wordFinders.map((item) => (
+                <a href={item.href}>{item.name}</a>
+              ))}
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="nav-dropdown">
+        <details>
+          <summary class="nav-trigger">List of Words</summary>
+          <div class="nav-panel">
+            <h3>List of Words</h3>
+            <div class="grid-1">
+              {wordLists.map((item) => (
+                <a href={item.href}>{item.name}</a>
+              ))}
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="nav-dropdown">
+        <details>
+          <summary class="nav-trigger">Words by Length</summary>
+          <div class="nav-panel">
+            <h3>Words by Length</h3>
+            <div class="grid-2">
+              {wordsByLength.map((item) => (
+                <a href={item.href}>{item.name}</a>
+              ))}
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="nav-dropdown">
+        <details>
+          <summary class="nav-trigger">Daily Game Hints</summary>
+          <div class="nav-panel">
+            <h3>Daily Game Hints</h3>
+            <div class="grid-1">
+              {dailyGameHints.map((item) => (
+                <a href={item.href}>{item.name}</a>
+              ))}
+            </div>
+          </div>
+        </details>
+      </div>
+      <a href="/about" class="nav-trigger">About</a>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode">
+        <span id="theme-icon-light" aria-hidden="true">☀</span>
+        <span id="theme-icon-dark" aria-hidden="true" style="display:none">🌙</span>
+      </button>
+      <button type="button" class="nav-mobile-btn theme-toggle lg:hidden" id="mobile-menu-btn" aria-label="Open menu">
+        ☰
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
+    <h3>WORD FINDERS</h3>
+    <div class="grid gap-2" style="grid-template-columns: repeat(2, 1fr);">
+      {wordFinders.map((item) => (
+        <a href={item.href} data-close-drawer>{item.name.replace(' Solver', '').replace(' Finder', '')}</a>
+      ))}
+    </div>
+    <h3>DAILY GAME HINTS</h3>
+    <div class="grid gap-2" style="grid-template-columns: repeat(2, 1fr);">
+      {dailyGameHints.map((item) => (
+        <a href={item.href} data-close-drawer>{item.name}</a>
+      ))}
+    </div>
+    <h3>LIST OF WORDS</h3>
+    <div class="flex flex-col gap-2">
+      {wordLists.map((item) => (
+        <a href={item.href} data-close-drawer>{item.name}</a>
+      ))}
+    </div>
+    <h3>WORDS BY LENGTH</h3>
+    <div class="grid gap-2" style="grid-template-columns: repeat(3, 1fr);">
+      {wordsByLength.map((item) => (
+        <a href={item.href} data-close-drawer>{item.name.replace(' Words', '')}</a>
+      ))}
+    </div>
+    <a href="/about" class="block mt-4 pt-4 border-t border-gray-200 dark:border-[var(--border)] font-semibold" data-close-drawer>About</a>
+  </div>
+  <div class="mobile-drawer-overlay" id="mobile-drawer-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 40;" aria-hidden="true"></div>
+</header>
+
+<script>
+  (function () {
+    const themeKey = 'word-unscrambler-theme';
+    const root = document.documentElement;
+    function setTheme(dark) {
+      if (dark) {
+        root.classList.add('dark');
+        root.setAttribute('data-theme', 'dark');
+      } else {
+        root.classList.remove('dark');
+        root.setAttribute('data-theme', 'light');
+      }
+      try { localStorage.setItem(themeKey, dark ? 'dark' : 'light'); } catch {}
+      const lightEl = document.getElementById('theme-icon-light');
+      const darkEl = document.getElementById('theme-icon-dark');
+      if (lightEl) lightEl.style.display = dark ? 'none' : 'inline';
+      if (darkEl) darkEl.style.display = dark ? 'inline' : 'none';
+    }
+    const stored = typeof localStorage !== 'undefined' ? localStorage.getItem(themeKey) : null;
+    const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTheme(stored === 'dark' || (!stored && prefersDark));
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      setTheme(!root.classList.contains('dark'));
+    });
+    const drawer = document.getElementById('mobile-drawer');
+    const overlay = document.getElementById('mobile-drawer-overlay');
+    function openDrawer() {
+      drawer?.classList.add('open');
+      drawer?.setAttribute('aria-hidden', 'false');
+      (overlay as HTMLElement).style.display = 'block';
+    }
+    function closeDrawer() {
+      drawer?.classList.remove('open');
+      drawer?.setAttribute('aria-hidden', 'true');
+      (overlay as HTMLElement).style.display = 'none';
+    }
+    document.getElementById('mobile-menu-btn')?.addEventListener('click', openDrawer);
+    overlay?.addEventListener('click', closeDrawer);
+    drawer?.querySelectorAll('[data-close-drawer]').forEach(el => el.addEventListener('click', closeDrawer));
+  })();
+</script>

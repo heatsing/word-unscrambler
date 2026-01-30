@@ -1,0 +1,62 @@
+---
+import { wordFinders, wordLists, wordsByLength, legal } from '@/lib/nav-links';
+const currentYear = new Date().getFullYear();
+const baseVotes = 2960;
+const baseAverage = 4.6;
+---
+<footer class="site-footer">
+  <section class="border-b border-white/10">
+    <div class="container mx-auto px-4 py-12 md:py-16">
+      <div class="mx-auto max-w-3xl text-center">
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-white">Rate WordUnscrambler.cc</h2>
+        <div class="rating-stars" role="img" aria-label="4.6 out of 5 stars">★★★★☆</div>
+        <div class="text-3xl md:text-4xl font-semibold text-white">{baseAverage} <span class="text-lg md:text-xl font-medium text-white/70">/ 5</span></div>
+        <div class="rating-note">{baseVotes.toLocaleString()} votes</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container mx-auto px-4 py-12 md:py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+      <div class="footer-col">
+        <h3>Word Finders</h3>
+        <ul>
+          {wordFinders.map((link) => (
+            <li><a href={link.href}>{link.name}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>List of Words</h3>
+        <ul>
+          {wordLists.map((link) => (
+            <li><a href={link.href}>{link.name}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Words by Length</h3>
+        <ul>
+          {wordsByLength.map((link) => (
+            <li><a href={link.href}>{link.name}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Legal</h3>
+        <ul>
+          {legal.map((link) => (
+            <li><a href={link.href}>{link.name}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="copyright">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <p class="text-center md:text-left">© {currentYear} Word Unscrambler. All rights reserved.</p>
+        <p class="disclaimer text-center md:text-right">Scrabble® is a registered trademark. Words with Friends® is a registered trademark. This site is not affiliated with Scrabble®, Words with Friends®, or any other game.</p>
+      </div>
+    </div>
+  </div>
+</footer>
