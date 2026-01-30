@@ -16,14 +16,9 @@ The **main site** is built with [Astro](https://astro.build) (static output). Th
 
 > word unscrambler, unscramble words, anagram solver, word scramble solver, letter solver, english word finder, anagram generator, word game helper, vocabulary practice
 
-## 📍 GEO Targeting
+## 📍 Target Audience (US)
 
-This project targets English-learning and word-game users in **China, Hong Kong, Taiwan, Singapore, and Malaysia**.
-Suggested localized search phrases:
-
-- China: **English word unscrambler / scramble word solver**
-- Hong Kong & Taiwan: **unscramble letters / anagram solver**
-- Singapore & Malaysia: **word scramble solver / anagram finder**
+This project targets **US** users: students, teachers, word-game players, and anyone who needs to unscramble letters or solve anagrams in English. Ideal for Wordle, Scrabble, Words with Friends, classroom activities, and spelling practice.
 
 ## 🧭 Use Cases
 
