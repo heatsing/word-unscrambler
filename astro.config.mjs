@@ -11,6 +11,10 @@ export default defineConfig({
     react(),
     sitemap({
       filter: (page) => !page.includes('/api/') && !page.includes('?'),
+      serialize(item) {
+        item.lastmod = new Date().toISOString().split('T')[0];
+        return item;
+      },
     }),
   ],
   output: 'static',

@@ -1,5 +1,17 @@
 const BASE = 'https://wordunscrambler.cc';
 
+export function getOrganizationSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': `${BASE}/#organization`,
+    name: 'Word Unscrambler',
+    url: BASE,
+    description: 'Free word unscrambler & anagram solver for Wordle, Scrabble, Words with Friends.',
+    sameAs: [],
+  };
+}
+
 export function getWebSiteSchema() {
   return {
     '@context': 'https://schema.org',
@@ -7,6 +19,8 @@ export function getWebSiteSchema() {
     name: 'Word Unscrambler',
     url: BASE,
     description: 'Free word unscrambler & anagram solver for Wordle, Scrabble, Words with Friends.',
+    inLanguage: 'en-US',
+    publisher: { '@id': `${BASE}/#organization` },
     potentialAction: {
       '@type': 'SearchAction',
       target: { '@type': 'EntryPoint', urlTemplate: `${BASE}/unscramble?q={search_term_string}` },

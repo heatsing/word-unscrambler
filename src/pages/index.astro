@@ -1,11 +1,12 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getMeta, DEFAULT_TITLE, DEFAULT_DESCRIPTION } from '@/lib/meta';
-import { getWebSiteSchema, getFAQPageSchema } from '@/lib/schema';
+import { getWebSiteSchema, getOrganizationSchema, getFAQPageSchema } from '@/lib/schema';
 import { wordFinders, dailyGameHints, wordLists, wordsByLength } from '@/lib/nav-links';
 
 const meta = getMeta('/', DEFAULT_TITLE, DEFAULT_DESCRIPTION);
 const webSiteSchema = getWebSiteSchema();
+const organizationSchema = getOrganizationSchema();
 
 const homeFaqs = [
   { question: 'What is a word unscrambler?', answer: 'A word unscrambler takes jumbled letters and finds all valid words you can make from them. It helps with Wordle, Scrabble, crosswords, and other word games.' },
@@ -37,7 +38,7 @@ const faqSchema = getFAQPageSchema(homeFaqs);
     <p class="text-center text-muted-foreground mb-8 max-w-xl mx-auto">
       Same structure as the menu: pick a category below to get started.
     </p>
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid gap-8 grid-cols-1 sm:grid-cols-2">
       <div class="rounded-lg border border-border bg-card p-5">
         <h3 class="font-semibold text-lg mb-3 text-foreground">Word Finders</h3>
         <ul class="space-y-2 text-sm">
@@ -106,6 +107,7 @@ const faqSchema = getFAQPageSchema(homeFaqs);
     </dl>
   </section>
 
+  <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(webSiteSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

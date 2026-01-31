@@ -1,4 +1,6 @@
 ---
+const SITE = 'https://wordunscrambler.cc';
+
 interface Props {
   title: string;
   description: string;
@@ -7,6 +9,8 @@ interface Props {
 }
 const { title, description, canonical, noindex = false } = Astro.props;
 const fullTitle = title.includes('|') ? title : `${title} | Word Unscrambler`;
+const origin = canonical.startsWith('http') ? new URL(canonical).origin : SITE;
+const ogImage = `${origin}/apple-icon.png`;
 ---
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -18,8 +22,13 @@ const fullTitle = title.includes('|') ? title : `${title} | Word Unscrambler`;
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
-{noindex ? <meta name="robots" content="noindex, follow" /> : null}
+<link rel="sitemap" type="application/xml" href={`${SITE}/sitemap-index.xml`} />
+{noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow" />}
+<meta name="googlebot" content="index, follow" />
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="Word Unscrambler" />
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content="en_US" />
