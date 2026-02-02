@@ -58,8 +58,6 @@ body {
   font-size: 1rem;
   line-height: 1.625;
 }
-.size-5 { width: 1.25rem; height: 1.25rem; }
-.size-6 { width: 1.5rem; height: 1.5rem; }
 .theme-icon { display: inline-block; vertical-align: middle; }
 .theme-icon.hidden { display: none !important; }
 
@@ -228,9 +226,6 @@ a[href].rounded-lg:focus-visible {
   letter-spacing: 0.05em;
   color: var(--muted-foreground);
 }
-.site-header .nav-panel .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem 1rem; }
-.site-header .nav-panel .grid-1 { display: flex; flex-direction: column; gap: 0.25rem; }
-
 @media (max-width: 1023px) { .site-header .nav-desktop { display: none !important; } }
 @media (min-width: 1024px) { .site-header .nav-mobile-btn { display: none !important; } }
 

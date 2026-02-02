@@ -30,8 +30,8 @@ const words = allWords.filter((w) => w.toLowerCase().includes(letter));
 
 const meta = getMeta(
   `/${length}-letter-words-with-${letter}`,
-  `${length} Letter Words Containing ${letterUpper} | Word Finder`,
-  `Complete list of ${length}-letter words that contain the letter ${letterUpper}. Perfect for Scrabble, Wordle, Words with Friends, and word puzzles.`
+  `${length} Letter Words With ${letterUpper}`,
+  `${words.length} ${length}-letter words that contain ${letterUpper}. Browse the list or use Unscramble to find words from your letters.`
 );
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');

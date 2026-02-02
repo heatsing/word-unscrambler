@@ -17,6 +17,6 @@ export function getMeta(
   return { title, description, canonical, noindex: options?.noindex };
 }
 
-export const DEFAULT_TITLE = 'Word Unscrambler - Solve Wordle, Scrabble & Word Games';
+export const DEFAULT_TITLE = 'Word Unscrambler – Unscramble Letters for Wordle, Scrabble & More';
 export const DEFAULT_DESCRIPTION =
-  'Free word unscrambler & anagram solver for Wordle, Scrabble, Words with Friends. Unscramble letters and find valid words instantly.';
+  'Unscramble jumbled letters into real words. Works for Wordle, Scrabble, Words with Friends, and crosswords. No sign-up. Free in your browser.';

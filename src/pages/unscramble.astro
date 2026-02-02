@@ -4,7 +4,7 @@ import UnscrambleTool from '@/components/UnscrambleTool';
 import { getMeta } from '@/lib/meta';
 import { getSoftwareApplicationSchema, getFAQPageSchema } from '@/lib/schema';
 
-const meta = getMeta('/unscramble', 'Unscramble Words - Letter Unscrambler & Word Solver', 'Unscramble words and letters quickly. Enter jumbled letters and find all valid word combinations. Free unscramble tool for word games.');
+const meta = getMeta('/unscramble', 'Unscramble Words', 'Type your jumbled letters and get every valid word. Filter by length, sort by score or A–Z. Works for Wordle, Scrabble, and crosswords.');
 const appSchema = getSoftwareApplicationSchema();
 const faqs = [
   { question: 'How does the unscramble tool work?', answer: 'Enter your letters in the box. The tool loads a word list by length and finds all valid words that can be formed from your letters. Results are sorted by Scrabble score by default.' },

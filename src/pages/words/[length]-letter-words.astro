@@ -19,7 +19,7 @@ const displayWords = allWords.slice(0, LIST_SIZE);
 const meta = getMeta(
   `/words/${length}-letter-words`,
   `${length}-Letter Words`,
-  `Browse ${length}-letter words. Use the word finder to search by position, required letters, and exclusions.`
+  `Search ${length}-letter words by known letters, position, and exclusions. Built for Wordle-style clues and word puzzles. No sign-up.`
 );
 
 const otherLengths = [3, 4, 5, 6, 7, 8, 9, 10].filter((n) => n !== length);

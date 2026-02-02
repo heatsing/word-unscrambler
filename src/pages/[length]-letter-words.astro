@@ -26,11 +26,17 @@ const restByAlpha = [...restWords].sort((a, b) => a.localeCompare(b));
 const wordsByPoints = [...initialWords].sort((a, b) => getScrabbleScore(b) - getScrabbleScore(a));
 const restByPoints = [...restWords].sort((a, b) => getScrabbleScore(b) - getScrabbleScore(a));
 
-const meta = getMeta(
-  `/${length}-letter-words`,
-  `${length} Letter Words - Complete List | Word Unscrambler`,
-  `Browse ${words.length} ${length}-letter words. Useful for Wordle, Scrabble, Words with Friends, and word games.`
-);
+const metaTitle = length === 5
+  ? `${length} Letter Words – Wordle & Word Games`
+  : length === 7
+  ? `${length} Letter Words – Scrabble & Word Games`
+  : `${length} Letter Words – Full List`;
+const metaDesc = length === 5
+  ? `${words.length} valid 5-letter words. Perfect for Wordle and daily word games. Browse A–Z or by score, or use the finder to search by letters.`
+  : length === 7
+  ? `${words.length} seven-letter words. Great for Scrabble bingos and Words with Friends. Browse the list or search by your tiles.`
+  : `Browse ${words.length} ${length}-letter words. Use the finder to search by letters, or sort A–Z or by Scrabble score.`;
+const meta = getMeta(`/${length}-letter-words`, metaTitle, metaDesc);
 
 const lengthsNav = [10, 9, 8, 7, 6, 5, 4, 3, 2];
 const frequentSearches = length === 5

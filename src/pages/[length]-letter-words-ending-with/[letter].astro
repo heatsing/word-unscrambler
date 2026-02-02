@@ -10,7 +10,7 @@ export function getStaticPaths() {
   for (const len of lengths) {
     for (const letter of letters) {
       paths.push({
-        params: { length: `${len}-letter-words-ending-with`, letter },
+        params: { length: `${len}`, letter },
         props: { lengthNum: len, letter },
       });
     }
@@ -25,8 +25,8 @@ const words = allWords.filter((w) => w.toLowerCase().endsWith(letter));
 
 const meta = getMeta(
   `/${lengthNum}-letter-words-ending-with/${letter}`,
-  `${lengthNum} Letter Words Ending with ${letterUpper} | Word Finder`,
-  `Complete list of ${lengthNum}-letter words that end with ${letterUpper}. Perfect for rhyming, Scrabble, Wordle, Words with Friends, and word puzzles.`
+  `${lengthNum} Letter Words Ending in ${letterUpper}`,
+  `${words.length} ${lengthNum}-letter words that end with ${letterUpper}. Browse the list or use Unscramble to find words from your letters.`
 );
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
