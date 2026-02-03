@@ -1,3 +1,5 @@
+import { ASSET_PATHS } from './assets-version';
+
 const BASE = 'https://wordunscrambler.cc';
 
 export function getOrganizationSchema() {
@@ -7,6 +9,7 @@ export function getOrganizationSchema() {
     '@id': `${BASE}/#organization`,
     name: 'Word Unscrambler',
     url: BASE,
+    logo: `${BASE}${ASSET_PATHS.ogImage}`,
     description: 'Free word unscrambler & anagram solver for Wordle, Scrabble, Words with Friends.',
     sameAs: [],
   };

@@ -5,9 +5,10 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run build:dict && astro build",
+    "build": "npm run build:dict && astro build && node scripts/ensure-sitemap.mjs",
     "build:dict": "tsx scripts/build-dict.ts",
     "preview": "astro preview",
+    "validate:sitemap": "node scripts/validate-sitemap.mjs",
     "astro": "astro"
   },
   "dependencies": {

@@ -1,4 +1,6 @@
 ---
+import { ASSET_PATHS } from '@/lib/assets-version';
+
 const SITE = 'https://wordunscrambler.cc';
 
 interface Props {
@@ -10,15 +12,16 @@ interface Props {
 const { title, description, canonical, noindex = false } = Astro.props;
 const fullTitle = title.includes('|') ? title : `${title} | Word Unscrambler`;
 const origin = canonical.startsWith('http') ? new URL(canonical).origin : SITE;
-const ogImage = `${origin}/apple-icon.png`;
+const ogImage = `${origin}${ASSET_PATHS.ogImage}`;
 ---
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
-<link rel="icon" type="image/svg+xml" href="/icon.svg" />
-<link rel="apple-touch-icon" href="/apple-icon.png" />
+<link rel="icon" type="image/svg+xml" href={ASSET_PATHS.icon} />
+<link rel="apple-touch-icon" href={ASSET_PATHS.appleTouchIcon} />
+<link rel="manifest" href="/manifest.json" />
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />

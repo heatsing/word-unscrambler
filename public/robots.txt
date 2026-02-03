@@ -3,3 +3,4 @@ Allow: /
 Disallow: /private/
 
 Sitemap: https://wordunscrambler.cc/sitemap-index.xml
+Sitemap: https://wordunscrambler.cc/sitemap.xml
