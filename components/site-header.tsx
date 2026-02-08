@@ -111,12 +111,12 @@ export function SiteHeader() {
               id="nav-word-finders"
               label="Word Finders"
               className="shrink-0"
-              panelClassName="w-[560px] p-4"
+              panelClassName="w-[280px] p-4"
             >
               <div className="mb-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                 Word Finders
               </div>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+              <div className="grid grid-cols-1 gap-y-1">
                 {wordFinders.map((item) => (
                   <NavDropdownLink key={item.href} href={item.href}>
                     {item.name}
