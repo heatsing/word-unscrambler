@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getMeta } from '@/lib/meta';
+import WordsSearchHero from '@/components/WordsSearchHero.astro';
 
 const meta = getMeta(
   '/words-with-letters',
@@ -13,44 +14,41 @@ const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
 ---
 
 <Layout meta={meta}>
-  <section class="text-center mb-10">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">Words With Letters</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Find words that contain a specific letter. Choose a word length below, then pick a letter to see all words of that length containing the letter.
-    </p>
-  </section>
+  <div class="bg-white min-h-screen -mx-4 -my-8 px-4 py-8 sm:-mx-6 sm:px-6 md:-mx-8 md:px-8 rounded-lg">
+    <WordsSearchHero title="Words With" searchAction="/unscramble" />
 
-  <section class="mb-12" aria-labelledby="by-length-heading">
-    <h2 id="by-length-heading" class="text-xl font-bold mb-6 text-foreground">Browse by word length</h2>
-    <div class="space-y-8">
-      {lengths.map((len) => (
-        <div>
-          <h3 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">{len}-letter words containing</h3>
-          <ul class="flex flex-wrap gap-2 list-none pl-0">
-            {letters.map((l) => (
-              <li>
-                <a
-                  href={`/${len}-letter-words-with-${l}`}
-                  class="inline-flex items-center justify-center min-w-[2.5rem] h-10 rounded-lg border border-border bg-card font-semibold uppercase text-primary hover:bg-muted hover:border-primary transition-colors"
-                >
-                  {l}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  </section>
+    <section class="mt-10 max-w-4xl mx-auto">
+      <h2 id="by-length-heading" class="text-xl font-bold mb-6 text-gray-900">Browse by word length</h2>
+      <div class="space-y-8">
+        {lengths.map((len) => (
+          <div>
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">{len}-letter words containing</h3>
+            <ul class="flex flex-wrap gap-2 list-none pl-0">
+              {letters.map((l) => (
+                <li>
+                  <a
+                    href={`/${len}-letter-words-with-${l}`}
+                    class="inline-flex items-center justify-center min-w-[2.5rem] h-10 rounded-lg border border-gray-300 bg-white font-semibold uppercase text-primary hover:bg-gray-100 hover:border-primary transition-colors"
+                  >
+                    {l}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
 
-  <p class="text-sm text-muted-foreground text-center mb-8">
-    Also see <a href="/words-by-length" class="text-primary hover:underline">Words By Length</a>, <a href="/words-start-with" class="text-primary hover:underline">Words Start With</a>, and <a href="/words-ending-in" class="text-primary hover:underline">Words Ending In</a>.
-  </p>
+      <p class="text-sm text-gray-500 text-center mt-8">
+        Also see <a href="/words-by-length" class="text-primary hover:underline">Words By Length</a>, <a href="/words-start-with" class="text-primary hover:underline">Words Start With</a>, and <a href="/words-ending-in" class="text-primary hover:underline">Words Ending In</a>.
+      </p>
 
-  <article class="p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-lg font-bold mb-3 text-foreground">About Words With Letters</h2>
-    <p class="text-muted-foreground leading-relaxed">
-      Use this index to find words that contain a certain letter. Pick a word length (2–10 letters), then choose a letter to see the full list. Useful for Scrabble, Wordle, crosswords, and vocabulary. You can also use our <a href="/unscramble" class="text-primary hover:underline">Unscramble</a> tool to find words from your own letters.
-    </p>
-  </article>
+      <article class="mt-10 p-6 rounded-lg border border-gray-200 bg-gray-50">
+        <h2 class="text-lg font-bold mb-3 text-gray-900">About Words With Letters</h2>
+        <p class="text-gray-600 leading-relaxed">
+          Use this index to find words that contain a certain letter. Pick a word length (2–10 letters), then choose a letter to see the full list. Useful for Scrabble, Wordle, crosswords, and vocabulary. You can also use our <a href="/unscramble" class="text-primary hover:underline">Unscramble</a> tool to find words from your own letters.
+        </p>
+      </article>
+    </section>
+  </div>
 </Layout>

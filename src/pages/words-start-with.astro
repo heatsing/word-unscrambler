@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getMeta } from '@/lib/meta';
+import WordsSearchHero from '@/components/WordsSearchHero.astro';
 
 const meta = getMeta('/words-start-with', 'Words Start With', 'Find words that start with a given letter. Browse by length or A–Z. Handy for crosswords, word games, and vocabulary.');
 const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
@@ -8,46 +9,41 @@ const lengths = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 ---
 
 <Layout meta={meta}>
-  <section class="text-center mb-10">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">Words Start With</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Find all words that start with specific letters. Choose a letter below, or pick a word length first to see N-letter words starting with each letter.
-    </p>
-  </section>
+  <div class="bg-white min-h-screen -mx-4 -my-8 px-4 py-8 sm:-mx-6 sm:px-6 md:-mx-8 md:px-8 rounded-lg">
+    <WordsSearchHero title="Words Start With" searchAction="/unscramble" />
 
-  <section class="mb-10" aria-labelledby="by-length-heading">
-    <h2 id="by-length-heading" class="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">By word length (then letter)</h2>
-    <ul class="flex flex-wrap gap-2 list-none pl-0 mb-6">
-      {lengths.map((len) => (
-        <li>
-          <a
-            href={`/${len}-letter-words-starting-with/a`}
-            class="inline-flex items-center justify-center min-w-[2.5rem] h-10 rounded-lg border border-border bg-card font-semibold text-foreground hover:bg-muted hover:border-primary transition-colors"
-          >
-            {len}-letter
-          </a>
-        </li>
-      ))}
-    </ul>
-  </section>
+    <section class="mt-10 max-w-4xl mx-auto">
+      <h2 id="by-length-heading" class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">By word length (then letter)</h2>
+      <ul class="flex flex-wrap gap-2 list-none pl-0 mb-6">
+        {lengths.map((len) => (
+          <li>
+            <a
+              href={`/${len}-letter-words-starting-with/a`}
+              class="inline-flex items-center justify-center min-w-[2.5rem] h-10 rounded-lg border border-gray-300 bg-white font-semibold text-gray-800 hover:bg-gray-100 hover:border-primary transition-colors"
+            >
+              {len}-letter
+            </a>
+          </li>
+        ))}
+      </ul>
 
-  <nav aria-label="Letters" class="mb-10">
-    <h2 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Browse by letter (all lengths)</h2>
-    <ul class="flex flex-wrap gap-2 justify-center list-none pl-0">
-      {letters.map((letter) => (
-        <li>
-          <a
-            href={`/words-start-with/${letter}`}
-            class="inline-flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-card font-semibold uppercase text-primary hover:bg-muted hover:border-primary transition-colors"
-          >
-            {letter}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </nav>
+      <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Browse by letter (all lengths)</h2>
+      <ul class="flex flex-wrap gap-2 justify-center list-none pl-0">
+        {letters.map((letter) => (
+          <li>
+            <a
+              href={`/words-start-with/${letter}`}
+              class="inline-flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 bg-white font-semibold uppercase text-primary hover:bg-gray-100 hover:border-primary transition-colors"
+            >
+              {letter}
+            </a>
+          </li>
+        ))}
+      </ul>
 
-  <p class="text-sm text-muted-foreground text-center">
-    Also see <a href="/words-ending-in" class="text-primary hover:underline">Words Ending In</a>, <a href="/words-with-letters" class="text-primary hover:underline">Words With Letters</a>, and <a href="/words-by-length" class="text-primary hover:underline">Words By Length</a>.
-  </p>
+      <p class="text-sm text-gray-500 text-center mt-8">
+        Also see <a href="/words-ending-in" class="text-primary hover:underline">Words Ending In</a>, <a href="/words-with-letters" class="text-primary hover:underline">Words With Letters</a>, and <a href="/words-by-length" class="text-primary hover:underline">Words By Length</a>.
+      </p>
+    </section>
+  </div>
 </Layout>

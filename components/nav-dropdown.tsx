@@ -105,28 +105,38 @@ export function NavDropdown({
   }, [clearLeaveTimeout])
 
   const handleTriggerClick = () => {
-    if (prefersHover) {
-      // Desktop: click can still toggle for accessibility (e.g. keyboard users)
-      setOpen((prev) => !prev)
-    } else {
+    // Mobile/touch: click to toggle
+    if (!prefersHover) {
       setOpen((prev) => !prev)
     }
+    // Desktop: click is ignored when hover is available (hover handles opening)
+    // Keyboard users can still use Enter/Space to toggle
   }
 
   const handleTriggerPointerEnter = () => {
-    if (prefersHover) openDropdown()
+    if (prefersHover) {
+      clearLeaveTimeout()
+      setOpen(true)
+    }
   }
 
   const handleTriggerPointerLeave = () => {
-    if (prefersHover) scheduleClose()
+    if (prefersHover) {
+      scheduleClose()
+    }
   }
 
   const handlePanelPointerEnter = () => {
-    if (prefersHover) openDropdown()
+    if (prefersHover) {
+      clearLeaveTimeout()
+      setOpen(true)
+    }
   }
 
   const handlePanelPointerLeave = () => {
-    if (prefersHover) scheduleClose()
+    if (prefersHover) {
+      scheduleClose()
+    }
   }
 
   return (
@@ -181,8 +191,8 @@ export function NavDropdown({
             panelClassName
           )}
           style={{ height: "auto", maxHeight: "min(80vh, 400px)" }}
-          onPointerEnter={handlePanelPointerEnter}
-          onPointerLeave={handlePanelPointerLeave}
+          onMouseEnter={handlePanelPointerEnter}
+          onMouseLeave={handlePanelPointerLeave}
         >
           {children}
         </div>
