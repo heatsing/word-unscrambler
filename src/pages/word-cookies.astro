@@ -3,88 +3,228 @@ import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema } from '@/lib/schema';
+import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/word-cookies',
-  'Word Cookies Solver - Find All Words',
-  'Word Cookies solver: enter your letter batch to find all possible words in Word Cookies. Beat every level with our free cheat tool.'
+  'Word Cookies Solver - Find All Words | Free Cheat Tool',
+  'Free Word Cookies cheat: enter your letter batch and find every valid word. Beat any level instantly with our solver. Works on all devices.'
 );
+
+const howToSteps = [
+  { name: 'Enter your letter batch', text: 'Type all the letters from your Word Cookies bowl — the main letter set for that level. These are typically 7-15 letters depending on the level difficulty.' },
+  { name: 'Set length filters (optional)', text: 'Most Word Cookies levels ask you to find words of specific lengths. Use the Min and Max controls to filter results to words of the required size.' },
+  { name: 'Find all valid words', text: 'Our solver shows every valid English word from your letter batch, sorted by length or score. Look for the "puzzle answer" word — usually the longest one.' },
+  { name: 'Complete the level', text: 'Find all required words to complete the level and earn coins. Higher-difficulty words (6+ letters, uncommon patterns) typically award bonus coins.' },
+];
+
+const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
-    question: 'How does the Word Cookies solver work?',
-    answer: 'Enter the letters from your Word Cookies bowl (the main set of letters for that level) and the solver will show every valid word you can make from those letters.',
+    question: 'What is Word Cookies and how does it work?',
+    answer: 'Word Cookies is a popular mobile word puzzle game with hundreds of levels organized by difficulty and theme. In each level, you\'re given a "bowl" of letters and must swipe to form all possible words hidden within them. The game starts easy with short words (3-4 letters) and gradually introduces longer, more complex words as you progress. Each level has a set of words to find — once you\'ve found them all, you earn coins and unlock the next level. The challenge comes from spotting longer, less obvious words that hide inside the letter batch.',
   },
   {
-    question: 'What is Word Cookies?',
-    answer: 'Word Cookies is a popular mobile word puzzle game where you swipe through letter tiles to form words. Each level gives you a set of letters and you must find all possible words to complete the level and earn coins.',
+    question: 'What\'s the "puzzle answer" word in Word Cookies?',
+    answer: 'Every Word Cookies level has one special "puzzle answer" word — typically the longest word you can make from the letter batch. Finding this word usually awards a large coin bonus. For example, in a level with letters "TWISTING", the puzzle answer might be <strong class="text-foreground">TWISTING</strong> itself (8 letters), while smaller words like <strong class="text-foreground">STING</strong>, <strong class="text-foreground">TWIST</strong>, <strong class="text-foreground">SWING</strong>, <strong class="text-foreground">WITS</strong>, and <strong class="text-foreground">GIST</strong> are also valid. Our solver finds the puzzle answer instantly, along with every other valid word.',
   },
   {
-    question: 'Does the Word Cookies solver work for all levels?',
-    answer: 'Yes! Our solver works with any set of letters from 3 to 12+ letters. It supports every Word Cookies level regardless of the theme or difficulty.',
+    question: 'How does the Word Cookies cheat tool work?',
+    answer: 'Enter the letters from your Word Cookies letter batch into our solver. The tool checks every possible arrangement of those letters against a comprehensive English dictionary, finding every valid word from 2 letters up to the full length of your input. Results are sorted by length (longest first) so the puzzle answer is usually the first or second result. Use the length filters to match the specific word sizes the level requires.',
   },
   {
-    question: 'Is the Word Cookies cheat free?',
-    answer: 'Yes, our Word Cookies solver is completely free to use. No sign-up, no download, no ads in your face — just open and use.',
+    question: 'What are the hardest levels in Word Cookies?',
+    answer: 'The hardest Word Cookies levels are typically the later levels in each world (around levels 15-20 of a themed set) and the "Master" difficulty levels. These levels feature letter batches with uncommon letter combinations — lots of consonants, few vowels, or unusual patterns like all the letters in "rhythm" (R-H-Y-T-H-M, no vowels at all). Our solver handles these tricky batches just as well as easy ones — enter "HRTYHM" and you\'ll see RHYTHM, THY, etc.',
   },
   {
-    question: 'How do I find the hidden "special words" in Word Cookies?',
-    answer: 'Special words are typically longer, harder-to-spell words that give bonus coins. Our solver finds ALL valid words, including these special words. Look for words 6+ letters with uncommon letter combinations.',
+    question: 'Can I use the Word Cookies solver offline?',
+    answer: 'Our Word Cookies solver is a web-based tool that works in any browser. While you need an internet connection to load the page initially, the solver itself runs locally in your browser once the page is loaded. No account or download required.',
+  },
+  {
+    question: 'What tips help with hard Word Cookies levels?',
+    answer: '<strong class="text-foreground">1. Start with the vowels:</strong> Every Word Cookies word contains at least one vowel (A, E, I, O, U). If your batch has A, E, I, O, U, try pairing each vowel with common consonants (S, T, R, N, L) to form syllables. <strong class="text-foreground">2. Look for common suffixes and prefixes:</strong> -ING, -ED, -ER, -LY, -TION, -NESS, UN-, RE-, IN-, DIS- appear constantly. <strong class="text-foreground">3. Check for doubled letters:</strong> Letter batches with two identical letters (LL, SS, EE, etc.) often hide words with those doubles. <strong class="text-foreground">4. Think of compound words:</strong> Words like SUNSHINE, FIREPLACE, and NETWORK are common puzzle answers in later levels.',
   },
 ];
 
 const faqSchema = getFAQPageSchema(faqs);
 ---
 
-<Layout meta={meta}>
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">Word Cookies Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-      Enter your Word Cookies letters to find every word in the puzzle.
+<Layout meta={meta} wide={true}>
+  <!-- Hero -->
+  <section class="text-center pt-8 pb-6">
+    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
+      🍪 Free Tool · Any Level · Instant Results
+    </div>
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Word Cookies Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+      Enter your Word Cookies letter batch and find every valid word. Beat any level instantly — including the hidden puzzle answer.
     </p>
-  </header>
+  </section>
 
-  <UnscrambleTool client:load />
+  <!-- Tool -->
+  <div class="max-w-3xl mx-auto mb-10">
+    <UnscrambleTool client:load />
+  </div>
 
   <AdSense />
 
-  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Solve Word Cookies</h2>
-    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
-      <p>
-        Word Cookies is a fun swipe-to-spell word game with hundreds of levels. Our solver helps you find every valid word in each puzzle, so you can complete levels quickly and earn more coins.
-      </p>
-
-      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Word Cookies Tips</h3>
-      <ul class="list-disc pl-6 space-y-2">
-        <li><strong class="text-foreground">Start with common patterns</strong> — Look for common 3 and 4-letter words first: THE, AND, FOR, ARE, BUT, NOT, YOU, ALL, ANY, CAN, HAD, HER, WAS, ONE, OUR, OUT.</li>
-        <li><strong class="text-foreground">Use all letters every time</strong> — When you find a word that uses all available letters, it\'s usually the "puzzle answer" word worth extra coins.</li>
-        <li><strong class="text-foreground">Think of compound words</strong> — Words like SUNSHINE, FIREPLACE, and WATERFALL hide inside larger letter sets.</li>
-        <li><strong class="text-foreground">Check letter combinations</strong> — Look for patterns like -ING, -TION, -ED, -ER, -LY. These suffixes appear in many English words.</li>
-        <li><strong class="text-foreground">Use the hint letters</strong> — Sometimes the extra "hint" letters shown in the game can help you spot longer words.</li>
-      </ul>
+  <!-- What is Word Cookies -->
+  <section class="mt-12 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-4 text-foreground">What is Word Cookies?</h2>
+      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
+        <p>
+          <a href="https://play.google.com/store/apps/details?id=com.ironhorton.wordcookies" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Word Cookies</a> is one of the most popular swipe-to-spell word games on mobile, with millions of downloads across iOS and Android. Developed by BitMango, the game combines elements of classic word puzzles like Boggle with the satisfying progression system of a mobile game — hundreds of levels organized into themed "worlds" that get progressively harder.
+        </p>
+        <p>
+          Each level in Word Cookies gives you a bowl of letters and asks you to find every valid English word hidden within them. You swipe through adjacent letters (in any direction — including diagonals) to form words. The game awards coins for each word found, bonus coins for longer and more difficult words, and a special bonus for finding the "puzzle answer" — the longest word in the batch.
+        </p>
+        <p>
+          What makes Word Cookies challenging and addictive is the combination of pattern recognition, vocabulary, and the satisfaction of finding all the hidden words. Levels that seem impossible at first glance often reveal their secrets once you know what to look for. That's where our Word Cookies solver comes in — enter your letter batch and see every word hiding inside.
+        </p>
+      </div>
     </div>
   </section>
 
-  <section class="mt-8">
-    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
-    <dl class="space-y-4 text-sm">
-      {faqs.map((faq) => (
-        <div class="rounded-lg border border-border bg-card p-4">
-          <dt class="font-semibold text-foreground">{faq.question}</dt>
-          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
-        </div>
-      ))}
-    </dl>
+  <!-- How to Solve -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">How to Solve Word Cookies Levels</h2>
+      <div class="space-y-5">
+        {howToSteps.map((step, i) => (
+          <div class="flex gap-4">
+            <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
+            <div>
+              <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
+              <p class="text-sm text-muted-foreground">{step.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   </section>
 
-  <div class="mt-8 flex flex-wrap gap-3 text-sm">
-    <a href="/wordscapes" class="btn btn-primary">Wordscapes</a>
-    <a href="/wordfeud" class="btn btn-primary">Wordfeud</a>
-    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
-    <a href="/scrabble-go" class="btn btn-primary">Scrabble Go</a>
-  </div>
+  <!-- Word Cookies Cheat Tool -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-4 text-foreground">🍪 Why Use a Word Cookies Cheat Tool?</h2>
+      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
+        <p>
+          Let's be honest: sometimes a Word Cookies level is just <em>too</em> hard. You've swiped every possible combination, you're convinced there are no more words, and yet the game insists 47 words are hidden in "ABEHIRSST." You're not wrong for being stuck — some Word Cookies levels require obscure vocabulary that even native English speakers don't encounter daily.
+        </p>
+        <p>
+          Our Word Cookies cheat tool is designed for those moments. It's also a genuine learning tool:
+        </p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong class="text-foreground">Build vocabulary:</strong> Every unfamiliar word you find through our solver is a new word learned. <strong class="text-foreground">STABILE</strong>, <strong class="text-foreground">BASTILES</strong>, <strong class="text-foreground">ABRITSHES</strong> — these are real words hiding in "BASTIHERSE." Now you know them.</li>
+          <li><strong class="text-foreground">Understand word patterns:</strong> Seeing all the words from a letter batch reveals how prefixes, suffixes, and letter combinations work in English. This pattern recognition improves your overall word skills.</li>
+          <li><strong class="text-foreground">Save time:</strong> Instead of spending 20 minutes on one frustrating level, use our solver in 5 seconds and move on to the next challenge.</li>
+          <li><strong class="text-foreground">Beat impossible levels:</strong> Some Word Cookies levels are notoriously difficult (the "rhythm" levels, the all-consonant batches). Our solver handles any letter combination without breaking a sweat.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Level Progression Tips -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">📈 Word Cookies Level Progression Tips</h2>
+      <div class="space-y-5">
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#c9b458]/10 flex items-center justify-center text-[#c9b458] font-bold text-sm">1</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Start every level by looking for the longest word</h3>
+            <p class="text-sm text-muted-foreground">The "puzzle answer" word (usually the longest in the batch) gives you bonus coins and often unlocks your ability to see the rest of the words more clearly. Sort our results by length and start from the top — if a long word uses a tricky letter combination, you'll know how to use those letters in shorter words.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#c9b458]/10 flex items-center justify-center text-[#c9b458] font-bold text-sm">2</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Learn the common letter patterns for each level size</h3>
+            <p class="text-sm text-muted-foreground">In early levels (3-5 letters), common words like <strong class="text-foreground">THE</strong>, <strong class="text-foreground">AND</strong>, <strong class="text-foreground">FOR</strong>, <strong class="text-foreground">ARE</strong>, <strong class="text-foreground">BUT</strong>, <strong class="text-foreground">NOT</strong>, <strong class="text-foreground">YOU</strong>, <strong class="text-foreground">ALL</strong>, and <strong class="text-foreground">CAN</strong> appear constantly. In later levels (6-8 letters), look for -ING, -ED, -ER, -TION, -NESS, and -LY endings. In the hardest levels (9+ letters), compound words like <strong class="text-foreground">SUNSHINE</strong>, <strong class="text-foreground">FIREPLACE</strong>, and <strong class="text-foreground">WATERFALL</strong> are common puzzle answers.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#c9b458]/10 flex items-center justify-center text-[#c9b458] font-bold text-sm">3</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Watch for vowel-consonant patterns in tough batches</h3>
+            <p class="text-sm text-muted-foreground">Some Word Cookies levels give you all consonants (like "RHTHYM" for RHYTHM). Others give you unusual vowel distributions. When you see a tough batch, try our solver first to learn what words are hidden — then try to understand why those words were hard to spot. Pattern recognition improves with practice.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#c9b458]/10 flex items-center justify-center text-[#c9b458] font-bold text-sm">4</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Use coin bonuses strategically</h3>
+            <p class="text-sm text-muted-foreground">Finding all words in a level earns a "Perfect" bonus. Some players replay easy levels to accumulate coins, then use those coins to buy hints (letter reveals) on hard levels. Our solver is completely free and gives you all words at once — no coins required, no hints to wait for.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Real Example -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-4 text-foreground">📖 Real Example: "EGNINRTCI" → ?</h2>
+      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
+        <p>
+          Let's say you have the letters <strong class="text-foreground font-mono tracking-wider">EGNINRTCI</strong> (9 letters). A Word Cookies player might spot a few short words, but our solver reveals everything hiding inside:
+        </p>
+        <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 p-4 bg-muted/30 rounded-xl">
+          {['INCITING', 'RETICING', 'CREATING', 'TINGLIER', 'CRINGIER', 'NITRIC', 'CITRINE', 'CITING', 'GENITOR', 'CITRIN', 'TRICE', 'GIRN', 'TRIG', 'GRIN', 'GIRT', 'TIER', 'RITE', 'TINE', 'NITE'].map((word) => (
+            <div class="px-2 py-2 rounded-lg bg-card border border-border text-center">
+              <span class="font-mono font-bold text-foreground text-xs">{word}</span>
+            </div>
+          ))}
+        </div>
+        <p>
+          The puzzle answer is <strong class="text-foreground">INCITING</strong> (9 letters) — but <strong class="text-foreground">CREATING</strong> and <strong class="text-foreground">RETICING</strong> are also valid 8-letter words. Even the smaller words like <strong class="text-foreground">CITRINE</strong>, <strong class="text-foreground">TRICE</strong>, and <strong class="text-foreground">TIER</strong> are valid answers that might be required in different stages of the same level. Our solver gives you all of them at once.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-xl font-bold mb-4 text-foreground">More Word Game Tools</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { name: 'Wordscapes', href: '/wordscapes', icon: '🌄' },
+          { name: 'Wordfeud', href: '/wordfeud', icon: '🎮' },
+          { name: 'Text Twist', href: '/text-twist', icon: '🔄' },
+          { name: 'Scrabble Go', href: '/scrabble-go', icon: '🎲' },
+        ].map((tool) => (
+          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+            <span class="text-xl">{tool.icon}</span>
+            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mt-8 max-w-3xl mx-auto" id="faq">
+    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
+    <div class="space-y-3">
+      {faqs.map((faq) => (
+        <details class="rounded-xl border border-border bg-card group">
+          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
+            <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
+            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
+          </summary>
+          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
+            <p class="pt-3" set:html={faq.answer} />
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <div class="mt-12"></div>
 
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>

@@ -1,6 +1,5 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import WordleSolver from '@/components/WordleSolver';
 import AdSense from '@/components/AdSense';
 import { getMeta } from '@/lib/meta';
 import { getFAQPageSchema } from '@/lib/schema';
@@ -24,15 +23,15 @@ const faqs = [
   },
   {
     question: 'What are the best starting words for Wordle?',
-    answer: 'The most effective Wordle starting words include SLATE, CRANE, TRACE, AUDIO, ADIEU, RAISE, STARE, SOARE, LARES, and RALES. These words use common vowels and consonants to give you the most information about the secret word in a single guess.',
+    answer: 'The most effective Wordle starting words include SLATE, CRANE, TRACE, AUDIO, ADIEU, RAISE, STARE, SOARE, LARES, and RALES. These words use common vowels and consonants to give you the most information in a single guess.',
   },
   {
     question: 'Can I play Wordle without an account?',
-    answer: 'Yes! While the New York Times official Wordle requires nothing more than opening the page, our Wordle solver and the daily game guide are also available without any sign-up. Play for free in your browser.',
+    answer: 'Yes! No sign-up required — just visit our <a href="/play-wordle" class="text-primary hover:underline">Play Wordle</a> page and start guessing.',
   },
   {
     question: 'How does the Wordle solver help?',
-    answer: 'Our Wordle solver lets you enter your known letters, included letters, and excluded letters to find every possible matching word. This helps you narrow down the answer quickly, especially after your first few guesses have given you clues.',
+    answer: 'Our <a href="/wordle-solver" class="text-primary hover:underline">Wordle solver</a> lets you enter your known letters and excluded letters to find every possible matching word. This helps you narrow down the answer quickly.',
   },
 ];
 
@@ -41,82 +40,108 @@ const faqSchema = getFAQPageSchema(faqs);
 
 <Layout meta={meta}>
   <header class="text-center mb-10">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">Wordle</h1>
+    <h1 class="text-4xl font-bold mb-4 text-foreground">🧩 Wordle</h1>
     <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-      The viral daily word game that took the world by storm. Guess the secret five-letter word in six tries with color-coded clues.
+      The viral daily word game that took the world by storm. Guess the secret five-letter word in six tries.
     </p>
+    <div class="mt-4 flex justify-center gap-3">
+      <a href="/play-wordle" class="btn btn-primary text-base px-6 py-3">▶ Play Wordle Now</a>
+      <a href="/wordle-unlimited" class="btn text-base px-6 py-3">∞ Unlimited Mode</a>
+    </div>
   </header>
 
-  <section class="mb-10 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-3 text-foreground">What is Wordle?</h2>
-    <p class="text-muted-foreground text-[15px] leading-relaxed">
-      Wordle is a browser-based word game created by Josh Wardle in 2021 and later acquired by The New York Times. Each day, a new five-letter word is published as the official puzzle. The game went viral through social media sharing of results — players post colored emoji grids showing how many guesses it took them to solve the puzzle.
-    </p>
-    <p class="text-muted-foreground text-[15px] leading-relaxed mt-3">
-      The beauty of Wordle is its simplicity: no accounts, no timers, no ads in the game itself — just a fresh five-letter puzzle every 24 hours. The social sharing mechanic made it a global phenomenon, with millions of people playing alongside friends, family, and coworkers every single day.
-    </p>
-  </section>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+    <section class="p-6 rounded-lg border border-border bg-card">
+      <h2 class="text-2xl font-bold mb-4 text-foreground flex items-center gap-2">
+        <span>📖</span> What is Wordle?
+      </h2>
+      <p class="text-muted-foreground text-[15px] leading-relaxed">
+        Wordle is a browser-based word game created by Josh Wardle in 2021 and later acquired by The New York Times. Each day, a new five-letter word is published as the official puzzle. The game went viral through social media sharing of results — players post colored emoji grids showing how many guesses it took them to solve.
+      </p>
+      <p class="text-muted-foreground text-[15px] leading-relaxed mt-3">
+        The beauty of Wordle is its simplicity: no accounts, no timers — just a fresh five-letter puzzle every 24 hours. Millions of people play alongside friends, family, and coworkers every single day.
+      </p>
+      <div class="mt-4 flex gap-2 flex-wrap">
+        <a href="/play-wordle" class="btn btn-primary text-sm">▶ Play Now</a>
+        <a href="/wordle-solver" class="btn text-sm">🧩 Solver</a>
+      </div>
+    </section>
+
+    <section class="p-6 rounded-lg border border-border bg-card">
+      <h2 class="text-2xl font-bold mb-4 text-foreground flex items-center gap-2">
+        <span>🎮</span> How It Works
+      </h2>
+      <div class="space-y-4">
+        <div class="flex items-start gap-3">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">1</div>
+          <div>
+            <p class="font-semibold text-foreground text-[15px]">Guess any 5-letter word</p>
+            <p class="text-muted-foreground text-sm">Start with a word that has common vowels and consonants.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">2</div>
+          <div>
+            <p class="font-semibold text-foreground text-[15px]">Read the color clues</p>
+            <p class="text-muted-foreground text-sm">Tiles flip to show green (correct), yellow (wrong pos), or gray (not in word).</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">3</div>
+          <div>
+            <p class="font-semibold text-foreground text-[15px]">Solve in 6 tries or fewer</p>
+            <p class="text-muted-foreground text-sm">Use logic to narrow down possibilities and find the daily word.</p>
+          </div>
+        </div>
+        <div class="mt-4 p-4 rounded-lg bg-muted/50">
+          <p class="text-sm font-semibold text-foreground mb-2">Example:</p>
+          <div class="flex gap-1">
+            <div class="w-10 h-10 border-2 border-[#c9b458] bg-[#c9b458] rounded flex items-center justify-center text-white font-bold text-lg">C</div>
+            <div class="w-10 h-10 border-2 border-[#787c7e] bg-[#787c7e] rounded flex items-center justify-center text-white font-bold text-lg">R</div>
+            <div class="w-10 h-10 border-2 border-[#787c7e] bg-[#787c7e] rounded flex items-center justify-center text-white font-bold text-lg">A</div>
+            <div class="w-10 h-10 border-2 border-[#6aaa64] bg-[#6aaa64] rounded flex items-center justify-center text-white font-bold text-lg">N</div>
+            <div class="w-10 h-10 border-2 border-[#787c7e] bg-[#787c7e] rounded flex items-center justify-center text-white font-bold text-lg">E</div>
+          </div>
+          <p class="text-xs text-muted-foreground mt-2">C = wrong position, R/A/E = not in word, N = correct!</p>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <section class="mb-10 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Play Wordle</h2>
-    <ol class="space-y-3 text-[15px] text-muted-foreground leading-relaxed">
-      <li class="flex gap-3">
-        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">1</span>
-        <p><strong class="text-foreground">Think of a five-letter word.</strong> Your goal is to guess the secret daily word in as few attempts as possible.</p>
-      </li>
-      <li class="flex gap-3">
-        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">2</span>
-        <p><strong class="text-foreground">Type your guess</strong> into the grid and press Enter. The game only accepts real five-letter words as valid guesses.</p>
-      </li>
-      <li class="flex gap-3">
-        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">3</span>
-        <p><strong class="text-foreground">Read the color clues.</strong> Each letter will turn <span class="font-semibold text-green-600 dark:text-green-400">green</span> (correct position), <span class="font-semibold text-yellow-600 dark:text-yellow-400">yellow</span> (in the word, wrong position), or <span class="font-semibold text-gray-500 dark:text-gray-400">gray</span> (not in the word).</p>
-      </li>
-      <li class="flex gap-3">
-        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">4</span>
-        <p><strong class="text-foreground">Use logic to refine your guess.</strong> Eliminate letters you know are not in the word and use the position of yellow letters to narrow down possibilities.</p>
-      </li>
-      <li class="flex gap-3">
-        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">5</span>
-        <p><strong class="text-foreground">Solve in six tries or fewer.</strong> You have exactly six attempts to find the daily word. The game resets with a new puzzle every day at midnight in your local timezone.</p>
-      </li>
-    </ol>
-  </section>
-
-  <section class="mb-10 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">Wordle Tips & Strategies</h2>
+    <h2 class="text-2xl font-bold mb-4 text-foreground flex items-center gap-2">
+      <span>💡</span> Tips & Strategies
+    </h2>
     <ul class="space-y-2 text-[15px] text-muted-foreground leading-relaxed">
       <li class="flex items-start gap-2">
-        <span class="text-primary mt-1">→</span>
-        <p><strong class="text-foreground">Start with vowel-rich words.</strong> Words like <strong class="text-foreground">ADIEU</strong> or <strong class="text-foreground">AUDIO</strong> reveal whether the most common vowels (A, E, I, O, U) are in the puzzle.</p>
+        <span class="text-primary mt-0.5">→</span>
+        <p><strong class="text-foreground">Start with vowel-rich words.</strong> Words like <strong class="text-foreground">ADIEU</strong> or <strong class="text-foreground">AUDIO</strong> reveal whether common vowels (A, E, I, O, U) are in the puzzle.</p>
       </li>
       <li class="flex items-start gap-2">
-        <span class="text-primary mt-1">→</span>
-        <p><strong class="text-foreground">Eliminate common consonants early.</strong> Letters like R, S, T, L, and N appear in most five-letter words. Using them in your opening guesses helps rule out large groups of possibilities.</p>
+        <span class="text-primary mt-0.5">→</span>
+        <p><strong class="text-foreground">Eliminate common consonants early.</strong> Letters like R, S, T, L, and N appear in most five-letter words.</p>
       </li>
       <li class="flex items-start gap-2">
-        <span class="text-primary mt-1">→</span>
-        <p><strong class="text-foreground">Watch for double letters.</strong> Many words contain repeated letters (e.g., SPEED, LULLS). If you guess a word with a repeated letter and only one turns green, the other instance may not exist.</p>
+        <span class="text-primary mt-0.5">→</span>
+        <p><strong class="text-foreground">Watch for double letters.</strong> Many words contain repeated letters (e.g., SPEED, LULLS).</p>
       </li>
       <li class="flex items-start gap-2">
-        <span class="text-primary mt-1">→</span>
-        <p><strong class="text-foreground">Don't waste letters you know are wrong.</strong> Once a letter is gray, don't include it in future guesses — use the space for more useful letters.</p>
+        <span class="text-primary mt-0.5">→</span>
+        <p><strong class="text-foreground">Don't waste letters you know are wrong.</strong> Once gray, don't include them in future guesses.</p>
       </li>
       <li class="flex items-start gap-2">
-        <span class="text-primary mt-1">→</span>
-        <p><strong class="text-foreground">Consider letter frequency.</strong> E, A, R, O, T, L, I, S, N are the most common letters in English. Prioritizing them increases your odds of getting hits early.</p>
-      </li>
-      <li class="flex items-start gap-2">
-        <span class="text-primary mt-1">→</span>
-        <p><strong class="text-foreground">Use process of elimination with pattern matching.</strong> Once you know the structure of part of the word, use the <a href="/wordle-solver" class="text-primary hover:underline">Wordle solver</a> to instantly see all matching words.</p>
+        <span class="text-primary mt-0.5">→</span>
+        <p><strong class="text-foreground">Use the <a href="/wordle-solver" class="text-primary hover:underline">Wordle solver</a></strong> when stuck — enter your known letters to find all matching words.</p>
       </li>
     </ul>
   </section>
 
   <section class="mb-10 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">Best Starting Words for Wordle</h2>
-    <p class="text-muted-foreground text-[15px] leading-relaxed mb-5">
-      These opening words are ranked by data-driven effectiveness. They maximize vowel and consonant coverage, giving you the most information per guess.
+    <h2 class="text-2xl font-bold mb-4 text-foreground flex items-center gap-2">
+      <span>🏆</span> Best Starting Words
+    </h2>
+    <p class="text-muted-foreground text-[15px] mb-5">
+      These opening words maximize vowel and consonant coverage for the most information per guess.
     </p>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
       {BEST_STARTING_WORDS.map((word) => (
@@ -128,38 +153,28 @@ const faqSchema = getFAQPageSchema(faqs);
         </a>
       ))}
     </div>
-    <p class="text-xs text-muted-foreground mt-4">
-      Click any word to try it as a pattern in our <a href="/wordle-solver" class="text-primary hover:underline">Wordle solver</a>.
-    </p>
-  </section>
-
-  <section class="mb-10 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">Wordle Solver</h2>
-    <p class="text-muted-foreground text-[15px] leading-relaxed mb-4">
-      Stuck on today's puzzle? Enter your known letters and clues below to find every possible solution. You can also <a href="/wordle-solver" class="text-primary hover:underline">open the full Wordle solver</a> for all features.
-    </p>
-    <div class="max-w-xl mx-auto">
-      <WordleSolver client:load />
-    </div>
   </section>
 
   <AdSense />
 
   <section class="mt-10 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <h2 class="text-2xl font-bold mb-4 text-foreground flex items-center gap-2">
+      <span>❓</span> Frequently Asked Questions
+    </h2>
     <dl class="space-y-4 text-sm">
       {faqs.map((faq) => (
         <div class="rounded-lg border border-border bg-muted/20 p-4">
           <dt class="font-semibold text-foreground">{faq.question}</dt>
-          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+          <dd class="text-muted-foreground mt-2 leading-relaxed" set:html={faq.answer} />
         </div>
       ))}
     </dl>
   </section>
 
   <nav class="mt-10 flex flex-wrap gap-4 text-sm text-muted-foreground">
-    <a href="/wordle-solver" class="hover:text-foreground transition-colors">Wordle Solver →</a>
-    <a href="/unscramble" class="hover:text-foreground transition-colors">Unscramble Words →</a>
+    <a href="/play-wordle" class="hover:text-foreground transition-colors">▶ Play Daily Wordle →</a>
+    <a href="/wordle-unlimited" class="hover:text-foreground transition-colors">∞ Unlimited Wordle →</a>
+    <a href="/wordle-solver" class="hover:text-foreground transition-colors">🧩 Wordle Solver →</a>
     <a href="/anagram-solver" class="hover:text-foreground transition-colors">Anagram Solver →</a>
   </nav>
 

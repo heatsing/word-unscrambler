@@ -4,7 +4,7 @@ const currentYear = new Date().getFullYear();
 const baseVotes = 2960;
 const baseAverage = 4.6;
 ---
-<footer class="site-footer">
+<footer class="site-footer bg-muted">
   <section class="border-b border-border" id="rate-section" data-base-votes={baseVotes} data-base-average={baseAverage}>
     <div class="container mx-auto px-4 py-12 md:py-16">
       <div class="mx-auto max-w-3xl text-center">
@@ -97,7 +97,17 @@ const baseAverage = 4.6;
   </script>
 
   <div class="container mx-auto px-4 py-12 md:py-16">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
+      <div class="footer-col">
+        <h3>🎮 Popular Games</h3>
+        <ul>
+          <li><a href="/play-wordle">Play Wordle</a></li>
+          <li><a href="/wordle-unlimited">Wordle Unlimited</a></li>
+          <li><a href="/word-cookies">Word Cookies</a></li>
+          <li><a href="/text-twist">Text Twist</a></li>
+          <li><a href="/boggle-solver">Boggle</a></li>
+        </ul>
+      </div>
       <div class="footer-col">
         <h3>Word Finders</h3>
         <ul>

@@ -15,10 +15,13 @@ export const wordFinders = [
   { name: 'Word Search Solver', href: '/word-search-solver' },
   { name: 'Hangman Solver', href: '/hangman-solver' },
   { name: 'Letter Boxed Solver', href: '/letter-boxed-solver' },
+  { name: 'Crossword Solver', href: '/crossword-solver' },
 ];
 
 export const dailyGameHints = [
   { name: 'Wordle', href: '/wordle' },
+  { name: 'Play Wordle', href: '/play-wordle' },
+  { name: 'Wordle Unlimited', href: '/wordle-unlimited' },
   { name: 'Wordle Solver', href: '/wordle-solver' },
   { name: 'Jumble Solver', href: '/jumble-solver' },
   { name: 'Wordscapes', href: '/wordscapes' },

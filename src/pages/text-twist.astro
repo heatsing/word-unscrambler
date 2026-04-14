@@ -3,91 +3,257 @@ import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema } from '@/lib/schema';
+import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/text-twist',
-  'Text Twist Solver - Unscramble Words',
-  'Text Twist solver: enter your letters to find all words you can make. Great for beating the Text Twist timer and finding every word.'
+  'Text Twist Solver - Find Every Word | Free Tool',
+  'Free Text Twist solver: enter your letters and find every word hidden in the grid. Beat the timer with our instant word finder for Text Twist and Text Twist 2.'
 );
+
+const howToSteps = [
+  { name: 'Enter your Text Twist letters', text: 'Type all the letters from your Text Twist game — typically 6 letters arranged in a row.' },
+  { name: 'Find all possible words', text: 'Results are sorted by length (longest first) to match the Text Twist scoring system. The longest word (typically 6 letters) is worth the most points.' },
+  { name: 'Work through all word lengths', text: 'Text Twist awards points for words of different lengths. Look through the results for 3, 4, 5, and 6-letter words to maximize your score.' },
+  { name: 'Beat the timer', text: 'Use the solver to check your work or find words you missed. It\'s especially useful for the hardest Text Twist levels where the 6-letter word is tricky.' },
+];
+
+const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
-    question: 'How does the Text Twist solver work?',
-    answer: 'Enter the letters from your Text Twist game into the solver. It will find every valid English word you can form from those letters, sorted by length (longest words first). This helps you find all the words before the timer runs out.',
+    question: 'What is Text Twist and how do you play it?',
+    answer: 'Text Twist is a classic arcade word game where you\'re given a set of 6 letters arranged in a row and must find as many words as possible before the timer runs out. You can form words of 3, 4, 5, or 6 letters by connecting adjacent letters (including diagonally in some versions). The game rewards longer words with more points — the 6-letter word is typically worth 100+ points. The challenge is finding every word in the set before time expires.',
   },
   {
-    question: 'What is the Text Twist game?',
-    answer: 'Text Twist is a classic word game where you\'re given a set of letters and must find as many words as possible before time runs out. Words can be 3 to the full length of the letter set. The game awards more points for longer words.',
+    question: 'What is Text Twist 2 and how is it different?',
+    answer: 'Text Twist 2 is the sequel to the classic Text Twist game, available on iOS and Android. It features the same core mechanic (finding words from a set of letters before time runs out) but adds new game modes, improved graphics, and additional word lists. Our solver works for both the original Text Twist and Text Twist 2 — just enter the 6 letters from your current game.',
   },
   {
-    question: 'How do I get a high score in Text Twist?',
-    answer: 'Focus on finding the longest words first — they give the most points. In Text Twist 2, the 6-letter word is typically worth 100+ points. Also, always check for compound words and words with common endings like -ING, -ED, -ER, -LY.',
+    question: 'How does the Text Twist solver find words?',
+    answer: 'Enter your 6 Text Twist letters into our solver and it checks every possible combination against a comprehensive English dictionary. It finds every valid 3, 4, 5, and 6-letter word that can be formed from your letters. Results are sorted by word length (longest first), matching how Text Twist itself scores words. The 6-letter word appears at the top — that\'s the one worth the most points.',
   },
   {
-    question: 'Can I use the Text Twist solver on mobile?',
-    answer: 'Yes! Our Text Twist solver works on any device — desktop, tablet, or phone. Just open the page and enter your letters to get instant results.',
+    question: 'What are the best strategies for Text Twist?',
+    answer: '1. <strong class="text-foreground">Find the 6-letter word first</strong> — it\'s worth the most points and finding it early gives you a psychological boost. 2. <strong class="text-foreground">Look for common prefixes and suffixes</strong> — UN-, RE-, IN-, OUT-, DIS- at the start; -ING, -ED, -ER, -LY, -TION, -NESS at the end. 3. <strong class="text-foreground">Work systematically</strong> — try each starting letter with common second letters. 4. <strong class="text-foreground">Don\'t forget 2-letter words</strong> — common 2-letter words like IT, IS, IN, ON, TO, AT, BE, ME, WE, HE can unlock longer words. 5. <strong class="text-foreground">Use our solver</strong> when time is running low or you\'re genuinely stuck.',
   },
   {
-    question: 'Does the solver show words in order of points?',
-    answer: 'The solver shows words sorted by length (longest first), which generally corresponds to higher point values. You can scroll through all results to find every valid word in your Text Twist game.',
+    question: 'How do you score high in Text Twist?',
+    answer: 'Text Twist scoring rewards length above all else. In Text Twist 2, the 6-letter word is typically worth 100+ points, 5-letter words are worth 30-50 points, 4-letter words 10-20 points, and 3-letter words 5-10 points. To maximize your score: (1) Always find the 6-letter word — it\'s the biggest point swing. (2) Find as many 5-letter words as possible. (3) Don\'t ignore 3 and 4-letter words — they add up. The player who finds all words in a Text Twist game earns a "Perfect" bonus and is typically far ahead of anyone who missed even a few.',
+  },
+  {
+    question: 'Can the Text Twist solver help me beat my friends?',
+    answer: 'Absolutely. Whether you\'re playing against the clock in single-player mode or competing head-to-head against friends, our solver gives you every valid word instantly. Use it to check your answers, find words you missed, or — in friendly practice games — get help finding that tricky 6-letter word. We believe the best use of this tool is as a learning aid: every unfamiliar word you discover through the solver expands your vocabulary for the next game.',
   },
 ];
 
 const faqSchema = getFAQPageSchema(faqs);
+
+const EXAMPLE_LETTERS = [
+  { letters: 'T W I S T N', answer: 'TWISTS (6), WIST (4), TWIST (5), TINS (4), WITS (4), TINT (4), WIST (4)...' },
+  { letters: 'S P I N G S', answer: 'SPINGS (6), SIPS (4), GINS (4), PING (4), PINS (4), SIGN (4), SPIN (5), PINGS (5)...' },
+  { letters: 'C R E A T I', answer: 'CERAT (5), CRATE (5), REACT (5), RACIET (6), CITRA (5), TRACE (5), ARTIE (5), RECIT (6)...' },
+];
 ---
 
-<Layout meta={meta}>
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">Text Twist Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-      Enter your Text Twist letters to find every word you can make.
+<Layout meta={meta} wide={true}>
+  <!-- Hero -->
+  <section class="text-center pt-8 pb-6">
+    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
+      🔄 Free Tool · No Sign-up · Instant Results
+    </div>
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Text Twist Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+      Enter your Text Twist letters and find every word hidden in the grid. Beat the timer and get a perfect score with our instant solver.
     </p>
-  </header>
+  </section>
 
-  <UnscrambleTool client:load />
+  <!-- Tool -->
+  <div class="max-w-3xl mx-auto mb-10">
+    <UnscrambleTool client:load />
+  </div>
 
   <AdSense />
 
-  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">What is Text Twist?</h2>
-    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
-      <p>
-        Text Twist is a popular word puzzle game where players race against a timer to find as many words as possible from a given set of letters. The game challenges your vocabulary and pattern recognition skills.
-      </p>
-      <p>
-        In Text Twist, you get a set of 6 letters arranged in a row. You must find all possible words of 3, 4, 5, and 6 letters that can be formed from those letters. The longer the word, the more points you earn.
-      </p>
-
-      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Text Twist Tips</h3>
-      <ul class="list-disc pl-6 space-y-2">
-        <li><strong class="text-foreground">Find the 6-letter word first</strong> — It\'s the hardest to spot and worth the most points. Look for common letter combinations and prefixes/suffixes.</li>
-        <li><strong class="text-foreground">Think of compound words</strong> — Words like SUNLIGHT, RAINBOW, and NETWORK use common prefixes and suffixes.</li>
-        <li><strong class="text-foreground">Use letter patterns</strong> — Common endings like -ING, -ION, -OUS, -MENT, and -TION can help you spot longer words quickly.</li>
-        <li><strong class="text-foreground">Start with vowels</strong> — Every English word needs vowels. If you have multiple vowels, try pairing them with common consonants.</li>
-        <li><strong class="text-foreground">Try all starting positions</strong> — Every letter can potentially start a word. Don\'t get stuck starting from the leftmost letter.</li>
-      </ul>
+  <!-- What is Text Twist -->
+  <section class="mt-12 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-4 text-foreground">What is Text Twist?</h2>
+      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
+        <p>
+          <a href="https://en.wikipedia.org/wiki/Text_Twist" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Text Twist</a> is a classic word puzzle game that became widely popular through its Flash and mobile iterations. The premise is simple but addictive: you're given 6 letters arranged in a row, and you have a limited time to find every valid English word hidden in those letters. Words can be 3, 4, 5, or 6 letters long — and you must find all of them to achieve a perfect score.
+        </p>
+        <p>
+          The game tests your vocabulary, pattern recognition, and time management simultaneously. The challenge escalates as you progress: early rounds have obvious words with common letter patterns, while later rounds introduce obscure vocabulary, unusual letter combinations, and tricky 6-letter words that are nearly impossible to spot without practice.
+        </p>
+        <p>
+          Text Twist 2, the sequel, added multiple game modes, achievements, and expanded word lists to keep the challenge fresh. But the core gameplay remains the same — find all the words before time runs out.
+        </p>
+      </div>
     </div>
   </section>
 
-  <section class="mt-8">
-    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
-    <dl class="space-y-4 text-sm">
-      {faqs.map((faq) => (
-        <div class="rounded-lg border border-border bg-card p-4">
-          <dt class="font-semibold text-foreground">{faq.question}</dt>
-          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+  <!-- Text Twist Rules -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">Text Twist Rules and Gameplay</h2>
+      <div class="grid sm:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-semibold text-foreground mb-3">How Text Twist Works</h3>
+          <ul class="space-y-2 text-sm text-muted-foreground">
+            <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> You get 6 letters in a row — like <strong class="text-foreground">T W I S T N</strong></li>
+            <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> Form words by connecting adjacent letters horizontally or vertically</li>
+            <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> Words must be 3, 4, 5, or 6 letters long</li>
+            <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> Longer words score more points</li>
+            <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> Beat the timer to win the round</li>
+            <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> Find all words for a "Perfect" score bonus</li>
+          </ul>
         </div>
-      ))}
-    </dl>
+        <div>
+          <h3 class="font-semibold text-foreground mb-3">Point Values (Text Twist 2)</h3>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between p-2 rounded bg-muted/30">
+              <span class="text-foreground font-medium">6-letter words</span>
+              <span class="text-muted-foreground">100+ points</span>
+            </div>
+            <div class="flex justify-between p-2 rounded">
+              <span class="text-foreground font-medium">5-letter words</span>
+              <span class="text-muted-foreground">30-50 points</span>
+            </div>
+            <div class="flex justify-between p-2 rounded bg-muted/30">
+              <span class="text-foreground font-medium">4-letter words</span>
+              <span class="text-muted-foreground">10-20 points</span>
+            </div>
+            <div class="flex justify-between p-2 rounded">
+              <span class="text-foreground font-medium">3-letter words</span>
+              <span class="text-muted-foreground">5-10 points</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <div class="mt-8 flex flex-wrap gap-3 text-sm">
-    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
-    <a href="/scrabble-go" class="btn btn-primary">Scrabble Go</a>
-    <a href="/word-scramble" class="btn btn-primary">Word Scramble</a>
-    <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
-  </div>
+  <!-- How to Use Solver -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">How to Use the Text Twist Solver</h2>
+      <div class="space-y-5">
+        {howToSteps.map((step, i) => (
+          <div class="flex gap-4">
+            <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
+            <div>
+              <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
+              <p class="text-sm text-muted-foreground">{step.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Text Twist Tips -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">💡 Tips for Text Twist Mastery</h2>
+      <div class="space-y-5">
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">1</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Always find the 6-letter word first</h3>
+            <p class="text-sm text-muted-foreground">The 6-letter word is worth the most points and finding it early gives you a massive advantage. Approach: look at all 6 letters and ask "what long word could use all these letters?" For example, in <strong class="text-foreground">T W I S T N</strong>, the 6-letter word is <strong class="text-foreground">TWISTS</strong>. In <strong class="text-foreground">C R E A T I</strong>, it's <strong class="text-foreground">CERATI</strong> or <strong class="text-foreground">RACIET</strong>. Practice finding 6-letter words and your Text Twist scores will skyrocket.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">2</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Hunt for common prefixes and suffixes</h3>
+            <p class="text-sm text-muted-foreground">Common prefixes (UN-, RE-, IN-, OUT-, DIS-, PRE-, PRO-) and suffixes (-ING, -ED, -ER, -LY, -TION, -NESS, -MENT) appear constantly in Text Twist. If you see the letters for "RE" at the start of a word, try all possible starting combinations. If you see "-ING" as a possible ending, look for the letters before it. This systematic approach finds words you'd otherwise miss.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">3</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Use vowels as anchors</h3>
+            <p class="text-sm text-muted-foreground">Every English word needs vowels. When you see multiple vowels in your letter set (A, E, I, O, U), try pairing each vowel with common consonants. Common combinations: TA, TE, TI, TO; RA, RE, RI, RO; SA, SE, SI, SO; NA, NE, NI, NO. Build from these anchors and you'll find words faster than trying random combinations.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">4</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Look for compound words</h3>
+            <p class="text-sm text-muted-foreground">Compound words — words made of two smaller words — are common in Text Twist. For example: SUN + LIGHT = SUNLIGHT, UNDER + STAND = UNDERSTAND, OUT + SIDE = OUTSIDE. When you have 6 letters, ask "could this be two shorter words?" This approach finds tricky 6-letter words that aren't obvious.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">5</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Don't forget about 2-letter words</h3>
+            <p class="text-sm text-muted-foreground">While 2-letter words don't score points in most Text Twist versions, they can help you see letter patterns. Common 2-letter words like AT, BE, ME, WE, HE, IT, IS, IN, ON, TO, GO, DO, SO, UP, US, ME, MY, BY, OX, QI, XI, ZA help you see how letters combine. Sometimes the mental act of finding 2-letter words unlocks the longer words that were hiding in your mind.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Real Examples -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-4 text-foreground">📖 Real Text Twist Examples</h2>
+      <div class="space-y-4">
+        {EXAMPLE_LETTERS.map(({ letters, answer }) => (
+          <div class="p-4 rounded-xl border border-border bg-muted/20">
+            <div class="flex items-center gap-3 mb-2">
+              <code class="text-lg font-mono font-bold text-foreground tracking-widest">{letters}</code>
+              <span class="text-muted-foreground">→</span>
+            </div>
+            <p class="text-sm text-muted-foreground">{answer}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-xl font-bold mb-4 text-foreground">More Word Game Tools</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { name: 'Word Finder', href: '/word-finder', icon: '🔍' },
+          { name: 'Scrabble Go', href: '/scrabble-go', icon: '🎲' },
+          { name: 'Word Scramble', href: '/word-scramble', icon: '🔀' },
+          { name: 'Boggle Solver', href: '/boggle-solver', icon: '🎲' },
+        ].map((tool) => (
+          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+            <span class="text-xl">{tool.icon}</span>
+            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mt-8 max-w-3xl mx-auto" id="faq">
+    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
+    <div class="space-y-3">
+      {faqs.map((faq) => (
+        <details class="rounded-xl border border-border bg-card group">
+          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
+            <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
+            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
+          </summary>
+          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
+            <p class="pt-3" set:html={faq.answer} />
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <div class="mt-12"></div>
 
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>

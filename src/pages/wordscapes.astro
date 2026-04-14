@@ -3,34 +3,47 @@ import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema } from '@/lib/schema';
+import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/wordscapes',
-  'Wordscapes Solver - Find Words',
-  'Wordscapes solver: enter your available letters to find all valid words. Complete every Wordscapes level with our free cheat tool.'
+  'Wordscapes Solver - Find All Words | Free Cheat Tool',
+  'Free Wordscapes solver: enter your letter tray to find every valid word. Complete any Wordscapes level with our instant solver. Works on all devices.'
 );
+
+const howToSteps = [
+  { name: 'Enter your letter tray', text: 'Type all the letters shown at the bottom of your Wordscapes screen — these are the letters available for that level.' },
+  { name: 'Filter by word length (optional)', text: 'Look at the crossword grid and note how many letters each missing word needs. Set Min and Max length to match.' },
+  { name: 'Find all valid words', text: 'Our solver shows every valid word from your letters, sorted by length. Find the hidden bonus word (usually the longest one) for extra coins.' },
+  { name: 'Complete the level', text: 'Fill in the crossword grid with the words you find. Each correct word fills in the corresponding blanks.' },
+];
+
+const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
-    question: 'How does the Wordscapes solver work?',
-    answer: 'Enter the letters shown at the bottom of your Wordscapes screen (the letter tray) and the solver will find every valid word you can make from those letters that fits the crossword-style puzzle.',
+    question: 'What is Wordscapes and how does it work?',
+    answer: 'Wordscapes is a popular mobile word puzzle game developed by PeopleFun that combines crossword-style grid filling with swipe-to-spell mechanics. Each level presents a crossword-style grid with blank spaces and a set of letters at the bottom. Your goal is to fill every blank by forming words from those letters. The game starts easy (3-4 letter words) and progressively introduces longer, more challenging words as you advance through hundreds of themed levels organized by location (Beach, Forest, Desert, etc.).',
   },
   {
-    question: 'What is Wordscapes?',
-    answer: 'Wordscapes is a popular word puzzle game that combines crossword-style clues with swipe-to-spell mechanics. Each level presents you with a crossword grid and a set of letters — you must fill every blank with words made from those letters.',
+    question: 'What\'s the trick to solving hard Wordscapes levels?',
+    answer: 'Hard Wordscapes levels typically have two characteristics: (1) long words with uncommon letter combinations, and (2) bonus words that are hard to spot. The key strategy: look at the crossword grid first — it tells you exactly how many letters each word needs. Then focus on finding the longest word first (usually the bonus word). If you have letters like <strong class="text-foreground">ADEINRST</strong>, try to form <strong class="text-foreground">STAIREND</strong> (8 letters) or <strong class="text-foreground">TRADIES</strong> before looking for shorter words.',
   },
   {
-    question: 'Does the solver work for all Wordscapes levels?',
-    answer: 'Yes! Our solver supports levels 1 through 6000+ across all Wordscapes packs including Main, Travel, Tribe, and all seasonal puzzles.',
+    question: 'How do bonus words work in Wordscapes?',
+    answer: 'Each Wordscapes level has at least one "bonus word" — an extra word hidden in the letter tray that isn\'t required to complete the level but awards bonus coins. Bonus words are typically the longest words available from the letter set. For example, in a level with letters <strong class="text-foreground">A E I L N P R S</strong>, the bonus word might be <strong class="text-foreground">PERLINS</strong> or <strong class="text-foreground">PANSLIER</strong>. Finding bonus words is optional but earns you extra coins to buy hints on harder levels.',
   },
   {
-    question: 'Can I use the Wordscapes solver on my phone?',
-    answer: 'Yes, it works on any device — desktop, tablet, or mobile. Open the page, enter your letters, and get all the answers instantly.',
+    question: 'How many levels are in Wordscapes?',
+    answer: 'Wordscapes has expanded significantly since its launch. The game now has over 6,000 levels across multiple packs including the Main series (Levels 1-3000+), Travel (themed by country), Tribe (themed by profession), and seasonal events. Our solver works with any letter set, regardless of which level or pack it comes from.',
   },
   {
-    question: 'How do I earn coins in Wordscapes?',
-    answer: 'You earn coins for completing levels, finding all words (including the bonus words), and daily puzzles. Coins can be used to buy hints like revealing a letter or clearing an error.',
+    question: 'Does the Wordscapes solver work for Wordscapes 2 and other versions?',
+    answer: 'Yes. Our solver works with any letter combination, so it covers Wordscapes, Wordscapes 2, Word拼酷 (Chinese version), and any other variant. Just enter the letters from your current level\'s tray.',
+  },
+  {
+    question: 'Can I use the Wordscapes solver for free?',
+    answer: 'Yes! Our Wordscapes solver is completely free to use with no sign-up, no download, and no limits. Open the page, enter your letters, and get every valid word instantly. Works on desktop, tablet, and mobile.',
   },
 ];
 
@@ -38,53 +51,137 @@ const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta}>
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">Wordscapes Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-      Enter your Wordscapes letters to find every word in the puzzle.
+  <!-- Hero -->
+  <section class="text-center pt-8 pb-6">
+    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
+      🌄 Free Tool · Any Level · Instant Results
+    </div>
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Wordscapes Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+      Enter your Wordscapes letter tray and find every valid word. Complete any level instantly — including the hidden bonus word.
     </p>
-  </header>
+  </section>
 
-  <UnscrambleTool client:load />
+  <!-- Tool -->
+  <div class="max-w-3xl mx-auto mb-10">
+    <UnscrambleTool client:load />
+  </div>
 
   <AdSense />
 
-  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Solve Wordscapes</h2>
-    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
-      <p>
-        Wordscapes is a relaxing yet challenging word puzzle game where you fill crossword grids with words formed from a set of letters. Our solver helps you complete every level, even the tricky ones that stump you.
-      </p>
-
-      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Wordscapes Tips</h3>
-      <ul class="list-disc pl-6 space-y-2">
-        <li><strong class="text-foreground">Look at the crossword pattern</strong> — The blanks show you exactly how many letters each word needs. If a blank is 3 letters, only find 3-letter words.</li>
-        <li><strong class="text-foreground">Start with small words</strong> — Find all the 3 and 4-letter words first. They often connect to reveal longer words.</li>
-        <li><strong class="text-foreground">Find the bonus word</strong> — Each level has a hidden bonus word worth extra coins. Try combining all the letters to find it.</li>
-        <li><strong class="text-foreground">Use common prefixes and suffixes</strong> — UN-, RE-, IN-, OUT- are common prefixes. -ING, -ED, -ER, -LY are common suffixes.</li>
-        <li><strong class="text-foreground">Try every combination</strong> — If you\'re stuck, systematically try different letter combinations starting with each available letter.</li>
-      </ul>
+  <!-- What is Wordscapes -->
+  <section class="mt-12 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-4 text-foreground">What is Wordscapes?</h2>
+      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
+        <p>
+          <a href="https://play.google.com/store/apps/details?id=com.peoplefun.wordscapes" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Wordscapes</a> is one of the most popular word puzzle games on mobile, with millions of active players. Developed by PeopleFun, the game combines the satisfaction of solving crossword puzzles with the casual swipe mechanics of games like Word Cookies. Each level presents a crossword grid with blanks, and a set of letters at the bottom — your job is to fill every blank by forming valid English words from those letters.
+        </p>
+        <p>
+          What makes Wordscapes distinctive is its visual design and progression system. Levels are organized into themed worlds (Plains, Forest, Desert, Tundra, etc.) with beautiful background imagery. The difficulty ramps up gradually — early levels test basic vocabulary while later levels introduce obscure words like <strong class="text-foreground">STRAIT</strong>, <strong class="text-foreground">INVEST</strong>, and <strong class="text-foreground">SPRAIN</strong> that challenge even experienced word game players.
+        </p>
+        <p>
+          Our Wordscapes solver gives you every valid word from your letter tray, so you can breeze through any level — whether you're stuck on level 47 or tackling the latest seasonal event.
+        </p>
+      </div>
     </div>
   </section>
 
-  <section class="mt-8">
-    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
-    <dl class="space-y-4 text-sm">
-      {faqs.map((faq) => (
-        <div class="rounded-lg border border-border bg-card p-4">
-          <dt class="font-semibold text-foreground">{faq.question}</dt>
-          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
-        </div>
-      ))}
-    </dl>
+  <!-- How to Solve -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">How to Solve Wordscapes Levels</h2>
+      <div class="space-y-5">
+        {howToSteps.map((step, i) => (
+          <div class="flex gap-4">
+            <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
+            <div>
+              <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
+              <p class="text-sm text-muted-foreground">{step.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   </section>
 
-  <div class="mt-8 flex flex-wrap gap-3 text-sm">
-    <a href="/word-cookies" class="btn btn-primary">Word Cookies</a>
-    <a href="/wordfeud" class="btn btn-primary">Wordfeud</a>
-    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
-    <a href="/scrabble-go" class="btn btn-primary">Scrabble Go</a>
-  </div>
+  <!-- Tips -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">💡 Wordscapes Tips & Tricks</h2>
+      <div class="space-y-5">
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">1</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Read the crossword grid first</h3>
+            <p class="text-sm text-muted-foreground">The blanks tell you exactly how many letters each answer needs. A 5-letter answer starting with S? Now you know exactly what to look for. The grid is your most important clue — use it before looking at the letters.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">2</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Find the bonus word first</h3>
+            <p class="text-sm text-muted-foreground">Bonus words are always the longest valid words from the letter tray. If you have 8 letters and need to fill 4 blanks (2 words), the bonus word is probably the 8-letter word. Run the full letter set through our solver and look for the longest result — that's likely your bonus word.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">3</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Look for common letter patterns</h3>
+            <p class="text-sm text-muted-foreground">Common suffixes like <strong class="text-foreground">-ING</strong>, <strong class="text-foreground">-ED</strong>, <strong class="text-foreground">-ER</strong>, <strong class="text-foreground">-LY</strong>, <strong class="text-foreground">-TION</strong>, and <strong class="text-foreground">-NESS</strong> appear constantly in Wordscapes. Similarly, prefixes like <strong class="text-foreground">UN-</strong>, <strong class="text-foreground">RE-</strong>, <strong class="text-foreground">IN-</strong>, <strong class="text-foreground">OUT-</strong>, and <strong class="text-foreground">DIS-</strong> are worth scanning for. Identify these patterns and you'll solve levels much faster.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">4</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">Save coins for hard levels</h3>
+            <p class="text-sm text-muted-foreground">Wordscapes gives you coins for completing levels and finding bonus words. Save these coins for the harder levels later in the game — when you're stuck, you can use a "hint" (costs coins) to reveal a letter or clear an error. Our solver is free, so you shouldn't need hints often!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-xl font-bold mb-4 text-foreground">More Word Game Tools</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { name: 'Word Cookies', href: '/word-cookies', icon: '🍪' },
+          { name: 'Wordfeud', href: '/wordfeud', icon: '🎮' },
+          { name: 'Scrabble Go', href: '/scrabble-go', icon: '🎲' },
+          { name: 'Text Twist', href: '/text-twist', icon: '🔄' },
+        ].map((tool) => (
+          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+            <span class="text-xl">{tool.icon}</span>
+            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mt-8 max-w-3xl mx-auto" id="faq">
+    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
+    <div class="space-y-3">
+      {faqs.map((faq) => (
+        <details class="rounded-xl border border-border bg-card group">
+          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
+            <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
+            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
+          </summary>
+          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
+            <p class="pt-3" set:html={faq.answer} />
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <div class="mt-12"></div>
 
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>

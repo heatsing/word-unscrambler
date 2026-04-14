@@ -12,9 +12,15 @@ interface Props {
   title?: string;
   /** Use wider main (max-w-7xl) for two-column pages like N-letter-words */
   wide?: boolean;
+  /** Game layout - centered content with no sidebar constraints */
+  game?: boolean;
 }
-const { meta, wide = false } = Astro.props;
-const mainClass = wide ? 'page-main container mx-auto px-4 py-8 max-w-7xl' : 'page-main container mx-auto px-4 py-8 max-w-4xl';
+const { meta, wide = false, game = false } = Astro.props;
+const mainClass = game 
+  ? 'page-main container mx-auto px-4 py-6 max-w-lg' 
+  : wide 
+    ? 'page-main container mx-auto px-4 py-8 max-w-7xl' 
+    : 'page-main container mx-auto px-4 py-8 max-w-4xl';
 ---
 <!doctype html>
 <html lang="en">

@@ -56,3 +56,18 @@ export function getFAQPageSchema(faqs: { question: string; answer: string }[]) {
     })),
   };
 }
+
+export function getHowToSchema(steps: { name: string; text: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to Use the Word Unscrambler',
+    description: 'Step-by-step guide to unscrambling letters and finding words',
+    step: steps.map((step, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: step.name,
+      text: step.text,
+    })),
+  };
+}

@@ -7,30 +7,42 @@ import { getFAQPageSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/jumble-solver',
-  'Jumble Solver - Unscramble Jumble Puzzles',
-  'Instantly unscramble Jumble puzzle words. Enter the jumbled letters and get every possible word.'
+  'Jumble Solver - Unscramble Jumble Puzzles Instantly',
+  'Free Jumble solver: enter your scrambled letters and get every possible word instantly. Perfect for newspaper Jumble puzzles, mobile games, and word challenges.'
 );
+
+const jumbleExamples = [
+  { letters: 'K, D, I, N', words: ['Kind', 'Ink', 'Kid', 'Din', 'Kin', 'Kid'] },
+  { letters: 'L, Z, P, Z, E, U, S', words: ['Puzzles', 'Puzzle', 'Pulse', 'Plus', 'Lupus', 'Slurp'] },
+  { letters: 'H, S, A, M', words: ['Sham', 'Mash', 'Ham', 'Has', 'Ash'] },
+  { letters: 'N, T, E', words: ['Ten', 'Net'] },
+  { letters: 'N, O', words: ['On', 'No'] },
+];
 
 const faqs = [
   {
-    question: 'What is a Jumble puzzle?',
-    answer: 'Jumble is a daily newspaper puzzle that shows four or more jumbled words that need to be unscrambled. Once you solve each scrambled word, you use some of the letters from those solutions to unscramble a final "answer" word or phrase. Jumble appears in over 300 newspapers and is one of the most popular word puzzles in the United States.',
+    question: 'What is a Jumble solver?',
+    answer: 'A Jumble solver is a tool that unscrambles jumbled letters to find every valid word you can make. Enter your scrambled letters and get instant results — useful for newspaper Jumble puzzles, mobile games, Scrabble, and more.',
   },
   {
-    question: 'How does the Jumble solver work?',
-    answer: 'Type the jumbled letters from any Jumble clue into the search box. The tool instantly returns every valid English word that can be formed from those letters, sorted by length and score. This gives you all possible solutions for each clue.',
+    question: 'How do I unjumble a word?',
+    answer: 'Simply type your scrambled letters into the search box and press Unscramble. The tool finds every valid English word you can make from those letters, sorted by Scrabble score.',
   },
   {
-    question: 'Is the Jumble solver free?',
-    answer: 'Yes, our Jumble solver is completely free to use with no sign-up required. Just open the page and start entering your jumbled letters.',
+    question: 'Can I solve Jumble puzzles for free?',
+    answer: 'Yes, our Jumble solver is completely free with no sign-up required. Just enter your letters and get the answer instantly.',
   },
   {
-    question: 'Can I solve all four Jumble clues at once?',
-    answer: 'Yes — just enter the letters from each clue one at a time. The tool works for any jumbled word between 2 and 10 letters long, which covers all standard Jumble clues. Use it to solve each clue independently and then combine the solutions to find the final answer.',
+    question: 'Does it work for multiple jumbled words?',
+    answer: 'Yes. Our solver handles any number of letters. Use the length filter to find words of the exact length you need for your puzzle.',
   },
   {
-    question: 'Does the solver work for the cartoon caption clue?',
-    answer: 'Yes. Once you have solved all four Jumble words, the final cartoon caption is typically made from letters of the solved words. Enter candidate letters from the clue into the tool to find the answer word or phrase.',
+    question: 'Can I use blank tiles or wildcards?',
+    answer: 'The basic solver uses the letters you type. For blank tile wildcards, try our main Word Unscrambler tool which supports pattern matching.',
+  },
+  {
+    question: 'What are the best strategies for solving Jumble puzzles?',
+    answer: '1) Look for common letter pairs (BR, TH, WH). 2) Focus on the first letter of each group. 3) Watch for common prefixes and suffixes. 4) Use the illustration as a clue. 5) Practice with our solver to build vocabulary!',
   },
 ];
 
@@ -38,100 +50,203 @@ const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta}>
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">Jumble Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-      Instantly unscramble Jumble puzzle words. Enter the jumbled letters from any clue and get every possible solution.
+  <!-- Hero -->
+  <section class="text-center pt-8 pb-6">
+    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
+      🗞️ Free Tool · Newspaper Puzzles · Instant Results
+    </div>
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Jumble Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+      Unscramble your jumbled letters and get every possible word instantly — perfect for newspaper Jumble puzzles, mobile games, and word challenges.
     </p>
-  </header>
+  </section>
 
-  <UnscrambleTool client:load />
+  <!-- Tool -->
+  <div class="max-w-3xl mx-auto mb-10">
+    <UnscrambleTool client:load />
+  </div>
 
   <AdSense />
 
-  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-3 text-foreground">What is Jumble?</h2>
-    <p class="text-muted-foreground text-[15px] leading-relaxed">
-      Jumble is a classic American newspaper puzzle created by Martin Naydel and published daily in hundreds of newspapers nationwide. Each puzzle consists of four (or more) jumbled words that the reader must unscramble. Beneath the jumbled clues is a cartoon illustration, often with a caption.
-    </p>
-    <p class="text-muted-foreground text-[15px] leading-relaxed mt-3">
-      Once all the individual words are solved, the player takes certain letters from those solutions — typically the first or last letter of each solved word — and uses them to unscramble a final "answer" phrase. The cartoon caption is often a pun or joke related to the answer phrase.
-    </p>
-    <p class="text-muted-foreground text-[15px] leading-relaxed mt-3">
-      Jumble has been running since 1954 and remains one of the most widely syndicated word puzzles in the world. Our solver helps you unscramble each clue quickly so you can focus on solving the final answer.
-    </p>
+  <!-- What is Jumble -->
+  <section class="mt-12 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-4 text-foreground">What is a Jumble Solver?</h2>
+      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
+        <p>
+          Remember those <strong class="text-foreground">Jumble word puzzles</strong> from the newspaper? The classic game is now available on mobile and browser too. You get scrambled letters, and you have to rearrange them to form words.
+        </p>
+        <p>
+          Sometimes you just can't see the answer — that's when you need a <strong class="text-foreground">Jumble solver</strong>. Enter your scrambled letters and our tool instantly shows you every valid word you can make.
+        </p>
+        <p>
+          The solver isn't just for Jumble — it's useful for <a href="/scrabble" class="text-primary hover:underline">Scrabble</a>, <a href="/words-with-friends" class="text-primary hover:underline">Words With Friends</a>, <a href="/wordfeud" class="text-primary hover:underline">Wordfeud</a>, and any other word game where you're stuck with awkward letters.
+        </p>
+      </div>
+    </div>
   </section>
 
-  <section class="mt-8 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Solve Jumble Puzzles</h2>
-    <ol class="space-y-3 text-[15px] text-muted-foreground leading-relaxed">
-      <li class="flex gap-3">
-        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">1</span>
-        <p><strong class="text-foreground">Look for common letter patterns.</strong> Words like TH, CH, SH, ING, ER, AN, and OU appear frequently. Scan the jumbled letters for familiar chunks.</p>
-      </li>
-      <li class="flex gap-3">
-        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">2</span>
-        <p><strong class="text-foreground">Identify vowels and consonants.</strong> Count how many vowels (A, E, I, O, U) are in the jumble. A 5-letter word with 2 vowels could be something like CRAVE or BLEND. A 5-letter word with 3 vowels is likely something like OUIJA or QUEUE.</p>
-      </li>
-      <li class="flex gap-3">
-        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">3</span>
-        <p><strong class="text-foreground">Use letter frequency.</strong> In English, E, A, R, O, T, L, I, S, and N are the most common letters. If a jumble contains E, A, and R, the word is likely a real word and not just random letters.</p>
-      </li>
-      <li class="flex gap-3">
-        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">4</span>
-        <p><strong class="text-foreground">Enter the jumble in the solver above.</strong> If you get stuck, type the scrambled letters into our Jumble solver. It will show you every valid word that can be formed, so you can quickly find the correct solution.</p>
-      </li>
-      <li class="flex gap-3">
-        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">5</span>
-        <p><strong class="text-foreground">Solve the answer phrase.</strong> Once you have all four individual words, take the designated letters (usually circled or highlighted in the puzzle) and unscramble them to form the final answer. This is typically a phrase or pun related to the cartoon.</p>
-      </li>
-    </ol>
-  </section>
-
-  <section class="mt-8 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">Jumble Tips & Strategies</h2>
-    <ul class="space-y-2 text-[15px] text-muted-foreground leading-relaxed">
-      <li class="flex items-start gap-2">
-        <span class="text-primary mt-1">→</span>
-        <p><strong class="text-foreground">Start with the longest jumble.</strong> Longer words have fewer possible unscrambles, making them easier to solve first. A 7-letter jumble has far fewer valid solutions than a 4-letter one.</p>
-      </li>
-      <li class="flex items-start gap-2">
-        <span class="text-primary mt-1">→</span>
-        <p><strong class="text-foreground">Look for obvious fragments.</strong> In CTEOA, you might spot NOTE, CANE, or ATONE. Building words from partial letter groups is faster than trying random arrangements.</p>
-      </li>
-      <li class="flex items-start gap-2">
-        <span class="text-primary mt-1">→</span>
-        <p><strong class="text-foreground">Scan for doubled letters.</strong> Words like LL, TT, SS, EE, or OO in the jumble are a clue that the solution likely contains a double letter (e.g., METER → TEMPER, or TEEMS → STEMES).</p>
-      </li>
-      <li class="flex items-start gap-2">
-        <span class="text-primary mt-1">→</span>
-        <p><strong class="text-foreground">Use common word endings.</strong> Watch for ING, ED, ER, ES, LY, and TY endings. Starting with the ending and working backward often unscrambles a word quickly.</p>
-      </li>
-      <li class="flex items-start gap-2">
-        <span class="text-primary mt-1">→</span>
-        <p><strong class="text-foreground">The final answer clue matters.</strong> In Jumble, the cartoon and caption are usually a pun on the answer phrase. If you know the cartoon topic, it can help confirm your individual word solutions.</p>
-      </li>
-    </ul>
-  </section>
-
-  <section class="mt-8">
-    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
-    <dl class="space-y-4 text-sm">
-      {faqs.map((faq) => (
-        <div class="rounded-lg border border-border bg-card p-4">
-          <dt class="font-semibold text-foreground">{faq.question}</dt>
-          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+  <!-- How It Works -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">📋 How to Unjumble Words</h2>
+      <div class="space-y-4 text-[15px] text-muted-foreground">
+        <p>Using the Jumble solver is fast and easy:</p>
+        <ol class="space-y-3">
+          <li class="flex gap-3">
+            <span class="shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">1</span>
+            <p>Type your scrambled letters into the search box — just letters, no spaces needed.</p>
+          </li>
+          <li class="flex gap-3">
+            <span class="shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">2</span>
+            <p>Use the length filter to find words of a specific length (useful when you know how many letters the answer has).</p>
+          </li>
+          <li class="flex gap-3">
+            <span class="shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">3</span>
+            <p>Press <strong class="text-foreground">Unscramble</strong> and get your results instantly, sorted by score.</p>
+          </li>
+        </ol>
+        <div class="bg-primary/5 border border-primary/20 rounded-xl p-4 mt-4">
+          <p class="text-sm font-medium text-foreground mb-2">💡 Pro tip</p>
+          <p class="text-sm text-muted-foreground">If you have <strong class="text-foreground">7 scrambled letters</strong> like L, Z, P, Z, E, U, S — try our solver and you'll get: <strong class="text-foreground">PUZZLES</strong> (7 letters), <strong class="text-foreground">PUZZLE</strong> (6), <strong class="text-foreground">PULSE</strong> (5), <strong class="text-foreground">PLUS</strong> (4), and more!</p>
         </div>
-      ))}
-    </dl>
+      </div>
+    </div>
   </section>
 
-  <nav class="mt-10 flex flex-wrap gap-4 text-sm text-muted-foreground">
-    <a href="/unscramble" class="hover:text-foreground transition-colors">Unscramble Words →</a>
-    <a href="/anagram-solver" class="hover:text-foreground transition-colors">Anagram Solver →</a>
-    <a href="/scrabble" class="hover:text-foreground transition-colors">Scrabble Word Finder →</a>
-    <a href="/wordle-solver" class="hover:text-foreground transition-colors">Wordle Solver →</a>
-  </nav>
+  <!-- Jumble Examples -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">🎯 Jumble Solver Examples</h2>
+      <p class="text-[15px] text-muted-foreground mb-6">
+        Here's how the Jumble solver works with real scrambled letters:
+      </p>
+      <div class="space-y-5">
+        {jumbleExamples.map((ex) => (
+          <div class="flex flex-col sm:flex-row gap-4 items-start p-4 bg-muted/50 rounded-xl">
+            <div class="shrink-0">
+              <div class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Scrambled</div>
+              <div class="font-mono text-sm bg-card border border-border rounded-lg px-3 py-2 text-foreground">{ex.letters}</div>
+            </div>
+            <div class="flex-1">
+              <div class="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Possible words</div>
+              <div class="flex flex-wrap gap-2">
+                {ex.words.map((word) => (
+                  <span class="px-3 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-lg">{word}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Jumble by Length -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">🔢 Jumble Solver by Word Length</h2>
+      <div class="text-[15px] text-muted-foreground space-y-4">
+        <p>
+          One of the handiest Jumble tips: use the <strong class="text-foreground">length filter</strong> to narrow results. If you know the answer has exactly 5 letters, filter to 5-letter words only — this makes finding the answer much faster.
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+          {[
+            { label: '2-letter words', href: '/2-letter-words', icon: '2️⃣' },
+            { label: '3-letter words', href: '/3-letter-words', icon: '3️⃣' },
+            { label: '4-letter words', href: '/4-letter-words', icon: '4️⃣' },
+            { label: '5-letter words', href: '/5-letter-words', icon: '5️⃣' },
+            { label: '6-letter words', href: '/6-letter-words', icon: '6️⃣' },
+            { label: '7-letter words', href: '/7-letter-words', icon: '7️⃣' },
+            { label: 'All words', href: '/words-by-length', icon: '📚' },
+            { label: 'Scrabble tool', href: '/scrabble', icon: '🎲' },
+          ].map((item) => (
+            <a href={item.href} class="flex flex-col items-center gap-2 p-3 rounded-xl border border-border bg-muted/50 hover:border-primary/50 hover:bg-primary/5 transition-all text-center">
+              <span class="text-2xl">{item.icon}</span>
+              <span class="text-xs font-medium text-foreground">{item.label}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tips -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">💡 Tips to Solve Jumble Puzzles</h2>
+      <div class="space-y-5">
+        {[
+          { tip: 'Practice, practice, practice', desc: 'The more you play, the faster you\'ll recognize letter patterns. Use our solver as a learning tool — not just a cheat!' },
+          { tip: 'Watch for vowels', desc: 'Count your vowels first. Try repositioning A, E, I, O, U to see what consonants they pair with.' },
+          { tip: 'Look for common letter pairs', desc: 'BR, TH, WH, CH, SH — once you spot a pair, the rest of the word often falls into place.' },
+          { tip: 'Start with the first letter', desc: 'The first letter is often the easiest clue. Brainstorm words that start with that letter.' },
+          { tip: 'Use the picture clue', desc: 'In newspaper Jumble, the illustration gives you a hint about what the word might mean. Use it!' },
+          { tip: 'Bookmark this solver', desc: 'Make our Jumble solver your daily go-to. It\'s free, fast, and works on any device.' },
+        ].map((t, i) => (
+          <div class="flex gap-4">
+            <div class="shrink-0 w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
+            <div>
+              <h3 class="font-semibold text-foreground mb-1">{t.tip}</h3>
+              <p class="text-sm text-muted-foreground">{t.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-xl font-bold mb-4 text-foreground">Related Tools</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { name: 'Anagram Solver', href: '/anagram-solver', icon: '📚' },
+          { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
+          { name: 'Scrabble Finder', href: '/scrabble', icon: '🎲' },
+          { name: 'Wordle Solver', href: '/wordle-solver', icon: '🎯' },
+        ].map((tool) => (
+          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-muted/50 hover:border-primary/50 hover:shadow-sm transition-all">
+            <span class="text-xl">{tool.icon}</span>
+            <span class="text-sm font-medium text-foreground">{tool.name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl bg-gradient-to-r from-primary/10 to-indigo-500/10 border border-primary/20 p-8 text-center">
+      <h2 class="text-2xl font-bold mb-3 text-foreground">Ready to test your skills?</h2>
+      <p class="text-[15px] text-muted-foreground mb-6">
+        Play our free daily Wordle or unlimited puzzles — no sign-up needed.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href="/play-wordle" class="btn btn-primary px-6 py-3 text-base font-semibold">🎮 Play Daily Wordle</a>
+        <a href="/wordle-unlimited" class="btn btn-outline px-6 py-3 text-base">♾️ Unlimited Mode</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mt-8 max-w-3xl mx-auto mb-12" id="faq">
+    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
+    <div class="space-y-3">
+      {faqs.map((faq) => (
+        <details class="rounded-xl border border-border bg-card group">
+          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
+            <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
+            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
+          </summary>
+          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
+            <p class="pt-3">{faq.answer}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
 
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

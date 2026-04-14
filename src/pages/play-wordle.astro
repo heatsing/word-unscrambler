@@ -1,0 +1,105 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PlayWordle from '@/components/PlayWordle';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/play-wordle',
+  'Play Wordle Online - Free Daily Word Game',
+  'Play the daily Wordle game online for free. Guess the 5-letter word in 6 tries with color-coded feedback. New puzzle every day!'
+);
+
+const faqs = [
+  {
+    question: 'How do I play Wordle?',
+    answer: 'Guess the daily 5-letter word in 6 tries. After each guess, tiles change color to show how close your guess was: green means the letter is correct and in the right spot, yellow means the letter is in the word but in the wrong position, and gray means the letter is not in the word at all.',
+  },
+  {
+    question: 'Is the Wordle puzzle the same for everyone each day?',
+    answer: 'Yes! The daily Wordle puzzle is the same for all players worldwide. The word is derived from the date using a deterministic algorithm, so everyone gets the same challenge each day.',
+  },
+  {
+    question: 'Can I play past Wordle puzzles?',
+    answer: 'This game generates a new puzzle each day based on the current date. For unlimited practice, try our Unlimited Wordle mode where you get a new random word every time.',
+  },
+  {
+    question: 'Is this the official NYT Wordle?',
+    answer: 'No, this is a free browser-based Wordle game. It uses a similar format and rules to the popular New York Times Wordle, but generates its own daily word from a curated word list.',
+  },
+  {
+    question: 'Can I share my results?',
+    answer: 'Yes! After completing a game, use the Share button to copy your results as colored emoji squares — just like the real Wordle share feature.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta} game={true}>
+  <div class="game-layout">
+    <div class="page-header">
+      <h1>🎯 Play Wordle</h1>
+      <p>Daily puzzle — same word for everyone, new challenge every day!</p>
+    </div>
+
+    <PlayWordle client:load />
+
+    <AdSense />
+
+    <section class="mt-10 p-6 rounded-lg border border-border bg-card">
+      <h2 class="text-xl font-bold mb-4 text-foreground flex items-center gap-2">
+        <span>📖</span> How to Play
+      </h2>
+      <div class="space-y-3 text-muted-foreground text-[15px] leading-relaxed">
+        <ol class="list-decimal list-inside space-y-2 ml-2">
+          <li>You have <strong class="text-foreground">6 attempts</strong> to guess the daily 5-letter word.</li>
+          <li>Type your guess using your keyboard or the on-screen keyboard, then press <strong class="text-foreground">Enter</strong>.</li>
+          <li>After each guess, each letter will change color:
+            <ul class="ml-6 mt-1 space-y-1 list-disc list-inside">
+              <li><span class="inline-block w-3 h-3 rounded-sm bg-[#6aaa64] mr-1"></span><strong class="text-foreground">Green</strong> — correct position.</li>
+              <li><span class="inline-block w-3 h-3 rounded-sm bg-[#c9b458] mr-1"></span><strong class="text-foreground">Yellow</strong> — wrong position.</li>
+              <li><span class="inline-block w-3 h-3 rounded-sm bg-[#787c7e] mr-1"></span><strong class="text-foreground">Gray</strong> — not in word.</li>
+            </ul>
+          </li>
+          <li>Use the color clues to narrow down the correct word.</li>
+          <li>Click <strong class="text-foreground">Share</strong> after winning to copy your emoji result grid!</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="mt-6 p-6 rounded-lg border border-border bg-card">
+      <h2 class="text-xl font-bold mb-4 text-foreground flex items-center gap-2">
+        <span>💡</span> Tips & Strategy
+      </h2>
+      <div class="space-y-2 text-muted-foreground text-[15px] leading-relaxed">
+        <ul class="list-disc list-inside space-y-2">
+          <li><strong class="text-foreground">Start with a strong word</strong> — Words like SLATE, CRANE, or AUDIO contain common vowels and consonants.</li>
+          <li><strong class="text-foreground">Watch for repeated letters</strong> — Yellow or gray on a repeated letter tells you how many of that letter are in the word.</li>
+          <li><strong class="text-foreground">Try Unlimited Wordle</strong> — <a href="/wordle-unlimited" class="text-primary hover:underline">Practice without waiting</a> for the next daily puzzle.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <h2 class="text-lg font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+      <dl class="space-y-3 text-sm">
+        {faqs.map((faq) => (
+          <div class="rounded-lg border border-border bg-card p-4">
+            <dt class="font-semibold text-foreground">{faq.question}</dt>
+            <dd class="text-muted-foreground mt-1 leading-relaxed">{faq.answer}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <div class="mt-6 flex flex-wrap gap-3 text-sm">
+      <a href="/wordle-unlimited" class="btn btn-primary">Unlimited Wordle</a>
+      <a href="/wordle-solver" class="btn">Wordle Solver</a>
+      <a href="/wordle" class="btn">Wordle Info</a>
+    </div>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

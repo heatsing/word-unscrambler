@@ -1,0 +1,127 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PlayWordle from '@/components/PlayWordle';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/wordle-unlimited',
+  'Wordle Unlimited - Practice Wordle Without Limits',
+  'Play Wordle as many times as you want with random words. Practice your strategy, test new opening guesses, and improve your skills without waiting for the daily puzzle.'
+);
+
+const faqs = [
+  {
+    question: 'How is Unlimited Wordle different from daily Wordle?',
+    answer: 'Unlimited Wordle gives you a new random 5-letter word every time you click "New Word". There\'s no date-based puzzle — play as many games as you want for practice.',
+  },
+  {
+    question: 'Can I share my Unlimited Wordle results?',
+    answer: 'Unlimited Wordle doesn\'t have a share button since the words are random and there\'s no daily streak. Use the "New Word" button to start fresh anytime.',
+  },
+  {
+    question: 'Does the word list differ from daily Wordle?',
+    answer: 'No, both games use the same word list of valid 5-letter English words.',
+  },
+  {
+    question: 'Is there a time limit?',
+    answer: 'No time limit. Take as long as you want to guess the word in up to 6 tries.',
+  },
+  {
+    question: 'Can I play the daily puzzle too?',
+    answer: 'Yes! Visit our <a href="/play-wordle" class="text-primary hover:underline">Play Wordle</a> page to play the daily Wordle puzzle.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta} game={true}>
+  <div class="game-layout">
+    <div class="game-header-bar" style="margin-bottom: 0;">
+      <span>🎮 Unlimited Wordle</span>
+      <a href="/play-wordle" style="background: rgba(255,255,255,0.2); color: #fff; border: none; padding: 0.375rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; text-decoration: none; cursor: pointer; transition: background 0.15s;">
+        Try Daily →
+      </a>
+    </div>
+
+    <div style="border: 1px solid var(--border); border-top: none; border-radius: 0 0 0.5rem 0.5rem; padding: 1rem; background: var(--card);">
+      <div class="page-header" style="margin-bottom: 1rem;">
+        <p style="color: var(--muted-foreground); font-size: 0.9rem; margin: 0;">Practice mode — new random word every time!</p>
+      </div>
+
+      <PlayWordle client:load daily={false} />
+    </div>
+
+    <AdSense />
+
+    <section class="mt-8 p-6 rounded-lg border border-border bg-card">
+      <h2 class="text-xl font-bold mb-4 text-foreground flex items-center gap-2">
+        <span>✨</span> Why Play Unlimited Wordle?
+      </h2>
+      <div class="space-y-3 text-muted-foreground text-[15px] leading-relaxed">
+        <ul class="list-disc list-inside space-y-2">
+          <li><strong class="text-foreground">Practice opening strategies</strong> — Try different starting words to see which gives you the best information.</li>
+          <li><strong class="text-foreground">Experiment with edge cases</strong> — Practice words with repeated letters or uncommon patterns.</li>
+          <li><strong class="text-foreground">No daily commitment</strong> — Play one game or fifty. There's no streak to maintain.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="mt-6 overflow-x-auto">
+      <h2 class="text-lg font-bold mb-4 text-foreground">Daily vs Unlimited</h2>
+      <table class="w-full text-sm rounded-lg border border-border overflow-hidden">
+        <thead>
+          <tr class="border-b border-border bg-muted">
+            <th class="text-left p-3 font-semibold text-foreground">Feature</th>
+            <th class="text-left p-3 font-semibold text-foreground">Daily</th>
+            <th class="text-left p-3 font-semibold text-foreground">Unlimited</th>
+          </tr>
+        </thead>
+        <tbody class="text-muted-foreground">
+          <tr class="border-b border-border">
+            <td class="p-3">Same word for everyone</td>
+            <td class="p-3">✅ Yes</td>
+            <td class="p-3">❌ Random</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="p-3">One puzzle per day</td>
+            <td class="p-3">✅ Yes</td>
+            <td class="p-3">❌ No</td>
+          </tr>
+          <tr class="border-b border-border">
+            <td class="p-3">Share results</td>
+            <td class="p-3">✅ Yes</td>
+            <td class="p-3">❌ No</td>
+          </tr>
+          <tr>
+            <td class="p-3">Practice unlimited</td>
+            <td class="p-3">❌ No</td>
+            <td class="p-3">✅ Yes</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="mt-6">
+      <h2 class="text-lg font-bold mb-3 text-foreground">FAQs</h2>
+      <dl class="space-y-3 text-sm">
+        {faqs.map((faq) => (
+          <div class="rounded-lg border border-border bg-card p-4">
+            <dt class="font-semibold text-foreground" set:html={faq.question} />
+            <dd class="text-muted-foreground mt-1 leading-relaxed" set:html={faq.answer} />
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <div class="mt-6 flex flex-wrap gap-3 text-sm">
+      <a href="/play-wordle" class="btn btn-primary">Play Daily Wordle</a>
+      <a href="/wordle-solver" class="btn">Wordle Solver</a>
+      <a href="/wordle" class="btn">Wordle Info</a>
+    </div>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

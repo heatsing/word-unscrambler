@@ -6,7 +6,7 @@
  * 3. Update public/manifest.json to use the new versioned paths.
  * This ensures browsers and CDNs fetch the new assets instead of cached old ones.
  */
-export const ASSETS_VERSION = 'v2';
+export const ASSETS_VERSION = 'v3';
 
 export const ASSET_PATHS = {
   icon: `/icon-${ASSETS_VERSION}.svg`,

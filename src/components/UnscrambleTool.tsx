@@ -92,7 +92,7 @@ export default function UnscrambleTool() {
             id="letters"
             ref={inputRef}
             type="text"
-            className="input"
+            className="input-lg"
             placeholder="e.g. abcdefg"
             value={input}
             onChange={(e) => setInput(e.target.value)}

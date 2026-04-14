@@ -7,9 +7,35 @@ import { getFAQPageSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/anagram-solver',
-  'Anagram Solver - Find Words from Letters',
-  'Free anagram solver: enter any word or set of letters to find all valid anagrams and words you can form. Great for word games and puzzles.'
+  'Anagram Solver & Finder | Scrambled Words Made Easy',
+  'Free anagram solver: enter any word or letters to find every valid anagram. Perfect for Scrabble, Words With Friends, crosswords, and word puzzles.'
 );
+
+const famousAnagrams = [
+  { original: 'HEAT', rearranged: 'EARTH' },
+  { original: 'TAR', rearranged: 'RAT' },
+  { original: 'PARIS', rearranged: 'PAIRS' },
+  { original: 'ARC', rearranged: 'CAR' },
+  { original: 'ELBOW', rearranged: 'BELOW' },
+  { original: 'STATE', rearranged: 'TASTE' },
+  { original: 'CIDER', rearranged: 'CRIED' },
+  { original: 'DUSTY', rearranged: 'STUDY' },
+  { original: 'STRESSED', rearranged: 'DESSERTS' },
+  { original: 'NIGHT', rearranged: 'THING' },
+  { original: 'INCH', rearranged: 'CHIN' },
+  { original: 'GAINLY', rearranged: 'LAYING' },
+  { original: 'CLINT EASTWOOD', rearranged: 'OLD WEST ACTION' },
+  { original: 'BAD CREDIT', rearranged: 'DEBIT CARD' },
+  { original: 'THE MORSE CODE', rearranged: 'HERE COME DOTS' },
+  { original: 'FUNERAL', rearranged: 'REAL FUN' },
+  { original: 'VIDEO GAME', rearranged: 'GIVE A DEMO' },
+  { original: 'ELEVEN PLUS TWO', rearranged: 'TWELVE PLUS ONE' },
+  { original: 'FOURTH OF JULY', rearranged: 'JOYFUL FOURTH' },
+  { original: 'SAN DIEGO', rearranged: 'DIAGNOSE' },
+];
+
+const prefixes = ['AB', 'AD', 'DIS', 'DE', 'EX', 'RE', 'SUB', 'UN'];
+const suffixes = ['ED', 'ER', 'ING', 'ISM', 'LY', 'MENT', 'NESS', 'TION'];
 
 const faqs = [
   {
@@ -18,15 +44,23 @@ const faqs = [
   },
   {
     question: 'How does the anagram solver work?',
-    answer: 'Enter your letters in the search box. The solver finds every valid word that can be formed using exactly those letters. For a single word, these are its anagrams. For multiple letters, it finds all possible words.',
+    answer: 'Enter your letters in the search box. The solver finds every valid word that can be formed using exactly those letters. For a single word, these are its anagrams. For multiple letters, it finds all possible words sorted by Scrabble score.',
   },
   {
-    question: 'Is the anagram solver free?',
-    answer: 'Yes, our anagram solver is completely free with no sign-up required.',
+    question: 'Can I use wildcards?',
+    answer: 'The basic solver uses the letters you type. For pattern matching with wildcards (blank tiles), try our main Word Unscrambler tool.',
   },
   {
-    question: 'Can I use wildcards in the anagram solver?',
-    answer: 'The basic solver uses only the letters you type. For pattern matching with wildcards (e.g., ? for any letter), try our full Word Unscrambler tool.',
+    question: 'What games use anagram solvers?',
+    answer: 'Scrabble, Words With Friends, Wordfeud, Word Cookies, Text Twist, Boggle, and crossword puzzles all benefit from anagram solvers.',
+  },
+  {
+    question: 'How do I win at Scrabble with anagrams?',
+    answer: 'Use high-value letters (Q, Z, X, J) early before your opponents use them. Try finding 7-8 letter words for bingo bonuses. Our solver sorts results by score to show you the best moves.',
+  },
+  {
+    question: 'What are common prefixes and suffixes?',
+    answer: 'Common prefixes: AB, AD, DIS, DE, EX, RE, SUB, UN. Common suffixes: ED, ER, ING, LY, MENT, NESS, TION. Learning these helps you spot words faster during games.',
   },
 ];
 
@@ -34,49 +68,230 @@ const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta}>
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">Anagram Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-      Enter any word or set of letters to find all valid anagrams and words you can form.
+  <!-- Hero -->
+  <section class="text-center pt-8 pb-6">
+    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
+      📚 Free Tool · All Word Games · No Sign-up
+    </div>
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Anagram Solver & Finder</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+      Enter any word or set of letters to find every valid anagram and word you can form — sorted by score, ready for your next move.
     </p>
-  </header>
+  </section>
 
-  <UnscrambleTool client:load />
+  <!-- Tool -->
+  <div class="max-w-3xl mx-auto mb-10">
+    <UnscrambleTool client:load />
+  </div>
 
   <AdSense />
 
-  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">What is an Anagram?</h2>
-    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
-      <p>
-        An <strong class="text-foreground">anagram</strong> is a word or phrase formed by rearranging the letters of another word or phrase, using all the original letters exactly once. Anagram solvers are popular tools for word games like Scrabble, Words with Friends, and for solving puzzles.
-      </p>
-      <p>
-        Our anagram solver takes any set of letters and finds every valid English word you can make from them. The results are sorted by Scrabble score, so the highest-scoring words appear first.
-      </p>
+  <!-- What is an Anagram -->
+  <section class="mt-12 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-4 text-foreground">What is an Anagram?</h2>
+      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
+        <p>
+          An <strong class="text-foreground">anagram</strong> is a word or phrase formed by rearranging the letters of another word or phrase, using all the original letters exactly once. Anagram solvers are popular tools for word games like Scrabble, Words with Friends, and for solving puzzles.
+        </p>
+        <p>
+          Our anagram solver takes any set of letters and finds every valid English word you can make from them. The results are sorted by Scrabble score, so the highest-scoring words appear first — perfect for competitive word games.
+        </p>
+        <div class="bg-primary/5 border border-primary/20 rounded-xl p-4 mt-4">
+          <p class="text-sm font-medium text-foreground mb-2">💡 Pro tip</p>
+          <p class="text-sm text-muted-foreground">To find anagrams of a <strong class="text-foreground">single word</strong>, just type it in. To find words from a set of <strong class="text-foreground">random letters</strong>, type them all together. The solver handles both!</p>
+        </div>
+      </div>
     </div>
-
-    <h3 class="text-lg font-semibold mt-6 mb-3 text-foreground">Famous Anagram Examples</h3>
-    <ul class="space-y-2 text-muted-foreground text-[15px]">
-      <li><strong class="text-foreground">dormitory</strong> &rarr; <em>dirty room</em></li>
-      <li><strong class="text-foreground">astronomer</strong> &rarr; <em>moon starer</em></li>
-      <li><strong class="text-foreground">the eyes</strong> &rarr; <em>they see</em></li>
-      <li><strong class="text-foreground">a gentleman</strong> &rarr; <em>elegant man</em></li>
-      <li><strong class="text-foreground">listen</strong> &rarr; <em>silent</em>, <em>enlist</em>, <em>tingles</em></li>
-      <li><strong class="text-foreground">heart</strong> &rarr; <em>earth</em>, <em>hare</em></li>
-    </ul>
   </section>
 
-  <section class="mt-8">
-    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
-    <dl class="space-y-4 text-sm">
-      {faqs.map((faq) => (
-        <div class="rounded-lg border border-border bg-card p-4">
-          <dt class="font-semibold text-foreground">{faq.question}</dt>
-          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+  <!-- Famous Anagrams -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">🎯 Famous Anagram Examples</h2>
+      <p class="text-[15px] text-muted-foreground mb-6">
+        Anagrams have been used for code, pseudonyms, crossword puzzles, and fun for centuries. Here are some of the most famous examples:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+        {famousAnagrams.map((pair, i) => (
+          <div key={i} class="flex items-center gap-3 text-sm">
+            <span class="font-mono bg-muted px-2 py-1 rounded text-foreground shrink-0">{pair.original}</span>
+            <span class="text-muted-foreground">→</span>
+            <span class="font-mono text-primary font-medium">{pair.rearranged}</span>
+          </div>
+        ))}
+      </div>
+      <div class="mt-6 p-4 bg-primary/5 border border-primary/20 rounded-xl">
+        <p class="text-sm font-semibold text-foreground mb-1">🧩 Classic Examples</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
+          <div class="text-muted-foreground"><strong class="text-foreground">dormitory</strong> → dirty room</div>
+          <div class="text-muted-foreground"><strong class="text-foreground">astronomer</strong> → moon starer</div>
+          <div class="text-muted-foreground"><strong class="text-foreground">a gentleman</strong> → elegant man</div>
+          <div class="text-muted-foreground"><strong class="text-foreground">the eyes</strong> → they see</div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to Solve Anagrams -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-6 text-foreground">📝 How to Solve Anagrams — 3 Steps</h2>
+      <div class="space-y-5">
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">1</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-2">Look for common prefixes and suffixes</h3>
+            <p class="text-sm text-muted-foreground mb-3">Identifying common word parts makes solving anagrams easier. Common prefixes:</p>
+            <div class="flex flex-wrap gap-2">
+              {prefixes.map((p) => <span class="px-2 py-1 bg-muted rounded text-xs font-mono text-foreground">{p}</span>)}
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">2</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-2">Pick them out</h3>
+            <p class="text-sm text-muted-foreground">Once you spot a prefix or suffix, mentally separate it from the rest of the letters. This reduces the problem size significantly.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">3</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-2">Rearrange the remaining letters</h3>
+            <p class="text-sm text-muted-foreground">Take the core letters and try different arrangements. Use our anagram solver to check your ideas — it's a great learning tool!</p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-5 p-4 bg-primary/5 border border-primary/20 rounded-xl text-sm">
+        <p class="text-muted-foreground">
+          <strong class="text-foreground">Example:</strong> The word <strong class="text-foreground">PAINTER</strong> contains the suffix <strong class="text-foreground">ER</strong>. Move it to the front → <strong class="text-foreground">REPAINT</strong>. The remaining letters can also form <strong class="text-foreground">PERTAIN</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Anagram for Scrabble -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-4 text-foreground">🎲 Anagram Solver for Scrabble</h2>
+      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-3">
+        <p>
+          In Scrabble, finding the right word at the right moment can mean the difference between winning and losing. An anagram solver helps you find high-scoring words from your tiles — especially useful when you're stuck with awkward consonants or rare letters.
+        </p>
+        <p>
+          <strong class="text-foreground">High-value tip:</strong> Words containing Q, Z, X, and J are often game-changers. Our solver automatically sorts results by Scrabble score, so the highest-scoring words appear first.
+        </p>
+        <p>
+          <strong class="text-foreground">Bingo bonus:</strong> Playing all 7 tiles at once scores a 50-point bingo. Use our tool to discover 8-letter words that use up your entire rack!
+        </p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <a href="/scrabble" class="btn btn-primary btn-sm">Scrabble Word Finder →</a>
+          <a href="/word-unscrambler" class="btn btn-sm">Word Unscrambler →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Anagram for Words With Friends -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-4 text-foreground">📱 Anagram Finder for Words With Friends</h2>
+      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-3">
+        <p>
+          Words With Friends has over 171,000 words in its dictionary — and with a board full of possibilities, it's easy to miss the best move. An anagram finder helps you see every valid word hiding in your letters.
+        </p>
+        <p>
+          <strong class="text-foreground">For beginners:</strong> Getting new arrangements of words forces your mind to explore new possibilities. Using an anagram tool is a great way to learn vocabulary while having fun.
+        </p>
+        <p>
+          <strong class="text-foreground">For pros:</strong> Even seasoned players use anagram tools to find words faster and spot moves their opponents might miss.
+        </p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <a href="/words-with-friends" class="btn btn-primary btn-sm">Words With Friends Cheat →</a>
+          <a href="/wordfeud" class="btn btn-sm">Wordfeud Solver →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Common Prefixes & Suffixes -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-2xl font-bold mb-4 text-foreground">🔤 Common Prefixes & Suffixes</h2>
+      <p class="text-[15px] text-muted-foreground mb-5">
+        Memorize these common word parts to solve anagrams faster — no tool needed!
+      </p>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-semibold text-foreground mb-3 text-sm uppercase tracking-wider">Common Prefixes</h3>
+          <div class="flex flex-wrap gap-2">
+            {prefixes.map((p) => <span class="px-3 py-1.5 bg-primary/10 text-primary rounded-lg text-sm font-mono font-medium">{p}</span>)}
+          </div>
+        </div>
+        <div>
+          <h3 class="font-semibold text-foreground mb-3 text-sm uppercase tracking-wider">Common Suffixes</h3>
+          <div class="flex flex-wrap gap-2">
+            {suffixes.map((s) => <span class="px-3 py-1.5 bg-primary/10 text-primary rounded-lg text-sm font-mono font-medium">{s}</span>)}
+          </div>
+        </div>
+      </div>
+      <p class="text-xs text-muted-foreground mt-4">
+        Tip: In anagram games, try adding or removing these from your letter combinations to find words faster.
+      </p>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-xl font-bold mb-4 text-foreground">Related Tools</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
+          { name: 'Scrabble Finder', href: '/scrabble', icon: '🎲' },
+          { name: 'Wordle Solver', href: '/wordle-solver', icon: '🎯' },
+          { name: 'Words by Length', href: '/words-by-length', icon: '📏' },
+        ].map((tool) => (
+          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-muted hover:border-primary/50 hover:shadow-sm transition-all">
+            <span class="text-xl">{tool.icon}</span>
+            <span class="text-sm font-medium text-foreground">{tool.name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl bg-gradient-to-r from-primary/10 to-indigo-500/10 border border-primary/20 p-8 text-center">
+      <h2 class="text-2xl font-bold mb-3 text-foreground">Want to play the actual games?</h2>
+      <p class="text-[15px] text-muted-foreground mb-6">
+        Test your anagram skills in real word games — completely free.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href="/play-wordle" class="btn btn-primary px-6 py-3 text-base font-semibold">🎮 Play Daily Wordle</a>
+        <a href="/wordle-unlimited" class="btn btn-outline px-6 py-3 text-base">♾️ Unlimited Wordle</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mt-8 max-w-3xl mx-auto mb-12" id="faq">
+    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
+    <div class="space-y-3">
+      {faqs.map((faq) => (
+        <details class="rounded-xl border border-border bg-card group">
+          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
+            <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
+            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
+          </summary>
+          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
+            <p class="pt-3">{faq.answer}</p>
+          </div>
+        </details>
       ))}
-    </dl>
+    </div>
   </section>
 
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />

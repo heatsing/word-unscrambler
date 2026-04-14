@@ -1,13 +1,36 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import AdSense from '@/components/AdSense';
+import RandomWordGenerator from '@/components/RandomWordGenerator';
 import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/word-generator',
-  'Word Generator - Random Word Generator',
-  'Free word generator: get random interesting words for creative writing, games, or just learning new vocabulary. Browse alphabetically or filter by word length.'
+  'Word Generator - Random Word Generator | Free Tool',
+  'Free word generator: get random interesting words for creative writing, games, vocabulary building, or just learning new words. Filter by length or browse alphabetically.'
 );
+
+const faqs = [
+  {
+    question: 'What is a word generator?',
+    answer: 'A word generator is a tool that helps you discover new and interesting words. Unlike a word unscrambler where you input letters to find words, a word generator displays curated or random words for inspiration, learning, or fun. You can filter by word length, browse alphabetically, or just hit "generate" to discover something new.',
+  },
+  {
+    question: 'What can I use the word generator for?',
+    answer: 'The word generator has many uses: <strong class="text-foreground">Creative writing</strong> — find the perfect word for your story or poem. <strong class="text-foreground">Vocabulary building</strong> — discover new words and add them to your vocabulary. <strong class="text-foreground">Word games</strong> — get inspiration for Scrabble, Words With Friends, or any word challenge. <strong class="text-foreground">Naming</strong> — find unique words for project names, business names, or usernames. <strong class="text-foreground">Crosswords</strong> — look for unusual words that might fit tricky clues.',
+  },
+  {
+    question: 'Can I filter words by length?',
+    answer: 'Yes! The word generator lets you filter by minimum and maximum word length, so you can find exactly the right word for your needs — a short punchy word for a headline, or a longer vocabulary word for academic writing.',
+  },
+  {
+    question: 'Is the word generator free?',
+    answer: 'Yes! Our word generator is completely free to use with no sign-up, no download, and no limits. Generate as many words as you want.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
 
 const interestingWords = [
   { word: 'Ephemeral', meaning: 'Lasting for a very short time' },
@@ -34,7 +57,6 @@ const interestingWords = [
   { word: 'Beguile', meaning: 'To charm or enchant, sometimes deceptively' },
   { word: 'Cogent', meaning: 'Clear, logical, and convincing' },
   { word: 'Desultory', meaning: 'Lacking a plan, purpose, or enthusiasm' },
-  { word: 'Ephemeral', meaning: 'Lasting for a very short time' },
   { word: 'Fastidious', meaning: 'Very attentive to accuracy and detail' },
   { word: 'Garrulous', meaning: 'Excessively talkative' },
   { word: 'Hackneyed', meaning: 'Lacking originality through overuse' },
@@ -47,9 +69,11 @@ const interestingWords = [
   <header class="text-center mb-8">
     <h1 class="text-4xl font-bold mb-4 text-foreground">Word Generator</h1>
     <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-      Browse our curated collection of interesting, unusual, and beautiful English words.
+      Browse our curated collection of interesting, unusual, and beautiful English words — or generate a random word instantly.
     </p>
   </header>
+
+  <RandomWordGenerator client:load />
 
   <AdSense />
 
@@ -88,17 +112,45 @@ const interestingWords = [
     </div>
   </section>
 
-  <section class="mt-8 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">More Tools to Try</h2>
-    <p class="text-muted-foreground text-[15px] mb-4">
-      Want to unscramble letters or find words for a specific game? Try these related tools:
-    </p>
-    <div class="flex flex-wrap gap-3">
-      <a href="/word-unscrambler" class="btn btn-primary">Word Unscrambler</a>
-      <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
-      <a href="/word-finder" class="btn btn-primary">Word Finder</a>
-      <a href="/scrabble-go" class="btn btn-primary">Scrabble Go</a>
-      <a href="/text-twist" class="btn btn-primary">Text Twist</a>
+  <!-- More Tools -->
+  <section class="mt-8 max-w-3xl mx-auto">
+    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+      <h2 class="text-xl font-bold mb-4 text-foreground">More Word Tools to Try</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
+          { name: 'Anagram Solver', href: '/anagram-solver', icon: '📚' },
+          { name: 'Word Finder', href: '/word-finder', icon: '🔍' },
+          { name: 'Scrabble Go', href: '/scrabble-go', icon: '🎲' },
+        ].map((tool) => (
+          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+            <span class="text-xl">{tool.icon}</span>
+            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
+
+  <!-- FAQ -->
+  <section class="mt-8 max-w-3xl mx-auto" id="faq">
+    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
+    <div class="space-y-3">
+      {faqs.map((faq) => (
+        <details class="rounded-xl border border-border bg-card group">
+          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
+            <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
+            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
+          </summary>
+          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
+            <p class="pt-3" set:html={faq.answer} />
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <div class="mt-12"></div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

@@ -2,7 +2,6 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import { fileURLToPath } from 'node:url';
 
 const SITE = 'https://wordunscrambler.cc';
 
@@ -25,9 +24,10 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     resolve: {
-      alias: {
-        '@/components/AdSense': fileURLToPath(new URL('./src/components/AdSense.astro', import.meta.url)),
-      },
+      alias: [
+        { find: "@", replacement: new URL("./src", import.meta.url).pathname },
+      ],
+      extensions: [".astro", ".ts", ".tsx", ".js", ".jsx", ".json"],
     },
     build: {
       rollupOptions: {
