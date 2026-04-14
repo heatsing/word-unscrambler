@@ -1,0 +1,91 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/scrabble-go',
+  'Scrabble Go Cheat - Find Words',
+  'Scrabble Go cheat tool: enter your letters to find all valid words for Scrabble Go. Get high-scoring plays and dominate your opponents.'
+);
+
+const faqs = [
+  {
+    question: 'How does the Scrabble Go cheat work?',
+    answer: 'Enter your Scrabble Go letters into the solver and it will find every valid English word you can play, sorted by score. The highest-scoring words appear at the top, making it easy to find the best play.',
+  },
+  {
+    question: 'Is this Scrabble Go cheat free?',
+    answer: 'Yes! Our Scrabble Go solver is completely free with no sign-up, no download, and no in-app purchases. Just open and use it anytime.',
+  },
+  {
+    question: 'Does the solver work with Scrabble Go\'s dictionary?',
+    answer: 'Our solver uses an extensive English word list that covers the vast majority of words accepted in Scrabble Go. It\'s regularly updated to include new words.',
+  },
+  {
+    question: 'Can I find words that use premium squares?',
+    answer: 'The solver finds all valid words from your letters. To maximize your score, look for longer words that can use double/triple letter and word squares on the board. Words 7+ letters also earn a 50-point bingo bonus for using all 7 tiles.',
+  },
+  {
+    question: 'How do I get better at Scrabble Go?',
+    answer: 'Practice vocabulary, learn 2-letter words (XI, ZA, QI, JO, etc.), memorize common prefixes and suffixes, save high-value tiles for premium squares, and always look for the bingo (7 tiles in one play).',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Scrabble Go Cheat</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter your Scrabble Go letters to find every valid word and high-scoring play.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">Scrabble Go Tips</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        Scrabble Go is one of the most popular word games on mobile. Whether you\'re playing against friends or climbing the ranks, our cheat tool helps you find the best words and maximize your score.
+      </p>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Scrabble Go Strategy Tips</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong class="text-foreground">Look for the bingo</strong> — Playing all 7 tiles in one word earns a 50-point bonus. Look for words like CRTIERS, ARTERIES, and STORAGE that use common tiles.</li>
+        <li><strong class="text-foreground">Use Q, Z, X, J strategically</strong> — These tiles are hard to play. Look for words like QI, XI, ZA, XU, JO that use them efficiently. ZO is also valid!</li>
+        <li><strong class="text-foreground">Hit premium squares</strong> — Triple Word (TW) and Double Word (DW) squares are key to high scores. Try to set up plays that use these squares.</li>
+        <li><strong class="text-foreground">Learn two-letter words</strong> — Words like AA, AI, KI, XI, XU, ZA, ZO, and EF can score easy points by hooking onto existing words.</li>
+        <li><strong class="text-foreground">Save vowels for words</strong> — Having too many vowels or too many consonants hurts. Exchange tiles strategically if your rack is unbalanced.</li>
+        <li><strong class="text-foreground">Play defensively</strong> — Block premium squares your opponent might use, especially if they\'re setting up a long word.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mt-8 flex flex-wrap gap-3 text-sm">
+    <a href="/wordfeud" class="btn btn-primary">Wordfeud</a>
+    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
+    <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
+    <a href="/descrambler" class="btn btn-primary">Descrambler</a>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

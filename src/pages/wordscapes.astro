@@ -1,0 +1,90 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/wordscapes',
+  'Wordscapes Solver - Find Words',
+  'Wordscapes solver: enter your available letters to find all valid words. Complete every Wordscapes level with our free cheat tool.'
+);
+
+const faqs = [
+  {
+    question: 'How does the Wordscapes solver work?',
+    answer: 'Enter the letters shown at the bottom of your Wordscapes screen (the letter tray) and the solver will find every valid word you can make from those letters that fits the crossword-style puzzle.',
+  },
+  {
+    question: 'What is Wordscapes?',
+    answer: 'Wordscapes is a popular word puzzle game that combines crossword-style clues with swipe-to-spell mechanics. Each level presents you with a crossword grid and a set of letters — you must fill every blank with words made from those letters.',
+  },
+  {
+    question: 'Does the solver work for all Wordscapes levels?',
+    answer: 'Yes! Our solver supports levels 1 through 6000+ across all Wordscapes packs including Main, Travel, Tribe, and all seasonal puzzles.',
+  },
+  {
+    question: 'Can I use the Wordscapes solver on my phone?',
+    answer: 'Yes, it works on any device — desktop, tablet, or mobile. Open the page, enter your letters, and get all the answers instantly.',
+  },
+  {
+    question: 'How do I earn coins in Wordscapes?',
+    answer: 'You earn coins for completing levels, finding all words (including the bonus words), and daily puzzles. Coins can be used to buy hints like revealing a letter or clearing an error.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Wordscapes Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter your Wordscapes letters to find every word in the puzzle.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Solve Wordscapes</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        Wordscapes is a relaxing yet challenging word puzzle game where you fill crossword grids with words formed from a set of letters. Our solver helps you complete every level, even the tricky ones that stump you.
+      </p>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Wordscapes Tips</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong class="text-foreground">Look at the crossword pattern</strong> — The blanks show you exactly how many letters each word needs. If a blank is 3 letters, only find 3-letter words.</li>
+        <li><strong class="text-foreground">Start with small words</strong> — Find all the 3 and 4-letter words first. They often connect to reveal longer words.</li>
+        <li><strong class="text-foreground">Find the bonus word</strong> — Each level has a hidden bonus word worth extra coins. Try combining all the letters to find it.</li>
+        <li><strong class="text-foreground">Use common prefixes and suffixes</strong> — UN-, RE-, IN-, OUT- are common prefixes. -ING, -ED, -ER, -LY are common suffixes.</li>
+        <li><strong class="text-foreground">Try every combination</strong> — If you\'re stuck, systematically try different letter combinations starting with each available letter.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mt-8 flex flex-wrap gap-3 text-sm">
+    <a href="/word-cookies" class="btn btn-primary">Word Cookies</a>
+    <a href="/wordfeud" class="btn btn-primary">Wordfeud</a>
+    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
+    <a href="/scrabble-go" class="btn btn-primary">Scrabble Go</a>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

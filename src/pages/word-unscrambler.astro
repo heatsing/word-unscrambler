@@ -1,0 +1,86 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/word-unscrambler',
+  'Word Unscrambler - Unscramble Any Letters',
+  'Free word unscrambler: unscramble any set of letters into real words. Works for Wordle, Scrabble, crosswords, and any word puzzle.'
+);
+
+const faqs = [
+  {
+    question: 'What is a word unscrambler?',
+    answer: 'A word unscrambler takes any set of letters and finds every valid English word you can form from them. It helps when you have jumbled letters and need to find the real words hidden inside.',
+  },
+  {
+    question: 'How do I use the word unscrambler?',
+    answer: 'Type your letters in the search box and click Unscramble. You can set a minimum and maximum word length, and choose how to sort results (by score, length, or alphabetically).',
+  },
+  {
+    question: 'Is the word unscrambler free?',
+    answer: 'Yes, our word unscrambler is completely free to use with no sign-up required.',
+  },
+  {
+    question: 'What games does the unscrambler help with?',
+    answer: 'The word unscrambler helps with Wordle, Scrabble, Words with Friends, Wordscapes, Word Cookies, Text Twist, crosswords, and any other word game or puzzle.',
+  },
+  {
+    question: 'Does it work for any word length?',
+    answer: 'Yes. Our word lists cover 2 to 10 letter words. Use the length filters to find words of the exact size you need.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Word Unscrambler</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Unscramble any set of letters into real words. Filter by length, sort by score, and find the perfect word for any game.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">How the Word Unscrambler Works</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        The word unscrambler takes jumbled letters and searches through a comprehensive dictionary to find every valid word that can be formed. Whether you're stuck on a Wordle puzzle, need a high-scoring Scrabble word, or are solving a crossword clue, our tool has you covered.
+      </p>
+      <p>
+        <strong class="text-foreground">For Wordle:</strong> Enter your 5 letters and filter to 5-letter words to see all possible solutions.
+      </p>
+      <p>
+        <strong class="text-foreground">For Scrabble:</strong> Enter your tiles to find the highest-scoring words. Results are sorted by Scrabble score by default.
+      </p>
+      <p>
+        <strong class="text-foreground">For crosswords:</strong> Enter the letters you know with blanks (or use a separate wildcard tool) to find matching words.
+      </p>
+      <p>
+        Use the length filters to narrow results to exactly the word size you need, and sort by score for word games or alphabetically for easy browsing.
+      </p>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

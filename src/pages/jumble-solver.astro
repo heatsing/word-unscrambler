@@ -1,0 +1,137 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/jumble-solver',
+  'Jumble Solver - Unscramble Jumble Puzzles',
+  'Instantly unscramble Jumble puzzle words. Enter the jumbled letters and get every possible word.'
+);
+
+const faqs = [
+  {
+    question: 'What is a Jumble puzzle?',
+    answer: 'Jumble is a daily newspaper puzzle that shows four or more jumbled words that need to be unscrambled. Once you solve each scrambled word, you use some of the letters from those solutions to unscramble a final "answer" word or phrase. Jumble appears in over 300 newspapers and is one of the most popular word puzzles in the United States.',
+  },
+  {
+    question: 'How does the Jumble solver work?',
+    answer: 'Type the jumbled letters from any Jumble clue into the search box. The tool instantly returns every valid English word that can be formed from those letters, sorted by length and score. This gives you all possible solutions for each clue.',
+  },
+  {
+    question: 'Is the Jumble solver free?',
+    answer: 'Yes, our Jumble solver is completely free to use with no sign-up required. Just open the page and start entering your jumbled letters.',
+  },
+  {
+    question: 'Can I solve all four Jumble clues at once?',
+    answer: 'Yes — just enter the letters from each clue one at a time. The tool works for any jumbled word between 2 and 10 letters long, which covers all standard Jumble clues. Use it to solve each clue independently and then combine the solutions to find the final answer.',
+  },
+  {
+    question: 'Does the solver work for the cartoon caption clue?',
+    answer: 'Yes. Once you have solved all four Jumble words, the final cartoon caption is typically made from letters of the solved words. Enter candidate letters from the clue into the tool to find the answer word or phrase.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Jumble Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Instantly unscramble Jumble puzzle words. Enter the jumbled letters from any clue and get every possible solution.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-3 text-foreground">What is Jumble?</h2>
+    <p class="text-muted-foreground text-[15px] leading-relaxed">
+      Jumble is a classic American newspaper puzzle created by Martin Naydel and published daily in hundreds of newspapers nationwide. Each puzzle consists of four (or more) jumbled words that the reader must unscramble. Beneath the jumbled clues is a cartoon illustration, often with a caption.
+    </p>
+    <p class="text-muted-foreground text-[15px] leading-relaxed mt-3">
+      Once all the individual words are solved, the player takes certain letters from those solutions — typically the first or last letter of each solved word — and uses them to unscramble a final "answer" phrase. The cartoon caption is often a pun or joke related to the answer phrase.
+    </p>
+    <p class="text-muted-foreground text-[15px] leading-relaxed mt-3">
+      Jumble has been running since 1954 and remains one of the most widely syndicated word puzzles in the world. Our solver helps you unscramble each clue quickly so you can focus on solving the final answer.
+    </p>
+  </section>
+
+  <section class="mt-8 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Solve Jumble Puzzles</h2>
+    <ol class="space-y-3 text-[15px] text-muted-foreground leading-relaxed">
+      <li class="flex gap-3">
+        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">1</span>
+        <p><strong class="text-foreground">Look for common letter patterns.</strong> Words like TH, CH, SH, ING, ER, AN, and OU appear frequently. Scan the jumbled letters for familiar chunks.</p>
+      </li>
+      <li class="flex gap-3">
+        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">2</span>
+        <p><strong class="text-foreground">Identify vowels and consonants.</strong> Count how many vowels (A, E, I, O, U) are in the jumble. A 5-letter word with 2 vowels could be something like CRAVE or BLEND. A 5-letter word with 3 vowels is likely something like OUIJA or QUEUE.</p>
+      </li>
+      <li class="flex gap-3">
+        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">3</span>
+        <p><strong class="text-foreground">Use letter frequency.</strong> In English, E, A, R, O, T, L, I, S, and N are the most common letters. If a jumble contains E, A, and R, the word is likely a real word and not just random letters.</p>
+      </li>
+      <li class="flex gap-3">
+        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">4</span>
+        <p><strong class="text-foreground">Enter the jumble in the solver above.</strong> If you get stuck, type the scrambled letters into our Jumble solver. It will show you every valid word that can be formed, so you can quickly find the correct solution.</p>
+      </li>
+      <li class="flex gap-3">
+        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">5</span>
+        <p><strong class="text-foreground">Solve the answer phrase.</strong> Once you have all four individual words, take the designated letters (usually circled or highlighted in the puzzle) and unscramble them to form the final answer. This is typically a phrase or pun related to the cartoon.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="mt-8 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">Jumble Tips & Strategies</h2>
+    <ul class="space-y-2 text-[15px] text-muted-foreground leading-relaxed">
+      <li class="flex items-start gap-2">
+        <span class="text-primary mt-1">→</span>
+        <p><strong class="text-foreground">Start with the longest jumble.</strong> Longer words have fewer possible unscrambles, making them easier to solve first. A 7-letter jumble has far fewer valid solutions than a 4-letter one.</p>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-primary mt-1">→</span>
+        <p><strong class="text-foreground">Look for obvious fragments.</strong> In CTEOA, you might spot NOTE, CANE, or ATONE. Building words from partial letter groups is faster than trying random arrangements.</p>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-primary mt-1">→</span>
+        <p><strong class="text-foreground">Scan for doubled letters.</strong> Words like LL, TT, SS, EE, or OO in the jumble are a clue that the solution likely contains a double letter (e.g., METER → TEMPER, or TEEMS → STEMES).</p>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-primary mt-1">→</span>
+        <p><strong class="text-foreground">Use common word endings.</strong> Watch for ING, ED, ER, ES, LY, and TY endings. Starting with the ending and working backward often unscrambles a word quickly.</p>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-primary mt-1">→</span>
+        <p><strong class="text-foreground">The final answer clue matters.</strong> In Jumble, the cartoon and caption are usually a pun on the answer phrase. If you know the cartoon topic, it can help confirm your individual word solutions.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <nav class="mt-10 flex flex-wrap gap-4 text-sm text-muted-foreground">
+    <a href="/unscramble" class="hover:text-foreground transition-colors">Unscramble Words →</a>
+    <a href="/anagram-solver" class="hover:text-foreground transition-colors">Anagram Solver →</a>
+    <a href="/scrabble" class="hover:text-foreground transition-colors">Scrabble Word Finder →</a>
+    <a href="/wordle-solver" class="hover:text-foreground transition-colors">Wordle Solver →</a>
+  </nav>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

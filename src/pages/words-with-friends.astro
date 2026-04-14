@@ -1,0 +1,157 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/words-with-friends',
+  'Words with Friends Cheat - Find the Best Words',
+  'Find the highest-scoring Words with Friends words. Enter your tiles and get every valid word sorted by score.'
+);
+
+const TILE_VALUES = [
+  { letters: 'A, E, I, O, U, L, N, S, T, R', value: 1 },
+  { letters: 'D, G', value: 2 },
+  { letters: 'B, C, M, P', value: 3 },
+  { letters: 'F, H, V, W, Y', value: 4 },
+  { letters: 'K', value: 5 },
+  { letters: 'J, X', value: 8 },
+  { letters: 'Q, Z', value: 10 },
+];
+
+const faqs = [
+  {
+    question: 'How does the Words with Friends cheat work?',
+    answer: 'Enter your letter tiles in the search box. The tool scans a comprehensive word list and returns every valid word you can make from those tiles, sorted by point value. High-scoring words appear first so you can quickly find the best move.',
+  },
+  {
+    question: 'Is the Words with Friends cheat free?',
+    answer: 'Yes, our Words with Friends cheat is completely free to use with no sign-up or download required. It works in any browser on desktop or mobile.',
+  },
+  {
+    question: 'Does it use the same tile values as Words with Friends?',
+    answer: 'Yes. Words with Friends uses the same point values as Scrabble: A, E, I, O, U, L, N, S, T, R = 1 point; D, G = 2; B, C, M, P = 3; F, H, V, W, Y = 4; K = 5; J, X = 8; Q, Z = 10. Our tool sorts results by these scores.',
+  },
+  {
+    question: 'Can I filter results by word length?',
+    answer: 'Yes. Use the Min length and Max length controls to filter results to specific word sizes, which is useful when you need a specific word length to fit a space on the board.',
+  },
+  {
+    question: 'Does the cheat work for Words with Friends 2?',
+    answer: 'Yes. The tool works for any version of Words with Friends since they all use the same dictionary and tile values. You can also use it for Scrabble, Wordfeud, and other similar word games.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Words with Friends Cheat</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter your tiles and instantly find every valid word, sorted by score. Get the highest-scoring play every turn.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Use the Words with Friends Cheat</h2>
+    <ol class="space-y-3 text-[15px] text-muted-foreground leading-relaxed">
+      <li class="flex gap-3">
+        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">1</span>
+        <p><strong class="text-foreground">Enter your tiles.</strong> Type the letters from your Words with Friends rack into the search box above. Include every letter you have available.</p>
+      </li>
+      <li class="flex gap-3">
+        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">2</span>
+        <p><strong class="text-foreground">Set length filters.</strong> Use the Min and Max length controls if you need a specific word size to fit a space on the board.</p>
+      </li>
+      <li class="flex gap-3">
+        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">3</span>
+        <p><strong class="text-foreground">Scan the results.</strong> Words are sorted by score with the highest-scoring words at the top. Look for words that use your high-value letters (Q, Z, J, X, K).</p>
+      </li>
+      <li class="flex gap-3">
+        <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground font-bold text-sm">4</span>
+        <p><strong class="text-foreground">Check premium squares.</strong> If you have a Triple Word or Double Letter score tile available, a shorter word using that square might score higher than a longer word elsewhere.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="mt-8 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">Words with Friends Tile Values</h2>
+    <p class="text-muted-foreground text-[15px] leading-relaxed mb-6">
+      Each tile in Words with Friends has a point value. The higher the value, the rarer and harder to use the letter. Plan your plays around your high-value tiles.
+    </p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-border">
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Points</th>
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Letters</th>
+          </tr>
+        </thead>
+        <tbody>
+          {TILE_VALUES.map((row, i) => (
+            <tr key={i} class={i % 2 === 0 ? 'bg-muted/30' : ''}>
+              <td class="py-2 px-3 font-bold text-foreground">{row.value}</td>
+              <td class="py-2 px-3 text-muted-foreground">{row.letters}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-muted-foreground mt-4">
+      Words with Friends uses the same tile values as Scrabble. Blank tiles have no point value but can represent any letter. Premium squares on the board multiply the tile values.
+    </p>
+  </section>
+
+  <section class="mt-8 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">Tips for Words with Friends</h2>
+    <ul class="space-y-2 text-[15px] text-muted-foreground leading-relaxed">
+      <li class="flex items-start gap-2">
+        <span class="text-primary mt-1">→</span>
+        <p><strong class="text-foreground">Save high-value tiles for premium squares.</strong> Q, Z, J, and X are worth 8–10 points. Placing them on Triple Word or Double Letter squares can dramatically boost your score.</p>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-primary mt-1">→</span>
+        <p><strong class="text-foreground">Use two-letter words strategically.</strong> Common two-letter words like QI, XI, JO, and ZA can extend existing words to grab adjacent premium squares with minimal letter investment.</p>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-primary mt-1">→</span>
+        <p><strong class="text-foreground">Watch for parallel plays.</strong> You can score by placing words that intersect with existing tiles horizontally or vertically. Look for opportunities to build off your opponent's high-value words.</p>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-primary mt-1">→</span>
+        <p><strong class="text-foreground">Balance word length.</strong> Shorter words using premium squares sometimes beat longer words on neutral spaces. Always compare options before playing.</p>
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="text-primary mt-1">→</span>
+        <p><strong class="text-foreground">Bingo bonus.</strong> If you use all seven tiles in one play, you get a 50-point bingo bonus. Our tool shows all 7-letter possibilities from your rack — use them if you spot a bingo opportunity.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <nav class="mt-10 flex flex-wrap gap-4 text-sm text-muted-foreground">
+    <a href="/scrabble" class="hover:text-foreground transition-colors">Scrabble Word Finder →</a>
+    <a href="/unscramble" class="hover:text-foreground transition-colors">Unscramble Words →</a>
+    <a href="/anagram-solver" class="hover:text-foreground transition-colors">Anagram Solver →</a>
+  </nav>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

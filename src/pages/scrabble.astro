@@ -1,0 +1,103 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/scrabble',
+  'Scrabble Word Finder - High Scoring Words',
+  'Find the highest-scoring Scrabble words with our free word finder. Enter your letters to discover words worth the most points.'
+);
+
+const faqs = [
+  {
+    question: 'How does the Scrabble word finder work?',
+    answer: 'Enter your Scrabble letters in the search box. The tool finds every valid word you can make from those letters, sorted by Scrabble point value. High-scoring words appear first.',
+  },
+  {
+    question: 'Is the Scrabble word finder free?',
+    answer: 'Yes, our Scrabble word finder is completely free to use with no sign-up required.',
+  },
+  {
+    question: 'Does it use the official Scrabble dictionary?',
+    answer: 'Our word list is based on a standard English dictionary suitable for Scrabble and similar word games. The exact tournament word list may vary slightly.',
+  },
+  {
+    question: 'How is Scrabble score calculated?',
+    answer: 'Each letter has a point value (A=1, B=3, C=3, D=2, E=1, F=4, G=2, H=4, I=1, J=8, K=5, L=1, M=3, N=1, O=1, P=3, Q=10, R=1, S=1, T=1, U=1, V=4, W=4, X=8, Y=4, Z=10). The score is the sum of all letter values in your word.',
+  },
+  {
+    question: 'Can I filter by word length?',
+    answer: 'Yes. Use the Min length and Max length controls to filter results to specific word sizes.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+
+const TILE_VALUES = [
+  { letters: 'A, E, I, O, U, L, N, S, T, R', value: 1 },
+  { letters: 'D, G', value: 2 },
+  { letters: 'B, C, M, P', value: 3 },
+  { letters: 'F, H, V, W, Y', value: 4 },
+  { letters: 'K', value: 5 },
+  { letters: 'J, X', value: 8 },
+  { letters: 'Q, Z', value: 10 },
+];
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Scrabble Word Finder</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Find the highest-scoring Scrabble words from your letters. Results are sorted by point value automatically.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">Scrabble Tile Point Values</h2>
+    <p class="text-muted-foreground mb-6 text-[15px] leading-relaxed">
+      Each letter in Scrabble has a point value. Use these to plan high-scoring words.
+    </p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-border">
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Points</th>
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Letters</th>
+          </tr>
+        </thead>
+        <tbody>
+          {TILE_VALUES.map((row, i) => (
+            <tr key={i} class={i % 2 === 0 ? 'bg-muted/30' : ''}>
+              <td class="py-2 px-3 font-bold text-foreground">{row.value}</td>
+              <td class="py-2 px-3 text-muted-foreground">{row.letters}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-muted-foreground mt-4">
+      Blank tiles have no point value but can represent any letter. The Scrabble dictionary used may vary by region.
+    </p>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

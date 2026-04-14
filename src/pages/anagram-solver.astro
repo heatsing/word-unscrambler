@@ -1,0 +1,83 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/anagram-solver',
+  'Anagram Solver - Find Words from Letters',
+  'Free anagram solver: enter any word or set of letters to find all valid anagrams and words you can form. Great for word games and puzzles.'
+);
+
+const faqs = [
+  {
+    question: 'What is an anagram?',
+    answer: 'An anagram is a word or phrase formed by rearranging the letters of another word or phrase, using all the original letters exactly once. For example, "listen" is an anagram of "silent", and "dormitory" can be rearranged into "dirty room".',
+  },
+  {
+    question: 'How does the anagram solver work?',
+    answer: 'Enter your letters in the search box. The solver finds every valid word that can be formed using exactly those letters. For a single word, these are its anagrams. For multiple letters, it finds all possible words.',
+  },
+  {
+    question: 'Is the anagram solver free?',
+    answer: 'Yes, our anagram solver is completely free with no sign-up required.',
+  },
+  {
+    question: 'Can I use wildcards in the anagram solver?',
+    answer: 'The basic solver uses only the letters you type. For pattern matching with wildcards (e.g., ? for any letter), try our full Word Unscrambler tool.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Anagram Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter any word or set of letters to find all valid anagrams and words you can form.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">What is an Anagram?</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        An <strong class="text-foreground">anagram</strong> is a word or phrase formed by rearranging the letters of another word or phrase, using all the original letters exactly once. Anagram solvers are popular tools for word games like Scrabble, Words with Friends, and for solving puzzles.
+      </p>
+      <p>
+        Our anagram solver takes any set of letters and finds every valid English word you can make from them. The results are sorted by Scrabble score, so the highest-scoring words appear first.
+      </p>
+    </div>
+
+    <h3 class="text-lg font-semibold mt-6 mb-3 text-foreground">Famous Anagram Examples</h3>
+    <ul class="space-y-2 text-muted-foreground text-[15px]">
+      <li><strong class="text-foreground">dormitory</strong> &rarr; <em>dirty room</em></li>
+      <li><strong class="text-foreground">astronomer</strong> &rarr; <em>moon starer</em></li>
+      <li><strong class="text-foreground">the eyes</strong> &rarr; <em>they see</em></li>
+      <li><strong class="text-foreground">a gentleman</strong> &rarr; <em>elegant man</em></li>
+      <li><strong class="text-foreground">listen</strong> &rarr; <em>silent</em>, <em>enlist</em>, <em>tingles</em></li>
+      <li><strong class="text-foreground">heart</strong> &rarr; <em>earth</em>, <em>hare</em></li>
+    </ul>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

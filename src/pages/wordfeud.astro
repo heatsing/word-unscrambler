@@ -1,0 +1,93 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/wordfeud',
+  'Wordfeud Solver - High Scoring Words',
+  'Wordfeud solver: enter your letters to find the best words for Wordfeud. Get high-scoring words that use premium tiles like Q, Z, X, and J.'
+);
+
+const faqs = [
+  {
+    question: 'How does the Wordfeud solver work?',
+    answer: 'Enter your Wordfeud letters (including any blank tiles) and the solver will find every valid word you can play, sorted by Scrabble-style score. This helps you find the highest-scoring plays in your game.',
+  },
+  {
+    question: 'What is Wordfeud?',
+    answer: 'Wordfeud is a popular multiplayer word game similar to Scrabble. You play against friends or random opponents, taking turns forming words on a 15x15 grid. Like Scrabble, Wordfeud uses premium squares for double/triple letter and word scores.',
+  },
+  {
+    question: 'How do I get high scores in Wordfeud?',
+    answer: 'High-scoring plays in Wordfeud come from: using premium squares (double/triple), playing long words (7+ letters), using high-value tiles (Q, Z, X, J), and finding words that hook onto existing tiles to extend them.',
+  },
+  {
+    question: 'Can I use blank tiles in the solver?',
+    answer: 'Yes, you can enter a blank tile as a question mark (?) in the solver. This allows you to find words where you\'re not sure of one letter.',
+  },
+  {
+    question: 'Does the solver consider Wordfeud\'s dictionary?',
+    answer: 'Our solver uses an extensive English word list that covers the standard Wordfeud dictionary. It finds all valid plays for your rack.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Wordfeud Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter your Wordfeud letters to find the highest-scoring words.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">Wordfeud Tips</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        Wordfeud is a competitive word game where every move counts. Our solver helps you find the best possible plays, whether you\'re playing offensively to build your score or defensively to block your opponent.
+      </p>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">High-Scoring Wordfeud Strategies</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong class="text-foreground">Play premium squares</strong> — Always aim to hit double/triple letter and word squares. A word played across TW (triple word) can easily score 50+ points.</li>
+        <li><strong class="text-foreground">Use Q, Z, X, and J wisely</strong> — These high-value tiles are worth planning around. QI (no vowel needed!) and JO are great 2-letter words. ZA is valid in Wordfeud.</li>
+        <li><strong class="text-foreground">Find the 7-letter bonus</strong> — Playing all 7 tiles in one move earns a 50-point bonus in Wordfeud. Look for words that use all your letters.</li>
+        <li><strong class="text-foreground">Hook onto existing words</strong> — Adding a letter to an existing word to make a new one can be very efficient. Look for parallel plays as well.</li>
+        <li><strong class="text-foreground">Defensive play</strong> — If your opponent is setting up for a high-scoring move, try blocking premium squares or forming words that limit their options.</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Useful 2-Letter Words in Wordfeud</h3>
+      <p>XI, XU, ZA, ZO, QI, KI, JO, OK, EF, ES, ET, EA, ER, AR, OR (and many more). These small words can hook onto existing tiles for quick points.</p>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mt-8 flex flex-wrap gap-3 text-sm">
+    <a href="/scrabble-go" class="btn btn-primary">Scrabble Go</a>
+    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
+    <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
+    <a href="/word-scramble" class="btn btn-primary">Word Scramble</a>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

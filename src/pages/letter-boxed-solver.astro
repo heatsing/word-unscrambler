@@ -1,0 +1,97 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/letter-boxed-solver',
+  'Letter Boxed Solver - New York Times Games',
+  'NYT Letter Boxed solver: enter the letters from your New York Times Letter Boxed puzzle to find all valid words. Free and instant.'
+);
+
+const faqs = [
+  {
+    question: 'What is NYT Letter Boxed?',
+    answer: 'Letter Boxed is a daily word puzzle from The New York Times. You\'re given 12 letters arranged in a square (three on each side) and must form words using letters from different sides. Each word must use at least two different sides, and you can\'t use the same letter twice in a row.',
+  },
+  {
+    question: 'How does the Letter Boxed solver work?',
+    answer: 'Enter the 12 letters from your Letter Boxed puzzle (the letters shown on the sides of the square). The solver finds all valid words you can make using those letters, following the Letter Boxed rules of never using consecutive letters from the same side.',
+  },
+  {
+    question: 'What are the rules of Letter Boxed?',
+    answer: '1) Each word must contain at least 3 letters. 2) Letters can\'t be repeated in the same word. 3) Consecutive letters in your word can\'t come from the same side of the square. 4) The last letter of each word becomes the first letter of the next word (in the main puzzle).',
+  },
+  {
+    question: 'How is Letter Boxed scored?',
+    answer: 'You earn 1 point per letter in each valid word you submit. The goal is to use all 12 letters as the last letter of a word — when you do, the puzzle resets your chain and you start fresh with the remaining letters.',
+  },
+  {
+    question: 'Can I use the Letter Boxed solver every day?',
+    answer: 'Yes! Our Letter Boxed solver is free and available 24/7. It works with any set of 12 letters, so you can use it for both the daily NYT puzzle and custom Letter Boxed challenges.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Letter Boxed Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter the letters from your NYT Letter Boxed puzzle to find all valid words.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">How Letter Boxed Works</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        The New York Times Letter Boxed puzzle challenges you to form words using 12 letters arranged in a square. Each side of the square has 3 letters, and the goal is to find a chain of words that uses up all the letters.
+      </p>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Letter Boxed Rules</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong class="text-foreground">Minimum 3 letters</strong> — Every word you submit must be at least 3 letters long.</li>
+        <li><strong class="text-foreground">No repeating letters</strong> — You cannot use the same letter twice in a single word, even if it appears on different sides.</li>
+        <li><strong class="text-foreground">No consecutive same-side letters</strong> — You cannot use two letters in a row that are from the same side of the square. For example, if S and T are on the same side, you cannot write "ST" or "TS".</li>
+        <li><strong class="text-foreground">Chain the last letter</strong> — In the main puzzle, the last letter of your previous word becomes the first letter of your next word.</li>
+        <li><strong class="text-foreground">Puzzle completion</strong> — Once you\'ve used all 12 letters as the last letter of a word, your chain is complete.</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Letter Boxed Tips</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>Look for common 3-letter words that bridge different sides</li>
+        <li>High-value letters (Q, Z, X, J) are worth planning around</li>
+        <li>The same 12 letters appear every day across all players worldwide</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mt-8 flex flex-wrap gap-3 text-sm">
+    <a href="/wordle-solver" class="btn btn-primary">Wordle Solver</a>
+    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
+    <a href="/word-scramble" class="btn btn-primary">Word Scramble</a>
+    <a href="/text-twist" class="btn btn-primary">Text Twist</a>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

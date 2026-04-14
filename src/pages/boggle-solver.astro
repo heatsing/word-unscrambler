@@ -1,0 +1,90 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/boggle-solver',
+  'Boggle Solver - Find Words in Boggle Grid',
+  'Boggle solver tool: enter your Boggle grid letters to find all valid words you can make. Perfect for beating friends and family at Boggle.'
+);
+
+const faqs = [
+  {
+    question: 'How does the Boggle solver work?',
+    answer: 'Enter the letters from your Boggle grid (reading left to right, top to bottom) into the solver. It will find every valid English word that can be formed by connecting adjacent letters, including diagonally.',
+  },
+  {
+    question: 'What are the Boggle rules for forming words?',
+    answer: 'In Boggle, words must be at least 3 letters long. Letters can be connected horizontally, vertically, or diagonally. Each letter cube can only be used once per word. The same letter cube cannot be used twice in the same word.',
+  },
+  {
+    question: 'What is a good Boggle score?',
+    answer: 'Standard Boggle scoring: 3-letter words = 1 point, 4-letter = 1 point, 5-letter = 2 points, 6-letter = 3 points, 7-letter = 5 points, 8+ letter = 11 points. A competitive player typically aims for 400+ points in a 4x4 game.',
+  },
+  {
+    question: 'Can I use the Boggle solver on my phone?',
+    answer: 'Yes! Our Boggle solver works on any device — desktop, tablet, or mobile phone. Just enter your grid letters and get results instantly.',
+  },
+  {
+    question: 'Does the Boggle solver support the new version (Boggle Board)?',
+    answer: 'Yes, our solver works for both the classic Boggle game and the newer Boggle Board electronic version. Just enter the 16 letters from your game.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Boggle Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter your Boggle grid letters to find every valid word you can make.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Solve Boggle</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        Boggle is a fast-paced word game where you find as many words as possible from a grid of 16 letter cubes. Our Boggle solver helps you find words you might have missed, so you can dominate your next game.
+      </p>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Tips for Finding More Words</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong class="text-foreground">Look for prefixes and suffixes</strong> — Common prefixes like UN-, RE-, IN-, and OUT- can extend short words. Suffixes like -ING, -ED, and -ER are also valuable.</li>
+        <li><strong class="text-foreground">Search diagonally</strong> — Many players forget diagonal connections. Letters like S, T, R, and E often form unexpected words when connected diagonally.</li>
+        <li><strong class="text-foreground">Use Q wisely</strong> — The Q cube is tricky. Look for words that need QU together: QUICK, QUEST, QUIT, etc. The QU combination can open up scoring opportunities.</li>
+        <li><strong class="text-foreground">Think of compound words</strong> — Words like OUTSIDE, NETWORK, and UNDER are high-value finds in Boggle.</li>
+        <li><strong class="text-foreground">Watch for letter patterns</strong> — ERE, TH, OU, IO, and EA are common letter pairs that can lead to longer words.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mt-8 flex flex-wrap gap-3 text-sm">
+    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
+    <a href="/scrabble-go" class="btn btn-primary">Scrabble Go</a>
+    <a href="/word-scramble" class="btn btn-primary">Word Scramble</a>
+    <a href="/text-twist" class="btn btn-primary">Text Twist</a>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

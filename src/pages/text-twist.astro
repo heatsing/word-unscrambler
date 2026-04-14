@@ -1,0 +1,93 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/text-twist',
+  'Text Twist Solver - Unscramble Words',
+  'Text Twist solver: enter your letters to find all words you can make. Great for beating the Text Twist timer and finding every word.'
+);
+
+const faqs = [
+  {
+    question: 'How does the Text Twist solver work?',
+    answer: 'Enter the letters from your Text Twist game into the solver. It will find every valid English word you can form from those letters, sorted by length (longest words first). This helps you find all the words before the timer runs out.',
+  },
+  {
+    question: 'What is the Text Twist game?',
+    answer: 'Text Twist is a classic word game where you\'re given a set of letters and must find as many words as possible before time runs out. Words can be 3 to the full length of the letter set. The game awards more points for longer words.',
+  },
+  {
+    question: 'How do I get a high score in Text Twist?',
+    answer: 'Focus on finding the longest words first — they give the most points. In Text Twist 2, the 6-letter word is typically worth 100+ points. Also, always check for compound words and words with common endings like -ING, -ED, -ER, -LY.',
+  },
+  {
+    question: 'Can I use the Text Twist solver on mobile?',
+    answer: 'Yes! Our Text Twist solver works on any device — desktop, tablet, or phone. Just open the page and enter your letters to get instant results.',
+  },
+  {
+    question: 'Does the solver show words in order of points?',
+    answer: 'The solver shows words sorted by length (longest first), which generally corresponds to higher point values. You can scroll through all results to find every valid word in your Text Twist game.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Text Twist Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter your Text Twist letters to find every word you can make.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">What is Text Twist?</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        Text Twist is a popular word puzzle game where players race against a timer to find as many words as possible from a given set of letters. The game challenges your vocabulary and pattern recognition skills.
+      </p>
+      <p>
+        In Text Twist, you get a set of 6 letters arranged in a row. You must find all possible words of 3, 4, 5, and 6 letters that can be formed from those letters. The longer the word, the more points you earn.
+      </p>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Text Twist Tips</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong class="text-foreground">Find the 6-letter word first</strong> — It\'s the hardest to spot and worth the most points. Look for common letter combinations and prefixes/suffixes.</li>
+        <li><strong class="text-foreground">Think of compound words</strong> — Words like SUNLIGHT, RAINBOW, and NETWORK use common prefixes and suffixes.</li>
+        <li><strong class="text-foreground">Use letter patterns</strong> — Common endings like -ING, -ION, -OUS, -MENT, and -TION can help you spot longer words quickly.</li>
+        <li><strong class="text-foreground">Start with vowels</strong> — Every English word needs vowels. If you have multiple vowels, try pairing them with common consonants.</li>
+        <li><strong class="text-foreground">Try all starting positions</strong> — Every letter can potentially start a word. Don\'t get stuck starting from the leftmost letter.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mt-8 flex flex-wrap gap-3 text-sm">
+    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
+    <a href="/scrabble-go" class="btn btn-primary">Scrabble Go</a>
+    <a href="/word-scramble" class="btn btn-primary">Word Scramble</a>
+    <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

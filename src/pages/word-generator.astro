@@ -1,0 +1,104 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+
+const meta = getMeta(
+  '/word-generator',
+  'Word Generator - Random Word Generator',
+  'Free word generator: get random interesting words for creative writing, games, or just learning new vocabulary. Browse alphabetically or filter by word length.'
+);
+
+const interestingWords = [
+  { word: 'Ephemeral', meaning: 'Lasting for a very short time' },
+  { word: 'Serendipity', meaning: 'Finding something good without looking for it' },
+  { word: 'Petrichor', meaning: 'The smell of rain on dry earth' },
+  { word: 'Mellifluous', meaning: 'Sweet-sounding; pleasant to hear' },
+  { word: 'Ineffable', meaning: 'Too great to be expressed in words' },
+  { word: 'Luminous', meaning: 'Full of or shedding light; bright' },
+  { word: 'Eloquent', meaning: 'Fluent or persuasive in speaking or writing' },
+  { word: 'Ubiquitous', meaning: 'Present, appearing, or found everywhere' },
+  { word: 'Ethereal', meaning: 'Extremely delicate and light; heavenly' },
+  { word: 'Resilient', meaning: 'Able to recover quickly from difficulties' },
+  { word: 'Quintessential', meaning: 'Representing the most perfect example' },
+  { word: 'Sanguine', meaning: 'Optimistic or positive, especially in a difficult situation' },
+  { word: 'Cacophony', meaning: 'A harsh, discordant mixture of sounds' },
+  { word: 'Surreptitious', meaning: 'Kept secret, especially because it would not be approved' },
+  { word: 'Surreal', meaning: 'More like a dream; bizarre' },
+  { word: 'Ebullient', meaning: 'Cheerful and full of energy' },
+  { word: 'Labyrinthine', meaning: 'Like a labyrinth; winding and complicated' },
+  { word: 'Nebulous', meaning: 'Unclear, vague, or ill-defined' },
+  { word: 'Obfuscate', meaning: 'To make obscure, unclear, or unintelligible' },
+  { word: 'Perspicacious', meaning: 'Having a ready insight into things; shrewd' },
+  { word: 'Ameliorate', meaning: 'To make something bad better' },
+  { word: 'Beguile', meaning: 'To charm or enchant, sometimes deceptively' },
+  { word: 'Cogent', meaning: 'Clear, logical, and convincing' },
+  { word: 'Desultory', meaning: 'Lacking a plan, purpose, or enthusiasm' },
+  { word: 'Ephemeral', meaning: 'Lasting for a very short time' },
+  { word: 'Fastidious', meaning: 'Very attentive to accuracy and detail' },
+  { word: 'Garrulous', meaning: 'Excessively talkative' },
+  { word: 'Hackneyed', meaning: 'Lacking originality through overuse' },
+  { word: 'Insidious', meaning: 'Proceeding in a subtle way but with harmful effects' },
+  { word: 'Juxtaposition', meaning: 'Placing two things close together for contrast' },
+];
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Word Generator</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Browse our curated collection of interesting, unusual, and beautiful English words.
+    </p>
+  </header>
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">Interesting Words to Know</h2>
+    <p class="text-muted-foreground text-[15px] leading-relaxed mb-6">
+      Sometimes the best words are the ones you don\'t hear every day. Here\'s a curated collection of interesting English words — perfect for expanding your vocabulary, creative writing, word games, or just impressing your friends.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {interestingWords.map(({ word, meaning }) => (
+        <div class="p-4 rounded-lg border border-border bg-background hover:bg-muted/50 transition-colors">
+          <span class="text-lg font-semibold text-foreground">{word}</span>
+          <p class="text-sm text-muted-foreground mt-1">{meaning}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-8 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">What is a Word Generator?</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        A word generator is a tool that helps you discover new words. Unlike a word unscrambler where you input letters to find words, a word generator displays a curated list of interesting words for inspiration, learning, or fun.
+      </p>
+      <p>
+        Word generators are useful for:
+      </p>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong class="text-foreground">Creative writing</strong> — Find the perfect word for your story, poem, or song.</li>
+        <li><strong class="text-foreground">Vocabulary building</strong> — Discover new words to expand your English vocabulary.</li>
+        <li><strong class="text-foreground">Word games</strong> — Get inspired for games like Pictionary, charades, or vocabulary challenges.</li>
+        <li><strong class="text-foreground">Names and branding</strong> — Find unique words for project names, business names, or usernames.</li>
+        <li><strong class="text-foreground">Crossword puzzles</strong> — Look for unusual words that might fit tricky clues.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">More Tools to Try</h2>
+    <p class="text-muted-foreground text-[15px] mb-4">
+      Want to unscramble letters or find words for a specific game? Try these related tools:
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <a href="/word-unscrambler" class="btn btn-primary">Word Unscrambler</a>
+      <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
+      <a href="/word-finder" class="btn btn-primary">Word Finder</a>
+      <a href="/scrabble-go" class="btn btn-primary">Scrabble Go</a>
+      <a href="/text-twist" class="btn btn-primary">Text Twist</a>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,90 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/word-cookies',
+  'Word Cookies Solver - Find All Words',
+  'Word Cookies solver: enter your letter batch to find all possible words in Word Cookies. Beat every level with our free cheat tool.'
+);
+
+const faqs = [
+  {
+    question: 'How does the Word Cookies solver work?',
+    answer: 'Enter the letters from your Word Cookies bowl (the main set of letters for that level) and the solver will show every valid word you can make from those letters.',
+  },
+  {
+    question: 'What is Word Cookies?',
+    answer: 'Word Cookies is a popular mobile word puzzle game where you swipe through letter tiles to form words. Each level gives you a set of letters and you must find all possible words to complete the level and earn coins.',
+  },
+  {
+    question: 'Does the Word Cookies solver work for all levels?',
+    answer: 'Yes! Our solver works with any set of letters from 3 to 12+ letters. It supports every Word Cookies level regardless of the theme or difficulty.',
+  },
+  {
+    question: 'Is the Word Cookies cheat free?',
+    answer: 'Yes, our Word Cookies solver is completely free to use. No sign-up, no download, no ads in your face — just open and use.',
+  },
+  {
+    question: 'How do I find the hidden "special words" in Word Cookies?',
+    answer: 'Special words are typically longer, harder-to-spell words that give bonus coins. Our solver finds ALL valid words, including these special words. Look for words 6+ letters with uncommon letter combinations.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Word Cookies Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter your Word Cookies letters to find every word in the puzzle.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Solve Word Cookies</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        Word Cookies is a fun swipe-to-spell word game with hundreds of levels. Our solver helps you find every valid word in each puzzle, so you can complete levels quickly and earn more coins.
+      </p>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Word Cookies Tips</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong class="text-foreground">Start with common patterns</strong> — Look for common 3 and 4-letter words first: THE, AND, FOR, ARE, BUT, NOT, YOU, ALL, ANY, CAN, HAD, HER, WAS, ONE, OUR, OUT.</li>
+        <li><strong class="text-foreground">Use all letters every time</strong> — When you find a word that uses all available letters, it\'s usually the "puzzle answer" word worth extra coins.</li>
+        <li><strong class="text-foreground">Think of compound words</strong> — Words like SUNSHINE, FIREPLACE, and WATERFALL hide inside larger letter sets.</li>
+        <li><strong class="text-foreground">Check letter combinations</strong> — Look for patterns like -ING, -TION, -ED, -ER, -LY. These suffixes appear in many English words.</li>
+        <li><strong class="text-foreground">Use the hint letters</strong> — Sometimes the extra "hint" letters shown in the game can help you spot longer words.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mt-8 flex flex-wrap gap-3 text-sm">
+    <a href="/wordscapes" class="btn btn-primary">Wordscapes</a>
+    <a href="/wordfeud" class="btn btn-primary">Wordfeud</a>
+    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
+    <a href="/scrabble-go" class="btn btn-primary">Scrabble Go</a>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

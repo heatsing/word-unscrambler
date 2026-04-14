@@ -1,0 +1,90 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/hangman-solver',
+  'Hangman Solver - Guess the Word',
+  'Hangman solver: enter known letters and blank positions to find possible words. Works with any word length for solving Hangman puzzles.'
+);
+
+const faqs = [
+  {
+    question: 'How does the Hangman solver work?',
+    answer: 'Enter the letters you know in their correct positions using underscores for unknown letters. For example, if you know the word is 5 letters and you know the 2nd letter is "A" and the last letter is "E", enter _A__E. The solver will show all matching words from our dictionary.',
+  },
+  {
+    question: 'What format should I use for the Hangman solver?',
+    answer: 'Use underscores (_) for each unknown letter and type the known letters in their exact positions. You can enter multiple known letters. The solver supports words from 2 to 10 letters long.',
+  },
+  {
+    question: 'Can I use wildcards in the Hangman solver?',
+    answer: 'Yes, you can use a question mark (?) as a wildcard for any single unknown letter. This is useful when you have multiple possible positions but want more flexible matching.',
+  },
+  {
+    question: 'Is the Hangman solver free?',
+    answer: 'Yes, our Hangman solver is completely free to use with no sign-up or download required. Just open the page and start guessing!',
+  },
+  {
+    question: 'What strategies help with Hangman?',
+    answer: 'Start with common letters: E, T, A, O, I, N, S, H, and R are the most frequent letters in English. Vowels are especially valuable early in the game. Our solver helps you narrow down possibilities quickly.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Hangman Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter your known letters and blank positions to find all possible words.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Solve Hangman</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        Hangman is a classic word guessing game where one player thinks of a word and the other tries to guess it letter by letter. Our Hangman solver helps you find the right word when you\'re stuck or want to challenge friends.
+      </p>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Hangman Strategies</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong class="text-foreground">Start with common letters</strong> — E is the most common letter in English, followed by T, A, O, I, N, S, H, and R. These give you the best chance of hitting the word early.</li>
+        <li><strong class="text-foreground">Focus on vowels early</strong> — Words without vowels are rare. Getting the vowels (A, E, I, O, U) figured out quickly narrows down the possibilities dramatically.</li>
+        <li><strong class="text-foreground">Use letter frequency</strong> — After vowels, common consonants include S, T, N, L, R, H, D, C, and M. Avoid rare letters like Q, Z, X, J, and K unless you have a strong reason to include them.</li>
+        <li><strong class="text-foreground">Consider word patterns</strong> — Once you have several letters, look for common endings like -ING, -ED, -ER, -EST, -LY, and -ION. These can quickly reveal the word.</li>
+        <li><strong class="text-foreground">Think of categories</strong> — If you know the word is an animal, food, or place, you can focus your guessing on relevant vocabulary.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mt-8 flex flex-wrap gap-3 text-sm">
+    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
+    <a href="/descrambler" class="btn btn-primary">Descrambler</a>
+    <a href="/word-scramble" class="btn btn-primary">Word Scramble</a>
+    <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

@@ -1,0 +1,18 @@
+---
+import ContentPage from '@/components/ContentPage.astro';
+import { TOOL_PAGES } from '@/lib/tool-pages';
+import { getToolPageContent } from '@/lib/tool-page-content';
+
+export function getStaticPaths() {
+  const exclude = ['/words-ending-in', '/words-by-length', '/words-start-with', '/words-with-letters'];
+  return TOOL_PAGES.filter((p) => !exclude.includes(p.path)).map((p) => ({
+    params: { slug: p.path.slice(1) },
+    props: p,
+  }));
+}
+
+const { path, title, description } = Astro.props;
+const contentHtml = getToolPageContent(path);
+---
+
+<ContentPage path={path} title={title} description={description} contentHtml={contentHtml} />

@@ -1,0 +1,91 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/word-finder',
+  'Word Finder - Find Any Word',
+  'Free word finder tool: enter any letters to find every valid English word you can make. Perfect for word games like Scrabble, Wordle, and more.'
+);
+
+const faqs = [
+  {
+    question: 'How does the word finder work?',
+    answer: 'Enter any combination of letters into the word finder and it will find every valid English word you can make from those letters. Results are sorted by word length, with the longest words at the top.',
+  },
+  {
+    question: 'What word games can I use this word finder for?',
+    answer: 'Our word finder works for virtually any word game including Scrabble, Words with Friends, Wordle, Boggle, Text Twist, Wordfeud, Wordscapes, Word Cookies, and any other letter-based word puzzle.',
+  },
+  {
+    question: 'Is the word finder free?',
+    answer: 'Yes! Our word finder is completely free to use with no sign-up, no download, and no limits on how many searches you can do.',
+  },
+  {
+    question: 'Can I find words by length or pattern?',
+    answer: 'The word finder shows you all words you can make from your letters. You can then scan the results to find words of the exact length you need for your game.',
+  },
+  {
+    question: 'How many words are in the word finder dictionary?',
+    answer: 'Our dictionary contains hundreds of thousands of valid English words, from common 2-letter words to rare 10+ letter words, so you\'ll find what you\'re looking for.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Word Finder</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter any letters to find every valid word you can make.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Use the Word Finder</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        The word finder is a versatile tool that helps you find valid words from any set of letters. Whether you\'re stuck in a word game or just want to expand your vocabulary, our tool delivers instant results.
+      </p>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Best Word Games to Use With This Tool</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong class="text-foreground">Scrabble & Scrabble Go</strong> — Find the highest-scoring plays from your tile rack.</li>
+        <li><strong class="text-foreground">Wordle</strong> — While Wordle is about deduction, the word finder helps you think through possibilities.</li>
+        <li><strong class="text-foreground">Words with Friends</strong> — Find valid words to compete against your opponent.</li>
+        <li><strong class="text-foreground">Boggle</strong> — Enter your grid letters to find all possible words.</li>
+        <li><strong class="text-foreground">Wordfeud</strong> — Get high-scoring plays with premium tile combinations.</li>
+        <li><strong class="text-foreground">Text Twist</strong> — Find every word from your letter set before time runs out.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mt-8 flex flex-wrap gap-3 text-sm">
+    <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
+    <a href="/word-scramble" class="btn btn-primary">Word Scramble</a>
+    <a href="/descrambler" class="btn btn-primary">Descrambler</a>
+    <a href="/scrabble-go" class="btn btn-primary">Scrabble Go</a>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

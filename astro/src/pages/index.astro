@@ -1,0 +1,53 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import InternalLinks from '@/components/InternalLinks.astro';
+import { getMeta, DEFAULT_TITLE, DEFAULT_DESCRIPTION } from '@/lib/meta';
+import { getWebSiteSchema } from '@/lib/schema';
+
+const meta = getMeta('/', DEFAULT_TITLE, DEFAULT_DESCRIPTION);
+const webSiteSchema = getWebSiteSchema();
+---
+
+<Layout meta={meta}>
+  <section class="text-center mb-12">
+    <h1 class="text-4xl font-bold mb-4 text-primary">Word Unscrambler & Word Game Solver</h1>
+    <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+      Use our word unscrambler to unscramble letters, solve word puzzles, and dominate Wordle, Scrabble, and Words with Friends.
+    </p>
+    <a href="/unscramble" class="btn btn-primary text-lg px-6 py-3">Unscramble Words</a>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-2xl font-bold mb-6 text-center">Popular Tools</h2>
+    <div class="grid gap-6 sm:grid-cols-3">
+      <a href="/unscramble" class="p-4 rounded-lg border border-gray-200 bg-white shadow hover:bg-primary/10 transition-colors block">
+        <h3 class="font-semibold text-lg mb-2">Unscramble Words</h3>
+        <p class="text-sm text-gray-600">Enter letters and find all valid words instantly.</p>
+      </a>
+      <a href="/word-unscrambler" class="p-4 rounded-lg border border-gray-200 bg-white shadow hover:bg-primary/10 transition-colors block">
+        <h3 class="font-semibold text-lg mb-2">Word Unscrambler</h3>
+        <p class="text-sm text-gray-600">Advanced filters and wildcards for word games.</p>
+      </a>
+      <a href="/anagram-solver" class="p-4 rounded-lg border border-gray-200 bg-white shadow hover:bg-primary/10 transition-colors block">
+        <h3 class="font-semibold text-lg mb-2">Anagram Solver</h3>
+        <p class="text-sm text-gray-600">Find all anagrams from your letters.</p>
+      </a>
+      <a href="/wordle-solver" class="p-4 rounded-lg border border-gray-200 bg-white shadow hover:bg-primary/10 transition-colors block">
+        <h3 class="font-semibold text-lg mb-2">Wordle Solver</h3>
+        <p class="text-sm text-gray-600">Solve Wordle with green, yellow, gray clues.</p>
+      </a>
+      <a href="/scrabble" class="p-4 rounded-lg border border-gray-200 bg-white shadow hover:bg-primary/10 transition-colors block">
+        <h3 class="font-semibold text-lg mb-2">Scrabble Word Finder</h3>
+        <p class="text-sm text-gray-600">High-scoring words from your tiles.</p>
+      </a>
+      <a href="/words-with-friends" class="p-4 rounded-lg border border-gray-200 bg-white shadow hover:bg-primary/10 transition-colors block">
+        <h3 class="font-semibold text-lg mb-2">Words With Friends Cheat</h3>
+        <p class="text-sm text-gray-600">Best words for WWF.</p>
+      </a>
+    </div>
+  </section>
+
+  <InternalLinks />
+
+  <script type="application/ld+json" set:html={JSON.stringify(webSiteSchema)} />
+</Layout>

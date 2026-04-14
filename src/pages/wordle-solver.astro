@@ -1,0 +1,103 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import WordleSolver from '@/components/WordleSolver';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/wordle-solver',
+  'Wordle Solver - Find Any Wordle Answer',
+  'Use our Wordle solver to find the answer to any Wordle puzzle. Enter your known letters, included letters, and excluded letters to get possible solutions.'
+);
+
+const appSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Wordle Solver',
+  applicationCategory: 'GameApplication',
+  operatingSystem: 'Any',
+  url: 'https://wordunscrambler.cc/wordle-solver',
+  description: 'Free Wordle solver: enter your known letters and get every possible answer.',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+};
+
+const faqs = [
+  {
+    question: 'How does the Wordle solver work?',
+    answer: 'Enter the letters you know in the correct positions (pattern row), the letters that are in the word but in the wrong positions (include letters), and the letters that are not in the word at all (exclude letters). The solver filters a dictionary of 5-letter words to find matches.',
+  },
+  {
+    question: 'Is this Wordle solver free?',
+    answer: 'Yes, our Wordle solver is completely free to use with no sign-up required. Simply open the page and start entering your clues.',
+  },
+  {
+    question: 'What are the best starting words for Wordle?',
+    answer: 'The best Wordle starting words include SLATE, CRANE, TRACE, AUDIO, ADIEU, RAISE, STARE, SOARE, LARES, and RALES. These words have a good mix of common vowels and consonants to maximize information gained per guess.',
+  },
+  {
+    question: 'Can I use it for Wordle variations?',
+    answer: 'This solver is optimized for the standard 5-letter Wordle. For other word lengths, try our main Word Unscrambler tool or filter by word length.',
+  },
+  {
+    question: 'Does the solver work for the daily Wordle?',
+    answer: 'Yes. The solver works with any Wordle puzzle, including the daily NYT Wordle. It uses the same word list that most Wordle clones rely on.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Wordle Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter your known letters, included letters, and excluded letters to find the answer to any Wordle puzzle.
+    </p>
+  </header>
+
+  <WordleSolver client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Use the Wordle Solver</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        The Wordle solver helps you find the answer by filtering possible words based on the color clues you received from your guesses.
+      </p>
+      <ol class="list-decimal list-inside space-y-2 ml-4">
+        <li>
+          <strong class="text-foreground">Pattern row:</strong> Type any letters you know are in the correct position. Leave boxes empty (shown as <code class="bg-muted px-1 rounded">_</code>) for unknown positions. This is like the green tiles in Wordle.
+        </li>
+        <li>
+          <strong class="text-foreground">Include letters:</strong> Type letters that appear in the word but are in the wrong position. These are like the yellow tiles in Wordle.
+        </li>
+        <li>
+          <strong class="text-foreground">Exclude letters:</strong> Type letters that are not in the word at all. These are like the gray tiles in Wordle.
+        </li>
+        <li>
+          Click <strong class="text-foreground">Find Words</strong> to see all matching 5-letter words, sorted by Scrabble score.
+        </li>
+      </ol>
+      <p>
+        Start with one of the recommended opening words to maximize your chance of solving Wordle in few guesses.
+      </p>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

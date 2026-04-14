@@ -1,0 +1,57 @@
+{
+  "name": "Word Unscrambler - Solve Word Games Fast",
+  "short_name": "Word Unscrambler",
+  "description": "Free word unscrambler & anagram solver for Wordle, Scrabble, Words with Friends",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-v2.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-icon-v2.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "education",
+    "games",
+    "utilities"
+  ],
+  "shortcuts": [
+    {
+      "name": "Word Unscrambler",
+      "short_name": "Unscramble",
+      "description": "Unscramble letters instantly",
+      "url": "/word-unscrambler",
+      "icons": [
+        {
+          "src": "/icon-v2.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Wordle Solver",
+      "short_name": "Wordle",
+      "description": "Solve Wordle puzzles",
+      "url": "/wordle-solver",
+      "icons": [
+        {
+          "src": "/icon-v2.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}

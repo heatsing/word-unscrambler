@@ -1,0 +1,93 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/word-scramble',
+  'Word Scramble Solver - Unscramble Words',
+  'Word scramble solver: enter scrambled letters to find the original words. Perfect for jumbled word puzzles and word scramble games.'
+);
+
+const faqs = [
+  {
+    question: 'How does the word scramble solver work?',
+    answer: 'Enter the scrambled/jumbled letters into the solver and it will find every valid English word that can be formed from those letters. Results are sorted by length, with the longest words at the top.',
+  },
+  {
+    question: 'What is a word scramble?',
+    answer: 'A word scramble is a puzzle where the letters of a word are rearranged (scrambled) in a random order. Your goal is to unscramble the letters to reveal the original word.',
+  },
+  {
+    question: 'Can the solver handle multiple words?',
+    answer: 'Yes! You can enter multiple sets of scrambled letters (one at a time or in sequence) to find all possible unscrambled words for each set of letters.',
+  },
+  {
+    question: 'Is the word scramble solver free?',
+    answer: 'Yes, our word scramble solver is completely free to use with no sign-up or download required.',
+  },
+  {
+    question: 'What games use word scrambles?',
+    answer: 'Word scrambles appear in many games including Jumble, newspaper puzzle sections, classroom activities, and more. Our solver works for any scrambled letters from any source.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Word Scramble Solver</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter your scrambled letters to find every word you can make.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">What is Word Scramble?</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        Word scramble is a classic puzzle game where letters are presented in a jumbled order and players must rearrange them to form meaningful words. It\'s a fun way to test your vocabulary and letter-arrangement skills.
+      </p>
+      <p>
+        Word scrambles can be found in newspapers (like the Jumble puzzle), classroom activities, party games, and mobile apps. The challenge ranges from simple 3-letter words to complex 10+ letter words.
+      </p>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">How to Solve Word Scrambles</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong class="text-foreground">Look for common patterns</strong> — Vowels (A, E, I, O, U) are essential. Start by identifying vowel-consonant patterns in the scrambled letters.</li>
+        <li><strong class="text-foreground">Try common letter pairs</strong> — TH, HE, IN, ER, AN, RE, ON, AT, ST, and ND are the most common letter pairs in English. They can help you spot words.</li>
+        <li><strong class="text-foreground">Start with potential prefixes</strong> — Common prefixes like UN-, RE-, IN-, OUT-, DIS-, and PRE- often appear at the start of unscrambled words.</li>
+        <li><strong class="text-foreground">Look for suffixes</strong> — Common endings like -ING, -ED, -ER, -LY, -TION, and -NESS can give you clues about the word length.</li>
+        <li><strong class="text-foreground">Write it out</strong> — Sometimes physically rearranging the letters on paper (or in your head) can help you see the hidden word.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mt-8 flex flex-wrap gap-3 text-sm">
+    <a href="/jumble-solver" class="btn btn-primary">Jumble Solver</a>
+    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
+    <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
+    <a href="/descrambler" class="btn btn-primary">Descrambler</a>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

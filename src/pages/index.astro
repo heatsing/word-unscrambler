@@ -1,0 +1,206 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { getMeta, DEFAULT_TITLE, DEFAULT_DESCRIPTION } from '@/lib/meta';
+import { getWebSiteSchema, getOrganizationSchema, getFAQPageSchema } from '@/lib/schema';
+import { wordFinders, dailyGameHints, wordLists, wordsByLength } from '@/lib/nav-links';
+
+const meta = getMeta('/', DEFAULT_TITLE, DEFAULT_DESCRIPTION);
+const webSiteSchema = getWebSiteSchema();
+const organizationSchema = getOrganizationSchema();
+
+const homeFaqs = [
+  { question: 'What is a word unscrambler?', answer: 'A word unscrambler takes jumbled letters and finds all valid words you can make from them. It helps with Wordle, Scrabble, crosswords, and other word games.' },
+  { question: 'Is the unscrambler free?', answer: 'Yes. Our word unscrambler and all tools (anagram solver, Wordle solver, Scrabble finder) are free to use with no sign-up required.' },
+  { question: 'How do I use the unscrambler?', answer: 'Enter your letters in the search box and click Unscramble. You can filter by word length and sort by score or alphabetically.' },
+  { question: 'Does it work for Wordle and Scrabble?', answer: 'Yes. Use it for Wordle (5-letter words), Scrabble (high-scoring words), Words with Friends, and other daily word games.' },
+  { question: 'Can I find words by length?', answer: 'Yes. Use Words by Length to browse 2–10 letter words, or Words Start With / Words Ending In for more filters.' },
+];
+const faqSchema = getFAQPageSchema(homeFaqs);
+
+const featuredTools = [
+  {
+    name: 'Wordle Solver',
+    href: '/wordle-solver',
+    desc: 'Enter your green, yellow, and gray clues to find any Wordle answer instantly.',
+    icon: '🎯',
+  },
+  {
+    name: 'Anagram Solver',
+    href: '/anagram-solver',
+    desc: 'Enter any word to find all valid rearrangements and word combinations.',
+    icon: '📚',
+  },
+  {
+    name: 'Scrabble Word Finder',
+    href: '/scrabble',
+    desc: 'Find the highest-scoring words from your Scrabble tiles, sorted by point value.',
+    icon: '🎲',
+  },
+];
+---
+
+<Layout meta={meta}>
+  <!-- Hero -->
+  <section class="text-center mb-14 pt-6 fade-in">
+    <h1 class="text-5xl md:text-6xl font-bold mb-4 hero-gradient">
+      Word Unscrambler & Solver
+    </h1>
+    <p class="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
+      Unscramble letters, solve Wordle, and find high-scoring Scrabble words — completely free, no sign-up needed.
+    </p>
+
+    <!-- Quick Search -->
+    <form action="/word-unscrambler" method="get" class="max-w-xl mx-auto mb-8">
+      <div class="flex gap-3 flex-col sm:flex-row">
+        <input
+          type="text"
+          name="q"
+          placeholder="Type your letters (e.g. slate)"
+          class="input flex-1 text-center sm:text-left text-lg py-4"
+          maxLength={15}
+          autoComplete="off"
+          aria-label="Letters to unscramble"
+        />
+        <button type="submit" class="btn btn-primary px-8 py-4 text-base font-semibold whitespace-nowrap">
+          Unscramble →
+        </button>
+      </div>
+    </form>
+
+    <!-- Quick links -->
+    <div class="flex flex-wrap justify-center gap-3 text-sm">
+      <a href="/wordle-solver" class="btn">🎯 Wordle Solver</a>
+      <a href="/scrabble" class="btn">🎲 Scrabble Finder</a>
+      <a href="/anagram-solver" class="btn">📚 Anagram Solver</a>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="mb-14 fade-in-delay-1" aria-labelledby="how-heading">
+    <h2 id="how-heading" class="text-2xl font-bold mb-8 text-center text-foreground">How It Works</h2>
+    <div class="grid gap-8 grid-cols-1 sm:grid-cols-3">
+      <div class="text-center p-6 rounded-xl border border-border bg-card card-hover">
+        <div class="text-4xl mb-4">1️⃣</div>
+        <h3 class="font-bold text-lg mb-2 text-foreground">Enter Your Letters</h3>
+        <p class="text-sm text-muted-foreground">Type any set of letters into the search box. No spaces, no special characters needed.</p>
+      </div>
+      <div class="text-center p-6 rounded-xl border border-border bg-card card-hover">
+        <div class="text-4xl mb-4">2️⃣</div>
+        <h3 class="font-bold text-lg mb-2 text-foreground">Get Instant Results</h3>
+        <p class="text-sm text-muted-foreground">Every valid English word appears instantly, sorted by relevance or Scrabble score.</p>
+      </div>
+      <div class="text-center p-6 rounded-xl border border-border bg-card card-hover">
+        <div class="text-4xl mb-4">3️⃣</div>
+        <h3 class="font-bold text-lg mb-2 text-foreground"> Use for Any Game</h3>
+        <p class="text-sm text-muted-foreground">Wordle, Scrabble, crosswords, anagrams — one tool for every word game.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Tools -->
+  <section class="mb-14 fade-in-delay-2" aria-labelledby="featured-heading">
+    <h2 id="featured-heading" class="text-2xl font-bold mb-8 text-center text-foreground">
+      Popular Tools
+    </h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {featuredTools.map((tool, i) => (
+        <a
+          href={tool.href}
+          class={`rounded-xl border border-border bg-card p-7 hover:border-primary hover:shadow-lg transition-all group block fade-in-delay-${i + 1}`}
+        >
+          <div class="text-4xl mb-4">{tool.icon}</div>
+          <h3 class="font-bold text-xl mb-2 text-foreground group-hover:text-primary transition-colors">
+            {tool.name}
+          </h3>
+          <p class="text-sm text-muted-foreground leading-relaxed">{tool.desc}</p>
+          <span class="inline-flex items-center gap-1 text-sm text-primary font-medium mt-4 group-hover:gap-2 transition-all">
+            Try it free →
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Browse All Tools -->
+  <section class="mb-14 fade-in-delay-3" aria-labelledby="browse-heading">
+    <h2 id="browse-heading" class="text-2xl font-bold mb-6 text-foreground">Browse All Tools</h2>
+    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="rounded-xl border border-border bg-card p-5">
+        <h3 class="font-semibold text-base mb-3 text-foreground">🔍 Word Finders</h3>
+        <ul class="space-y-2 text-sm">
+          {wordFinders.slice(0, 7).map((item) => (
+            <li><a href={item.href} class="text-primary hover:underline">{item.name}</a></li>
+          ))}
+          <li><a href="/word-unscrambler" class="text-muted-foreground hover:text-primary text-xs">View all →</a></li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-border bg-card p-5">
+        <h3 class="font-semibold text-base mb-3 text-foreground">📖 Word Lists</h3>
+        <ul class="space-y-2 text-sm">
+          {wordLists.slice(0, 5).map((item) => (
+            <li><a href={item.href} class="text-primary hover:underline">{item.name}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="rounded-xl border border-border bg-card p-5">
+        <h3 class="font-semibold text-base mb-3 text-foreground">🎯 Daily Games</h3>
+        <ul class="space-y-2 text-sm">
+          {dailyGameHints.slice(0, 7).map((item) => (
+            <li><a href={item.href} class="text-primary hover:underline">{item.name}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="rounded-xl border border-border bg-card p-5">
+        <h3 class="font-semibold text-base mb-3 text-foreground">📏 By Length</h3>
+        <ul class="space-y-2 text-sm">
+          {wordsByLength.slice(0, 5).map((item) => (
+            <li><a href={item.href} class="text-primary hover:underline">{item.name}</a></li>
+          ))}
+          <li><a href="/words-by-length" class="text-muted-foreground hover:text-primary text-xs">View all →</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEO Content -->
+  <section class="mb-14 max-w-3xl mx-auto fade-in" aria-labelledby="seo-content-heading">
+    <h2 id="seo-content-heading" class="text-2xl font-bold mb-6 text-foreground">
+      Free word unscrambler for every game
+    </h2>
+    <div class="text-muted-foreground space-y-4 text-[15px] leading-relaxed">
+      <p>
+        A <strong class="text-foreground">word unscrambler</strong> turns mixed-up letters into a list of valid words. Whether you play Wordle, Scrabble, Words with Friends, or crosswords, you can paste your letters and get every possible word in seconds. No app or sign-up needed—everything runs in your browser.
+      </p>
+      <p>
+        Our tools include an <a href="/anagram-solver" class="text-primary hover:underline">anagram solver</a>, a <a href="/wordle-solver" class="text-primary hover:underline">Wordle solver</a> for green and yellow clues, and a <a href="/scrabble" class="text-primary hover:underline">Scrabble word finder</a> that sorts by points. You can also browse <a href="/words-by-length" class="text-primary hover:underline">words by length</a>, <a href="/words-start-with" class="text-primary hover:underline">words that start with</a> a letter, or <a href="/words-ending-in" class="text-primary hover:underline">words that end in</a> a letter.
+      </p>
+      <p>
+        All word lists are based on a standard English dictionary and are suitable for school, games, and puzzles.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ (Collapsible) -->
+  <section class="mb-12 max-w-3xl mx-auto fade-in" aria-labelledby="faq-heading">
+    <h2 id="faq-heading" class="text-2xl font-bold mb-6 text-foreground">
+      Frequently Asked Questions
+    </h2>
+    <div class="space-y-3">
+      {homeFaqs.map((faq, i) => (
+        <details class="rounded-xl border border-border bg-card group">
+          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
+            <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
+            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
+          </summary>
+          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
+            <p class="pt-3">{faq.answer}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(webSiteSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

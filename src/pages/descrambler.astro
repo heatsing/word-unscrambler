@@ -1,0 +1,98 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/descrambler',
+  'Descrambler - Unscramble Letters',
+  'Free descrambler: enter any scrambled letters to find all possible words. Unscramble letters for word games, puzzles, and more.'
+);
+
+const faqs = [
+  {
+    question: 'What is a descrambler?',
+    answer: 'A descrambler is a tool that takes scrambled or jumbled letters and finds all valid English words that can be formed from them. Simply enter your letters and the descrambler will show you every possible word.',
+  },
+  {
+    question: 'How does the descrambler work?',
+    answer: 'Enter any combination of letters into the descrambler. It will instantly analyze your letters against a comprehensive dictionary and return every valid word that can be made from those exact letters, sorted by length.',
+  },
+  {
+    question: 'What\'s the difference between a descrambler and an anagram solver?',
+    answer: 'Essentially, they\'re the same thing! Both tools rearrange letters to find valid words. "Descrambler" emphasizes the unscrambling of jumbled letters, while "anagram solver" emphasizes finding anagrams of a specific word.',
+  },
+  {
+    question: 'Is the descrambler free?',
+    answer: 'Yes! Our descrambler is completely free with no sign-up, no download, and no limits on usage.',
+  },
+  {
+    question: 'What can I use the descrambler for?',
+    answer: 'You can use the descrambler for any word game including Scrabble, Words with Friends, Wordle, Text Twist, Boggle, Jumble, crossword puzzles, or any situation where you need to unscramble letters.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta}>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-4 text-foreground">Descrambler</h1>
+    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+      Enter any scrambled letters to find every word you can make.
+    </p>
+  </header>
+
+  <UnscrambleTool client:load />
+
+  <AdSense />
+
+  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Unscramble Letters</h2>
+    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
+      <p>
+        Unscrambling letters is one of the most useful skills for word game players. Whether you\'re stuck on a jumbled word puzzle or need help finding the best play in Scrabble, our descrambler makes it easy.
+      </p>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">When to Use a Descrambler</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong class="text-foreground">Word games</strong> — Get help finding the best plays in Scrabble, Words with Friends, Wordfeud, and other word games.</li>
+        <li><strong class="text-foreground">Jumble puzzles</strong> — Quickly solve newspaper Jumble puzzles by entering the scrambled letters.</li>
+        <li><strong class="text-foreground">Crossword puzzles</strong> — When you have some letters but can\'t fill in the rest, use the descrambler to see all possibilities.</li>
+        <li><strong class="text-foreground">Wordle</strong> — If you\'ve found some correct letters but need help with the rest, enter your known letters to see possible words.</li>
+        <li><strong class="text-foreground">Learning vocabulary</strong> — Discover new words by seeing all the words hidden within a set of letters.</li>
+      </ul>
+
+      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Tips for Manual Unscrambling</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>Look for common letter patterns like TH, CH, SH, ING, ED, ER</li>
+        <li>Try pairing vowels (A, E, I, O, U) with common consonants</li>
+        <li>Start with longer words first — they\'re worth more points in games</li>
+        <li>Look for Q, Z, X, and J — these rare letters can make words easier to spot</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+    <dl class="space-y-4 text-sm">
+      {faqs.map((faq) => (
+        <div class="rounded-lg border border-border bg-card p-4">
+          <dt class="font-semibold text-foreground">{faq.question}</dt>
+          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <div class="mt-8 flex flex-wrap gap-3 text-sm">
+    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
+    <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
+    <a href="/word-scramble" class="btn btn-primary">Word Scramble</a>
+    <a href="/scrabble-go" class="btn btn-primary">Scrabble Go</a>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>
