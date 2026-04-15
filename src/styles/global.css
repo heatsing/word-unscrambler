@@ -19,6 +19,8 @@
 }
 
 :root {
+  /* Top nav bar (Wordtips-style teal) */
+  --nav-bar-bg: #2f9d8f;
   --color-primary: #6366f1;
   --color-primary-hover: #4f46e5;
   --color-primary-light: #e0e7ff;
@@ -52,6 +54,7 @@
 }
 
 .dark {
+  --nav-bar-bg: #267a6f;
   --color-correct: #6aaa64;
   --color-present: #c9b458;
   --color-absent: #787c7e;

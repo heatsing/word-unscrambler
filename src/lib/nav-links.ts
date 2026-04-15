@@ -1,3 +1,44 @@
+/** Main header — Wordtips-style top nav dropdowns (labels match reference UI). */
+export const headerWordSolvers = [
+  { name: 'NYT Crossplay Solver', href: '/nyt-crossplay-solver' },
+  { name: 'Wordle Solver', href: '/wordle-solver' },
+  { name: 'Word Unscramble', href: '/unscramble' },
+  { name: 'Word Scrambler', href: '/word-scramble' },
+  { name: 'Anagram Solver', href: '/anagram-solver' },
+  { name: 'Scrabble Solver', href: '/scrabble' },
+] as const;
+
+export const headerWordLists = [
+  { name: 'Words Start With', href: '/words-start-with' },
+  { name: 'Words With', href: '/words-with-letters' },
+  { name: 'Words Ending In', href: '/words-ending-in' },
+] as const;
+
+export type HeaderDailyHint = { name: string; subtitle: string; href: string };
+
+/** Subtitles match reference; hrefs point to the closest in-site tools where we have no dedicated hints page. */
+export const headerDailyGameHints: HeaderDailyHint[] = [
+  { name: 'Connections', subtitle: 'Today Hints', href: '/jumble-solver' },
+  { name: 'Strands', subtitle: 'Hints Today', href: '/word-search-solver' },
+  { name: 'NYT Pips', subtitle: 'Answers Today', href: '/crossword-solver' },
+  { name: 'NYT Mini Crossword', subtitle: 'Answers Today', href: '/crossword-solver' },
+  { name: 'NYT Midi Crossword', subtitle: 'Answers Today', href: '/crossword-solver' },
+  { name: 'NYT The Crossword', subtitle: 'Answers Today', href: '/crossword-solver' },
+  { name: 'Wordle', subtitle: 'Hints Today', href: '/wordle' },
+  { name: 'Spelling Bee', subtitle: 'Answers Today', href: '/word-unscrambler' },
+  { name: 'NYT Capture', subtitle: 'Today Hints', href: '/crossword-solver' },
+  { name: 'Contexto', subtitle: 'Answers Today', href: '/word-finder' },
+  { name: 'Sports Connections', subtitle: 'Hints Today', href: '/words-with-friends' },
+  { name: 'Blossom Game', subtitle: 'Answers Today', href: '/wordscapes' },
+];
+
+export const headerDailyGameHintsMoreHref = '/words-by-length';
+
+export const headerCrosswords = [
+  { name: 'Crossword Solver', href: '/crossword-solver' },
+  { name: 'Crossword Popular Clues', href: '/word-finder' },
+] as const;
+
 /** Nav link groups for header dropdowns and footer columns (matches original Next.js site). */
 export const wordFinders = [
   { name: 'Word Unscrambler', href: '/word-unscrambler' },

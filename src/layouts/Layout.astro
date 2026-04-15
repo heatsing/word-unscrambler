@@ -14,13 +14,17 @@ interface Props {
   wide?: boolean;
   /** Game layout - centered content with no sidebar constraints */
   game?: boolean;
+  /** Full-width main (no container); page supplies its own layout e.g. hero bleed */
+  fullBleed?: boolean;
 }
-const { meta, wide = false, game = false } = Astro.props;
-const mainClass = game 
-  ? 'page-main container mx-auto px-4 py-6 max-w-lg' 
-  : wide 
-    ? 'page-main container mx-auto px-4 py-8 max-w-7xl' 
-    : 'page-main container mx-auto px-4 py-8 max-w-4xl';
+const { meta, wide = false, game = false, fullBleed = false } = Astro.props;
+const mainClass = fullBleed
+  ? 'page-main w-full max-w-none px-0 py-0 mx-0'
+  : game 
+    ? 'page-main container mx-auto px-4 py-6 max-w-lg' 
+    : wide 
+      ? 'page-main container mx-auto px-4 py-8 max-w-7xl' 
+      : 'page-main container mx-auto px-4 py-8 max-w-4xl';
 ---
 <!doctype html>
 <html lang="en">

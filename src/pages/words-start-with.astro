@@ -1,49 +1,198 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getMeta } from '@/lib/meta';
-import WordsSearchHero from '@/components/WordsSearchHero.astro';
+import WordsStartWithTool from '@/components/WordsStartWithTool';
 
-const meta = getMeta('/words-start-with', 'Words Start With', 'Find words that start with a given letter. Browse by length or A–Z. Handy for crosswords, word games, and vocabulary.');
+const meta = getMeta(
+  '/words-start-with',
+  'Words That Start With | Word Finder & Wildcards',
+  'Find words that start with your letters. Up to 3 wildcards (? or space), filters for starts, ends, contains, length, include and exclude. Words With Friends dictionary.'
+);
+
 const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
 const lengths = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+/** Hero background — reference mint teal */
+const HERO_BG = '#51b88d';
 ---
 
-<Layout meta={meta}>
-  <div class="bg-white min-h-screen -mx-4 -my-8 px-4 py-8 sm:-mx-6 sm:px-6 md:-mx-8 md:px-8 rounded-lg">
-    <WordsSearchHero title="Words Start With" searchAction="/unscramble" />
+<Layout meta={meta} fullBleed={true}>
+  <div class="wst-page" style={`--wst-hero-bg: ${HERO_BG}`}>
+    <div class="wst-hero">
+      <div class="wst-hero-inner">
+        <nav class="wst-bc" aria-label="Breadcrumb">
+          <a href="/">WordTips</a>
+          <span class="wst-bc-sep">/</span>
+          <span class="wst-bc-current">Words That Start with</span>
+        </nav>
 
-    <section class="mt-10 max-w-4xl mx-auto">
-      <h2 id="by-length-heading" class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">By word length (then letter)</h2>
-      <ul class="flex flex-wrap gap-2 list-none pl-0 mb-6">
-        {lengths.map((len) => (
-          <li>
-            <a
-              href={`/${len}-letter-words-starting-with/a`}
-              class="inline-flex items-center justify-center min-w-[2.5rem] h-10 rounded-lg border border-gray-300 bg-white font-semibold text-gray-800 hover:bg-gray-100 hover:border-primary transition-colors"
-            >
-              {len}-letter
-            </a>
-          </li>
-        ))}
-      </ul>
+        <h1 class="wst-h1">Words That Start with</h1>
+        <p class="wst-sub">Enter up to 3 wildcards (? or space)</p>
 
-      <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Browse by letter (all lengths)</h2>
-      <ul class="flex flex-wrap gap-2 justify-center list-none pl-0">
-        {letters.map((letter) => (
-          <li>
-            <a
-              href={`/words-start-with/${letter}`}
-              class="inline-flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 bg-white font-semibold uppercase text-primary hover:bg-gray-100 hover:border-primary transition-colors"
-            >
-              {letter}
-            </a>
-          </li>
-        ))}
-      </ul>
+        <WordsStartWithTool client:load />
+      </div>
+    </div>
 
-      <p class="text-sm text-gray-500 text-center mt-8">
-        Also see <a href="/words-ending-in" class="text-primary hover:underline">Words Ending In</a>, <a href="/words-with-letters" class="text-primary hover:underline">Words With Letters</a>, and <a href="/words-by-length" class="text-primary hover:underline">Words By Length</a>.
-      </p>
+    <section class="wst-browse" aria-labelledby="wst-browse-heading">
+      <div class="wst-browse-inner">
+        <h2 id="wst-browse-heading" class="wst-browse-h2">Browse by length</h2>
+        <ul class="wst-chips">
+          {lengths.map((len) => (
+            <li>
+              <a href={`/${len}-letter-words-starting-with/a`} class="wst-chip">{len}-letter</a>
+            </li>
+          ))}
+        </ul>
+
+        <h2 class="wst-browse-h2 mt-8">Browse by letter</h2>
+        <ul class="wst-letters">
+          {letters.map((letter) => (
+            <li>
+              <a href={`/words-start-with/${letter}`} class="wst-letter">{letter}</a>
+            </li>
+          ))}
+        </ul>
+
+        <p class="wst-footer-note">
+          Also see{' '}
+          <a href="/words-ending-in">Words Ending In</a>,{' '}
+          <a href="/words-with-letters">Words With Letters</a>,{' '}
+          <a href="/words-by-length">Words By Length</a>.
+        </p>
+      </div>
     </section>
   </div>
 </Layout>
+
+<style>
+  .wst-page {
+    min-height: calc(100vh - 3.25rem);
+    display: flex;
+    flex-direction: column;
+  }
+  .wst-hero {
+    flex: 1;
+    background: var(--wst-hero-bg);
+    padding: 1.25rem 1rem 2.5rem;
+  }
+  .wst-hero-inner {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+  .wst-bc {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgb(255 255 255 / 0.95);
+    margin-bottom: 1.5rem;
+  }
+  .wst-bc a {
+    color: #fff;
+    text-decoration: none;
+  }
+  .wst-bc a:hover {
+    text-decoration: underline;
+  }
+  .wst-bc-sep {
+    margin: 0 0.35rem;
+    opacity: 0.9;
+  }
+  .wst-h1 {
+    margin: 0 0 0.5rem;
+    font-size: clamp(1.75rem, 5vw, 2.35rem);
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .wst-sub {
+    margin: 0 auto 1.75rem;
+    max-width: 28rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: rgb(255 255 255 / 0.95);
+    text-align: center;
+  }
+  .wst-browse {
+    background: var(--background);
+    color: var(--foreground);
+    padding: 2rem 1rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+  .wst-browse-inner {
+    max-width: 56rem;
+    margin: 0 auto;
+  }
+  .wst-browse-h2 {
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    margin: 0 0 0.75rem;
+  }
+  .wst-browse-h2.mt-8 {
+    margin-top: 2rem;
+  }
+  .wst-chips,
+  .wst-letters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .wst-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--card);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--foreground);
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .wst-chip:hover {
+    background: var(--muted);
+    border-color: var(--color-primary);
+  }
+  .wst-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--card);
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .wst-letter:hover {
+    background: var(--muted);
+    border-color: var(--color-primary);
+  }
+  .wst-footer-note {
+    margin: 2rem 0 0;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    text-align: center;
+  }
+  .wst-footer-note a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .wst-footer-note a:hover {
+    text-decoration: underline;
+  }
+</style>

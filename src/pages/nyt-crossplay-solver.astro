@@ -1,0 +1,170 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import NYTCrossplaySolver from '@/components/NYTCrossplaySolver';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/nyt-crossplay-solver',
+  'NYT Crossplay Cheat & Solver | Free Word Finder',
+  'The ultimate NYT Crossplay helper and word finder. Enter your letters with up to three wildcards (? or space), filter by starts, ends, length, and score high plays.'
+);
+
+const faqs = [
+  {
+    question: 'What is NYT Crossplay?',
+    answer:
+      'NYT Crossplay is a competitive word game from The New York Times. This tool helps you find valid words from your rack, similar to a Scrabble-style helper, with support for blank tiles as wildcards.',
+  },
+  {
+    question: 'How do wildcards work?',
+    answer:
+      'Use <strong>?</strong> or a <strong>space</strong> for each blank tile. You can use up to three wildcards. Each wildcard can stand for any letter when matching dictionary words.',
+  },
+  {
+    question: 'What do Starts, Ends, Contains, and Length do?',
+    answer:
+      'These optional filters narrow results: <strong>Starts</strong> requires a prefix, <strong>Ends</strong> a suffix, <strong>Contains</strong> requires a substring anywhere in the word, and <strong>Length</strong> fixes the word length (2–10). Leave length blank to search all lengths (results capped for speed).',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta} fullBleed={true}>
+  <div class="crossplay-page">
+    <div class="crossplay-hero">
+      <div class="crossplay-hero-inner">
+        <nav class="crossplay-bc" aria-label="Breadcrumb">
+          <a href="/">WordTips</a>
+          <span class="crossplay-bc-sep">/</span>
+          <span class="crossplay-bc-current">NYT Crossplay Cheat &amp; Solver</span>
+        </nav>
+
+        <h1 class="crossplay-h1">NYT Crossplay Cheat &amp; Solver</h1>
+        <p class="crossplay-sub">
+          The ultimate NYT Crossplay helper and word finder. Beat your opponents with high-scoring plays. Enter up to 3 wildcards (? or space)
+        </p>
+
+        <NYTCrossplaySolver client:load />
+      </div>
+    </div>
+
+    <section class="crossplay-seo" aria-labelledby="crossplay-help-heading">
+      <div class="crossplay-seo-inner">
+        <h2 id="crossplay-help-heading" class="crossplay-seo-h2">How to use this solver</h2>
+        <p class="crossplay-seo-p">
+          Type the letters on your rack in the main field. Add <strong>?</strong> or spaces for blank tiles (up to three). Use the advanced filters to match the board: prefix, suffix, a required substring, or exact length. Choose <strong>NYT Crossplay</strong> in the dropdown, then press <strong>SEARCH</strong>. Words are sorted by Scrabble-style point value so strong plays appear first.
+        </p>
+        <h3 class="crossplay-seo-h3">Frequently asked questions</h3>
+        <div class="crossplay-faq">
+          {faqs.map((f) => (
+            <div class="crossplay-faq-pair">
+              <h4 class="crossplay-faq-q">{f.question}</h4>
+              <p class="crossplay-faq-a" set:html={f.answer} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="footer" />
+</Layout>
+
+<style>
+  .crossplay-page {
+    min-height: calc(100vh - 3.25rem);
+    display: flex;
+    flex-direction: column;
+  }
+  .crossplay-hero {
+    flex: 1;
+    background: var(--nav-bar-bg);
+    padding: 1.25rem 1rem 2.5rem;
+  }
+  .crossplay-hero-inner {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+  .crossplay-bc {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgb(255 255 255 / 0.92);
+    margin-bottom: 1.5rem;
+  }
+  .crossplay-bc a {
+    color: #fff;
+    text-decoration: none;
+  }
+  .crossplay-bc a:hover {
+    text-decoration: underline;
+  }
+  .crossplay-bc-sep {
+    margin: 0 0.35rem;
+    opacity: 0.85;
+  }
+  .crossplay-bc-current {
+    opacity: 0.95;
+  }
+  .crossplay-h1 {
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.75rem, 5vw, 2.35rem);
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .crossplay-sub {
+    margin: 0 auto 1.75rem;
+    max-width: 34rem;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: rgb(255 255 255 / 0.92);
+    text-align: center;
+  }
+  .crossplay-seo {
+    background: var(--background);
+    color: var(--foreground);
+    padding: 2rem 1rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+  .crossplay-seo-inner {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+  .crossplay-seo-h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0 0 0.75rem;
+  }
+  .crossplay-seo-p {
+    margin: 0 0 1.5rem;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--muted-foreground);
+  }
+  .crossplay-seo-h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+  }
+  .crossplay-faq-pair {
+    margin-top: 1rem;
+  }
+  .crossplay-faq-pair:first-child {
+    margin-top: 0;
+  }
+  .crossplay-faq-q {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin: 0 0 0.35rem;
+  }
+  .crossplay-faq-a {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--muted-foreground);
+  }
+</style>

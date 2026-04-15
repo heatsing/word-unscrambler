@@ -1,54 +1,225 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getMeta } from '@/lib/meta';
-import WordsSearchHero from '@/components/WordsSearchHero.astro';
+import WordsStartWithTool from '@/components/WordsStartWithTool';
 
 const meta = getMeta(
   '/words-with-letters',
-  'Words With Letters',
-  'Find words that contain a certain letter. Pick word length (2–10) and letter to see the full list. No sign-up. Works for Wordle, Scrabble, and puzzles.'
+  'Words With Letters | Word Finder & Wildcards',
+  'Find words using your letters with up to 3 wildcards. Filter by starts, ends, contains, length, include and exclude. Words With Friends dictionary.'
 );
 
 const lengths = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+/** Hero — seafoam green (reference) */
+const HERO_BG = '#59b78d';
 ---
 
-<Layout meta={meta}>
-  <div class="bg-white min-h-screen -mx-4 -my-8 px-4 py-8 sm:-mx-6 sm:px-6 md:-mx-8 md:px-8 rounded-lg">
-    <WordsSearchHero title="Words With" searchAction="/unscramble" />
+<Layout meta={meta} fullBleed={true}>
+  <div
+    class="wst-page"
+    style={`--wst-hero-bg: ${HERO_BG}; --wst-search-btn-bg: #f2c051; --wst-search-btn-shadow: #c9a035;`}
+  >
+    <div class="wst-hero">
+      <div class="wst-hero-inner">
+        <nav class="wst-bc" aria-label="Breadcrumb">
+          <a href="/">WordTips</a>
+          <span class="wst-bc-sep">/</span>
+          <span class="wst-bc-current">Words With Letters</span>
+        </nav>
 
-    <section class="mt-10 max-w-4xl mx-auto">
-      <h2 id="by-length-heading" class="text-xl font-bold mb-6 text-gray-900">Browse by word length</h2>
-      <div class="space-y-8">
-        {lengths.map((len) => (
-          <div>
-            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">{len}-letter words containing</h3>
-            <ul class="flex flex-wrap gap-2 list-none pl-0">
-              {letters.map((l) => (
-                <li>
-                  <a
-                    href={`/${len}-letter-words-with-${l}`}
-                    class="inline-flex items-center justify-center min-w-[2.5rem] h-10 rounded-lg border border-gray-300 bg-white font-semibold uppercase text-primary hover:bg-gray-100 hover:border-primary transition-colors"
-                  >
-                    {l}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <h1 class="wst-h1">Words With Letters</h1>
+        <p class="wst-sub">Enter up to 3 wildcards (? or space)</p>
+
+        <WordsStartWithTool client:load />
       </div>
+    </div>
 
-      <p class="text-sm text-gray-500 text-center mt-8">
-        Also see <a href="/words-by-length" class="text-primary hover:underline">Words By Length</a>, <a href="/words-start-with" class="text-primary hover:underline">Words Start With</a>, and <a href="/words-ending-in" class="text-primary hover:underline">Words Ending In</a>.
-      </p>
+    <section class="wst-browse" aria-labelledby="wwl-browse-heading">
+      <div class="wst-browse-inner">
+        <h2 id="wwl-browse-heading" class="wst-browse-h2">Browse by word length</h2>
+        <div class="wwl-length-stack">
+          {lengths.map((len) => (
+            <div class="wwl-length-block">
+              <h3 class="wwl-length-label">{len}-letter words containing</h3>
+              <ul class="wst-letters">
+                {letters.map((l) => (
+                  <li>
+                    <a href={`/${len}-letter-words-with-${l}`} class="wst-letter">
+                      {l}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
 
-      <article class="mt-10 p-6 rounded-lg border border-gray-200 bg-gray-50">
-        <h2 class="text-lg font-bold mb-3 text-gray-900">About Words With Letters</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Use this index to find words that contain a certain letter. Pick a word length (2–10 letters), then choose a letter to see the full list. Useful for Scrabble, Wordle, crosswords, and vocabulary. You can also use our <a href="/unscramble" class="text-primary hover:underline">Unscramble</a> tool to find words from your own letters.
+        <p class="wst-footer-note">
+          Also see{' '}
+          <a href="/words-by-length">Words By Length</a>,{' '}
+          <a href="/words-start-with">Words Start With</a>,{' '}
+          <a href="/words-ending-in">Words Ending In</a>.
         </p>
-      </article>
+
+        <article class="wwl-about">
+          <h2 class="wwl-about-h">About Words With Letters</h2>
+          <p class="wwl-about-p">
+            Use the search above to find words from your rack with optional wildcards, or browse lists of words that contain a given letter at each length (2–10). Handy for Scrabble, Wordle, and crosswords. Try the{' '}
+            <a href="/unscramble">Unscramble</a> tool for quick letter-only searches.
+          </p>
+        </article>
+      </div>
     </section>
   </div>
 </Layout>
+
+<style>
+  .wst-page {
+    min-height: calc(100vh - 3.25rem);
+    display: flex;
+    flex-direction: column;
+  }
+  .wst-hero {
+    flex: 1;
+    background: var(--wst-hero-bg);
+    padding: 1.25rem 1rem 2.5rem;
+  }
+  .wst-hero-inner {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+  .wst-bc {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgb(255 255 255 / 0.95);
+    margin-bottom: 1.5rem;
+  }
+  .wst-bc a {
+    color: #fff;
+    text-decoration: none;
+  }
+  .wst-bc a:hover {
+    text-decoration: underline;
+  }
+  .wst-bc-sep {
+    margin: 0 0.35rem;
+    opacity: 0.9;
+  }
+  .wst-h1 {
+    margin: 0 0 0.5rem;
+    font-size: clamp(1.75rem, 5vw, 2.35rem);
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .wst-sub {
+    margin: 0 auto 1.75rem;
+    max-width: 28rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: rgb(255 255 255 / 0.95);
+    text-align: center;
+  }
+  .wst-browse {
+    background: var(--background);
+    color: var(--foreground);
+    padding: 2rem 1rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+  .wst-browse-inner {
+    max-width: 56rem;
+    margin: 0 auto;
+  }
+  .wst-browse-h2 {
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    margin: 0 0 1rem;
+  }
+  .wwl-length-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .wwl-length-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    margin: 0 0 0.5rem;
+  }
+  .wst-letters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .wst-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--card);
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .wst-letter:hover {
+    background: var(--muted);
+    border-color: var(--color-primary);
+  }
+  .wst-footer-note {
+    margin: 2rem 0 0;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    text-align: center;
+  }
+  .wst-footer-note a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .wst-footer-note a:hover {
+    text-decoration: underline;
+  }
+  .wwl-about {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    background: var(--muted);
+  }
+  .wwl-about-h {
+    font-size: 1rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+  }
+  .wwl-about-p {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--muted-foreground);
+  }
+  .wwl-about-p a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .wwl-about-p a:hover {
+    text-decoration: underline;
+  }
+</style>

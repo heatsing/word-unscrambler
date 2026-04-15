@@ -1,120 +1,189 @@
 ---
-const currentPath = Astro.url.pathname;
+import {
+  headerWordSolvers,
+  headerWordLists,
+  headerDailyGameHints,
+  headerDailyGameHintsMoreHref,
+  headerCrosswords,
+} from '../lib/nav-links';
 
-// word.tips exact nav structure
-const mainNavLinks = [
-  { name: 'Words With Friends', href: '/words-with-friends' },
-  { name: 'Wordle', href: '/wordle' },
-  { name: 'Scrabble', href: '/scrabble' },
-  { name: 'Word Cookies', href: '/word-cookies' },
-  { name: 'Boggle', href: '/boggle-solver' },
-  { name: 'Wordle Solver', href: '/wordle-solver' },
-];
+const rawPath = Astro.url.pathname;
+const currentPath = rawPath.replace(/\/$/, '') || '/';
 
-const moreLinks = [
-  { name: 'Words With Friends Cheat', href: '/words-with-friends' },
-  { name: 'Anagram Solver', href: '/anagram-solver' },
-  { name: 'Word Unscrambler', href: '/word-unscrambler' },
-  { name: 'Crossword Solver', href: '/crossword-solver' },
-  { name: 'Text Twist', href: '/text-twist' },
-  { name: 'Jumble Solver', href: '/jumble-solver' },
-  { name: 'Word Generator', href: '/word-generator' },
-  { name: 'Letter Boxed', href: '/letter-boxed-solver' },
-  { name: 'Wordscapes', href: '/wordscapes' },
-  { name: 'Wordfeud', href: '/wordfeud' },
-  { name: 'Scrabble Go', href: '/scrabble-go' },
-  { name: 'Hangman', href: '/hangman-solver' },
-  { name: 'Word Search', href: '/word-search-solver' },
-  { name: 'Word Scramble', href: '/word-scramble' },
-  { name: 'Descrambler', href: '/descrambler' },
-  { name: 'Word Finder', href: '/word-finder' },
-  { name: 'Unlimited Wordle', href: '/wordle-unlimited' },
-];
+function isActive(href: string): boolean {
+  if (!href || href === '#') return false;
+  const h = href.replace(/\/$/, '') || '/';
+  return currentPath === h || currentPath.startsWith(h + '/');
+}
 ---
 
-<!-- word.tips exact clone header -->
-<header class="wt-header">
-  <div class="wt-header-inner">
+<header class="wt-top-header">
+  <div class="wt-top-header-inner">
+    <!-- Mobile: hamburger first (reference layout) -->
+    <button
+      type="button"
+      class="wt-bar-btn wt-bar-hamburger"
+      id="mobile-menu-btn"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-drawer"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
 
-    <!-- Logo -->
-    <a href="/" class="wt-logo" aria-label="WordTips Home">
-      <span class="wt-logo-text">
-        <span class="wt-logo-w">W</span>ord<span class="wt-logo-tips">Tips</span>
-      </span>
+    <a href="/" class="wt-bar-logo" aria-label="WordTips Home">
+      <span class="wt-bar-logo-mark" aria-hidden="true">W</span>
+      <span class="wt-bar-logo-text">ord<span class="wt-bar-logo-tips">tips</span></span>
     </a>
 
-    <!-- Center Nav Links — word.tips style -->
-    <nav class="wt-nav" aria-label="Main navigation">
-      {mainNavLinks.map(link => (
-        <a
-          href={link.href}
-          class={`wt-nav-link ${currentPath === link.href ? 'active' : ''}`}
-        >
-          {link.name}
-        </a>
-      ))}
-
-      <!-- More dropdown -->
-      <div class="wt-more-dropdown">
-        <button class="wt-nav-link wt-more-btn" aria-expanded="false" aria-haspopup="true">
-          More
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+    <nav class="wt-bar-nav" aria-label="Main navigation">
+      <!-- Word Solvers -->
+      <div class="wt-dd">
+        <button type="button" class="wt-dd-trigger" aria-expanded="false" aria-haspopup="true" id="dd-word-solvers">
+          Word Solvers
+          <svg class="wt-dd-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
-        <div class="wt-more-panel" role="menu">
-          {moreLinks.map(link => (
-            <a href={link.href} class="wt-more-item" role="menuitem">{link.name}</a>
-          ))}
+        <div class="wt-dd-panel wt-dd-panel--simple" role="menu" aria-labelledby="dd-word-solvers">
+          <div class="wt-dd-caret" aria-hidden="true"></div>
+          <div class="wt-dd-body">
+            {headerWordSolvers.map((link) => (
+              <a
+                href={link.href}
+                class:list={['wt-dd-link', { 'wt-dd-link--active': isActive(link.href) }]}
+                role="menuitem"
+              >
+                <span>{link.name}</span>
+                {isActive(link.href) && (
+                  <svg class="wt-dd-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                )}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Word Lists -->
+      <div class="wt-dd">
+        <button type="button" class="wt-dd-trigger" aria-expanded="false" aria-haspopup="true" id="dd-word-lists">
+          Word Lists
+          <svg class="wt-dd-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="wt-dd-panel wt-dd-panel--simple" role="menu" aria-labelledby="dd-word-lists">
+          <div class="wt-dd-caret" aria-hidden="true"></div>
+          <div class="wt-dd-body">
+            {headerWordLists.map((link) => (
+              <a href={link.href} class:list={['wt-dd-link', { 'wt-dd-link--active': isActive(link.href) }]} role="menuitem">
+                <span>{link.name}</span>
+                {isActive(link.href) && (
+                  <svg class="wt-dd-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                )}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Daily Game Hints -->
+      <div class="wt-dd wt-dd--wide">
+        <button type="button" class="wt-dd-trigger" aria-expanded="false" aria-haspopup="true" id="dd-daily">
+          Daily Game Hints
+          <svg class="wt-dd-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="wt-dd-panel wt-dd-panel--hints" role="menu" aria-labelledby="dd-daily">
+          <div class="wt-dd-caret" aria-hidden="true"></div>
+          <div class="wt-dd-body wt-dd-body--hints">
+            {headerDailyGameHints.map((hint) => (
+              <a href={hint.href} class:list={['wt-hint-row', { 'wt-hint-row--active': isActive(hint.href) }]} role="menuitem">
+                <span class="wt-hint-ico" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                </span>
+                <span class="wt-hint-text">
+                  <span class="wt-hint-title">{hint.name}</span>
+                  <span class="wt-hint-sub">{hint.subtitle}</span>
+                </span>
+              </a>
+            ))}
+            <a href={headerDailyGameHintsMoreHref} class="wt-hint-more" role="menuitem">View More</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Crosswords -->
+      <div class="wt-dd">
+        <button type="button" class="wt-dd-trigger" aria-expanded="false" aria-haspopup="true" id="dd-crosswords">
+          Crosswords
+          <svg class="wt-dd-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="wt-dd-panel wt-dd-panel--simple" role="menu" aria-labelledby="dd-crosswords">
+          <div class="wt-dd-caret" aria-hidden="true"></div>
+          <div class="wt-dd-body">
+            {headerCrosswords.map((link) => (
+              <a href={link.href} class:list={['wt-dd-link', { 'wt-dd-link--active': isActive(link.href) }]} role="menuitem">
+                <span>{link.name}</span>
+                {isActive(link.href) && (
+                  <svg class="wt-dd-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                )}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </nav>
 
-    <!-- Right actions -->
-    <div class="wt-header-right">
-
-      <!-- Dark mode toggle -->
-      <button type="button" class="wt-icon-btn" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-        <!-- Sun (shown in dark mode) -->
+    <div class="wt-bar-actions">
+      <a href="/contact" class="wt-mobile-app-pill" aria-label="Contact" title="Contact">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+      </a>
+      <button type="button" class="wt-bar-btn" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
         <span id="icon-sun" class="hidden" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
         </span>
-        <!-- Moon (shown in light mode) -->
         <span id="icon-moon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </span>
-      </button>
-
-      <!-- Mobile hamburger -->
-      <button type="button" class="wt-icon-btn wt-hamburger" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
     </div>
-
   </div>
 </header>
 
-<!-- Mobile Drawer -->
+<!-- Mobile drawer -->
 <div class="wt-mobile-drawer" id="mobile-drawer" aria-hidden="true" role="dialog" aria-label="Navigation menu">
-  <div class="wt-mobile-header">
-    <span class="wt-logo-text"><span class="wt-logo-w">W</span>ord<span class="wt-logo-tips">Tips</span></span>
-    <button type="button" class="wt-icon-btn" id="mobile-close-btn" aria-label="Close menu">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  <div class="wt-mobile-head">
+    <span class="wt-bar-logo-text wt-mobile-brand"><span class="wt-bar-logo-mark">W</span>ord<span class="wt-bar-logo-tips">tips</span></span>
+    <button type="button" class="wt-bar-btn" id="mobile-close-btn" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
-  <div class="wt-mobile-links">
-    <div class="wt-mobile-section-label">Navigate</div>
-    {[...mainNavLinks, ...moreLinks].map(link => (
-      <a href={link.href} class="wt-mobile-link" data-close-drawer>{link.name}</a>
+  <div class="wt-mobile-scroll">
+    <div class="wt-mobile-section">Word Solvers</div>
+    {headerWordSolvers.map((link) => (
+      <a href={link.href} class="wt-mobile-a" data-close-drawer>{link.name}</a>
     ))}
-    <div class="wt-mobile-section-label mt-3">Info</div>
-    <a href="/about" class="wt-mobile-link" data-close-drawer>About</a>
-    <a href="/contact" class="wt-mobile-link" data-close-drawer>Contact</a>
+    <div class="wt-mobile-section">Word Lists</div>
+    {headerWordLists.map((link) => (
+      <a href={link.href} class="wt-mobile-a" data-close-drawer>{link.name}</a>
+    ))}
+    <div class="wt-mobile-section">Daily Game Hints</div>
+    {headerDailyGameHints.map((hint) => (
+      <a href={hint.href} class="wt-mobile-a wt-mobile-hint" data-close-drawer>
+        <span class="wt-mobile-hint-title">{hint.name}</span>
+        <span class="wt-mobile-hint-sub">{hint.subtitle}</span>
+      </a>
+    ))}
+    <a href={headerDailyGameHintsMoreHref} class="wt-mobile-a wt-mobile-more" data-close-drawer>View More</a>
+    <div class="wt-mobile-section">Crosswords</div>
+    {headerCrosswords.map((link) => (
+      <a href={link.href} class="wt-mobile-a" data-close-drawer>{link.name}</a>
+    ))}
+    <div class="wt-mobile-section">Info</div>
+    <a href="/about" class="wt-mobile-a" data-close-drawer>About</a>
+    <a href="/contact" class="wt-mobile-a" data-close-drawer>Contact</a>
   </div>
 </div>
 <div class="wt-mobile-overlay" id="mobile-overlay" aria-hidden="true"></div>
 
 <script>
   (function () {
-    // ── Theme toggle ────────────────────────────────────────────
     var themeKey = 'wordtips-theme-v2';
     var root = document.documentElement;
     function applyTheme(dark) {
@@ -128,26 +197,35 @@ const moreLinks = [
     var stored = localStorage.getItem(themeKey);
     var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     applyTheme(stored === 'dark' || (!stored && prefersDark));
-    document.getElementById('theme-toggle').addEventListener('click', function () {
+    var tt = document.getElementById('theme-toggle');
+    if (tt) tt.addEventListener('click', function () {
       applyTheme(!root.classList.contains('dark'));
     });
 
-    // ── More dropdown ──────────────────────────────────────────
-    var moreBtn = document.querySelector('.wt-more-btn');
-    var morePanel = document.querySelector('.wt-more-panel');
-    moreBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var isOpen = moreBtn.getAttribute('aria-expanded') === 'true';
-      moreBtn.setAttribute('aria-expanded', String(!isOpen));
+    var mq = window.matchMedia('(min-width: 901px)');
+    function closeAllDd() {
+      document.querySelectorAll('.wt-dd-trigger').forEach(function (b) {
+        b.setAttribute('aria-expanded', 'false');
+      });
+    }
+    document.querySelectorAll('.wt-dd').forEach(function (dd) {
+      var btn = dd.querySelector('.wt-dd-trigger');
+      var panel = dd.querySelector('.wt-dd-panel');
+      if (!btn || !panel) return;
+      btn.addEventListener('click', function (e) {
+        if (mq.matches) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var open = btn.getAttribute('aria-expanded') === 'true';
+        closeAllDd();
+        btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+      });
     });
-    document.addEventListener('click', function () {
-      moreBtn.setAttribute('aria-expanded', 'false');
-    });
+    document.addEventListener('click', function () { closeAllDd(); });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') moreBtn.setAttribute('aria-expanded', 'false');
+      if (e.key === 'Escape') closeAllDd();
     });
 
-    // ── Mobile drawer ──────────────────────────────────────────
     var drawer = document.getElementById('mobile-drawer');
     var overlay = document.getElementById('mobile-overlay');
     var openBtn = document.getElementById('mobile-menu-btn');
@@ -164,218 +242,323 @@ const moreLinks = [
       openBtn.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
     }
-    openBtn.addEventListener('click', openDrawer);
-    closeBtn.addEventListener('click', closeDrawer);
-    overlay.addEventListener('click', closeDrawer);
-    drawer.querySelectorAll('[data-close-drawer]').forEach(function (el) {
+    if (openBtn) openBtn.addEventListener('click', function (e) { e.stopPropagation(); openDrawer(); });
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    if (overlay) overlay.addEventListener('click', closeDrawer);
+    if (drawer) drawer.querySelectorAll('[data-close-drawer]').forEach(function (el) {
       el.addEventListener('click', closeDrawer);
     });
   })();
 </script>
 
 <style>
-  /* ── Header base — word.tips exact clone ────────────────── */
-  .wt-header {
+  .wt-top-header {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: var(--bg-base);
-    border-bottom: 1px solid var(--border);
+    background: var(--nav-bar-bg);
+    color: #fff;
     width: 100%;
+    box-shadow: 0 1px 0 rgb(0 0 0 / 0.08);
   }
-  .wt-header-inner {
+  .wt-top-header-inner {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 0 1.5rem;
-    height: 3.5rem;
+    padding: 0 0.75rem 0 0.5rem;
+    min-height: 3.25rem;
     display: flex;
     align-items: center;
-    gap: 0;
+    gap: 0.25rem;
   }
 
-  /* ── Logo — word.tips style ──────────────────────────────── */
-  .wt-logo {
-    text-decoration: none;
-    flex-shrink: 0;
-    margin-right: 2.5rem;
+  .wt-bar-hamburger {
+    display: none;
+    color: #fff;
   }
-  .wt-logo-text {
-    font-size: 1.1875rem;
-    font-weight: 800;
-    color: var(--foreground);
-    letter-spacing: -0.02em;
-  }
-  .wt-logo-w {
-    color: var(--color-primary);
-  }
-  .wt-logo-tips {
-    color: var(--color-primary);
-  }
-
-  /* ── Center Nav ─────────────────────────────────────────── */
-  .wt-nav {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    flex: 1;
-  }
-  .wt-nav-link {
+  .wt-bar-btn {
     display: inline-flex;
     align-items: center;
-    padding: 0.375rem 0.75rem;
-    border-radius: var(--radius);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--muted-foreground);
-    text-decoration: none;
-    letter-spacing: 0.01em;
-    transition: color 0.15s, background 0.15s;
-    white-space: nowrap;
-    background: none;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
     border: none;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: #fff;
     cursor: pointer;
+    flex-shrink: 0;
   }
-  .wt-nav-link:hover,
-  .wt-nav-link.active {
-    color: var(--foreground);
-    background: var(--muted);
+  .wt-bar-btn:hover { background: rgb(255 255 255 / 0.12); }
+
+  .wt-bar-logo {
+    display: inline-flex;
+    align-items: baseline;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
   }
-  .wt-nav-link.active {
-    color: var(--color-primary);
+  .wt-bar-logo-mark {
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    font-weight: 900;
+  }
+  .wt-bar-logo-mark::after {
+    content: '';
+    position: absolute;
+    top: 0.05em;
+    right: -0.15em;
+    width: 0.38em;
+    height: 0.38em;
+    background: #fbbf24;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.15);
+  }
+  .wt-bar-logo-tips { font-weight: 800; opacity: 0.95; }
+
+  .wt-bar-nav {
+    display: flex;
+    align-items: stretch;
+    gap: 0.125rem;
+    flex: 1;
+    min-width: 0;
   }
 
-  /* More button */
-  .wt-more-dropdown {
+  .wt-dd {
     position: relative;
   }
-  .wt-more-btn svg {
-    margin-left: 0.25rem;
-    transition: transform 0.2s;
+  .wt-dd-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.65rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
   }
-  .wt-more-dropdown:has([aria-expanded="true"]) .wt-more-btn svg {
+  .wt-dd-trigger:hover,
+  .wt-dd:focus-within > .wt-dd-trigger { background: rgb(255 255 255 / 0.12); }
+  .wt-dd-chevron {
+    flex-shrink: 0;
+    opacity: 0.9;
+    transition: transform 0.2s ease;
+  }
+  .wt-dd:hover .wt-dd-trigger .wt-dd-chevron,
+  .wt-dd:focus-within .wt-dd-trigger .wt-dd-chevron,
+  .wt-dd-trigger[aria-expanded="true"] .wt-dd-chevron {
     transform: rotate(180deg);
   }
 
-  /* More panel */
-  .wt-more-panel {
+  .wt-dd-panel {
     position: absolute;
-    top: calc(100% + 0.5rem);
-    left: 0;
-    min-width: 13rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-lg);
-    padding: 0.5rem;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(0.35rem);
+    min-width: 15rem;
+    background: #fff;
+    color: #0f172a;
+    border-radius: 0.65rem;
+    box-shadow: 0 12px 40px rgb(0 0 0 / 0.18);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-4px);
-    transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
-    z-index: 200;
+    pointer-events: none;
+    transition: opacity 0.15s, visibility 0.15s, transform 0.15s;
+    z-index: 300;
+    padding-top: 0.35rem;
   }
-  .wt-more-dropdown:hover .wt-more-panel,
-  .wt-more-dropdown:focus-within .wt-more-panel,
-  .wt-more-dropdown:has([aria-expanded="true"]) .wt-more-panel {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+  .wt-dd--wide .wt-dd-panel {
+    min-width: 17.5rem;
   }
-  .wt-more-item {
-    display: block;
-    padding: 0.4375rem 0.75rem;
-    border-radius: var(--radius);
-    font-size: 0.8125rem;
+  .wt-dd-caret {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    width: 0;
+    height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-bottom: 8px solid #fff;
+    filter: drop-shadow(0 -1px 0 rgb(0 0 0 / 0.04));
+  }
+  .wt-dd-body {
+    padding: 0.35rem 0.5rem 0.5rem;
+    border-radius: 0.65rem;
+  }
+  .wt-dd-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 0.45rem;
+    font-size: 0.875rem;
     font-weight: 500;
-    color: var(--foreground);
+    color: #0f172a;
     text-decoration: none;
-    transition: background 0.1s;
   }
-  .wt-more-item:hover { background: var(--muted); }
+  .wt-dd-link:hover { background: #f1f5f9; }
+  .wt-dd-link--active {
+    background: #dcfce7;
+    color: #14532d;
+    font-weight: 600;
+  }
+  .wt-dd-check { flex-shrink: 0; color: #14532d; }
 
-  /* ── Right actions ─────────────────────────────────────── */
-  .wt-header-right {
+  .wt-hint-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 0.45rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .wt-hint-row:hover { background: #f8fafc; }
+  .wt-hint-row--active { background: #ecfdf5; }
+  .wt-hint-ico {
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background: #e0f2f1;
+    color: #0f766e;
+  }
+  .wt-hint-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+  .wt-hint-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .wt-hint-sub {
+    font-size: 0.75rem;
+    color: #64748b;
+  }
+  .wt-hint-more {
+    display: block;
+    padding: 0.65rem 0.6rem 0.35rem;
+    margin-top: 0.25rem;
+    border-top: 1px solid #e2e8f0;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #0f766e;
+    text-decoration: none;
+  }
+  .wt-hint-more:hover { text-decoration: underline; }
+
+  @media (min-width: 901px) {
+    .wt-dd:hover .wt-dd-panel,
+    .wt-dd:focus-within .wt-dd-panel {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0.2rem);
+    }
+  }
+
+  .wt-bar-actions {
     display: flex;
     align-items: center;
     gap: 0.25rem;
     margin-left: auto;
+    flex-shrink: 0;
   }
-  .wt-icon-btn {
+  .wt-mobile-app-pill {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.125rem;
-    height: 2.125rem;
-    border-radius: var(--radius);
-    border: none;
-    background: none;
-    color: var(--muted-foreground);
-    cursor: pointer;
-    transition: color 0.15s, background 0.15s;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    border: 2px solid rgb(255 255 255 / 0.55);
+    color: #fff;
+    text-decoration: none;
   }
-  .wt-icon-btn:hover {
-    color: var(--foreground);
-    background: var(--muted);
-  }
+  .wt-mobile-app-pill:hover { background: rgb(255 255 255 / 0.12); }
 
-  /* ── Mobile ──────────────────────────────────────────────── */
-  .wt-hamburger { display: none; }
+  .hidden { display: none !important; }
+
   @media (max-width: 900px) {
-    .wt-nav { display: none; }
-    .wt-hamburger { display: inline-flex; }
+    .wt-bar-hamburger { display: inline-flex; }
+    .wt-bar-nav { display: none; }
+    .wt-bar-logo { margin-right: auto; }
   }
 
-  /* Mobile drawer */
   .wt-mobile-drawer {
     position: fixed;
     top: 0;
-    right: 0;
+    left: 0;
     bottom: 0;
-    width: min(17rem, 90vw);
-    background: var(--bg-card);
-    border-left: 1px solid var(--border);
-    z-index: 200;
-    transform: translateX(100%);
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    width: min(20rem, 92vw);
+    background: var(--card, #fff);
+    color: var(--foreground, #0f172a);
+    z-index: 400;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
     overflow-y: auto;
+    border-right: 1px solid var(--border, #e2e8f0);
   }
   .wt-mobile-drawer.is-open { transform: translateX(0); }
   .wt-mobile-overlay {
     position: fixed;
     inset: 0;
-    background: rgb(0 0 0 / 0.4);
-    z-index: 199;
+    background: rgb(0 0 0 / 0.45);
+    z-index: 399;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.25s, visibility 0.25s;
+    transition: opacity 0.2s, visibility 0.2s;
   }
   .wt-mobile-overlay.is-open { opacity: 1; visibility: visible; }
-  .wt-mobile-header {
+  .wt-mobile-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border, #e2e8f0);
+ background: var(--nav-bar-bg);
+    color: #fff;
   }
-  .wt-mobile-links { padding: 0.75rem; }
-  .wt-mobile-section-label {
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+  .wt-mobile-brand { color: #fff; }
+  .wt-mobile-brand .wt-bar-logo-mark::after { background: #fbbf24; }
+  .wt-mobile-scroll { padding: 0.75rem; }
+  .wt-mobile-section {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--muted-foreground);
-    padding: 0.375rem 0.5rem 0.5rem;
+    color: var(--muted-foreground, #64748b);
+    margin: 0.75rem 0 0.35rem;
   }
-  .wt-mobile-link {
+  .wt-mobile-section:first-child { margin-top: 0; }
+  .wt-mobile-a {
     display: block;
-    padding: 0.5rem 0.625rem;
-    border-radius: var(--radius);
+    padding: 0.45rem 0.5rem;
+    border-radius: 0.375rem;
+    color: var(--foreground, #0f172a);
+    text-decoration: none;
     font-size: 0.9rem;
     font-weight: 500;
-    color: var(--foreground);
-    text-decoration: none;
-    transition: background 0.1s;
   }
-  .wt-mobile-link:hover { background: var(--muted); }
-  .wt-mobile-section-label + .wt-mobile-link { margin-top: 0; }
-  .mt-3 { margin-top: 0.75rem; }
+  .wt-mobile-a:hover { background: var(--muted, #f1f5f9); }
+  .wt-mobile-hint .wt-mobile-hint-title { display: block; font-weight: 600; }
+  .wt-mobile-hint .wt-mobile-hint-sub { display: block; font-size: 0.78rem; color: var(--muted-foreground, #64748b); }
+  .wt-mobile-more { font-weight: 700; color: #0f766e; margin-top: 0.25rem; }
 </style>
