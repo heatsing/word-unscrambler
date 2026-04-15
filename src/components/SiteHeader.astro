@@ -2,256 +2,512 @@
 import { wordFinders, dailyGameHints, wordLists, wordsByLength } from '@/lib/nav-links';
 
 const games = [
-  { name: 'Play Wordle', href: '/play-wordle', desc: 'Daily puzzle' },
-  { name: 'Wordle Unlimited', href: '/wordle-unlimited', desc: 'Practice mode' },
+  { name: 'Play Wordle', href: '/play-wordle', desc: 'Daily puzzle — free' },
+  { name: 'Wordle Unlimited', href: '/wordle-unlimited', desc: 'Practice anytime' },
   { name: 'Word Cookies', href: '/word-cookies', desc: 'Swipe to spell' },
-  { name: 'Text Twist', href: '/text-twist', desc: 'Timed scramble' },
-  { name: 'Boggle', href: '/boggle-solver', desc: 'Find all words' },
+  { name: 'Text Twist', href: '/text-twist', desc: 'Timed scramble game' },
+  { name: 'Boggle', href: '/boggle-solver', desc: 'Find every word' },
+  { name: 'Scrabble Go', href: '/scrabble-go', desc: 'Classic Scrabble' },
 ];
+
+const tools = [
+  { name: 'Word Unscrambler', href: '/word-unscrambler' },
+  { name: 'Scrabble Finder', href: '/scrabble' },
+  { name: 'Anagram Solver', href: '/anagram-solver' },
+  { name: 'Wordle Solver', href: '/wordle-solver' },
+  { name: 'Crossword Solver', href: '/crossword-solver' },
+  { name: 'Jumble Solver', href: '/jumble-solver' },
+  { name: 'Word Finder', href: '/word-finder' },
+  { name: 'Word Generator', href: '/word-generator' },
+];
+
+const wordLists = [
+  { name: 'Words by Length', href: '/words-by-length' },
+  { name: 'Words Start With', href: '/words-start-with' },
+  { name: 'Words Ending In', href: '/words-ending-in' },
+  { name: 'Words With Letters', href: '/words-with-letters' },
+];
+
+const currentPath = Astro.url.pathname;
 ---
-<header class="site-header border-b border-border shadow-sm">
-  <div class="site-header-inner container mx-auto flex h-16 items-center justify-between gap-4">
-    <a href="/" class="header-logo flex items-center gap-3 rounded-md transition-shadow hover:opacity-90 shrink-0" aria-label="Word Unscrambler Home">
-      <div class="logo-box flex items-center justify-center">
-        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="100%" stop-color="#e0e7ff"/>
-            </linearGradient>
-          </defs>
-          <rect x="3" y="5" width="5.5" height="5.5" rx="1.5" fill="url(#logo-grad)" opacity="0.95"/>
-          <rect x="8.5" y="9" width="5.5" height="5.5" rx="1.5" fill="url(#logo-grad)" opacity="0.7" transform="rotate(-15 11.25 11.75)"/>
-          <rect x="14" y="5" width="5.5" height="5.5" rx="1.5" fill="url(#logo-grad)" opacity="0.55"/>
-          <rect x="19.5" y="9" width="5.5" height="5.5" rx="1.5" fill="url(#logo-grad)" opacity="0.7" transform="rotate(15 22.25 11.75)"/>
-          <rect x="25" y="5" width="5.5" height="5.5" rx="1.5" fill="url(#logo-grad)" opacity="0.95"/>
-          <rect x="5" y="19" width="4" height="4" rx="1" fill="url(#logo-grad)" opacity="0.35"/>
-          <rect x="10" y="19" width="4" height="4" rx="1" fill="url(#logo-grad)" opacity="0.6"/>
-          <rect x="15" y="19" width="4" height="4" rx="1" fill="url(#logo-grad)" opacity="0.45"/>
-          <rect x="20" y="19" width="4" height="4" rx="1" fill="url(#logo-grad)" opacity="0.75"/>
-          <rect x="25" y="19" width="4" height="4" rx="1" fill="url(#logo-grad)" opacity="0.3"/>
-        </svg>
-      </div>
-      <div class="hidden sm:block">
-        <div class="font-bold text-lg leading-none text-foreground">Word Unscrambler</div>
-        <div class="text-xs text-muted-foreground">Solve any word game</div>
-      </div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <!-- Logo -->
+    <a href="/" class="header-logo" aria-label="Word Unscrambler Home">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#6366f1"/>
+            <stop offset="100%" stop-color="#818cf8"/>
+          </linearGradient>
+        </defs>
+        <rect width="32" height="32" rx="8" fill="url(#hg)"/>
+        <rect x="4" y="7" width="5" height="5" rx="1.5" fill="white" opacity="0.95"/>
+        <rect x="9.5" y="11" width="5" height="5" rx="1.5" fill="white" opacity="0.7" transform="rotate(-12 12 13.5)"/>
+        <rect x="15" y="7" width="5" height="5" rx="1.5" fill="white" opacity="0.55"/>
+        <rect x="20.5" y="11" width="5" height="5" rx="1.5" fill="white" opacity="0.7" transform="rotate(12 23 13.5)"/>
+        <rect x="26" y="7" width="5" height="5" rx="1.5" fill="white" opacity="0.95"/>
+        <rect x="5" y="19" width="4" height="4" rx="1" fill="white" opacity="0.35"/>
+        <rect x="10.5" y="19" width="4" height="4" rx="1" fill="white" opacity="0.6"/>
+        <rect x="16" y="19" width="4" height="4" rx="1" fill="white" opacity="0.45"/>
+        <rect x="21.5" y="19" width="4" height="4" rx="1" fill="white" opacity="0.75"/>
+      </svg>
+      <span class="logo-text">WordUnscrambler</span>
     </a>
 
-    <nav class="nav-desktop items-center gap-1" role="navigation" aria-label="Main navigation">
-      <div class="nav-dropdown games-dropdown">
-        <details>
-          <summary class="nav-trigger games-trigger"><span>🎮 Games</span><svg class="nav-chevron size-4 shrink-0" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary>
-          <div class="nav-panel games-panel">
-            <h3>🎮 Popular Games</h3>
-            <div class="games-grid">
-              {games.map((game) => (
-                <a href={game.href} class="game-link">
-                  <span class="game-name">{game.name}</span>
-                  <span class="game-desc">{game.desc}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </details>
+    <!-- Desktop Nav -->
+    <nav class="nav-desktop" aria-label="Main navigation">
+      <!-- Games dropdown -->
+      <div class="nav-item has-dropdown">
+        <button class="nav-link nav-link-dropdown" aria-expanded="false" aria-haspopup="true">
+          Games
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-panel" role="menu">
+          <div class="dropdown-section-label">Popular</div>
+          {games.slice(0, 3).map(g => (
+            <a href={g.href} class="dropdown-item" role="menuitem">
+              <span class="dropdown-item-name">{g.name}</span>
+              <span class="dropdown-item-desc">{g.desc}</span>
+            </a>
+          ))}
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-section-label">More Games</div>
+          {games.slice(3).map(g => (
+            <a href={g.href} class="dropdown-item" role="menuitem">
+              <span class="dropdown-item-name">{g.name}</span>
+              <span class="dropdown-item-desc">{g.desc}</span>
+            </a>
+          ))}
+        </div>
       </div>
-      <div class="nav-dropdown">
-        <details>
-          <summary class="nav-trigger"><span>Word Finders</span><svg class="nav-chevron size-4 shrink-0" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary>
-          <div class="nav-panel">
-            <h3>Word Finders</h3>
-            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
-              {wordFinders.map((item) => (
-                <a href={item.href}>{item.name}</a>
-              ))}
-            </div>
-          </div>
-        </details>
+
+      <!-- Tools dropdown -->
+      <div class="nav-item has-dropdown">
+        <button class="nav-link nav-link-dropdown" aria-expanded="false" aria-haspopup="true">
+          Tools
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-panel dropdown-tools" role="menu">
+          {tools.map(t => (
+            <a href={t.href} class="dropdown-item" role="menuitem">
+              <span class="dropdown-item-name">{t.name}</span>
+            </a>
+          ))}
+        </div>
       </div>
-      <div class="nav-dropdown">
-        <details>
-          <summary class="nav-trigger"><span>List of Words</span><svg class="nav-chevron size-4 shrink-0" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary>
-          <div class="nav-panel">
-            <h3>List of Words</h3>
-            <div class="flex flex-col gap-1">
-              {wordLists.map((item) => (
-                <a href={item.href}>{item.name}</a>
-              ))}
-            </div>
+
+      <!-- Word Lists dropdown -->
+      <div class="nav-item has-dropdown">
+        <button class="nav-link nav-link-dropdown" aria-expanded="false" aria-haspopup="true">
+          Word Lists
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-panel" role="menu">
+          {wordLists.map(w => (
+            <a href={w.href} class="dropdown-item" role="menuitem">
+              <span class="dropdown-item-name">{w.name}</span>
+            </a>
+          ))}
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-section-label">By Length</div>
+          <div class="length-grid">
+            {[2,3,4,5,6,7,8,9,10].map(n => (
+              <a href={`/${n}-letter-words`} class="dropdown-item length-item" role="menuitem">{n}</a>
+            ))}
           </div>
-        </details>
+        </div>
       </div>
-      <div class="nav-dropdown">
-        <details>
-          <summary class="nav-trigger"><span>Words by Length</span><svg class="nav-chevron size-4 shrink-0" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary>
-          <div class="nav-panel">
-            <h3>Words by Length</h3>
-            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
-              {wordsByLength.map((item) => (
-                <a href={item.href}>{item.name}</a>
-              ))}
-            </div>
-          </div>
-        </details>
-      </div>
-      <a href="/about" class="nav-trigger">About</a>
+
+      <!-- Direct links -->
+      <a href="/about" class={`nav-link ${currentPath === '/about' ? 'active' : ''}`}>About</a>
+      <a href="/contact" class={`nav-link ${currentPath === '/contact' ? 'active' : ''}`}>Contact</a>
     </nav>
 
-    <div class="header-actions flex items-center gap-2 shrink-0">
-      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark or light theme" title="Toggle dark/light mode">
-        <span id="theme-icon-light" aria-hidden="true" class="theme-icon"><svg class="size-5" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></span>
-        <span id="theme-icon-dark" aria-hidden="true" class="theme-icon hidden"><svg class="size-5" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <!-- Right actions -->
+    <div class="header-actions">
+      <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle theme">
+        <span id="icon-sun" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </span>
+        <span id="icon-moon" aria-hidden="true" class="hidden">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </span>
       </button>
-      <button type="button" class="nav-mobile-btn lg:hidden" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
-        <span aria-hidden="true"><svg class="size-6" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></span>
-      </button>
-    </div>
-  </div>
 
-  <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
-    <div class="mobile-search-wrap">
-      <input type="search" class="mobile-search-input" placeholder="Quick search..." aria-label="Quick search" />
+      <!-- Mobile hamburger -->
+      <button type="button" class="icon-btn lg-hidden" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
     </div>
-    <h3>🎮 GAMES</h3>
-    <div class="grid grid-cols-2 gap-2">
-      {games.map((game) => (
-        <a href={game.href} data-close-drawer>{game.name}</a>
-      ))}
-    </div>
-    <h3>WORD FINDERS</h3>
-    <div class="grid grid-cols-2 gap-2">
-      {wordFinders.map((item) => (
-        <a href={item.href} data-close-drawer>{item.name.replace(' Solver', '').replace(' Finder', '')}</a>
-      ))}
-    </div>
-    <h3>DAILY GAME HINTS</h3>
-    <div class="grid grid-cols-2 gap-2">
-      {dailyGameHints.map((item) => (
-        <a href={item.href} data-close-drawer>{item.name}</a>
-      ))}
-    </div>
-    <h3>LIST OF WORDS</h3>
-    <div class="flex flex-col gap-2">
-      {wordLists.map((item) => (
-        <a href={item.href} data-close-drawer>{item.name}</a>
-      ))}
-    </div>
-    <h3>WORDS BY LENGTH</h3>
-    <div class="grid grid-cols-3 gap-2">
-      {wordsByLength.map((item) => (
-        <a href={item.href} data-close-drawer>{item.name.replace(' Words', '')}</a>
-      ))}
-    </div>
-    <a href="/about" class="block mt-4 pt-4 border-t border-border font-semibold text-foreground" data-close-drawer>About</a>
   </div>
-  <div class="mobile-drawer-overlay" id="mobile-drawer-overlay" aria-hidden="true"></div>
 </header>
+
+<!-- Mobile Drawer -->
+<div class="mobile-drawer" id="mobile-drawer" aria-hidden="true" role="dialog" aria-label="Navigation menu">
+  <div class="mobile-drawer-inner">
+    <div class="mobile-drawer-header">
+      <span class="font-bold text-foreground">Menu</span>
+      <button type="button" class="icon-btn" id="mobile-close-btn" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="mobile-nav-section">
+      <div class="mobile-nav-label">🎮 Games</div>
+      {games.map(g => (
+        <a href={g.href} class="mobile-nav-link" data-close-drawer>{g.name}</a>
+      ))}
+    </div>
+
+    <div class="mobile-nav-section">
+      <div class="mobile-nav-label">🔧 Tools</div>
+      {tools.map(t => (
+        <a href={t.href} class="mobile-nav-link" data-close-drawer>{t.name}</a>
+      ))}
+    </div>
+
+    <div class="mobile-nav-section">
+      <div class="mobile-nav-label">📚 Word Lists</div>
+      {wordLists.map(w => (
+        <a href={w.href} class="mobile-nav-link" data-close-drawer>{w.name}</a>
+      ))}
+    </div>
+
+    <div class="mobile-nav-section">
+      <div class="mobile-nav-label">📏 By Length</div>
+      <div class="mobile-length-grid">
+        {[2,3,4,5,6,7,8,9,10].map(n => (
+          <a href={`/${n}-letter-words`} class="mobile-nav-link length" data-close-drawer>{n} letters</a>
+        ))}
+      </div>
+    </div>
+
+    <div class="mobile-nav-section border-t border-border mt-2 pt-2">
+      <a href="/about" class="mobile-nav-link font-semibold" data-close-drawer>About</a>
+      <a href="/contact" class="mobile-nav-link font-semibold" data-close-drawer>Contact</a>
+    </div>
+  </div>
+</div>
+<div class="mobile-overlay" id="mobile-overlay" aria-hidden="true"></div>
 
 <script>
   (function () {
+    // ── Theme toggle ────────────────────────────────────────────
     const themeKey = 'word-unscrambler-theme';
     const root = document.documentElement;
-    function setTheme(dark) {
-      if (dark) {
-        root.classList.add('dark');
-        root.setAttribute('data-theme', 'dark');
-      } else {
-        root.classList.remove('dark');
-        root.setAttribute('data-theme', 'light');
-      }
+    function applyTheme(dark: boolean) {
+      root.classList.toggle('dark', dark);
+      const sun = document.getElementById('icon-sun');
+      const moon = document.getElementById('icon-moon');
+      sun?.classList.toggle('hidden', dark);
+      moon?.classList.toggle('hidden', !dark);
       try { localStorage.setItem(themeKey, dark ? 'dark' : 'light'); } catch {}
-      const lightEl = document.getElementById('theme-icon-light');
-      const darkEl = document.getElementById('theme-icon-dark');
-      if (lightEl) lightEl.classList.toggle('hidden', dark);
-      if (darkEl) darkEl.classList.toggle('hidden', !dark);
     }
-    const stored = typeof localStorage !== 'undefined' ? localStorage.getItem(themeKey) : null;
-    const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setTheme(stored === 'dark' || (!stored && prefersDark));
+    const stored = localStorage.getItem(themeKey);
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(stored === 'dark' || (!stored && prefersDark));
     document.getElementById('theme-toggle')?.addEventListener('click', () => {
-      setTheme(!root.classList.contains('dark'));
+      applyTheme(!root.classList.contains('dark'));
     });
-    const drawer = document.getElementById('mobile-drawer');
-    const overlay = document.getElementById('mobile-drawer-overlay');
+
+    // ── Dropdowns ────────────────────────────────────────────────
+    document.querySelectorAll<HTMLButtonElement>('.nav-link-dropdown').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        // Close all
+        document.querySelectorAll('.nav-link-dropdown').forEach(b => b.setAttribute('aria-expanded', 'false'));
+        if (!isOpen) btn.setAttribute('aria-expanded', 'true');
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!(e.target as Element).closest('.has-dropdown')) {
+        document.querySelectorAll('.nav-link-dropdown').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      }
+    });
+
+    // Keyboard: close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.nav-link-dropdown').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      }
+    });
+
+    // ── Mobile drawer ──────────────────────────────────────────
+    const drawer = document.getElementById('mobile-drawer')!;
+    const overlay = document.getElementById('mobile-overlay')!;
+    const openBtn = document.getElementById('mobile-menu-btn')!;
+    const closeBtn = document.getElementById('mobile-close-btn')!;
+
     function openDrawer() {
-      drawer?.classList.add('open');
-      drawer?.setAttribute('aria-hidden', 'false');
-      overlay?.classList.add('is-open');
+      drawer.classList.add('is-open');
+      overlay.classList.add('is-open');
+      openBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
     }
     function closeDrawer() {
-      drawer?.classList.remove('open');
-      drawer?.setAttribute('aria-hidden', 'true');
-      overlay?.classList.remove('is-open');
+      drawer.classList.remove('is-open');
+      overlay.classList.remove('is-open');
+      openBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
     }
-    const menuBtn = document.getElementById('mobile-menu-btn');
-    menuBtn?.addEventListener('click', () => {
-      const open = drawer?.classList.contains('open');
-      if (open) closeDrawer(); else openDrawer();
-      menuBtn.setAttribute('aria-expanded', String(!open));
-    });
-    overlay?.addEventListener('click', () => { closeDrawer(); menuBtn?.setAttribute('aria-expanded', 'false'); });
-    drawer?.querySelectorAll('[data-close-drawer]').forEach(el => el.addEventListener('click', () => { closeDrawer(); menuBtn?.setAttribute('aria-expanded', 'false'); }));
+    openBtn.addEventListener('click', openDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    drawer.querySelectorAll('[data-close-drawer]').forEach(el => el.addEventListener('click', closeDrawer));
   })();
 </script>
 
 <style>
-  .games-dropdown .games-trigger {
-    background: var(--color-primary);
-    color: #ffffff !important;
-    border-radius: var(--radius);
-    padding: 0 0.75rem;
-    min-height: 2.25rem;
-    gap: 0.375rem;
+  /* ── Header shell ──────────────────────────────────────────── */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg-base);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: color-mix(in srgb, var(--bg-base) 90%, transparent);
   }
-  .games-dropdown .games-trigger:hover {
-    background: var(--color-primary-hover);
-    color: #ffffff !important;
-  }
-  .games-dropdown details[open] .games-trigger {
-    background: var(--color-primary-hover);
-  }
-  .games-panel {
-    min-width: 18rem;
-  }
-  .games-grid {
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    height: 3.75rem;
     display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+    align-items: center;
+    gap: 2rem;
   }
-  .game-link {
+
+  /* ── Logo ─────────────────────────────────────────────────── */
+  .header-logo {
     display: flex;
-    flex-direction: column;
-    padding: 0.625rem 0.75rem !important;
-    border-radius: 0.375rem;
+    align-items: center;
+    gap: 0.625rem;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .logo-text {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--foreground);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  @media (max-width: 480px) { .logo-text { display: none; } }
+
+  /* ── Desktop nav ─────────────────────────────────────────── */
+  .nav-desktop {
+    display: flex;
+    align-items: center;
     gap: 0.125rem;
+    flex: 1;
   }
-  .game-link:hover {
-    background: var(--accent) !important;
+  .nav-item { position: relative; }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--muted-foreground);
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.15s, background 0.15s;
+    white-space: nowrap;
   }
-  .game-name {
-    font-weight: 600;
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--foreground);
+    background: var(--muted);
+  }
+  .nav-link.active { font-weight: 600; }
+  .chevron { transition: transform 0.2s; }
+  .has-dropdown:has([aria-expanded="true"]) .chevron { transform: rotate(180deg); }
+
+  /* ── Dropdown panel ──────────────────────────────────────── */
+  .nav-dropdown-panel {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    min-width: 16rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    padding: 0.75rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    z-index: 100;
+  }
+  .has-dropdown:hover .nav-dropdown-panel,
+  .has-dropdown:focus-within .nav-dropdown-panel,
+  .has-dropdown:has([aria-expanded="true"]) .nav-dropdown-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    padding: 0.25rem 0.5rem 0.5rem;
+  }
+  .dropdown-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0.5rem 0;
+  }
+  .dropdown-item {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0.625rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: background 0.1s;
+    gap: 0.1rem;
+  }
+  .dropdown-item:hover { background: var(--muted); }
+  .dropdown-item-name {
     font-size: 0.875rem;
+    font-weight: 500;
     color: var(--foreground);
   }
-  .game-desc {
+  .dropdown-item-desc {
     font-size: 0.75rem;
     color: var(--muted-foreground);
   }
-  
-  .mobile-search-wrap {
-    margin-bottom: 1rem;
+
+  /* Tools grid */
+  .dropdown-tools {
+    min-width: 18rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem;
   }
-  .mobile-search-input {
-    width: 100%;
-    padding: 0.625rem 0.875rem;
+  .dropdown-tools .dropdown-item {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  /* Length grid */
+  .length-grid {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+  }
+  .length-item {
+    min-width: 2rem;
+    text-align: center;
+    justify-content: center;
+    padding: 0.375rem 0.5rem;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--foreground);
-    font-size: 0.875rem;
   }
-  .mobile-search-input:focus {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
+  .length-item:hover { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
+
+  /* ── Right actions ────────────────────────────────────────── */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius);
+    border: none;
+    background: none;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+  }
+  .icon-btn:hover { color: var(--foreground); background: var(--muted); }
+
+  /* ── Mobile ─────────────────────────────────────────────── */
+  .lg-hidden { display: none; }
+  @media (max-width: 768px) {
+    .nav-desktop { display: none; }
+    .lg-hidden { display: inline-flex; }
+  }
+
+  /* ── Mobile drawer ────────────────────────────────────────── */
+  .mobile-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(18rem, 85vw);
+    background: var(--bg-card);
+    border-left: 1px solid var(--border);
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+  }
+  .mobile-drawer.is-open { transform: translateX(0); }
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgb(0 0 0 / 0.4);
+    z-index: 199;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+  .mobile-overlay.is-open { opacity: 1; visibility: visible; }
+
+  .mobile-drawer-inner { padding: 1.25rem; }
+  .mobile-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  .mobile-nav-section { margin-bottom: 1.25rem; }
+  .mobile-nav-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    margin-bottom: 0.5rem;
+  }
+  .mobile-nav-link {
+    display: block;
+    padding: 0.5rem 0.625rem;
+    border-radius: var(--radius);
+    font-size: 0.9375rem;
+    color: var(--foreground);
+    text-decoration: none;
+    transition: background 0.1s;
+  }
+  .mobile-nav-link:hover { background: var(--muted); }
+  .mobile-nav-link.length { font-size: 0.875rem; color: var(--muted-foreground); }
+  .mobile-length-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem;
   }
 </style>

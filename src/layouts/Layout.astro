@@ -39,5 +39,19 @@ const mainClass = game
     <AdSense />
     <SiteFooter />
     <slot name="footer" />
+    <script>
+      // Stagger section entrance animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.querySelectorAll('.stagger-item').forEach((el) => el.classList.add('visible'));
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      );
+      document.querySelectorAll('.stagger-section').forEach((s) => observer.observe(s));
+    </script>
   </body>
 </html>
