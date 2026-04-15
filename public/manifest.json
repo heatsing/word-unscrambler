@@ -9,14 +9,14 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/icon-v2.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/favicon-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/apple-icon-v2.png",
-      "sizes": "180x180",
+      "src": "/site-logo.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
@@ -34,9 +34,9 @@
       "url": "/word-unscrambler",
       "icons": [
         {
-          "src": "/icon-v2.svg",
-          "sizes": "any",
-          "type": "image/svg+xml"
+          "src": "/favicon-logo.png",
+          "sizes": "512x512",
+          "type": "image/png"
         }
       ]
     },
@@ -47,9 +47,9 @@
       "url": "/wordle-solver",
       "icons": [
         {
-          "src": "/icon-v2.svg",
-          "sizes": "any",
-          "type": "image/svg+xml"
+          "src": "/favicon-logo.png",
+          "sizes": "512x512",
+          "type": "image/png"
         }
       ]
     }

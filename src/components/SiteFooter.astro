@@ -60,7 +60,7 @@ const resources = [
     <!-- Brand column -->
     <div class="wt-footer-col">
       <div class="wt-footer-brand">
-        <span class="wt-footer-logo"><span class="wt-logo-w">W</span>ord<span class="wt-logo-tips">Tips</span></span>
+        <img src="/site-logo.png" alt="Word Unscrambler" class="wt-footer-logo" />
         <p class="wt-footer-tagline">
           Find better words faster. Free solvers, word lists, and puzzle helpers for everyday play.
         </p>
@@ -173,15 +173,12 @@ const resources = [
   /* Brand */
   .wt-footer-brand { margin-bottom: 1.25rem; }
   .wt-footer-logo {
-    font-size: 1.125rem;
-    font-weight: 800;
-    color: var(--foreground);
-    letter-spacing: -0.02em;
     display: block;
-    margin-bottom: 0.625rem;
+    width: min(240px, 100%);
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 0.75rem;
   }
-  .wt-logo-w { color: var(--color-primary); }
-  .wt-logo-tips { color: var(--color-primary); }
   .wt-footer-tagline {
     font-size: 0.875rem;
     color: var(--muted-foreground);

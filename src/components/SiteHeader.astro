@@ -36,9 +36,8 @@ function isActive(href: string): boolean {
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
 
-      <a href="/" class="wt-bar-logo" aria-label="WordTips Home">
-        <span class="wt-bar-logo-mark" aria-hidden="true">W</span>
-        <span class="wt-bar-logo-text">ord<span class="wt-bar-logo-tips">tips</span></span>
+      <a href="/" class="wt-bar-logo" aria-label="Word Unscrambler Home">
+        <img src="/site-logo.png" alt="Word Unscrambler" class="wt-bar-logo-img" />
       </a>
     </div>
 
@@ -173,7 +172,7 @@ function isActive(href: string): boolean {
 <!-- Mobile drawer -->
 <div class="wt-mobile-drawer" id="mobile-drawer" aria-hidden="true" role="dialog" aria-label="Navigation menu">
   <div class="wt-mobile-head">
-    <span class="wt-bar-logo-text wt-mobile-brand"><span class="wt-bar-logo-mark">W</span>ord<span class="wt-bar-logo-tips">tips</span></span>
+    <img src="/site-logo.png" alt="Word Unscrambler" class="wt-mobile-brand" />
     <button type="button" class="wt-bar-btn" id="mobile-close-btn" aria-label="Close menu">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
@@ -327,33 +326,17 @@ function isActive(href: string): boolean {
 
   .wt-bar-logo {
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
     text-decoration: none;
-    color: #fff;
-    font-weight: 800;
-    font-size: 1.2rem;
-    letter-spacing: -0.02em;
     margin-right: 0.75rem;
     flex-shrink: 0;
   }
-  .wt-bar-logo-mark {
-    position: relative;
-    display: inline-block;
-    color: #fff;
-    font-weight: 900;
+  .wt-bar-logo-img {
+    display: block;
+    height: 2rem;
+    width: auto;
+    object-fit: contain;
   }
-  .wt-bar-logo-mark::after {
-    content: '';
-    position: absolute;
-    top: 0.05em;
-    right: -0.15em;
-    width: 0.38em;
-    height: 0.38em;
-    background: #fbbf24;
-    border-radius: 50%;
-    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.15);
-  }
-  .wt-bar-logo-tips { font-weight: 800; opacity: 0.95; }
 
   .wt-bar-nav {
     display: flex;
@@ -606,8 +589,11 @@ function isActive(href: string): boolean {
  background: var(--nav-bar-bg);
     color: #fff;
   }
-  .wt-mobile-brand { color: #fff; }
-  .wt-mobile-brand .wt-bar-logo-mark::after { background: #fbbf24; }
+  .wt-mobile-brand {
+    height: 1.7rem;
+    width: auto;
+    object-fit: contain;
+  }
   .wt-mobile-scroll { padding: 0.75rem; }
   .wt-mobile-section {
     font-size: 0.65rem;
