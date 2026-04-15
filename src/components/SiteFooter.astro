@@ -8,18 +8,18 @@ const popularTools = [
   { name: 'Anagram Solver', href: '/anagram-solver' },
   { name: 'Words With Friends Cheat', href: '/words-with-friends' },
   { name: 'Crossword Solver', href: '/crossword-solver' },
-  { name: 'Jumble Solver', href: '/jumble-solver' },
-  { name: 'Text Twist Solver', href: '/text-twist' },
+  { name: 'Word Finder', href: '/word-finder' },
+  { name: 'Descrambler', href: '/descrambler' },
 ];
 
 const popularGames = [
   { name: 'Play Wordle', href: '/play-wordle' },
   { name: 'Unlimited Wordle', href: '/wordle-unlimited' },
   { name: 'Words With Friends', href: '/words-with-friends' },
+  { name: 'Wordle', href: '/wordle' },
   { name: 'Word Cookies', href: '/word-cookies' },
   { name: 'Scrabble Go', href: '/scrabble-go' },
   { name: 'Boggle Solver', href: '/boggle-solver' },
-  { name: 'Text Twist', href: '/text-twist' },
   { name: 'Wordscapes', href: '/wordscapes' },
 ];
 
@@ -28,23 +28,28 @@ const infoLinks = [
   { name: 'Contact', href: '/contact' },
   { name: 'Privacy Policy', href: '/privacy-policy' },
   { name: 'Terms of Use', href: '/terms' },
+  { name: 'Word Lists', href: '/words-by-length' },
+  { name: 'Words Start With', href: '/words-start-with' },
+  { name: 'Words Ending In', href: '/words-ending-in' },
+  { name: 'Words With Letters', href: '/words-with-letters' },
 ];
 
-const dailyAnswers = [
-  { name: 'Connections Hints', href: '/jumble-solver' },
-  { name: 'Strands Answer', href: '/word-search-solver' },
-  { name: 'Wordle Answer', href: '/wordle' },
-  { name: 'NYT Pips Answers', href: '/crossword-solver' },
-  { name: 'Spelling Bee Answers', href: '/word-unscrambler' },
-  { name: 'Contexto Answer', href: '/word-finder' },
+const wordLists = [
+  { name: '2-Letter Words', href: '/2-letter-words' },
+  { name: '3-Letter Words', href: '/3-letter-words' },
+  { name: '4-Letter Words', href: '/4-letter-words' },
+  { name: '5-Letter Words', href: '/5-letter-words' },
+  { name: '6-Letter Words', href: '/6-letter-words' },
+  { name: '7-Letter Words', href: '/7-letter-words' },
 ];
 
 const resources = [
-  { name: 'Wordle Unlimited', href: '/wordle-unlimited' },
-  { name: 'Mini Crossword', href: '/crossword-solver' },
-  { name: 'Articles', href: '/about' },
-  { name: 'Popular Pages', href: '/words-by-length' },
-  { name: 'Top Searches', href: '/word-finder' },
+  { name: 'Word Generator', href: '/word-generator' },
+  { name: 'Word Solver', href: '/word-solver' },
+  { name: 'Word Search Solver', href: '/word-search-solver' },
+  { name: 'Hangman Solver', href: '/hangman-solver' },
+  { name: 'Letter Boxed Solver', href: '/letter-boxed-solver' },
+  { name: 'Jumble Solver', href: '/jumble-solver' },
 ];
 
 ---
@@ -57,18 +62,8 @@ const resources = [
       <div class="wt-footer-brand">
         <span class="wt-footer-logo"><span class="wt-logo-w">W</span>ord<span class="wt-logo-tips">Tips</span></span>
         <p class="wt-footer-tagline">
-          Free word game tools and solvers — no sign-up needed.
+          Find better words faster. Free solvers, word lists, and puzzle helpers for everyday play.
         </p>
-      </div>
-      <div class="wt-footer-social">
-        <!-- Twitter/X -->
-        <a href="#" class="wt-social-link" aria-label="Twitter" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </a>
-        <!-- Facebook -->
-        <a href="#" class="wt-social-link" aria-label="Facebook" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        </a>
       </div>
     </div>
 
@@ -92,11 +87,11 @@ const resources = [
       </ul>
     </div>
 
-    <!-- Daily Answers -->
+    <!-- Word Lists -->
     <div class="wt-footer-col">
-      <h3 class="wt-footer-heading">Daily Answers</h3>
+      <h3 class="wt-footer-heading">Words by Length</h3>
       <ul class="wt-footer-links">
-        {dailyAnswers.map(link => (
+        {wordLists.map(link => (
           <li><a href={link.href} class="wt-footer-link">{link.name}</a></li>
         ))}
       </ul>
@@ -130,7 +125,7 @@ const resources = [
         &copy; {year} WordTips. All rights reserved.
       </p>
       <p class="wt-footer-disclaimer">
-        WordTips is not affiliated with any word game company. All trademarks are property of their respective owners.
+        This site is independent and is not affiliated with NYT, Hasbro, Zynga, or other word game publishers.
       </p>
     </div>
   </div>

@@ -74,9 +74,9 @@ function isActive(href: string): boolean {
           Word Lists
           <svg class="wt-dd-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
-        <div class="wt-dd-panel wt-dd-panel--hints" role="menu" aria-labelledby="dd-word-lists">
+        <div class="wt-dd-panel wt-dd-panel--simple" role="menu" aria-labelledby="dd-word-lists">
           <div class="wt-dd-caret" aria-hidden="true"></div>
-          <div class="wt-dd-body wt-dd-body--hints">
+          <div class="wt-dd-body">
             {headerWordLists.map((link) => (
               <a href={link.href} class:list={['wt-dd-link', { 'wt-dd-link--active': isActive(link.href) }]} role="menuitem">
                 <span>{link.name}</span>
@@ -85,13 +85,23 @@ function isActive(href: string): boolean {
                 )}
               </a>
             ))}
-            <div class="wt-length-block" role="group" aria-label="Words by Length">
-              <div class="wt-length-title">Words by Length</div>
-              <div class="wt-length-list">
-                {wordsByLengthLinks.map((item) => (
-                  <a href={item.href} class="wt-length-link" role="menuitem">{item.name}</a>
-                ))}
-              </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Words by Length -->
+      <div class="wt-dd wt-dd--length">
+        <button type="button" class="wt-dd-trigger" aria-expanded="false" aria-haspopup="true" id="dd-words-length">
+          Words by Length
+          <svg class="wt-dd-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="wt-dd-panel wt-dd-panel--length" role="menu" aria-labelledby="dd-words-length">
+          <div class="wt-dd-caret" aria-hidden="true"></div>
+          <div class="wt-dd-body">
+            <div class="wt-length-list">
+              {wordsByLengthLinks.map((item) => (
+                <a href={item.href} class:list={['wt-length-link', { 'wt-length-link--active': isActive(item.href) }]} role="menuitem">{item.name}</a>
+              ))}
             </div>
           </div>
         </div>
@@ -176,6 +186,10 @@ function isActive(href: string): boolean {
     <div class="wt-mobile-section">Word Lists</div>
     {headerWordLists.map((link) => (
       <a href={link.href} class="wt-mobile-a" data-close-drawer>{link.name}</a>
+    ))}
+    <div class="wt-mobile-section">Words by Length</div>
+    {wordsByLengthLinks.map((item) => (
+      <a href={item.href} class="wt-mobile-a" data-close-drawer>{item.name}</a>
     ))}
     <div class="wt-mobile-section">Daily Game Hints</div>
     {headerDailyGameHints.map((hint) => (
@@ -400,6 +414,9 @@ function isActive(href: string): boolean {
   .wt-dd--wide .wt-dd-panel {
     min-width: 17.5rem;
   }
+  .wt-dd--length .wt-dd-panel {
+    min-width: 16.5rem;
+  }
   .wt-dd-caret {
     position: absolute;
     top: 0;
@@ -485,20 +502,6 @@ function isActive(href: string): boolean {
   }
   .wt-hint-more:hover { text-decoration: underline; }
 
-  .wt-length-block {
-    margin-top: 0.55rem;
-    padding-top: 0.7rem;
-    border-top: 1px solid #e2e8f0;
-  }
-  .wt-length-title {
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #5f6b7a;
-    margin: 0 0 0.5rem;
-    padding: 0 0.15rem;
-  }
   .wt-length-list {
     display: grid;
     gap: 0.35rem;
@@ -520,6 +523,11 @@ function isActive(href: string): boolean {
     background: #edf4eb;
     border-right-color: #346739;
     transform: translateX(1px);
+  }
+  .wt-length-link--active {
+    background: #edf4eb;
+    border-right-color: #346739;
+    color: #14532d;
   }
 
   @media (min-width: 901px) {

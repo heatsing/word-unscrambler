@@ -56,6 +56,50 @@ const mainClass = fullBleed
         { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
       );
       document.querySelectorAll('.stagger-section').forEach((s) => observer.observe(s));
+
+      // Tool pages: auto-build left sidebar + right article layout
+      const toolWrappers = document.querySelectorAll('.tool-page-skin .tool-content > .page-wrapper');
+      toolWrappers.forEach((wrapper) => {
+        if (!(wrapper instanceof HTMLElement)) return;
+        if (wrapper.querySelector('.tool-main-with-sidebar')) return;
+
+        const shell = document.createElement('div');
+        shell.className = 'tool-main-with-sidebar';
+
+        const sidebar = document.createElement('aside');
+        sidebar.className = 'tool-main-sidebar';
+        sidebar.innerHTML = `
+          <section class="tool-side-card" aria-label="Games">
+            <h3 class="tool-side-title">Games</h3>
+            <ul class="tool-side-links">
+              <li><a href="/play-wordle">Wordle Daily Challenge</a></li>
+              <li><a href="/wordle-unlimited">Wordle Unlimited</a></li>
+              <li><a href="/crossword-solver">Mini Crossword</a></li>
+            </ul>
+          </section>
+          <section class="tool-side-card" aria-label="Word Finder">
+            <h3 class="tool-side-title">Word Finder</h3>
+            <ul class="tool-side-links">
+              <li><a href="/nyt-crossplay-solver">NYT Crossplay Solver</a></li>
+              <li><a href="/word-finder">Word Finder</a></li>
+              <li><a href="/wordle-solver">Wordle Solver</a></li>
+              <li><a href="/crossword-solver">Crossword Solver</a></li>
+              <li><a href="/word-unscrambler">Word Unscrambler</a></li>
+              <li><a href="/word-scramble">Word Scramble</a></li>
+            </ul>
+          </section>
+        `;
+
+        const article = document.createElement('div');
+        article.className = 'tool-main-article';
+        while (wrapper.firstChild) {
+          article.appendChild(wrapper.firstChild);
+        }
+
+        shell.appendChild(sidebar);
+        shell.appendChild(article);
+        wrapper.appendChild(shell);
+      });
     </script>
   </body>
 </html>
