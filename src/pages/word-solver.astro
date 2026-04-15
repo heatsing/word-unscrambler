@@ -1,0 +1,92 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/word-solver',
+  'Word Solver - Find Any Word from Letters | Free Tool',
+  'Free word solver: enter your letters to find every valid word, sorted by score. Works for Scrabble, Wordle, anagrams, and crossword solving.'
+);
+
+const faqs = [
+  {
+    question: 'What is a word solver?',
+    answer:
+      'A word solver is a tool that takes your letters and returns every valid word you can build. It helps with Scrabble, anagrams, crossword fills, and daily word games.',
+  },
+  {
+    question: 'Can I use wildcards?',
+    answer:
+      'Yes. Enter up to 3 wildcards using ? or space. Wildcards act as blank tiles and can represent any letter.',
+  },
+  {
+    question: 'How are results sorted?',
+    answer:
+      'By default results are sorted by score, so high-value plays appear first. You can also filter by word length to fit your board or puzzle slot.',
+  },
+  {
+    question: 'Is this tool free?',
+    answer:
+      'Yes. The word solver is fully free with no login and no limits.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta} fullBleed={true}>
+  <div class="tool-page-skin">
+    <section class="tool-hero">
+      <div class="tool-hero-inner page-wrapper">
+        <div class="breadcrumb">
+          <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Word Solver</span>
+        </div>
+
+        <h1 class="page-h1">Word Solver</h1>
+        <p class="page-body">Type your letters and instantly find every valid word you can make. Supports up to 3 wildcards (? or space).</p>
+
+        <div class="page-tool-card">
+          <UnscrambleTool client:load />
+        </div>
+      </div>
+    </section>
+
+    <div class="tool-content">
+      <AdSense />
+
+      <div class="page-wrapper">
+        <h2 class="page-h2">How to Use This Word Solver</h2>
+        <div class="page-body">
+          <p><strong>1)</strong> Enter your letters from the rack or puzzle.</p>
+          <p><strong>2)</strong> (Optional) set min/max length to match open board slots.</p>
+          <p><strong>3)</strong> Press search and pick the highest scoring playable word.</p>
+        </div>
+
+        <h2 class="page-h2">Best Use Cases</h2>
+        <div class="page-body">
+          <p>Use this page as your universal solver for <a href="/scrabble" class="text-primary hover:underline">Scrabble</a>, <a href="/words-with-friends" class="text-primary hover:underline">Words With Friends</a>, <a href="/wordle-solver" class="text-primary hover:underline">Wordle</a>, and <a href="/crossword-solver" class="text-primary hover:underline">crossword clues</a>.</p>
+        </div>
+
+        <h2 class="page-h2">Frequently Asked Questions</h2>
+        <div class="space-y-3">
+          {faqs.map((faq) => (
+            <details class="faq-details">
+              <summary class="faq-summary">
+                <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
+                <span class="faq-icon">+</span>
+              </summary>
+              <div class="faq-body">
+                <p>{faq.answer}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

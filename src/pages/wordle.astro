@@ -38,17 +38,29 @@ const faqs = [
 const faqSchema = getFAQPageSchema(faqs);
 ---
 
-<Layout meta={meta}>
-  <header class="text-center mb-10">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">🧩 Wordle</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-      The viral daily word game that took the world by storm. Guess the secret five-letter word in six tries.
-    </p>
-    <div class="mt-4 flex justify-center gap-3">
-      <a href="/play-wordle" class="btn btn-primary text-base px-6 py-3">▶ Play Wordle Now</a>
-      <a href="/wordle-unlimited" class="btn text-base px-6 py-3">∞ Unlimited Mode</a>
-    </div>
-  </header>
+<Layout meta={meta} fullBleed={true}>
+  <div class="tool-page-skin">
+    <section class="tool-hero">
+      <div class="tool-hero-inner page-wrapper">
+        <div class="breadcrumb">
+          <a href="/">Home</a> <span>›</span> <a href="/">Daily Games</a> <span>›</span> <span class="current">Wordle</span>
+        </div>
+        <h1 class="page-h1">Wordle</h1>
+        <p class="page-body">
+          The viral daily word game. Guess the secret five-letter word in six tries and use color clues to solve efficiently.
+        </p>
+        <div class="page-tool-card">
+          <div class="flex flex-wrap gap-3">
+            <a href="/play-wordle" class="btn btn-primary text-base px-6 py-3">▶ Play Wordle Now</a>
+            <a href="/wordle-unlimited" class="btn text-base px-6 py-3">∞ Unlimited Mode</a>
+            <a href="/wordle-solver" class="btn text-base px-6 py-3">🧩 Solver</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="tool-content">
+      <div class="page-wrapper">
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
     <section class="p-6 rounded-lg border border-border bg-card">
@@ -157,19 +169,20 @@ const faqSchema = getFAQPageSchema(faqs);
 
   <AdSense />
 
-  <section class="mt-10 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground flex items-center gap-2">
-      <span>❓</span> Frequently Asked Questions
-    </h2>
-    <dl class="space-y-4 text-sm">
-      {faqs.map((faq) => (
-        <div class="rounded-lg border border-border bg-muted/20 p-4">
-          <dt class="font-semibold text-foreground">{faq.question}</dt>
-          <dd class="text-muted-foreground mt-2 leading-relaxed" set:html={faq.answer} />
+  <h2 class="page-h2">Frequently Asked Questions</h2>
+  <div class="space-y-3">
+    {faqs.map((faq) => (
+      <details class="faq-details">
+        <summary class="faq-summary">
+          <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-body">
+          <p set:html={faq.answer} />
         </div>
-      ))}
-    </dl>
-  </section>
+      </details>
+    ))}
+  </div>
 
   <nav class="mt-10 flex flex-wrap gap-4 text-sm text-muted-foreground">
     <a href="/play-wordle" class="hover:text-foreground transition-colors">▶ Play Daily Wordle →</a>
@@ -178,5 +191,8 @@ const faqSchema = getFAQPageSchema(faqs);
     <a href="/anagram-solver" class="hover:text-foreground transition-colors">Anagram Solver →</a>
   </nav>
 
+      </div>
+    </div>
+  </div>
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

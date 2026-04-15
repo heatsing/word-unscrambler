@@ -48,19 +48,25 @@ const famousScrambles = [
 const faqSchema = getFAQPageSchema(faqs);
 ---
 
-<Layout meta={meta}>
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">Descrambler</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-      Unscramble any set of scrambled letters into real words. Enter your jumbled letters above to find every possible word — perfect for word games and puzzles.
-    </p>
-  </header>
+<Layout meta={meta} fullBleed={true}>
+  <div class="tool-page-skin">
+    <section class="tool-hero">
+      <div class="tool-hero-inner page-wrapper">
+        <div class="breadcrumb">
+          <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Descrambler</span>
+        </div>
+        <h1 class="page-h1">Descrambler</h1>
+        <p class="page-body">Unscramble any set of letters into real words instantly. Supports up to 3 wildcards (? or space).</p>
+        <div class="page-tool-card">
+          <UnscrambleTool client:load />
+        </div>
+      </div>
+    </section>
 
-  <UnscrambleTool client:load />
-
-  <AdSense />
-
-  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <div class="tool-content">
+      <AdSense />
+      <div class="page-wrapper">
+        <section class="mt-2 p-6 rounded-lg border border-border bg-card">
     <h2 class="text-2xl font-bold mb-4 text-foreground">What is Descrambling?</h2>
     <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
       <p>
@@ -79,9 +85,9 @@ const faqSchema = getFAQPageSchema(faqs);
         <li><a href="/boggle-solver" class="text-primary hover:underline"><strong class="text-foreground">Boggle</strong></a> — Enter the letters from your Boggle grid to find all possible words.</li>
       </ul>
     </div>
-  </section>
+        </section>
 
-  <section class="mt-8 p-6 rounded-lg border border-border bg-card">
+        <section class="mt-8 p-6 rounded-lg border border-border bg-card">
     <h2 class="text-2xl font-bold mb-4 text-foreground">🎯 Famous Scrambles to Try</h2>
     <p class="text-sm text-muted-foreground mb-4">
       Here are some well-known scrambled words to practice with. Try unscrambling them yourself, or use the tool above to check your answer!
@@ -105,9 +111,9 @@ const faqSchema = getFAQPageSchema(faqs);
     <p class="text-xs text-muted-foreground mt-4">
       Tip: Enter any of these scrambled strings in the tool above to see all possible unscrambled words!
     </p>
-  </section>
+        </section>
 
-  <section class="mt-8 p-6 rounded-lg border border-border bg-card">
+        <section class="mt-8 p-6 rounded-lg border border-border bg-card">
     <h2 class="text-2xl font-bold mb-4 text-foreground">Tips for Manual Unscrambling</h2>
     <ul class="list-disc pl-6 space-y-2 text-muted-foreground text-[15px] leading-relaxed">
       <li><strong class="text-foreground">Look for common patterns</strong> — Letter pairs like TH, CH, SH, ING, ED, ER, and vowel clusters (AIO, AEI) are easier to spot.</li>
@@ -116,26 +122,32 @@ const faqSchema = getFAQPageSchema(faqs);
       <li><strong class="text-foreground">Build from the edges</strong> — Start with possible first or last letters and work inward.</li>
       <li><strong class="text-foreground">Look for doubled letters</strong> — LL, EE, SS, OO often appear in word scrambles. If you have two identical letters, they're likely doubled in the answer.</li>
     </ul>
-  </section>
+        </section>
 
-  <section class="mt-8">
-    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
-    <dl class="space-y-4 text-sm">
-      {faqs.map((faq) => (
-        <div class="rounded-lg border border-border bg-card p-4">
-          <dt class="font-semibold text-foreground">{faq.question}</dt>
-          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
+        <h2 class="page-h2">Frequently Asked Questions</h2>
+        <div class="space-y-3">
+          {faqs.map((faq) => (
+            <details class="faq-details">
+              <summary class="faq-summary">
+                <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
+                <span class="faq-icon">+</span>
+              </summary>
+              <div class="faq-body">
+                <p>{faq.answer}</p>
+              </div>
+            </details>
+          ))}
         </div>
-      ))}
-    </dl>
-  </section>
 
-  <div class="mt-8 flex flex-wrap gap-3 text-sm">
-    <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
-    <a href="/jumble-solver" class="btn">Jumble Solver</a>
-    <a href="/wordle-solver" class="btn">Wordle Solver</a>
-    <a href="/scrabble" class="btn">Scrabble Finder</a>
-    <a href="/text-twist" class="btn">Text Twist</a>
+        <div class="mt-8 flex flex-wrap gap-3 text-sm">
+          <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
+          <a href="/jumble-solver" class="btn">Jumble Solver</a>
+          <a href="/wordle-solver" class="btn">Wordle Solver</a>
+          <a href="/scrabble" class="btn">Scrabble Finder</a>
+          <a href="/text-twist" class="btn">Text Twist</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />

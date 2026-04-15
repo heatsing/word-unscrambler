@@ -60,8 +60,10 @@ const TILE_VALUES = [
 ];
 ---
 
-<Layout meta={meta}>
-<div class="page-wrapper">
+<Layout meta={meta} fullBleed={true}>
+<div class="tool-page-skin">
+<section class="tool-hero">
+<div class="tool-hero-inner page-wrapper">
   <div class="breadcrumb">
     <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Scrabble Go Cheat</span>
   </div>
@@ -73,7 +75,9 @@ const TILE_VALUES = [
     <UnscrambleTool client:load />
   </div>
 </div>
+</section>
 
+<div class="tool-content">
 <AdSense />
 
 <div class="page-wrapper">
@@ -164,6 +168,8 @@ const TILE_VALUES = [
       </details>
     ))}
   </div>
+</div>
+</div>
 </div>
 
 <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />

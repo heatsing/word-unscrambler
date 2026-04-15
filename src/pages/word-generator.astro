@@ -65,19 +65,27 @@ const interestingWords = [
 ];
 ---
 
-<Layout meta={meta}>
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">Word Generator</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-      Browse our curated collection of interesting, unusual, and beautiful English words — or generate a random word instantly.
-    </p>
-  </header>
+<Layout meta={meta} fullBleed={true}>
+  <div class="tool-page-skin">
+    <section class="tool-hero">
+      <div class="tool-hero-inner page-wrapper">
+        <div class="breadcrumb">
+          <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Word Generator</span>
+        </div>
+        <h1 class="page-h1">Word Generator</h1>
+        <p class="page-body">
+          Browse curated interesting words or generate random words instantly for writing, games, and vocabulary practice.
+        </p>
+        <div class="page-tool-card">
+          <RandomWordGenerator client:load />
+        </div>
+      </div>
+    </section>
 
-  <RandomWordGenerator client:load />
-
-  <AdSense />
-
-  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
+    <div class="tool-content">
+      <AdSense />
+      <div class="page-wrapper">
+        <section class="mt-2 p-6 rounded-lg border border-border bg-card">
     <h2 class="text-2xl font-bold mb-4 text-foreground">Interesting Words to Know</h2>
     <p class="text-muted-foreground text-[15px] leading-relaxed mb-6">
       Sometimes the best words are the ones you don\'t hear every day. Here\'s a curated collection of interesting English words — perfect for expanding your vocabulary, creative writing, word games, or just impressing your friends.
@@ -91,9 +99,9 @@ const interestingWords = [
         </div>
       ))}
     </div>
-  </section>
+        </section>
 
-  <section class="mt-8 p-6 rounded-lg border border-border bg-card">
+        <section class="mt-8 p-6 rounded-lg border border-border bg-card">
     <h2 class="text-2xl font-bold mb-4 text-foreground">What is a Word Generator?</h2>
     <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
       <p>
@@ -110,10 +118,10 @@ const interestingWords = [
         <li><strong class="text-foreground">Crossword puzzles</strong> — Look for unusual words that might fit tricky clues.</li>
       </ul>
     </div>
-  </section>
+        </section>
 
-  <!-- More Tools -->
-  <section class="mt-8 max-w-3xl mx-auto">
+        <!-- More Tools -->
+        <section class="mt-8 max-w-3xl mx-auto">
     <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
       <h2 class="text-xl font-bold mb-4 text-foreground">More Word Tools to Try</h2>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -130,10 +138,10 @@ const interestingWords = [
         ))}
       </div>
     </div>
-  </section>
+        </section>
 
-  <!-- FAQ -->
-  <section class="mt-8 max-w-3xl mx-auto" id="faq">
+        <!-- FAQ -->
+        <section class="mt-8 max-w-3xl mx-auto" id="faq">
     <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
     <div class="space-y-3">
       {faqs.map((faq) => (
@@ -148,9 +156,12 @@ const interestingWords = [
         </details>
       ))}
     </div>
-  </section>
+        </section>
 
-  <div class="mt-12"></div>
+        <div class="mt-12"></div>
+      </div>
+    </div>
+  </div>
 
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

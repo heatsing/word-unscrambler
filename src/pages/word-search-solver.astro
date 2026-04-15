@@ -45,24 +45,26 @@ const faqs = [
 const faqSchema = getFAQPageSchema(faqs);
 ---
 
-<Layout meta={meta}>
-  <!-- Hero -->
-  <section class="text-center pt-8 pb-6">
-    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-      🔍 Free Tool · No Sign-up · Instant Results
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Word Search Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Enter your word search letters and find every valid word hidden within them. Solve any word search puzzle faster.
-    </p>
-  </section>
+<Layout meta={meta} fullBleed={true}>
+  <div class="tool-page-skin">
+    <section class="tool-hero">
+      <div class="tool-hero-inner page-wrapper">
+        <div class="breadcrumb">
+          <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Word Search Solver</span>
+        </div>
+        <h1 class="page-h1">Word Search Solver</h1>
+        <p class="page-body">
+          Enter your word search letters and find every valid word hidden within them. Solve any word search puzzle faster.
+        </p>
+        <div class="page-tool-card">
+          <UnscrambleTool client:load />
+        </div>
+      </div>
+    </section>
 
-  <!-- Tool -->
-  <div class="max-w-3xl mx-auto mb-10">
-    <UnscrambleTool client:load />
-  </div>
-
-  <AdSense />
+    <div class="tool-content">
+      <AdSense />
+      <div class="page-wrapper">
 
   <!-- What is a Word Search -->
   <section class="mt-12 max-w-3xl mx-auto">
@@ -159,6 +161,9 @@ const faqSchema = getFAQPageSchema(faqs);
   </section>
 
   <div class="mt-12"></div>
+      </div>
+    </div>
+  </div>
 
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />

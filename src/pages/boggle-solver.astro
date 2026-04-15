@@ -54,8 +54,10 @@ const SCORING_TABLE = [
 ];
 ---
 
-<Layout meta={meta} wide={true}>
-<div class="page-wrapper">
+<Layout meta={meta} fullBleed={true}>
+<div class="tool-page-skin">
+<section class="tool-hero">
+<div class="tool-hero-inner page-wrapper">
   <div class="breadcrumb">
     <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Boggle Solver</span>
   </div>
@@ -67,7 +69,9 @@ const SCORING_TABLE = [
     <UnscrambleTool client:load />
   </div>
 </div>
+</section>
 
+<div class="tool-content">
 <AdSense />
 
 <div class="page-wrapper">
@@ -173,6 +177,8 @@ const SCORING_TABLE = [
       </details>
     ))}
   </div>
+</div>
+</div>
 </div>
 
 <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />

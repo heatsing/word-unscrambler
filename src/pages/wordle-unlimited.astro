@@ -37,7 +37,7 @@ const faqs = [
 const faqSchema = getFAQPageSchema(faqs);
 ---
 
-<Layout meta={meta} game={true}>
+<Layout meta={meta} fullBleed={true}>
   <div class="game-layout">
     <div class="game-header-bar" style="margin-bottom: 0;">
       <span>🎮 Unlimited Wordle</span>
@@ -106,14 +106,19 @@ const faqSchema = getFAQPageSchema(faqs);
 
     <section class="mt-6">
       <h2 class="text-lg font-bold mb-3 text-foreground">FAQs</h2>
-      <dl class="space-y-3 text-sm">
+      <div class="space-y-3">
         {faqs.map((faq) => (
-          <div class="rounded-lg border border-border bg-card p-4">
-            <dt class="font-semibold text-foreground" set:html={faq.question} />
-            <dd class="text-muted-foreground mt-1 leading-relaxed" set:html={faq.answer} />
-          </div>
+          <details class="faq-details">
+            <summary class="faq-summary">
+              <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
+              <span class="faq-icon">+</span>
+            </summary>
+            <div class="faq-body">
+              <p set:html={faq.answer} />
+            </div>
+          </details>
         ))}
-      </dl>
+      </div>
     </section>
 
     <div class="mt-6 flex flex-wrap gap-3 text-sm">

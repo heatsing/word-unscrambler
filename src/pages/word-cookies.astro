@@ -50,8 +50,10 @@ const faqs = [
 const faqSchema = getFAQPageSchema(faqs);
 ---
 
-<Layout meta={meta} wide={true}>
-<div class="page-wrapper">
+<Layout meta={meta} fullBleed={true}>
+<div class="tool-page-skin">
+<section class="tool-hero">
+<div class="tool-hero-inner page-wrapper">
   <div class="breadcrumb">
     <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Word Cookies Solver</span>
   </div>
@@ -63,7 +65,9 @@ const faqSchema = getFAQPageSchema(faqs);
     <UnscrambleTool client:load />
   </div>
 </div>
+</section>
 
+<div class="tool-content">
 <AdSense />
 
 <div class="page-wrapper">
@@ -155,6 +159,8 @@ const faqSchema = getFAQPageSchema(faqs);
       </details>
     ))}
   </div>
+</div>
+</div>
 </div>
 
 <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />

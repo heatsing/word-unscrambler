@@ -19,41 +19,40 @@
 }
 
 :root {
-  /* Top nav bar (Wordtips-style teal) */
-  --nav-bar-bg: #2f9d8f;
-  --color-primary: #6366f1;
-  --color-primary-hover: #4f46e5;
-  --color-primary-light: #e0e7ff;
-  --background: #F9F7E6;
-  --foreground: #1e293b;
-  --muted: #f8fafc;
-  --muted-foreground: #94a3b8;
-  --border: #e2e8f0;
-  --accent: #f1f5f9;
-  --accent-foreground: #1e293b;
-  --card: #ffffff;
+  /* Unified 4-color palette */
+  --nav-bar-bg: #346739;
+  --color-primary: #346739;
+  --color-primary-hover: #2d5a31;
+  --color-primary-light: #9FCB98;
+  --background: #F2EDC2;
+  --foreground: #2b3a2b;
+  --muted: #e6e9c5;
+  --muted-foreground: #566856;
+  --border: #b9c890;
+  --accent: #9FCB98;
+  --accent-foreground: #233c24;
+  --card: #f8f5d8;
   --radius: 0.75rem;
-  /* Add new */
-  --hero-gradient-start: #6366f1;
-  --hero-gradient-end: #818cf8;
-  --section-alt: #f8fafc;
+  --hero-gradient-start: #346739;
+  --hero-gradient-end: #79AE6F;
+  --section-alt: #e8e6bf;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   /* Final unified design tokens (home + tool pages) */
   --ui-radius-md: 10px;
   --ui-radius-lg: 12px;
-  --ui-card-border: #ddd7b8;
-  --ui-card-border-strong: #ded8ba;
-  --ui-input-border: #d8d1af;
-  --ui-tile-border: #cdc7aa;
-  --ui-empty-border: #d9d2af;
-  --ui-empty-bg: #fcfbf3;
-  --ui-card-hover-bg: #fbf9ee;
-  --ui-card-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
-  --ui-card-shadow-hover: 0 6px 14px rgba(0, 0, 0, 0.08);
-  --ui-primary-shadow: 0 8px 18px rgba(86, 186, 149, 0.26);
-  --ui-primary-shadow-hover: 0 10px 22px rgba(86, 186, 149, 0.3);
+  --ui-card-border: #bcc997;
+  --ui-card-border-strong: #a9bf8d;
+  --ui-input-border: #9fba84;
+  --ui-tile-border: #8eb079;
+  --ui-empty-border: #9fba84;
+  --ui-empty-bg: #eef0cb;
+  --ui-card-hover-bg: #e6ebc5;
+  --ui-card-shadow: 0 6px 18px rgba(0, 0, 0, 0.055);
+  --ui-card-shadow-hover: 0 5px 12px rgba(0, 0, 0, 0.07);
+  --ui-primary-shadow: 0 6px 14px rgba(52, 103, 57, 0.2);
+  --ui-primary-shadow-hover: 0 8px 18px rgba(52, 103, 57, 0.24);
   --ui-section-gap: 2rem;
   --ui-section-gap-compact: 1.35rem;
   /* Wordle colors - NYT Wordle style */
@@ -70,7 +69,7 @@
 }
 
 .dark {
-  --nav-bar-bg: #267a6f;
+  --nav-bar-bg: #2d5a31;
   --color-correct: #6aaa64;
   --color-present: #c9b458;
   --color-absent: #787c7e;
@@ -81,25 +80,25 @@
   --wordle-key-text: #ffffff;
   --wordle-empty-border: #3a3a3c;
   --wordle-empty-bg: transparent;
-  --background: #0f172a;
-  --foreground: #f1f5f9;
-  --muted: #1e293b;
-  --muted-foreground: #64748b;
-  --border: #334155;
-  --accent: #1e293b;
-  --accent-foreground: #f1f5f9;
-  --card: #1e293b;
-  --section-alt: #1e293b;
+  --background: #1e2b1f;
+  --foreground: #e8f2d8;
+  --muted: #28382b;
+  --muted-foreground: #9bb08f;
+  --border: #3f5a42;
+  --accent: #314633;
+  --accent-foreground: #e8f2d8;
+  --card: #253626;
+  --section-alt: #283a2a;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
-  --ui-card-border: #333;
-  --ui-card-border-strong: #3c3c3c;
-  --ui-input-border: #4a4a4a;
-  --ui-tile-border: #505050;
-  --ui-empty-border: #4c4c4c;
-  --ui-empty-bg: #181c2b;
-  --ui-card-hover-bg: #1f2436;
+  --ui-card-border: #476648;
+  --ui-card-border-strong: #537754;
+  --ui-input-border: #5d835f;
+  --ui-tile-border: #5d835f;
+  --ui-empty-border: #5d835f;
+  --ui-empty-bg: #2b3d2c;
+  --ui-card-hover-bg: #304632;
 }
 
 /* Base */
@@ -615,7 +614,7 @@ details[open] .faq-icon {
 
 /* Buttons and inputs (theme-aware). Min height 44px for touch targets. */
 .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 500; border-radius: var(--ui-radius-md); border: 1px solid var(--border); background: var(--card); color: var(--foreground); cursor: pointer; }
-.btn:hover { background: var(--muted); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
+.btn:hover { background: var(--muted); box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05); }
 .btn-primary { background: var(--color-primary); color: #fff; border-color: var(--color-primary); box-shadow: var(--ui-primary-shadow); }
 .btn-primary:hover { background: var(--color-primary-hover); box-shadow: var(--ui-primary-shadow-hover); }
 .btn-ghost { background: transparent; border: none; color: var(--foreground); }
@@ -1174,7 +1173,7 @@ html { scroll-behavior: smooth; }
   background: var(--background);
 }
 .tool-hero {
-  background: #56ba95;
+  background: linear-gradient(135deg, #79AE6F 0%, #346739 100%);
   padding: 1.15rem 1rem 1.5rem;
 }
 .tool-hero-inner {

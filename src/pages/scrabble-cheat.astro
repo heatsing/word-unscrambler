@@ -1,0 +1,103 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import UnscrambleTool from '@/components/UnscrambleTool';
+import AdSense from '@/components/AdSense';
+import { getMeta } from '@/lib/meta';
+import { getFAQPageSchema } from '@/lib/schema';
+
+const meta = getMeta(
+  '/scrabble-cheat',
+  'Scrabble Cheat - Highest Scoring Words from Your Tiles',
+  'Free Scrabble cheat solver: enter your tiles and find every valid word sorted by points. Supports blank tiles and length filters.'
+);
+
+const faqs = [
+  {
+    question: 'Does this work as a Scrabble cheat?',
+    answer:
+      'Yes. Enter your rack letters and get all playable words sorted by score. It is the fastest way to find the highest-value move.',
+  },
+  {
+    question: 'Can I add blank tiles?',
+    answer:
+      'Yes. Use ? or space for blank tiles (wildcards). You can use up to 3 wildcards in this solver.',
+  },
+  {
+    question: 'How do I find Bingo plays?',
+    answer:
+      'Set min and max length to 7. Any returned 7-letter word is a potential Bingo and gives a 50-point bonus in standard Scrabble.',
+  },
+  {
+    question: 'What if I play Words With Friends?',
+    answer:
+      'Use this tool directly, or visit the dedicated WWF page at /words-with-friends for game-specific guidance.',
+  },
+];
+
+const faqSchema = getFAQPageSchema(faqs);
+---
+
+<Layout meta={meta} fullBleed={true}>
+  <div class="tool-page-skin">
+    <section class="tool-hero">
+      <div class="tool-hero-inner page-wrapper">
+        <div class="breadcrumb">
+          <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Scrabble Cheat</span>
+        </div>
+
+        <h1 class="page-h1">Scrabble Cheat</h1>
+        <p class="page-body">Enter your Scrabble letters and find the best scoring plays instantly. Supports up to 3 wildcards (? or space).</p>
+
+        <div class="page-tool-card">
+          <UnscrambleTool client:load />
+        </div>
+      </div>
+    </section>
+
+    <div class="tool-content">
+      <AdSense />
+
+      <div class="page-wrapper">
+        <h2 class="page-h2">Scrabble Quick Strategy</h2>
+        <div class="page-body">
+          <p>Prioritize high-value letters (Q, Z, X, J) when premium squares are open. If you cannot score big now, preserve rack balance to set up a stronger next turn.</p>
+          <p>Use filters to quickly target the exact word length that fits your board lane.</p>
+        </div>
+
+        <h2 class="page-h2">More Tools</h2>
+        <div class="page-body">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {[
+              { name: 'Scrabble Solver', href: '/scrabble', icon: '🎲' },
+              { name: 'Scrabble Go', href: '/scrabble-go', icon: '📱' },
+              { name: 'Words With Friends', href: '/words-with-friends', icon: '🧩' },
+              { name: 'Word Finder', href: '/word-finder', icon: '🔍' },
+            ].map((tool) => (
+              <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+                <span class="text-xl">{tool.icon}</span>
+                <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <h2 class="page-h2">Frequently Asked Questions</h2>
+        <div class="space-y-3">
+          {faqs.map((faq) => (
+            <details class="faq-details">
+              <summary class="faq-summary">
+                <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
+                <span class="faq-icon">+</span>
+              </summary>
+              <div class="faq-body">
+                <p>{faq.answer}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

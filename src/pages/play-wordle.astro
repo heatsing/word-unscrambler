@@ -37,7 +37,7 @@ const faqs = [
 const faqSchema = getFAQPageSchema(faqs);
 ---
 
-<Layout meta={meta} game={true}>
+<Layout meta={meta} fullBleed={true}>
   <div class="game-layout">
     <div class="page-header">
       <h1>🎯 Play Wordle</h1>
@@ -84,14 +84,19 @@ const faqSchema = getFAQPageSchema(faqs);
 
     <section class="mt-6">
       <h2 class="text-lg font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
-      <dl class="space-y-3 text-sm">
+      <div class="space-y-3">
         {faqs.map((faq) => (
-          <div class="rounded-lg border border-border bg-card p-4">
-            <dt class="font-semibold text-foreground">{faq.question}</dt>
-            <dd class="text-muted-foreground mt-1 leading-relaxed">{faq.answer}</dd>
-          </div>
+          <details class="faq-details">
+            <summary class="faq-summary">
+              <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
+              <span class="faq-icon">+</span>
+            </summary>
+            <div class="faq-body">
+              <p>{faq.answer}</p>
+            </div>
+          </details>
         ))}
-      </dl>
+      </div>
     </section>
 
     <div class="mt-6 flex flex-wrap gap-3 text-sm">

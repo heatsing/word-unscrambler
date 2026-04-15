@@ -49,24 +49,26 @@ const faqs = [
 const faqSchema = getFAQPageSchema(faqs);
 ---
 
-<Layout meta={meta}>
-  <!-- Hero -->
-  <section class="text-center pt-8 pb-6">
-    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-      🗞️ Free Tool · Newspaper Puzzles · Instant Results
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Jumble Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Unscramble your jumbled letters and get every possible word instantly — perfect for newspaper Jumble puzzles, mobile games, and word challenges.
-    </p>
-  </section>
+<Layout meta={meta} fullBleed={true}>
+  <div class="tool-page-skin">
+    <section class="tool-hero">
+      <div class="tool-hero-inner page-wrapper">
+        <div class="breadcrumb">
+          <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Jumble Solver</span>
+        </div>
+        <h1 class="page-h1">Jumble Solver</h1>
+        <p class="page-body">
+          Unscramble jumbled letters and get every possible word instantly for newspaper Jumble puzzles and word games.
+        </p>
+        <div class="page-tool-card">
+          <UnscrambleTool client:load />
+        </div>
+      </div>
+    </section>
 
-  <!-- Tool -->
-  <div class="max-w-3xl mx-auto mb-10">
-    <UnscrambleTool client:load />
-  </div>
-
-  <AdSense />
+    <div class="tool-content">
+      <AdSense />
+      <div class="page-wrapper">
 
   <!-- What is Jumble -->
   <section class="mt-12 max-w-3xl mx-auto">
@@ -248,5 +250,8 @@ const faqSchema = getFAQPageSchema(faqs);
     </div>
   </section>
 
+      </div>
+    </div>
+  </div>
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

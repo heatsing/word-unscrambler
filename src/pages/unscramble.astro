@@ -14,37 +14,54 @@ const faqs = [
 const faqSchema = getFAQPageSchema(faqs);
 ---
 
-<Layout meta={meta}>
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">Unscramble Words</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-      Enter your letters below. We'll find all valid words you can make.
-    </p>
-  </header>
-
-  <UnscrambleTool client:load />
-
-  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">Why Unscramble Words?</h2>
-    <p class="text-muted-foreground mb-4">
-      Unscrambling improves pattern recognition and vocabulary. Our tool shows every possible word from your letters—ideal for Wordle, Scrabble, and word puzzles.
-    </p>
-    <p class="text-muted-foreground">
-      For advanced filters, try our <a href="/word-unscrambler" class="text-primary hover:underline">Word Unscrambler</a> or <a href="/anagram-solver" class="text-primary hover:underline">Anagram Solver</a>.
-    </p>
-  </section>
-
-  <section class="mt-8">
-    <h2 class="text-xl font-bold mb-3 text-foreground">Frequently Asked Questions</h2>
-    <dl class="space-y-4 text-sm">
-      {faqs.map((faq) => (
-        <div>
-          <dt class="font-semibold text-foreground">{faq.question}</dt>
-          <dd class="text-muted-foreground mt-1">{faq.answer}</dd>
+<Layout meta={meta} fullBleed={true}>
+  <div class="tool-page-skin">
+    <section class="tool-hero">
+      <div class="tool-hero-inner page-wrapper">
+        <div class="breadcrumb">
+          <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Unscramble Words</span>
         </div>
-      ))}
-    </dl>
-  </section>
+        <h1 class="page-h1">Unscramble Words</h1>
+        <p class="page-body">
+          Enter your letters below and instantly find all valid words you can make. Supports up to 3 wildcards (? or space).
+        </p>
+        <div class="page-tool-card">
+          <UnscrambleTool client:load />
+        </div>
+      </div>
+    </section>
+
+    <div class="tool-content">
+      <div class="page-wrapper">
+        <h2 class="page-h2">Why Unscramble Words?</h2>
+        <div class="page-body">
+          <p>
+            Unscrambling improves pattern recognition and vocabulary. Our tool shows every possible word from your letters for
+            Wordle, Scrabble, and other word puzzles.
+          </p>
+          <p>
+            For advanced filters, try <a href="/word-unscrambler" class="text-primary hover:underline">Word Unscrambler</a> or
+            <a href="/anagram-solver" class="text-primary hover:underline"> Anagram Solver</a>.
+          </p>
+        </div>
+
+        <h2 class="page-h2">Frequently Asked Questions</h2>
+        <div class="space-y-3">
+          {faqs.map((faq) => (
+            <details class="faq-details">
+              <summary class="faq-summary">
+                <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
+                <span class="faq-icon">+</span>
+              </summary>
+              <div class="faq-body">
+                <p>{faq.answer}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />

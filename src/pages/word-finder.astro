@@ -61,24 +61,26 @@ const GAMES = [
 ];
 ---
 
-<Layout meta={meta}>
-  <!-- Hero -->
-  <section class="text-center pt-8 pb-6">
-    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-      🔍 Free Tool · Any Letters · Instant Results
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Word Finder</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Enter any letters and find every valid English word you can make. The ultimate word tool for Scrabble, Wordle, WWF, and every other word game.
-    </p>
-  </section>
+<Layout meta={meta} fullBleed={true}>
+  <div class="tool-page-skin">
+    <section class="tool-hero">
+      <div class="tool-hero-inner page-wrapper">
+        <div class="breadcrumb">
+          <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Word Finder</span>
+        </div>
+        <h1 class="page-h1">Word Finder</h1>
+        <p class="page-body">
+          Enter any letters and find every valid English word you can make. Works for Scrabble, Wordle, WWF, and all word games.
+        </p>
+        <div class="page-tool-card">
+          <UnscrambleTool client:load />
+        </div>
+      </div>
+    </section>
 
-  <!-- Tool -->
-  <div class="max-w-3xl mx-auto mb-10">
-    <UnscrambleTool client:load />
-  </div>
-
-  <AdSense />
+    <div class="tool-content">
+      <AdSense />
+      <div class="page-wrapper">
 
   <!-- What is a Word Finder -->
   <section class="mt-12 max-w-3xl mx-auto">
@@ -198,6 +200,9 @@ const GAMES = [
 
   <div class="mt-12"></div>
 
+      </div>
+    </div>
+  </div>
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>
