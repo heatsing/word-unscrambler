@@ -30,7 +30,7 @@ const faqs = [
   },
   {
     question: 'What strategies help with Hangman?',
-    answer: 'Start with common letters: E, T, A, O, I, N, S, H, and R are the most frequent letters in English. Vowels are especially valuable early in the game. Our solver helps you narrow down possibilities quickly.',
+    answer: 'Start with common letters: E, T, A, O, I, N, S, H, and R are the most frequent letters in English. Vowels are especially valuable early in the game. Focus on vowels early — words without vowels are rare. Consider word patterns — once you have several letters, look for common endings like -ING, -ED, -ER, -EST, -LY, and -ION.',
   },
 ];
 
@@ -38,53 +38,52 @@ const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta}>
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold mb-4 text-foreground">Hangman Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-      Enter your known letters and blank positions to find all possible words.
-    </p>
-  </header>
-
-  <UnscrambleTool client:load />
-
-  <AdSense />
-
-  <section class="mt-12 p-6 rounded-lg border border-border bg-card">
-    <h2 class="text-2xl font-bold mb-4 text-foreground">How to Solve Hangman</h2>
-    <div class="space-y-4 text-muted-foreground text-[15px] leading-relaxed">
-      <p>
-        Hangman is a classic word guessing game where one player thinks of a word and the other tries to guess it letter by letter. Our Hangman solver helps you find the right word when you\'re stuck or want to challenge friends.
-      </p>
-
-      <h3 class="text-lg font-semibold mt-4 mb-2 text-foreground">Hangman Strategies</h3>
-      <ul class="list-disc pl-6 space-y-2">
-        <li><strong class="text-foreground">Start with common letters</strong> — E is the most common letter in English, followed by T, A, O, I, N, S, H, and R. These give you the best chance of hitting the word early.</li>
-        <li><strong class="text-foreground">Focus on vowels early</strong> — Words without vowels are rare. Getting the vowels (A, E, I, O, U) figured out quickly narrows down the possibilities dramatically.</li>
-        <li><strong class="text-foreground">Use letter frequency</strong> — After vowels, common consonants include S, T, N, L, R, H, D, C, and M. Avoid rare letters like Q, Z, X, J, and K unless you have a strong reason to include them.</li>
-        <li><strong class="text-foreground">Consider word patterns</strong> — Once you have several letters, look for common endings like -ING, -ED, -ER, -EST, -LY, and -ION. These can quickly reveal the word.</li>
-        <li><strong class="text-foreground">Think of categories</strong> — If you know the word is an animal, food, or place, you can focus your guessing on relevant vocabulary.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="mt-8">
-    <h2 class="text-xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
-    <dl class="space-y-4 text-sm">
-      {faqs.map((faq) => (
-        <div class="rounded-lg border border-border bg-card p-4">
-          <dt class="font-semibold text-foreground">{faq.question}</dt>
-          <dd class="text-muted-foreground mt-2 leading-relaxed">{faq.answer}</dd>
-        </div>
-      ))}
-    </dl>
-  </section>
-
-  <div class="mt-8 flex flex-wrap gap-3 text-sm">
-    <a href="/word-finder" class="btn btn-primary">Word Finder</a>
-    <a href="/descrambler" class="btn btn-primary">Descrambler</a>
-    <a href="/word-scramble" class="btn btn-primary">Word Scramble</a>
-    <a href="/anagram-solver" class="btn btn-primary">Anagram Solver</a>
+<div class="page-wrapper">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Hangman Solver</span>
   </div>
 
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <h1 class="page-h1">Hangman Solver</h1>
+  <p class="page-body">Enter your known letters and blank positions to find all possible words. Solve any Hangman puzzle instantly.</p>
+
+  <div class="page-tool-card">
+    <UnscrambleTool client:load />
+  </div>
+</div>
+
+<AdSense />
+
+<div class="page-wrapper">
+  <h2 class="page-h2">How to Solve Hangman</h2>
+  <div class="page-body">
+    <p>Hangman is a classic word guessing game where one player thinks of a word and the other tries to guess it letter by letter. Our Hangman solver helps you find the right word when you're stuck or want to challenge friends.</p>
+    <p>Enter the letters you know in their correct positions using underscores for unknown letters. For example, if you know the word is 5 letters and you know the 2nd letter is "A" and the last letter is "E", enter <strong class="text-foreground">_A__E</strong>.</p>
+  </div>
+
+  <h2 class="page-h2">Hangman Strategies</h2>
+  <div class="page-body">
+    <p><strong>Start with common letters:</strong> E is the most common letter in English, followed by T, A, O, I, N, S, H, and R. These give you the best chance of hitting the word early.</p>
+    <p><strong>Focus on vowels early:</strong> Words without vowels are rare. Getting the vowels (A, E, I, O, U) figured out quickly narrows down the possibilities dramatically.</p>
+    <p><strong>Use letter frequency:</strong> After vowels, common consonants include S, T, N, L, R, H, D, C, and M. Avoid rare letters like Q, Z, X, J, and K unless you have a strong reason to include them.</p>
+    <p><strong>Consider word patterns:</strong> Once you have several letters, look for common endings like -ING, -ED, -ER, -EST, -LY, and -ION. These can quickly reveal the word.</p>
+    <p><strong>Think of categories:</strong> If you know the word is an animal, food, or place, you can focus your guessing on relevant vocabulary.</p>
+  </div>
+
+  <h2 class="page-h2">Frequently Asked Questions</h2>
+  <div class="space-y-3">
+    {faqs.map((faq) => (
+      <details class="faq-details">
+        <summary class="faq-summary">
+          <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-body">
+          <p>{faq.answer}</p>
+        </div>
+      </details>
+    ))}
+  </div>
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>

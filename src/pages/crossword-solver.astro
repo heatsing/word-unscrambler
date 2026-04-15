@@ -23,27 +23,27 @@ const howToSchema = getHowToSchema(howToSteps);
 const faqs = [
   {
     question: 'How does the crossword solver work?',
-    answer: 'The crossword solver takes your letter pattern (with underscores for unknown positions) and searches a comprehensive dictionary for every word that matches. For example, if you know the answer is a 5-letter word with A as the second letter and E as the fourth — pattern <strong class="text-foreground">_A_E</strong> — the solver finds every word matching that pattern: <strong class="text-foreground">CAPE</strong>, <strong class="text-foreground">RACE</strong>, <strong class="text-foreground">CAME</strong>, <strong class="text-foreground">BARE</strong>, <strong class="text-foreground">GAME</strong>, etc. Combine the letter pattern with your clue definition to pinpoint the exact answer.',
+    answer: 'The crossword solver takes your letter pattern (with underscores for unknown positions) and searches a comprehensive dictionary for every word that matches. For example, if you know the answer is a 5-letter word with A as the second letter and E as the fourth — pattern <strong class="text-foreground">_A_E</strong> — the solver finds every word matching that pattern.',
   },
   {
     question: 'What do underscores mean in the crossword solver?',
-    answer: 'Each underscore (_) represents exactly one unknown letter at that position. The solver will match any valid English letter in that slot. You can use as many underscores as you need — one underscore per unknown letter. For example, "__ING" matches any 5-letter word ending in -ING: <strong class="text-foreground">THING</strong>, <strong class="text-foreground">BRING</strong>, <strong class="text-foreground">SINGING</strong> (wait, that\'s 7 letters — try <strong class="text-foreground">FATING</strong>, <strong class="text-foreground">KING</strong> is only 4...). The underscore system makes it easy to narrow down answers quickly.',
+    answer: 'Each underscore (_) represents exactly one unknown letter at that position. You can use as many underscores as you need — one underscore per unknown letter. For example, "__ING" matches any 6-letter word ending in -ING.',
   },
   {
     question: 'Can I solve crossword clues with this tool?',
-    answer: 'This tool solves the <em>letter pattern</em> part of crosswords. It doesn\'t have a clue database — but once you parse the clue definition, the letter pattern is often the hardest part. Use the Crossword Solver to find all words matching your pattern, then cross-reference with the clue meaning. If your clue is "A feline pet" and your pattern is _AT_, the answer is CAT.',
+    answer: 'This tool solves the <em>letter pattern</em> part of crosswords. It doesn\'t have a clue database — but once you parse the clue definition, the letter pattern is often the hardest part. Use the Crossword Solver to find all words matching your pattern, then cross-reference with the clue meaning.',
   },
   {
     question: 'What\'s the best strategy for difficult crossword patterns?',
-    answer: '1. <strong class="text-foreground">Start with position clues</strong> — If you know a letter at any position, enter it. Even one confirmed letter dramatically narrows results. 2. <strong class="text-foreground">Use the include filter</strong> — If the word has a repeated letter (like two E\'s), enter E in the "Include" field to only see words containing E. 3. <strong class="text-foreground">Work systematically</strong> — If you have a 7-letter pattern with 3 unknowns, start with the most common letters in the unknowns. 4. <strong class="text-foreground">Think about word families</strong> — Once you narrow the pattern, consider what types of words fit the clue: verb, noun, adjective, etc.',
+    answer: '1. <strong class="text-foreground">Start with position clues</strong> — If you know a letter at any position, enter it. Even one confirmed letter dramatically narrows results. 2. <strong class="text-foreground">Use the include filter</strong> — If the word has a repeated letter, enter it in the "Include" field. 3. <strong class="text-foreground">Work systematically</strong> — Try the most common letters in the unknowns. 4. <strong class="text-foreground">Think about word families</strong> — Once you narrow the pattern, consider what types of words fit the clue: verb, noun, adjective, etc.',
   },
   {
     question: 'Does the crossword solver work for any word length?',
-    answer: 'Yes! Our crossword solver works for word lengths from 2 to 10 letters, covering the vast majority of standard crossword grid sizes. Most crosswords use 3-9 letter words, which are all covered. For longer words (10+ letters), try our main <a href="/word-unscrambler" class="text-primary hover:underline">word unscrambler</a>.',
+    answer: 'Yes! Our crossword solver works for word lengths from 2 to 10 letters, covering the vast majority of standard crossword grid sizes. For longer words (10+ letters), try our main <a href="/word-unscrambler" class="text-primary hover:underline">word unscrambler</a>.',
   },
   {
     question: 'How is this different from a word unscrambler?',
-    answer: 'A word unscrambler takes a set of letters and finds every word you can make from them — order doesn\'t matter. A crossword solver finds words matching a <em>specific pattern</em> where you know some positions and others are unknown. Think of it as pattern-matching vs. arrangement. If you have 5 letters in a row but don\'t know their order → word unscrambler. If you know 2 letters but not 3 others in specific positions → crossword solver.',
+    answer: 'A word unscrambler takes a set of letters and finds every word you can make from them — order doesn\'t matter. A crossword solver finds words matching a <em>specific pattern</em> where you know some positions and others are unknown.',
   },
 ];
 
@@ -51,163 +51,121 @@ const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta}>
-  <!-- Hero -->
-  <section class="text-center pt-8 pb-6">
-    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-      📰 Free Tool · No Sign-up · Instant Results
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Crossword Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Enter your crossword letter pattern with underscores for unknown letters. Find every word matching your pattern — instantly.
-    </p>
-  </section>
-
-  <!-- Tool -->
-  <div class="max-w-3xl mx-auto mb-10">
-    <CrosswordSolver client:load />
+<div class="page-wrapper">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Crossword Solver</span>
   </div>
 
-  <AdSense />
+  <h1 class="page-h1">Crossword Solver</h1>
+  <p class="page-body">Enter your crossword letter pattern with underscores for unknown letters. Find every word matching your pattern — instantly.</p>
 
-  <!-- What is a Crossword Solver -->
-  <section class="mt-12 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">What is a Crossword Solver?</h2>
-      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
-        <p>
-          A crossword solver is a tool that helps you find words matching a specific <em>letter pattern</em> when you're stuck on a crossword puzzle. If you know some of the letters in an answer but not all of them, enter the pattern with underscores for the unknown positions and the solver finds every matching word from our dictionary.
-        </p>
-        <p>
-          The crossword solver is different from a word unscrambler: unscramblers find words from a set of letters without caring about order, while a crossword solver finds words matching a <em>specific pattern</em> where you know some positions and not others. For example, if you know a crossword answer is 5 letters with A as the second letter and E as the fourth — pattern <strong class="text-foreground">_A_E</strong> — our solver finds every 5-letter word matching that pattern.
-        </p>
-        <p>
-          Crossword solving is one of the most satisfying mental exercises — and when you combine the letter pattern from our solver with the wordplay definition from your clue, the answer often clicks into place instantly.
-        </p>
-      </div>
-    </div>
-  </section>
+  <div class="page-tool-card">
+    <CrosswordSolver client:load />
+  </div>
+</div>
 
-  <!-- How to Use -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">How to Use the Crossword Helper</h2>
-      <div class="space-y-5">
-        {howToSteps.map((step, i) => (
-          <div class="flex gap-4">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
-            <div>
-              <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
-              <p class="text-sm text-muted-foreground">{step.text}</p>
-            </div>
+<AdSense />
+
+<div class="page-wrapper">
+  <h2 class="page-h2">What is a Crossword Solver?</h2>
+  <div class="page-body">
+    <p>A crossword solver is a tool that helps you find words matching a specific <em>letter pattern</em> when you're stuck on a crossword puzzle. If you know some of the letters in an answer but not all of them, enter the pattern with underscores for the unknown positions and the solver finds every matching word from our dictionary.</p>
+    <p>The crossword solver is different from a word unscrambler: unscramblers find words from a set of letters without caring about order, while a crossword solver finds words matching a <em>specific pattern</em> where you know some positions and not others.</p>
+  </div>
+
+  <h2 class="page-h2">How to Use the Crossword Helper</h2>
+  <div class="page-tool-card">
+    <div class="space-y-5">
+      {howToSteps.map((step, i) => (
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
+            <p class="text-sm text-muted-foreground">{step.text}</p>
           </div>
-        ))}
-      </div>
-      <div class="mt-6 p-4 bg-primary/5 border border-primary/20 rounded-xl">
-        <p class="text-sm text-muted-foreground">
-          <strong class="text-foreground">Pattern examples:</strong>
-          <code class="ml-2 font-mono text-foreground">_A_E</code> = 5 letters, 2nd=A, 4th=E ·
-          <code class="ml-2 font-mono text-foreground">__ING</code> = 6 letters, ends with ING ·
-          <code class="ml-2 font-mono text-foreground">S__T</code> = 4 letters, starts S, ends T
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Crossword Tips -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">💡 Crossword Solving Tips</h2>
-      <div class="space-y-5">
-        {[
-          { num: '1', title: 'Start with pattern-first clues', desc: 'Crossword clues that describe a specific letter pattern (like "Five-letter word starting with S and ending with T") are the easiest to solve with our tool. Enter the pattern immediately and find your answer before reading the definition.' },
-          { num: '2', title: 'Use the include filter for repeated letters', desc: 'If you know the word has two identical letters (like "ELEPHANT" with two E\'s or "TATTOO" with two T\'s and two O\'s), enter that letter in the "Include" field. This filters out words that don\'t have the repeated letter and dramatically narrows results.' },
-          { num: '3', title: 'Check both directions', desc: 'In a crossword grid, the same cell is part of two different words — one horizontal, one vertical. If you\'re stuck on one direction, solve the other first. The crossing letters often unlock the stuck clue.' },
-          { num: '4', title: 'Think about word families', desc: 'If your pattern matches multiple words, use the clue\'s part of speech (noun, verb, adjective) to narrow. A pattern like _IRE could match FIRE, DIRE, SIRE, WIRE, TIRE — but only one fits the clue\'s definition.' },
-          { num: '5', title: 'Use our word unscrambler for the crossing letters', desc: 'If you\'re stuck on a crossing word (the perpendicular word that intersects your answer), use our <a href="/word-unscrambler" class="text-primary hover:underline">word unscrambler</a> to find words from those letters. Sometimes solving the short crossing word unlocks everything.' },
-        ].map(({ num, title, desc }) => (
-          <div class="flex gap-4">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">{num}</div>
-            <div>
-              <h3 class="font-semibold text-foreground mb-1">{title}</h3>
-              <p class="text-sm text-muted-foreground" set:html={desc} />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Common Crossword Patterns -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">🔤 Common Crossword Patterns</h2>
-      <p class="text-[15px] text-muted-foreground mb-6">
-        These common crossword word patterns appear frequently. Use them to quickly identify answers:
-      </p>
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {[
-          { pattern: '__ING', meaning: 'Present participle (action in progress)' },
-          { pattern: '__ED', meaning: 'Past tense (completed action)' },
-          { pattern: '__ER', meaning: 'Agent/noun (one who does)' },
-          { pattern: '__LY', meaning: 'Adverb (how an action is done)' },
-          { pattern: '__TION', meaning: 'Noun (process/state)' },
-          { pattern: '__NESS', meaning: 'Noun (state of being)' },
-          { pattern: 'UN___', meaning: 'Opposite prefix + root' },
-          { pattern: 'RE___', meaning: 'Again/回 prefix + root' },
-          { pattern: '_O_', meaning: '3 letters, O is middle (common)' },
-          { pattern: '__ (2 letters)', meaning: 'Short words: AT, OF, IN, ON, TO, BY' },
-          { pattern: '___ (3 letters)', meaning: 'Common: THE, AND, FOR, ARE, BUT' },
-          { pattern: '____ (4 letters)', meaning: 'Common: THAT, WITH, HAVE, FROM' },
-        ].map(({ pattern, meaning }) => (
-          <div class="p-3 rounded-xl border border-border bg-muted/30">
-            <code class="font-mono font-bold text-primary text-sm">{pattern}</code>
-            <p class="text-xs text-muted-foreground mt-1">{meaning}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-xl font-bold mb-4 text-foreground">Related Word Tools</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
-          { name: 'Anagram Solver', href: '/anagram-solver', icon: '📚' },
-          { name: 'Wordle Solver', href: '/wordle-solver', icon: '🎯' },
-          { name: 'Scrabble Finder', href: '/scrabble', icon: '🎲' },
-        ].map((tool) => (
-          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
-            <span class="text-xl">{tool.icon}</span>
-            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="mt-8 max-w-3xl mx-auto" id="faq">
-    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
-    <div class="space-y-3">
-      {faqs.map((faq) => (
-        <details class="rounded-xl border border-border bg-card group">
-          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
-            <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
-            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
-          </summary>
-          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
-            <p class="pt-3" set:html={faq.answer} />
-          </div>
-        </details>
+        </div>
       ))}
     </div>
-  </section>
+    <div class="mt-6 p-4 bg-primary/5 border border-primary/20 rounded-xl">
+      <p class="text-sm text-muted-foreground">
+        <strong class="text-foreground">Pattern examples:</strong>
+        <code class="ml-2 font-mono text-foreground">_A_E</code> = 5 letters, 2nd=A, 4th=E ·
+        <code class="ml-2 font-mono text-foreground">__ING</code> = 6 letters, ends with ING ·
+        <code class="ml-2 font-mono text-foreground">S__T</code> = 4 letters, starts S, ends T
+      </p>
+    </div>
+  </div>
 
-  <div class="mt-12"></div>
+  <h2 class="page-h2">Crossword Solving Tips</h2>
+  <div class="page-body">
+    <p><strong>1. Start with pattern-first clues:</strong> Crossword clues that describe a specific letter pattern are the easiest to solve with our tool. Enter the pattern immediately and find your answer before reading the definition.</p>
+    <p><strong>2. Use the include filter for repeated letters:</strong> If you know the word has two identical letters (like "ELEPHANT" with two E's), enter that letter in the "Include" field. This filters out words that don't have the repeated letter.</p>
+    <p><strong>3. Check both directions:</strong> In a crossword grid, the same cell is part of two different words — one horizontal, one vertical. If you're stuck on one direction, solve the other first.</p>
+    <p><strong>4. Think about word families:</strong> If your pattern matches multiple words, use the clue's part of speech (noun, verb, adjective) to narrow.</p>
+    <p><strong>5. Use our word unscrambler for the crossing letters:</strong> If you're stuck on a crossing word, use our <a href="/word-unscrambler" class="text-primary hover:underline">word unscrambler</a> to find words from those letters.</p>
+  </div>
 
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <h2 class="page-h2">Common Crossword Patterns</h2>
+  <div class="page-body">
+    <p>These common crossword word patterns appear frequently. Use them to quickly identify answers:</p>
+  </div>
+  <div class="page-tool-card">
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+      {[
+        { pattern: '__ING', meaning: 'Present participle' },
+        { pattern: '__ED', meaning: 'Past tense' },
+        { pattern: '__ER', meaning: 'Agent/noun' },
+        { pattern: '__LY', meaning: 'Adverb' },
+        { pattern: '__TION', meaning: 'Noun ending' },
+        { pattern: '__NESS', meaning: 'State of being' },
+        { pattern: 'UN___', meaning: 'Opposite + root' },
+        { pattern: 'RE___', meaning: 'Again prefix' },
+        { pattern: '_O_', meaning: '3 letters, O is middle' },
+        { pattern: '__ (2 letters)', meaning: 'AT, OF, IN, ON, TO, BY' },
+        { pattern: '___ (3 letters)', meaning: 'THE, AND, FOR, ARE, BUT' },
+        { pattern: '____ (4 letters)', meaning: 'THAT, WITH, HAVE, FROM' },
+      ].map(({ pattern, meaning }) => (
+        <div class="p-3 rounded-xl border border-border bg-muted/30">
+          <code class="font-mono font-bold text-primary text-sm">{pattern}</code>
+          <p class="text-xs text-muted-foreground mt-1">{meaning}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <h2 class="page-h2">Related Word Tools</h2>
+  <div class="page-body">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {[
+        { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
+        { name: 'Anagram Solver', href: '/anagram-solver', icon: '📚' },
+        { name: 'Wordle Solver', href: '/wordle-solver', icon: '🎯' },
+        { name: 'Scrabble Finder', href: '/scrabble', icon: '🎲' },
+      ].map((tool) => (
+        <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+          <span class="text-xl">{tool.icon}</span>
+          <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <h2 class="page-h2">Frequently Asked Questions</h2>
+  <div class="space-y-3">
+    {faqs.map((faq) => (
+      <details class="faq-details">
+        <summary class="faq-summary">
+          <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-body">
+          <p set:html={faq.answer} />
+        </div>
+      </details>
+    ))}
+  </div>
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>

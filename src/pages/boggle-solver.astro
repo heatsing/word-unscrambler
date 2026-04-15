@@ -15,7 +15,7 @@ const howToSteps = [
   { name: 'Read your grid left to right, top to bottom', text: 'Boggle grids are 4×4. Read the letters from left to right, top to bottom, just like reading a book. Enter them as one continuous string.' },
   { name: 'Find all possible words', text: 'Our solver finds every valid 3-8+ letter word that can be formed by connecting adjacent letters (horizontally, vertically, or diagonally) without repeating any cube.' },
   { name: 'Sort by word length for scoring', text: 'Boggle scores by word length: 3-4 letters = 1pt, 5 letters = 2pts, 6 letters = 3pts, 7 letters = 5pts, 8+ letters = 11pts. Longest words are worth the most.' },
-  { name: 'Dominate your game', text: 'Use the found words to beat your opponents. Look for the hidden 8-letter words that other players often miss — they\'re worth 11 points each.' },
+  { name: 'Dominate your game', text: 'Use the found words to beat your opponents. Look for the hidden 8-letter words that other players often miss.' },
 ];
 
 const howToSchema = getHowToSchema(howToSteps);
@@ -23,27 +23,23 @@ const howToSchema = getHowToSchema(howToSteps);
 const faqs = [
   {
     question: 'What are the official Boggle rules?',
-    answer: 'In Boggle, players race to find as many words as possible in a 4×4 grid of 16 letter cubes. Words must be at least 3 letters long and can be formed by connecting adjacent letters — horizontally, vertically, or diagonally. Each cube can only be used once per word. Proper nouns, abbreviations, and words requiring a hyphen or apostrophe are not allowed. In the classic version, all players write down words simultaneously for 3 minutes; in Boggle Live (digital), you compete in real-time against others.',
+    answer: 'In Boggle, players race to find as many words as possible in a 4×4 grid of 16 letter cubes. Words must be at least 3 letters long and can be formed by connecting adjacent letters — horizontally, vertically, or diagonally. Each cube can only be used once per word. Proper nouns, abbreviations, and words requiring a hyphen or apostrophe are not allowed.',
   },
   {
     question: 'How does the Boggle solver work?',
-    answer: 'Our Boggle solver takes the 16 letters from your grid (entered as a continuous string reading left-to-right, top-to-bottom) and finds every valid English word that can be formed by tracing a path through adjacent cubes. It handles diagonal connections, respects the "no reused cube" rule, and only returns words that are 3 letters or longer. Results are sorted by word length (longest first) to match Boggle scoring.',
+    answer: 'Our Boggle solver takes the 16 letters from your grid (entered as a continuous string reading left-to-right, top-to-bottom) and finds every valid English word that can be formed by tracing a path through adjacent cubes. It handles diagonal connections, respects the "no reused cube" rule, and only returns words that are 3 letters or longer.',
   },
   {
     question: 'What is a good competitive Boggle score?',
-    answer: 'In a standard 3-minute Boggle game, a competitive player typically scores 400-600 points. Here\'s the official scoring: 3-4 letter words = 1 point, 5-letter words = 2 points, 6-letter words = 3 points, 7-letter words = 5 points, 8+ letter words = 11 points. To score 500+ points, you\'d need roughly 40-50 words of mixed lengths, including at least a few 7 and 8-letter words. Finding the rare 8-letter words that other players miss is often the difference between winning and losing.',
-  },
-  {
-    question: 'What are the "3x3 rule" and "diagonal connections" in Boggle?',
-    answer: 'In standard Boggle, you can connect cubes <strong class="text-foreground">horizontally, vertically, AND diagonally</strong> — all 8 directions are valid. This is different from some variants that only allow the 4 cardinal directions. The "3x3 rule" is a variant sometimes used in tournaments: you cannot use the same letter cube more than once within any 3×3 subgrid of the board. This prevents players from bouncing between nearby cubes and forces more varied word paths. Our solver uses standard diagonal connections by default.',
+    answer: 'In a standard 3-minute Boggle game, a competitive player typically scores 400-600 points. The key is finding all the 7 and 8-letter words. An 8-letter word is worth 11 points — equivalent to eleven 3-letter words. Finding the rare 8-letter words that other players miss is often the difference between winning and losing.',
   },
   {
     question: 'What\'s the highest possible score in a single Boggle game?',
-    answer: 'Theoretically, if every cube showed a Q (and you could form valid Q-words), you could score extremely high — but in practice, the highest recorded tournament Boggle score for a 4×4 grid is well over 1,000 points. The key is finding all the 7 and 8-letter words. An 8-letter word is worth 11 points — equivalent to eleven 3-letter words. Finding three or four 8-letter words in a single game can be the difference between a winning and losing score. Our solver surfaces all the long words in your grid, including the 8-letter gems most players miss.',
+    answer: 'Theoretically, if every cube showed a Q (and you could form valid Q-words), you could score extremely high — but in practice, the highest recorded tournament Boggle score for a 4×4 grid is well over 1,000 points. The key is finding all the 7 and 8-letter words.',
   },
   {
     question: 'Can the Boggle solver help me learn vocabulary?',
-    answer: 'Yes! Using our solver after a Boggle game is one of the best ways to expand your vocabulary. Every word you didn\'t know becomes a learning opportunity. For example, you might see <strong class="text-foreground">QUIXOTRY</strong> (the practice of pursuing idealistic goals) or <strong class="text-foreground">OUPONG</strong> (a Chinese coin) — words you\'d never encounter in daily life but that exist in the official Boggle dictionary. Over time, these words become part of your active vocabulary, making you a better Boggle player and a more interesting conversationalist.',
+    answer: 'Yes! Using our solver after a Boggle game is one of the best ways to expand your vocabulary. Every unfamiliar word you find is a learning opportunity. For example, you might see <strong class="text-foreground">QUIXOTRY</strong> (the practice of pursuing idealistic goals) or <strong class="text-foreground">OUPONG</strong> (a Chinese coin) — words you\'d never encounter in daily life but that exist in the official Boggle dictionary.',
   },
 ];
 
@@ -59,187 +55,126 @@ const SCORING_TABLE = [
 ---
 
 <Layout meta={meta} wide={true}>
-  <!-- Hero -->
-  <section class="text-center pt-8 pb-6">
-    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-      🎲 Free Tool · No Sign-up · Instant Results
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Boggle Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Enter your Boggle grid letters and find every valid word you can make. Discover the 7 and 8-letter words that win games.
-    </p>
-  </section>
-
-  <!-- Tool -->
-  <div class="max-w-3xl mx-auto mb-10">
-    <UnscrambleTool client:load />
+<div class="page-wrapper">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Boggle Solver</span>
   </div>
 
-  <AdSense />
+  <h1 class="page-h1">Boggle Solver</h1>
+  <p class="page-body">Enter your Boggle grid letters and find every valid word you can make. Discover the 7 and 8-letter words that win games.</p>
 
-  <!-- What is Boggle -->
-  <section class="mt-12 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">What is Boggle?</h2>
-      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
-        <p>
-          <a href="https://www.hasbro.com/hobbies/boggle" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Boggle</a> is one of the most popular fast-paced word games in the world, invented by Hasbro and first released in 1972. In the classic version, players simultaneously race to find words hidden in a 4×4 grid of 16 letter cubes — shaking the cube shaker, watching the grid settle, and then racing to write down as many words as possible before the sand timer runs out.
-        </p>
-        <p>
-          The game is deceptively simple but deeply strategic. Anyone can find short words like "CAT" or "RUN" — but finding the rare 7 and 8-letter words that score 5 and 11 points respectively is what separates casual players from Boggle champions. The game has spawned numerous digital versions, including <strong class="text-foreground">Boggle Live</strong> (online multiplayer) and the newer electronic <strong class="text-foreground">Boggle Board</strong> game.
-        </p>
-        <p>
-          Our Boggle solver helps you find every valid word in your grid, including the long words that are hardest to spot. It's the perfect tool for settling disputes, learning vocabulary, or dominating your next family game night.
-        </p>
-      </div>
-    </div>
-  </section>
+  <div class="page-tool-card">
+    <UnscrambleTool client:load />
+  </div>
+</div>
 
-  <!-- Boggle Rules -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">📋 Boggle Rules: How to Play</h2>
-      <div class="grid sm:grid-cols-2 gap-6">
-        <div>
-          <h3 class="font-semibold text-foreground mb-3">Basic Boggle Rules</h3>
-          <ul class="space-y-2 text-sm text-muted-foreground">
-            <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> <strong class="text-foreground">Grid:</strong> 4×4 grid = 16 letter cubes</li>
-            <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> <strong class="text-foreground">Min word length:</strong> 3 letters minimum</li>
-            <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> <strong class="text-foreground">Connections:</strong> Horizontal, vertical, AND diagonal — all 8 directions allowed</li>
-            <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> <strong class="text-foreground">No repeats:</strong> Each cube can only be used once per word</li>
-            <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> <strong class="text-foreground">Time:</strong> Classic Boggle = 3 minutes</li>
-            <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> <strong class="text-foreground">No proper nouns:</strong> Names of people, places, countries are not allowed</li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="font-semibold text-foreground mb-3">Boggle Scoring</h3>
-          <div class="space-y-2">
-            {SCORING_TABLE.map((row) => (
-              <div class="flex justify-between p-2 rounded text-sm">
-                <span class="text-foreground font-medium">{row.length}</span>
-                <span class="text-muted-foreground">{row.points}</span>
-              </div>
-            ))}
-          </div>
-          <p class="text-xs text-muted-foreground mt-3">A competitive Boggle player scores 400-600 points in a 3-minute game. Finding 8-letter words (11 pts each) is the key to winning.</p>
-        </div>
-      </div>
-      <div class="mt-6 p-4 bg-muted/30 rounded-xl">
-        <h4 class="font-semibold text-foreground text-sm mb-2">The Q Rule</h4>
-        <p class="text-xs text-muted-foreground">In standard Boggle, when you land on a Q cube, you must use it with the U following it (QU is treated as a single letter). However, in the international (UK/World) version, Q does NOT require a U — so QI is a valid word on its own. Know your version's rules before playing.</p>
-      </div>
-    </div>
-  </section>
+<AdSense />
 
-  <!-- How to Use -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">How to Use the Boggle Solver</h2>
-      <div class="space-y-5">
-        {howToSteps.map((step, i) => (
-          <div class="flex gap-4">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
-            <div>
-              <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
-              <p class="text-sm text-muted-foreground">{step.text}</p>
+<div class="page-wrapper">
+  <h2 class="page-h2">What is Boggle?</h2>
+  <div class="page-body">
+    <p><a href="https://www.hasbro.com/hobbies/boggle" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Boggle</a> is one of the most popular fast-paced word games in the world, invented by Hasbro and first released in 1972. In the classic version, players simultaneously race to find words hidden in a 4×4 grid of 16 letter cubes — shaking the cube shaker, watching the grid settle, and then racing to write down as many words as possible before the sand timer runs out.</p>
+    <p>The game is deceptively simple but deeply strategic. Anyone can find short words like "CAT" or "RUN" — but finding the rare 7 and 8-letter words that score 5 and 11 points respectively is what separates casual players from Boggle champions.</p>
+    <p>Our Boggle solver helps you find every valid word in your grid, including the long words that are hardest to spot.</p>
+  </div>
+
+  <h2 class="page-h2">Boggle Rules: How to Play</h2>
+  <div class="page-tool-card">
+    <div class="grid sm:grid-cols-2 gap-6">
+      <div>
+        <h3 class="font-semibold text-foreground mb-3">Basic Boggle Rules</h3>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> <strong class="text-foreground">Grid:</strong> 4×4 grid = 16 letter cubes</li>
+          <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> <strong class="text-foreground">Min word length:</strong> 3 letters minimum</li>
+          <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> <strong class="text-foreground">Connections:</strong> Horizontal, vertical, AND diagonal</li>
+          <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> <strong class="text-foreground">No repeats:</strong> Each cube can only be used once per word</li>
+          <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> <strong class="text-foreground">Time:</strong> Classic Boggle = 3 minutes</li>
+          <li class="flex items-start gap-2"><span class="text-primary mt-0.5">→</span> <strong class="text-foreground">No proper nouns:</strong> Names of people, places, countries are not allowed</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold text-foreground mb-3">Boggle Scoring</h3>
+        <div class="space-y-2">
+          {SCORING_TABLE.map((row) => (
+            <div class="flex justify-between p-2 rounded text-sm">
+              <span class="text-foreground font-medium">{row.length}</span>
+              <span class="text-muted-foreground">{row.points}</span>
             </div>
-          </div>
-        ))}
-      </div>
-      <div class="mt-6 p-4 bg-[#6aaa64]/10 border border-[#6aaa64]/20 rounded-xl">
-        <p class="text-sm text-muted-foreground">
-          <strong class="text-foreground">Example:</strong> If your Boggle grid looks like this:<br />
-          <code class="font-mono text-foreground">T W I S<br />R A N G<br />E C K S<br />H O P E</code><br />
-          Enter the letters as: <strong class="text-foreground">TWISRNAGEKCKSHOPE</strong>
-        </p>
+          ))}
+        </div>
+        <p class="text-xs text-muted-foreground mt-3">A competitive Boggle player scores 400-600 points in a 3-minute game.</p>
       </div>
     </div>
-  </section>
-
-  <!-- Boggle Strategy Tips -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">💡 Boggle Strategy Tips</h2>
-      <div class="space-y-5">
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">1</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Hunt for 7 and 8-letter words systematically</h3>
-            <p class="text-sm text-muted-foreground">These long words are worth 5 and 11 points respectively — equivalent to 5-11 three-letter words. They\'re also what separates good players from great ones. To find long words: (1) Look for letter chains that could form prefixes like UN-, IN-, RE-, OUT-, COM-, -TION, -ING, -NER, -TER. (2) Focus on cubes with rare letters (Q, X, Z, J, K) — they\'re usually the starting points of long words. (3) Look diagonally — many long words are hidden in diagonal paths that are easy to miss.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">2</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Master the Q cube</h3>
-            <p class="text-sm text-muted-foreground">When you land on Q in classic Boggle, you\'re forced to use QU. This means QI, QA, and QE are NOT valid in the classic US version. Find words that need QU naturally: <strong class="text-foreground">QUEEN</strong>, <strong class="text-foreground">QUICK</strong>, <strong class="text-foreground">QUIET</strong>, <strong class="text-foreground">QUEST</strong>, <strong class="text-foreground">QUILT</strong>, <strong class="text-foreground">QUOTA</strong>. In the international version, QI is valid on its own — which opens up many more plays.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">3</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Look for overlapping words</h3>
-            <p class="text-sm text-muted-foreground">A single path through the Boggle grid can sometimes contain multiple valid words. For example, a path spelling <strong class="text-foreground">S-T-R-A-W</strong> also contains <strong class="text-foreground">STRAW</strong>, <strong class="text-foreground">TRAW</strong>, <strong class="text-foreground">TRAWS</strong> (if valid), and <strong class="text-foreground">RAW</strong>. Train your eye to see words within words along a path.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">4</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Use the edges strategically</h3>
-            <p class="text-sm text-muted-foreground">Edge and corner cubes have fewer neighbors (2-3 instead of 8), which means words that start or end on edges are easier to find — and others may overlook them. Similarly, words that snake through the center of the board (touching many cubes) are both harder to find AND harder for opponents to spot. Knowing where words are likely to hide gives you an edge.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">5</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Build from what others write</h3>
-            <p class="text-sm text-muted-foreground">After the game, use our Boggle solver to see every word in the grid — including the ones you missed. This is the best vocabulary-building exercise: every unfamiliar word you find is a new addition to your word knowledge. <strong class="text-foreground">OUPONG</strong>, <strong class="text-foreground">QUIXOTRY</strong>, <strong class="text-foreground">NEPHRIST</strong> — these are real Boggle-legal words that most people have never heard of. Now you have.</p>
-          </div>
-        </div>
-      </div>
+    <div class="mt-6 p-4 bg-muted/30 rounded-xl">
+      <h4 class="font-semibold text-foreground text-sm mb-2">The Q Rule</h4>
+      <p class="text-xs text-muted-foreground">In standard Boggle, when you land on a Q cube, you must use it with the U following it (QU is treated as a single letter). In the international (UK/World) version, Q does NOT require a U — so QI is a valid word on its own.</p>
     </div>
-  </section>
+  </div>
 
-  <!-- Related Tools -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-xl font-bold mb-4 text-foreground">More Word Game Tools</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { name: 'Word Finder', href: '/word-finder', icon: '🔍' },
-          { name: 'Scrabble Go', href: '/scrabble-go', icon: '🎲' },
-          { name: 'Word Scramble', href: '/word-scramble', icon: '🔀' },
-          { name: 'Text Twist', href: '/text-twist', icon: '🔄' },
-        ].map((tool) => (
-          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
-            <span class="text-xl">{tool.icon}</span>
-            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="mt-8 max-w-3xl mx-auto" id="faq">
-    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
-    <div class="space-y-3">
-      {faqs.map((faq) => (
-        <details class="rounded-xl border border-border bg-card group">
-          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
-            <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
-            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
-          </summary>
-          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
-            <p class="pt-3" set:html={faq.answer} />
+  <h2 class="page-h2">How to Use the Boggle Solver</h2>
+  <div class="page-tool-card">
+    <div class="space-y-5">
+      {howToSteps.map((step, i) => (
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
+            <p class="text-sm text-muted-foreground">{step.text}</p>
           </div>
-        </details>
+        </div>
       ))}
     </div>
-  </section>
+    <div class="mt-6 p-4 bg-[#6aaa64]/10 border border-[#6aaa64]/20 rounded-xl">
+      <p class="text-sm text-muted-foreground">
+        <strong class="text-foreground">Example:</strong> If your Boggle grid looks like this:<br />
+        <code class="font-mono text-foreground">T W I S<br />R A N G<br />E C K S<br />H O P E</code><br />
+        Enter the letters as: <strong class="text-foreground">TWISRNAGEKCKSHOPE</strong>
+      </p>
+    </div>
+  </div>
 
-  <div class="mt-12"></div>
+  <h2 class="page-h2">Boggle Strategy Tips</h2>
+  <div class="page-body">
+    <p><strong>1. Hunt for 7 and 8-letter words systematically:</strong> These long words are worth 5 and 11 points respectively — equivalent to 5-11 three-letter words. Look for letter chains that could form prefixes like UN-, IN-, RE-, OUT-, COM-, -TION, -ING, -NER, -TER. Focus on cubes with rare letters (Q, X, Z, J, K) — they're usually starting points of long words.</p>
+    <p><strong>2. Master the Q cube:</strong> When you land on Q in classic Boggle, you're forced to use QU. Find words that need QU naturally: <strong class="text-foreground">QUEEN</strong>, <strong class="text-foreground">QUICK</strong>, <strong class="text-foreground">QUIET</strong>, <strong class="text-foreground">QUEST</strong>, <strong class="text-foreground">QUILT</strong>, <strong class="text-foreground">QUOTA</strong>.</p>
+    <p><strong>3. Look for overlapping words:</strong> A single path through the Boggle grid can sometimes contain multiple valid words. A path spelling <strong class="text-foreground">S-T-R-A-W</strong> also contains <strong class="text-foreground">STRAW</strong>, <strong class="text-foreground">TRAW</strong>, <strong class="text-foreground">TRAWS</strong>, and <strong class="text-foreground">RAW</strong>.</p>
+    <p><strong>4. Use the edges strategically:</strong> Edge and corner cubes have fewer neighbors (2-3 instead of 8), which means words that start or end on edges are easier to find — and others may overlook them.</p>
+    <p><strong>5. Build from what others write:</strong> After the game, use our Boggle solver to see every word in the grid — including the ones you missed.</p>
+  </div>
 
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <h2 class="page-h2">More Word Game Tools</h2>
+  <div class="page-body">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {[
+        { name: 'Word Finder', href: '/word-finder', icon: '🔍' },
+        { name: 'Scrabble Go', href: '/scrabble-go', icon: '🎲' },
+        { name: 'Word Scramble', href: '/word-scramble', icon: '🔀' },
+        { name: 'Text Twist', href: '/text-twist', icon: '🔄' },
+      ].map((tool) => (
+        <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+          <span class="text-xl">{tool.icon}</span>
+          <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <h2 class="page-h2">Frequently Asked Questions</h2>
+  <div class="space-y-3">
+    {faqs.map((faq) => (
+      <details class="faq-details">
+        <summary class="faq-summary">
+          <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-body">
+          <p set:html={faq.answer} />
+        </div>
+      </details>
+    ))}
+  </div>
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>

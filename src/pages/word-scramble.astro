@@ -50,154 +50,113 @@ const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta}>
-  <!-- Hero -->
-  <section class="text-center pt-8 pb-6">
-    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-      🔀 Free Tool · No Sign-up · Instant Results
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Word Scramble Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Enter any scrambled or jumbled letters and find every valid word you can make. Works for word scrambles, Jumble puzzles, Scrabble, and more.
-    </p>
-  </section>
-
-  <!-- Tool -->
-  <div class="max-w-3xl mx-auto mb-10">
-    <UnscrambleTool client:load />
+<div class="page-wrapper">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Word Scramble Solver</span>
   </div>
 
-  <AdSense />
+  <h1 class="page-h1">Word Scramble Solver</h1>
+  <p class="page-body">Enter any scrambled or jumbled letters and find every valid word you can make. Works for word scrambles, Jumble puzzles, Scrabble, and more.</p>
 
-  <!-- What is Word Scramble -->
-  <section class="mt-12 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">What is Word Scramble?</h2>
-      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
-        <p>
-          Word scramble is a classic puzzle format where letters are presented in a jumbled, random order and the solver must rearrange them to form meaningful words. It's one of the most common puzzle types in newspapers (where it appears as the famous <a href="/jumble-solver" class="text-primary hover:underline">Jumble puzzle</a>), classrooms, party games, and mobile apps.
-        </p>
-        <p>
-          Unlike an anagram (which typically rearranges one known word into another), a word scramble presents you with letters that could form <em>multiple</em> words — or a single word that you have to figure out. The challenge scales with difficulty: easy scrambles might hide simple words like "CAT" → "ACT", while hard ones might hide complex words like "STABLE" → "ABLES T" (no, wait — try <strong class="text-foreground">TABLES</strong>, <strong class="text-foreground">BLASTED</strong>, etc.).
-        </p>
-        <p>
-          Our word scramble solver handles any letter combination, no matter how scrambled. Whether you've got a 3-letter puzzle or a 12-letter challenge, our tool reveals every valid word instantly.
-        </p>
-      </div>
-    </div>
-  </section>
+  <div class="page-tool-card">
+    <UnscrambleTool client:load />
+  </div>
+</div>
 
-  <!-- How to Use -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">How to Use the Word Scramble Solver</h2>
-      <div class="space-y-5">
-        {howToSteps.map((step, i) => (
-          <div class="flex gap-4">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
-            <div>
-              <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
-              <p class="text-sm text-muted-foreground">{step.text}</p>
-            </div>
+<AdSense />
+
+<div class="page-wrapper">
+  <h2 class="page-h2">What is Word Scramble?</h2>
+  <div class="page-body">
+    <p>Word scramble is a classic puzzle format where letters are presented in a jumbled, random order and the solver must rearrange them to form meaningful words. It's one of the most common puzzle types in newspapers (where it appears as the famous <a href="/jumble-solver" class="text-primary hover:underline">Jumble puzzle</a>), classrooms, party games, and mobile apps.</p>
+    <p>Unlike an anagram (which typically rearranges one known word into another), a word scramble presents you with letters that could form <em>multiple</em> words — or a single word that you have to figure out. The challenge scales with difficulty: easy scrambles might hide simple words like "CAT" → "ACT", while hard ones might hide complex words like "STABLE" → "ABLES T" (no, wait — try <strong class="text-foreground">TABLES</strong>, <strong class="text-foreground">BLASTED</strong>, etc.).</p>
+    <p>Our word scramble solver handles any letter combination, no matter how scrambled. Whether you've got a 3-letter puzzle or a 12-letter challenge, our tool reveals every valid word instantly.</p>
+  </div>
+
+  <h2 class="page-h2">How to Use the Word Scramble Solver</h2>
+  <div class="page-tool-card">
+    <div class="space-y-5">
+      {howToSteps.map((step, i) => (
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
+            <p class="text-sm text-muted-foreground">{step.text}</p>
           </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Tips -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">💡 How to Solve Word Scrambles Without a Tool</h2>
-      <div class="space-y-5">
-        {[
-          { num: '1', title: 'Look for common letter patterns', desc: 'Vowel-consonant-vowel (VCV) patterns like A-E, I-O, U-A appear constantly. Common pairs: TH, HE, IN, ER, AN, RE, ON, AT, ST, and ND. Scan your scrambled letters for these patterns first.' },
-          { num: '2', title: 'Try common prefixes', desc: 'UN-, RE-, IN-, OUT-, DIS-, PRE-, PRO-, EX- are common English prefixes. If your scramble starts with these patterns, the word might begin with one of them.' },
-          { num: '3', title: 'Look for suffixes', desc: 'Common endings like -ING, -ED, -ER, -LY, -TION, -NESS, -MENT, -ABLE, -IBLE often unlock scrambles quickly. If your letters end in G-N-I, try -ING.' },
-          { num: '4', title: 'Start with rare letters', desc: 'Q, Z, X, J, and V are the rarest in English. If your scramble has a Q, look for QI or QAT. A Z often pairs with A, O, or E. Finding the rare letter\'s position narrows the answer dramatically.' },
-          { num: '5', title: 'Watch for doubled letters', desc: 'If your scramble has two identical letters (SS, TT, LL, EE, etc.), they\'re likely doubled in the original word. In a scramble like "LATTE", the doubled TT points toward "LETTA" → "TABLET".' },
-        ].map(({ num, title, desc }) => (
-          <div class="flex gap-4">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">{num}</div>
-            <div>
-              <h3 class="font-semibold text-foreground mb-1">{title}</h3>
-              <p class="text-sm text-muted-foreground">{desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Real Examples -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">📖 Real Word Scramble Examples</h2>
-      <div class="space-y-4 text-[15px] text-muted-foreground">
-        <p>Here are some real word scramble puzzles and what our solver finds:</p>
-        <div class="grid gap-3">
-          {[
-            { scrambled: 'ELST', answer: 'LETS', note: 'Also: ELTS, ELST (archaic), SETL (dialectal)' },
-            { scrambled: 'NIPCE', answer: 'PENIC', note: 'Also: PIECE (6 letters), PINE C (7+), INCEP (archaic)' },
-            { scrambled: 'RTAWE', answer: 'WATER', note: 'Also: TARWE, WARE T, RETAW (backward)' },
-            { scrambled: 'NIACL', answer: 'LANCI', note: 'Also: LINAC, CANIL — CLAIN (archaic), CARLIN (7 letters)' },
-          ].map(({ scrambled, answer, note }) => (
-            <div class="p-4 rounded-xl border border-border bg-muted/20">
-              <div class="flex items-center gap-3 mb-2">
-                <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Scrambled</span>
-                <code class="font-mono font-bold text-foreground text-lg tracking-widest">{scrambled}</code>
-              </div>
-              <div class="text-sm">
-                <span class="text-muted-foreground">Finds words like: </span>
-                <span class="font-semibold text-primary">{answer}</span>
-                <span class="text-xs text-muted-foreground ml-2">({note})</span>
-              </div>
-            </div>
-          ))}
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-xl font-bold mb-4 text-foreground">Related Word Tools</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { name: 'Jumble Solver', href: '/jumble-solver', icon: '📰' },
-          { name: 'Descrambler', href: '/descrambler', icon: '🔀' },
-          { name: 'Anagram Solver', href: '/anagram-solver', icon: '📚' },
-          { name: 'Word Finder', href: '/word-finder', icon: '🔍' },
-        ].map((tool) => (
-          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
-            <span class="text-xl">{tool.icon}</span>
-            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="mt-8 max-w-3xl mx-auto" id="faq">
-    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
-    <div class="space-y-3">
-      {faqs.map((faq) => (
-        <details class="rounded-xl border border-border bg-card group">
-          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
-            <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
-            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
-          </summary>
-          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
-            <p class="pt-3" set:html={faq.answer} />
-          </div>
-        </details>
       ))}
     </div>
-  </section>
+  </div>
 
-  <div class="mt-12"></div>
+  <h2 class="page-h2">How to Solve Word Scrambles Without a Tool</h2>
+  <div class="page-body">
+    <p>Looking for common letter patterns: Vowel-consonant-vowel (VCV) patterns like A-E, I-O, U-A appear constantly. Common pairs: TH, HE, IN, ER, AN, RE, ON, AT, ST, and ND. Scan your scrambled letters for these patterns first.</p>
+    <p>Try common prefixes: UN-, RE-, IN-, OUT-, DIS-, PRE-, PRO- are common English prefixes. If your scramble starts with these patterns, the word might begin with one of them.</p>
+    <p>Look for suffixes: Common endings like -ING, -ED, -ER, -LY, -TION, -NESS, -MENT, -ABLE, -IBLE often unlock scrambles quickly. If your letters end in G-N-I, try -ING.</p>
+    <p>Start with rare letters: Q, Z, X, J, and V are the rarest in English. If your scramble has a Q, look for QI or QAT. A Z often pairs with A, O, or E. Finding the rare letter's position narrows the answer dramatically.</p>
+    <p>Watch for doubled letters: If your scramble has two identical letters (SS, TT, LL, EE, etc.), they're likely doubled in the original word. In a scramble like "LATTE", the doubled TT points toward "LETTA" → "TABLET".</p>
+  </div>
 
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <h2 class="page-h2">Real Word Scramble Examples</h2>
+  <div class="page-body">
+    <p>Here are some real word scramble puzzles and what our solver finds:</p>
+  </div>
+  <div class="page-tool-card">
+    <div class="space-y-3">
+      {[
+        { scrambled: 'ELST', answer: 'LETS', note: 'Also: ELTS, ELST (archaic), SETL (dialectal)' },
+        { scrambled: 'NIPCE', answer: 'PENIC', note: 'Also: PIECE (6 letters), PINE C (7+), INCEP (archaic)' },
+        { scrambled: 'RTAWE', answer: 'WATER', note: 'Also: TARWE, WARE T, RETAW (backward)' },
+        { scrambled: 'NIACL', answer: 'LANCI', note: 'Also: LINAC, CANIL — CLAIN (archaic), CARLIN (7 letters)' },
+      ].map(({ scrambled, answer, note }) => (
+        <div class="p-4 rounded-xl border border-border bg-muted/20">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Scrambled</span>
+            <code class="font-mono font-bold text-foreground text-lg tracking-widest">{scrambled}</code>
+          </div>
+          <div class="text-sm">
+            <span class="text-muted-foreground">Finds words like: </span>
+            <span class="font-semibold text-primary">{answer}</span>
+            <span class="text-xs text-muted-foreground ml-2">({note})</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <h2 class="page-h2">Related Word Tools</h2>
+  <div class="page-body">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {[
+        { name: 'Jumble Solver', href: '/jumble-solver', icon: '📰' },
+        { name: 'Descrambler', href: '/descrambler', icon: '🔀' },
+        { name: 'Anagram Solver', href: '/anagram-solver', icon: '📚' },
+        { name: 'Word Finder', href: '/word-finder', icon: '🔍' },
+      ].map((tool) => (
+        <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+          <span class="text-xl">{tool.icon}</span>
+          <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <h2 class="page-h2">Frequently Asked Questions</h2>
+  <div class="space-y-3">
+    {faqs.map((faq) => (
+      <details class="faq-details">
+        <summary class="faq-summary">
+          <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-body">
+          <p set:html={faq.answer} />
+        </div>
+      </details>
+    ))}
+  </div>
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>

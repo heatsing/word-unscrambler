@@ -27,23 +27,23 @@ const faqs = [
   },
   {
     question: 'What is a Bing in Scrabble?',
-    answer: 'A Bing (sometimes spelled "Bingo") is when you play all seven tiles from your rack in a single turn, earning a 50-point bonus on top of your word score. Finding Bing words like ESTIMATE (8 letters) or STATIONER (9 letters) can completely turn around a close game. Our tool highlights 7-letter words from your rack so you can spot Bing opportunities instantly.',
+    answer: 'A Bing (sometimes spelled "Bingo") is when you play all seven tiles from your rack in a single turn, earning a 50-point bonus on top of your word score. Finding Bing words like ESTIMATE (8 letters) or STATIONER (9 letters) can completely turn around a close game. Our tool highlights 7-letter words from your rack so you can spot Bingo opportunities instantly.',
   },
   {
     question: 'What dictionaries does the Scrabble solver use?',
-    answer: 'Our word list covers standard English words used in North American Scrabble (based on OSPD — the Official Scrabble Players Dictionary) as well as internationally accepted words from SOWPODS. This covers the vast majority of words you\'ll encounter in casual or tournament play. Different tournaments may use slightly different word lists, so check with your tournament director if precision matters.',
+    answer: 'Our word list covers standard English words used in North American Scrabble (based on OSPD — the Official Scrabble Players Dictionary) as well as internationally accepted words from SOWPODS. This covers the vast majority of words you\'ll encounter in casual or tournament play.',
   },
   {
     question: 'How do I get the highest score with difficult letters like Q and Z?',
-    answer: 'High-value tiles like Q (10 points) and Z (10 points) are game-changers — but only if you play them wisely. The key is finding words that let you place them on a Triple Word (TW) or Double Word (DW) square. QI (a valid 2-letter word worth 11+ points on a TW) is your best friend when you have a Q. ZA (zero-point word) is also extremely useful. Other high-value 2-letter words include XI (9+), XU (9+), and JO (9+). Using a tool to find Q-words and Z-words from your rack is one of the fastest ways to improve your Scrabble game.',
+    answer: 'High-value tiles like Q (10 points) and Z (10 points) are game-changers — but only if you play them wisely. The key is finding words that let you place them on a Triple Word (TW) or Double Word (DW) square. QI (a valid 2-letter word worth 11+ points on a TW) is your best friend when you have a Q. ZA (zero-point word) is also extremely useful. Other high-value 2-letter words include XI (9+), XU (9+), and JO (9+).',
   },
   {
     question: 'What are the rarest and highest-scoring Scrabble words?',
-    answer: 'The highest-scoring single word ever played in tournament Scrabble was CAZIQUES (a tropical bird), worth 1,549 points including a Triple Word score. Other exceptionally high-scoring words include OXYPHENBUTAZONE (1,418), PNEUMONOULTRAMICROSCOPICS (1,410), and QUIXOTRIES (1,198). These words use a combination of high-value tiles on premium squares. While you won\'t play these every game, knowing obscure words with Q, X, and Z can give you a significant edge.',
+    answer: 'The highest-scoring single word ever played in tournament Scrabble was CAZIQUES (a tropical bird), worth 1,549 points including a Triple Word score. Other exceptionally high-scoring words include OXYPHENBUTAZONE (1,418), PNEUMONOULTRAMICROSCOPICS (1,410), and QUIXOTRIES (1,198).',
   },
   {
     question: 'Can I filter results by word length in the Scrabble finder?',
-    answer: 'Yes! The Min length and Max length controls let you filter results to exactly the word size you need. This is particularly useful when you have limited board space or need to fit a word between two existing tiles. For example, if you can only play a 4-letter word, set both filters to 4 to see only those options.',
+    answer: 'Yes! The Min length and Max length controls let you filter results to exactly the word size you need. This is particularly useful when you have limited board space or need to fit a word between two existing tiles.',
   },
 ];
 
@@ -61,267 +61,165 @@ const TILE_VALUES = [
 
 const DICTIONARIES = [
   { name: 'OSPD', full: 'Official Scrabble Players Dictionary', region: 'North America', description: 'The standard dictionary for American Scrabble tournaments. Contains around 187,000 words.' },
-  { name: 'OSPD5', full: 'Official Scrabble Players Dictionary, 5th Edition', region: 'North America', description: 'Updated edition with new words added through 2018. Includes many new additions from social media and modern English.' },
-  { name: 'SOWPODS', full: 'The Official Scrabble Words: SOWPODS', region: 'International', description: 'Used in most countries outside North America. A superset of OSPD with about 277,000 words, including many British terms not in OSPD.' },
-  { name: 'OTCWL', full: 'Official Tournament and Club Word List', region: 'North America (Tournaments)', description: 'The word list used at official North American Scrabble tournaments. A superset of OSPD5.' },
-  { name: 'NWL', full: 'North American Word List', region: 'Online Play', description: 'The word list used by popular Scrabble apps and online platforms. Derived from OSPD with some variations.' },
+  { name: 'OSPD5', full: 'Official Scrabble Players Dictionary, 5th Edition', region: 'North America', description: 'Updated edition with new words added through 2018.' },
+  { name: 'SOWPODS', full: 'The Official Scrabble Words: SOWPODS', region: 'International', description: 'Used in most countries outside North America. A superset of OSPD with about 277,000 words.' },
+  { name: 'OTCWL', full: 'Official Tournament and Club Word List', region: 'North America (Tournaments)', description: 'The word list used at official North American Scrabble tournaments.' },
+  { name: 'NWL', full: 'North American Word List', region: 'Online Play', description: 'The word list used by popular Scrabble apps and online platforms.' },
 ];
 ---
 
 <Layout meta={meta}>
-  <!-- Hero -->
-  <section class="text-center pt-8 pb-6">
-    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-      🎯 Free Tool · No Sign-up · Instant Results
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Scrabble Word Finder & Cheat</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Enter your Scrabble tiles and instantly find every valid word, sorted by point value. Find the highest-scoring play for any board situation.
-    </p>
-  </section>
-
-  <!-- Tool -->
-  <div class="max-w-3xl mx-auto mb-10">
-    <UnscrambleTool client:load />
+<div class="page-wrapper">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Scrabble Word Finder</span>
   </div>
 
-  <AdSense />
+  <h1 class="page-h1">Scrabble Word Finder & Cheat</h1>
+  <p class="page-body">Enter your Scrabble tiles and instantly find every valid word, sorted by point value. Find the highest-scoring play for any board situation.</p>
 
-  <!-- What is Scrabble -->
-  <section class="mt-12 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">What is Scrabble?</h2>
-      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
-        <p>
-          <a href="https://scrabble.hasbro.com/" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Scrabble</a> is the world's most popular word board game, played by millions of people in over 30 languages. The game was invented in 1938 by American architect Alfred Mosher Butts and has become a cultural phenomenon — appearing in homes, schools, clubs, and competitive tournaments worldwide.
-        </p>
-        <p>
-          In Scrabble, two to four players compete to build words on a 15×15 grid. Each player starts with seven letter tiles drawn randomly from a pool of 100 tiles. On your turn, you form a word using some or all of your tiles, placing them on the board so that they connect with existing words. Each letter has a point value, and premium squares (double/triple letter and word) can multiply your score dramatically.
-        </p>
-        <p>
-          The game ends when one player uses all their tiles, or when no player can make a valid move. The player with the highest score wins. Simple to learn, infinitely deep to master — Scrabble rewards both vocabulary and strategic board placement.
-        </p>
-      </div>
-    </div>
-  </section>
+  <div class="page-tool-card">
+    <UnscrambleTool client:load />
+  </div>
+</div>
 
-  <!-- Scrabble Tile Values -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">Scrabble Tile Point Values</h2>
-      <p class="text-[15px] text-muted-foreground mb-6 leading-relaxed">
-        Each letter tile in Scrabble has a point value based on how rare it is in English. Common letters like E and A are worth just 1 point, while rare letters like Q and Z are worth 10. Knowing these values is essential for finding high-scoring plays.
-      </p>
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-border">
-              <th class="text-left py-2 px-3 font-semibold text-foreground">Points</th>
-              <th class="text-left py-2 px-3 font-semibold text-foreground">Letters</th>
-              <th class="text-left py-2 px-3 font-semibold text-foreground">Count</th>
+<AdSense />
+
+<div class="page-wrapper">
+  <h2 class="page-h2">What is Scrabble?</h2>
+  <div class="page-body">
+    <p><a href="https://scrabble.hasbro.com/" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Scrabble</a> is the world's most popular word board game, played by millions of people in over 30 languages. The game was invented in 1938 by American architect Alfred Mosher Butts and has become a cultural phenomenon — appearing in homes, schools, clubs, and competitive tournaments worldwide.</p>
+    <p>In Scrabble, two to four players compete to build words on a 15×15 grid. Each player starts with seven letter tiles drawn randomly from a pool of 100 tiles. On your turn, you form a word using some or all of your tiles, placing them on the board so that they connect with existing words. Each letter has a point value, and premium squares (double/triple letter and word) can multiply your score dramatically.</p>
+    <p>The game ends when one player uses all their tiles, or when no player can make a valid move. The player with the highest score wins. Simple to learn, infinitely deep to master — Scrabble rewards both vocabulary and strategic board placement.</p>
+  </div>
+
+  <h2 class="page-h2">Scrabble Tile Point Values</h2>
+  <div class="page-body">
+    <p>Each letter tile in Scrabble has a point value based on how rare it is in English. Common letters like E and A are worth just 1 point, while rare letters like Q and Z are worth 10.</p>
+  </div>
+  <div class="page-tool-card">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-border">
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Points</th>
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Letters</th>
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          {TILE_VALUES.map((row, i) => (
+            <tr key={i} class={i % 2 === 0 ? 'bg-muted/30' : ''}>
+              <td class="py-2 px-3 font-bold text-foreground">{row.value}</td>
+              <td class="py-2 px-3 text-muted-foreground font-mono tracking-wider">{row.letters}</td>
+              <td class="py-2 px-3 text-muted-foreground">{row.value === 1 ? '9 tiles' : row.value === 2 ? '2 tiles each' : row.value === 3 ? '2 tiles each' : row.value === 4 ? '2 tiles each' : row.value === 5 ? '1 tile' : row.value === 8 ? '1 tile each' : '1 tile each'}</td>
             </tr>
-          </thead>
-          <tbody>
-            {TILE_VALUES.map((row, i) => (
-              <tr key={i} class={i % 2 === 0 ? 'bg-muted/30' : ''}>
-                <td class="py-2 px-3 font-bold text-foreground">{row.value}</td>
-                <td class="py-2 px-3 text-muted-foreground font-mono tracking-wider">{row.letters}</td>
-                <td class="py-2 px-3 text-muted-foreground">
-                  {row.value === 1 ? '9 tiles' : row.value === 2 ? '2 tiles each' : row.value === 3 ? '2 tiles each' : row.value === 4 ? '2 tiles each' : row.value === 5 ? '1 tile' : row.value === 8 ? '1 tile each' : '1 tile each'}
-                </td>
-              </tr>
-            ))}
-            <tr class="border-t border-border bg-muted/30">
-              <td class="py-2 px-3 font-bold text-foreground">—</td>
-              <td class="py-2 px-3 text-muted-foreground font-mono tracking-wider">Blank (2)</td>
-              <td class="py-2 px-3 text-muted-foreground">2 tiles, 0 points each</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="text-xs text-muted-foreground mt-4">
-        <strong class="text-foreground">Blank tiles</strong> have no point value but can represent any letter you need. They're incredibly versatile — a blank played as a "Q" lets you use the QI two-letter word without spending your real Q tile.
-      </p>
-    </div>
-  </section>
-
-  <!-- How to Use -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">How to Use the Scrabble Solver</h2>
-      <div class="space-y-5">
-        {howToSteps.map((step, i) => (
-          <div class="flex gap-4">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
-            <div>
-              <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
-              <p class="text-sm text-muted-foreground">{step.text}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Scrabble Cheat — Defense -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">🏆 Why the Scrabble Cheat Makes You a Better Player</h2>
-      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
-        <p>
-          Some players feel that using a Scrabble cheat — a word finder tool like ours — is somehow "cheating." In reality, nothing could be further from the truth. The best Scrabble players in the world don't rely on memory alone; they study word lists, use reference tools, and constantly expand their vocabulary.
-        </p>
-        <p>
-          Here's how our Scrabble solver helps you actually <em>improve</em> at the game:
-        </p>
-        <ul class="list-disc pl-6 space-y-2">
-          <li><strong class="text-foreground">Discover new words:</strong> Running your rack through the solver reveals words you didn't know existed. Every unfamiliar word is a vocabulary lesson. Words like <strong class="text-foreground">QI</strong>, <strong class="text-foreground">XI</strong>, <strong class="text-foreground">ZA</strong>, and <strong class="text-foreground">JO</strong> are two-letter goldmines that many players only learn through tools.</li>
-          <li><strong class="text-foreground">Understand word patterns:</strong> Seeing all valid words from your letters teaches you about prefixes, suffixes, and letter combinations. Over time, you'll start recognizing these patterns without help.</li>
-          <li><strong class="text-foreground">Learn high-value plays:</strong> Our tool shows you exactly which words score the most with your current tiles and board position. This builds your intuition for board geometry and premium square strategy.</li>
-          <li><strong class="text-foreground">Prepare for tournaments:</strong> Competitive Scrabble players spend hours memorizing word lists. Our tool is a fast, convenient way to drill vocabulary between games.</li>
-        </ul>
-        <p>
-          Think of our Scrabble cheat as a vocabulary tutor that works 24/7. The more you use it, the less you need it.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Top Scrabble Tips -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">💡 Top Scrabble Tips from Tournament Players</h2>
-      <div class="space-y-5">
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">1</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Hunt for Bingos every game</h3>
-            <p class="text-sm text-muted-foreground">Using all 7 tiles in one play scores a 50-point Bingo bonus. With a full rack, always check if any 7-letter word is possible before settling for a smaller play. Our <a href="/word-unscrambler" class="text-primary hover:underline">word unscrambler</a> shows all 7-letter options from your tiles. Words like <strong class="text-foreground">ARIETAS</strong>, <strong class="text-foreground">ATONIES</strong>, and <strong class="text-foreground">RATINES</strong> are hidden Bingos that beginners often miss.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">2</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Hook words are power plays</h3>
-            <p class="text-sm text-muted-foreground">A "hook" is a word that becomes a new word when you add a single letter to either end. For example, <strong class="text-foreground">SPA</strong> hooks to <strong class="text-foreground">SPAN</strong>, <strong class="text-foreground">ESPA</strong>, and <strong class="text-foreground">SPACE</strong>. Learning common hooks like <strong class="text-foreground">S</strong>-HOE → <strong class="text-foreground">SHOE</strong> → <strong class="text-foreground">SHONE</strong> or <strong class="text-foreground">BE</strong> → <strong class="text-foreground">BEE</strong> → <strong class="text-foreground">BEER</strong> lets you play short words that open up long opportunities.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">3</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Master the 2-letter words</h3>
-            <p class="text-sm text-muted-foreground">Two-letter words are the secret weapon of advanced Scrabble. <strong class="text-foreground">QI</strong> (energy life force), <strong class="text-foreground">XI</strong> (Greek letter), <strong class="text-foreground">ZA</strong> (slang for "the"), <strong class="text-foreground">JO</strong> (Scottish for "sweetheart"), <strong class="text-foreground">XU</strong> (Vietnamese coin) — these let you place a single tile to hit a premium square while forming a valid word parallel to your main play. Studying a list of valid 2-letter words is one of the highest-ROI things you can do to improve.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">4</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Play defensively when behind</h3>
-            <p class="text-sm text-muted-foreground">When you're losing, your priority shifts from maximizing your own score to limiting your opponent's. Close down Triple Word squares with smaller words. Avoid opening up parallel rows near your opponent's high-value tiles. A well-timed block can cost your opponent 50+ points and turn the game around.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">5</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Save your blanks for Q and Z — not X</h3>
-            <p class="text-sm text-muted-foreground">A blank is the most valuable tile in Scrabble. Most players know to save it for a Q or Z when those tiles are problematic. But here's an advanced tip: <strong class="text-foreground">XO</strong> is a valid 2-letter word (a term in Montessori education), so you don't <em>need</em> a blank for Q if you have an O. Similarly, <strong class="text-foreground">AX</strong>, <strong class="text-foreground">EX</strong>, <strong class="text-foreground">OX</strong> are all valid. Save your blank for when you truly need it — like playing <strong class="text-foreground">QUIZ</strong> without a U.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Scrabble Dictionaries -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">📚 Scrabble Dictionaries: What's the Difference?</h2>
-      <div class="space-y-4 text-[15px] text-muted-foreground leading-relaxed">
-        <p>
-          If you've ever wondered why some words are valid in one game but not another, the answer is always the dictionary. Scrabble has several official word lists depending on where you play and what ruleset you're using.
-        }
-        <div class="grid gap-3 mt-4">
-          {DICTIONARIES.map((dict) => (
-            <div class="p-4 rounded-xl border border-border bg-background">
-              <div class="flex items-start gap-3">
-                <div class="shrink-0 px-2 py-0.5 bg-primary/10 text-primary text-xs font-bold rounded">
-                  {dict.name}
-                </div>
-                <div>
-                  <p class="font-semibold text-foreground text-sm">{dict.full} — {dict.region}</p>
-                  <p class="text-xs text-muted-foreground mt-1">{dict.description}</p>
-                </div>
-              </div>
-            </div>
           ))}
-        </div>
-        <p class="mt-4">
-          For casual home games, any standard English dictionary works fine. For tournament play, make sure you know which word list your tournament uses. Our Scrabble word finder uses a comprehensive word list that covers the vast majority of words from both OSPD/OSPD5 and SOWPODS.
-        </p>
-      </div>
+          <tr class="border-t border-border bg-muted/30">
+            <td class="py-2 px-3 font-bold text-foreground">—</td>
+            <td class="py-2 px-3 text-muted-foreground font-mono tracking-wider">Blank (2)</td>
+            <td class="py-2 px-3 text-muted-foreground">2 tiles, 0 points each</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </section>
+    <p class="text-xs text-muted-foreground mt-4"><strong class="text-foreground">Blank tiles</strong> have no point value but can represent any letter you need. They're incredibly versatile — a blank played as a "Q" lets you use the QI two-letter word without spending your real Q tile.</p>
+  </div>
 
-  <!-- Highest Scoring Words -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">🏆 The Highest Scoring Scrabble Word Ever Played</h2>
-      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
-        <p>
-          The highest-scoring single word in official Scrabble history is <strong class="text-foreground">CAZIQUES</strong>, played by player Karl Hicks in a 1992 tournament. Using the letters C-A-Z-I-Q-U-E-S on a Triple Word score square, with a Double Letter score on the Z, this single play scored an astonishing <strong class="text-foreground">1,549 points</strong> — more points than most players score in an entire game.
-        </p>
-        <p>
-          Here's the breakdown: The base letters (C=3, A=1, Z=10, I=1, Q=10, U=1, E=1, S=1) = 28 points. The Z landed on a Double Letter square (×2 = +10 bonus), and the entire word landed on a Triple Word square (×3 = +84 bonus from the doubled Z). Then the entire sum was tripled again by the second Triple Word square the word crossed. The final calculation gets technical, but the result was legendary.
-        </p>
-        <p>
-          Other legendary high-scoring words include <strong class="text-foreground">OXYPHENBUTAZONE</strong> (1,418 pts), <strong class="text-foreground">PNEUMONOULTRAMICROSCOPICS</strong> (1,410 pts), and <strong class="text-foreground">QUIXOTRIES</strong> (1,198 pts). These words are fun to know about, but they require extremely specific board conditions to play. In casual games, a well-placed 200-300 point word is already exceptional.
-        </p>
-        <p>
-          Use our <a href="/word-unscrambler" class="text-primary hover:underline">word unscrambler</a> to find your own high-scoring plays — you might be surprised what your rack is worth!
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-xl font-bold mb-4 text-foreground">Related Word Game Tools</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { name: 'Word Cookies', href: '/word-cookies', icon: '🍪' },
-          { name: 'Words With Friends', href: '/words-with-friends', icon: '📱' },
-          { name: 'Jumble Solver', href: '/jumble-solver', icon: '📰' },
-          { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
-        ].map((tool) => (
-          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
-            <span class="text-xl">{tool.icon}</span>
-            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="mt-8 max-w-3xl mx-auto" id="faq">
-    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
-    <div class="space-y-3">
-      {faqs.map((faq) => (
-        <details class="rounded-xl border border-border bg-card group">
-          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
-            <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
-            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
-          </summary>
-          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
-            <p class="pt-3">{faq.answer}</p>
+  <h2 class="page-h2">How to Use the Scrabble Solver</h2>
+  <div class="page-tool-card">
+    <div class="space-y-5">
+      {howToSteps.map((step, i) => (
+        <div class="flex gap-4">
+          <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
+          <div>
+            <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
+            <p class="text-sm text-muted-foreground">{step.text}</p>
           </div>
-        </details>
+        </div>
       ))}
     </div>
-  </section>
+  </div>
 
-  <div class="mt-12"></div>
+  <h2 class="page-h2">Why the Scrabble Cheat Makes You a Better Player</h2>
+  <div class="page-body">
+    <p>Some players feel that using a Scrabble cheat — a word finder tool like ours — is somehow "cheating." In reality, nothing could be further from the truth. The best Scrabble players in the world don't rely on memory alone; they study word lists, use reference tools, and constantly expand their vocabulary.</p>
+    <p>Here's how our Scrabble solver helps you actually <em>improve</em> at the game:</p>
+    <ul class="list-disc pl-6 space-y-2">
+      <li><strong class="text-foreground">Discover new words:</strong> Running your rack through the solver reveals words you didn't know existed. Every unfamiliar word is a vocabulary lesson. Words like <strong class="text-foreground">QI</strong>, <strong class="text-foreground">XI</strong>, <strong class="text-foreground">ZA</strong>, and <strong class="text-foreground">JO</strong> are two-letter goldmines that many players only learn through tools.</li>
+      <li><strong class="text-foreground">Understand word patterns:</strong> Seeing all valid words from your letters teaches you about prefixes, suffixes, and letter combinations. Over time, you'll start recognizing these patterns without help.</li>
+      <li><strong class="text-foreground">Learn high-value plays:</strong> Our tool shows you exactly which words score the most with your current tiles and board position. This builds your intuition for board geometry and premium square strategy.</li>
+      <li><strong class="text-foreground">Prepare for tournaments:</strong> Competitive Scrabble players spend hours memorizing word lists. Our tool is a fast, convenient way to drill vocabulary between games.</li>
+    </ul>
+    <p>Think of our Scrabble cheat as a vocabulary tutor that works 24/7. The more you use it, the less you need it.</p>
+  </div>
 
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <h2 class="page-h2">Top Scrabble Tips from Tournament Players</h2>
+  <div class="page-body">
+    <p><strong>1. Hunt for Bingos every game:</strong> Using all 7 tiles in one play scores a 50-point Bingo bonus. Words like <strong class="text-foreground">ARIETAS</strong>, <strong class="text-foreground">ATONIES</strong>, and <strong class="text-foreground">RATINES</strong> are hidden Bingos that beginners often miss.</p>
+    <p><strong>2. Hook words are power plays:</strong> A "hook" is a word that becomes a new word when you add a single letter to either end. For example, <strong class="text-foreground">SPA</strong> hooks to <strong class="text-foreground">SPAN</strong>, <strong class="text-foreground">ESPA</strong>, and <strong class="text-foreground">SPACE</strong>.</p>
+    <p><strong>3. Master the 2-letter words:</strong> Two-letter words like <strong class="text-foreground">QI</strong>, <strong class="text-foreground">XI</strong>, <strong class="text-foreground">ZA</strong>, <strong class="text-foreground">JO</strong>, and <strong class="text-foreground">XU</strong> let you place a single tile on a premium square while forming a valid word parallel to your main play.</p>
+    <p><strong>4. Play defensively when behind:</strong> Close down Triple Word squares with smaller words. Avoid opening up parallel rows near your opponent's high-value tiles.</p>
+    <p><strong>5. Save your blanks for Q and Z — not X:</strong> <strong class="text-foreground">XO</strong> is a valid 2-letter word, so you don't <em>need</em> a blank for X. Save your blank for when you truly need it — like playing <strong class="text-foreground">QUIZ</strong> without a U.</p>
+  </div>
+
+  <h2 class="page-h2">Scrabble Dictionaries: What's the Difference?</h2>
+  <div class="page-body">
+    <div class="grid gap-3">
+      {DICTIONARIES.map((dict) => (
+        <div class="p-4 rounded-xl border border-border bg-background">
+          <div class="flex items-start gap-3">
+            <div class="shrink-0 px-2 py-0.5 bg-primary/10 text-primary text-xs font-bold rounded">{dict.name}</div>
+            <div>
+              <p class="font-semibold text-foreground text-sm">{dict.full} — {dict.region}</p>
+              <p class="text-xs text-muted-foreground mt-1">{dict.description}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    <p class="mt-4">For casual home games, any standard English dictionary works fine. For tournament play, make sure you know which word list your tournament uses.</p>
+  </div>
+
+  <h2 class="page-h2">The Highest Scoring Scrabble Word Ever Played</h2>
+  <div class="page-body">
+    <p>The highest-scoring single word in official Scrabble history is <strong class="text-foreground">CAZIQUES</strong>, played by player Karl Hicks in a 1992 tournament. Using the letters C-A-Z-I-Q-U-E-S on a Triple Word score square, this single play scored an astonishing <strong class="text-foreground">1,549 points</strong>.</p>
+    <p>Other legendary high-scoring words include <strong class="text-foreground">OXYPHENBUTAZONE</strong> (1,418 pts), <strong class="text-foreground">PNEUMONOULTRAMICROSCOPICS</strong> (1,410 pts), and <strong class="text-foreground">QUIXOTRIES</strong> (1,198 pts). In casual games, a well-placed 200-300 point word is already exceptional.</p>
+    <p>Use our <a href="/word-unscrambler" class="text-primary hover:underline">word unscrambler</a> to find your own high-scoring plays!</p>
+  </div>
+
+  <h2 class="page-h2">Related Word Game Tools</h2>
+  <div class="page-body">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {[
+        { name: 'Word Cookies', href: '/word-cookies', icon: '🍪' },
+        { name: 'Words With Friends', href: '/words-with-friends', icon: '📱' },
+        { name: 'Jumble Solver', href: '/jumble-solver', icon: '📰' },
+        { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
+      ].map((tool) => (
+        <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+          <span class="text-xl">{tool.icon}</span>
+          <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <h2 class="page-h2">Frequently Asked Questions</h2>
+  <div class="space-y-3">
+    {faqs.map((faq) => (
+      <details class="faq-details">
+        <summary class="faq-summary">
+          <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-body">
+          <p>{faq.answer}</p>
+        </div>
+      </details>
+    ))}
+  </div>
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>

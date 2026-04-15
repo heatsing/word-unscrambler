@@ -23,27 +23,27 @@ const howToSchema = getHowToSchema(howToSteps);
 const faqs = [
   {
     question: 'What is Scrabble Go and how is it different from classic Scrabble?',
-    answer: 'Scrabble Go is the official mobile version of Scrabble, developed by Scopely and released in 2020. While the core gameplay (forming words on a 15×15 grid with tile values and premium squares) is the same as classic Scrabble, Scrabble Go adds social features, daily challenges, tournaments, and a league/ranking system. The tile values, scoring, and dictionary are all similar to classic Scrabble, so strategies overlap significantly.',
+    answer: 'Scrabble Go is the official mobile version of Scrabble, developed by Scopely and released in 2020. While the core gameplay (forming words on a 15×15 grid with tile values and premium squares) is the same as classic Scrabble, Scrabble Go adds social features, daily challenges, tournaments, and a league/ranking system.',
   },
   {
     question: 'How does the Scrabble Go cheat tool work?',
-    answer: 'Enter the letters from your Scrabble Go rack and our solver finds every valid English word you can make from those letters, sorted by point value. The highest-scoring words appear at the top, so you can quickly identify the best plays available. It\'s essentially a fast dictionary lookup for your specific tiles.',
+    answer: 'Enter the letters from your Scrabble Go rack and our solver finds every valid English word you can make from those letters, sorted by point value. The highest-scoring words appear at the top.',
   },
   {
     question: 'Does the Scrabble Go cheat work for the daily challenges?',
-    answer: 'Yes. Scrabble Go\'s daily challenges often have specific rules or letter distributions. Our cheat works with any letter set, so you can use it for daily challenges, tournaments, or any game mode. Just enter the letters from your current rack and find the best available play.',
+    answer: 'Yes. Scrabble Go\'s daily challenges often have specific rules or letter distributions. Our cheat works with any letter set, so you can use it for daily challenges, tournaments, or any game mode.',
   },
   {
     question: 'What are the best Scrabble Go opening words?',
-    answer: 'The best Scrabble Go opening words maximize vowel-consonant balance and use high-frequency letters to learn about tile distribution. Strong openers include <strong class="text-foreground">ADIEU</strong> (4 vowels, 5 letters), <strong class="text-foreground">AUDIO</strong>, <strong class="text-foreground">RAISE</strong>, <strong class="text-foreground">STARE</strong>, and <strong class="text-foreground">SOVRAN</strong>. These words consume common letters and often set up premium squares for future turns.',
+    answer: 'The best Scrabble Go opening words maximize vowel-consonant balance. Strong openers include <strong class="text-foreground">ADIEU</strong> (4 vowels, 5 letters), <strong class="text-foreground">AUDIO</strong>, <strong class="text-foreground">RAISE</strong>, <strong class="text-foreground">STARE</strong>, and <strong class="text-foreground">SOVRAN</strong>.',
   },
   {
     question: 'How do I get the Bingo bonus in Scrabble Go?',
-    answer: 'Playing all 7 tiles in a single word earns a 50-point Bingo bonus in Scrabble Go — identical to classic Scrabble. To find Bingo candidates, run your full 7-tile rack through our solver and look for any 7-letter word. Common Bingos include <strong class="text-foreground">ARIETAS</strong>, <strong class="text-foreground">STERN</strong> variants, and words ending in -EST, -ING, and -ION. The Bingo bonus can completely change a close game\'s outcome.',
+    answer: 'Playing all 7 tiles in a single word earns a 50-point Bingo bonus — identical to classic Scrabble. To find Bingo candidates, run your full 7-tile rack through our solver and look for any 7-letter word.',
   },
   {
     question: 'Is using a Scrabble Go cheat considered cheating?',
-    answer: 'Not at all. A word finder is a vocabulary tool — it shows you words that are already in the dictionary. Think of it like using a dictionary when you\'re unsure of a spelling. Our tool helps you learn new words (every unfamiliar word is a vocabulary lesson), find plays you\'d never have spotted otherwise, and improve your overall word skills. The more you use it, the less you\'ll need it.',
+    answer: 'Not at all. A word finder is a vocabulary tool — it shows you words that are already in the dictionary. Think of it like using a dictionary when you\'re unsure of a spelling. Our tool helps you learn new words (every unfamiliar word is a vocabulary lesson), find plays you\'d never have spotted otherwise, and improve your overall word skills.',
   },
 ];
 
@@ -61,172 +61,111 @@ const TILE_VALUES = [
 ---
 
 <Layout meta={meta}>
-  <!-- Hero -->
-  <section class="text-center pt-8 pb-6">
-    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-      🎲 Free Tool · No Sign-up · Instant Results
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Scrabble Go Cheat</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Enter your Scrabble Go tiles and find every valid word, sorted by score. Get the highest-scoring play every turn.
-    </p>
-  </section>
-
-  <!-- Tool -->
-  <div class="max-w-3xl mx-auto mb-10">
-    <UnscrambleTool client:load />
+<div class="page-wrapper">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Scrabble Go Cheat</span>
   </div>
 
-  <AdSense />
+  <h1 class="page-h1">Scrabble Go Cheat</h1>
+  <p class="page-body">Enter your Scrabble Go tiles and find every valid word, sorted by score. Get the highest-scoring play every turn.</p>
 
-  <!-- What is Scrabble Go -->
-  <section class="mt-12 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">What is Scrabble Go?</h2>
-      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
-        <p>
-          <a href="https://scrabblego.hasbro.com/" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Scrabble Go</a> is the official mobile adaptation of the classic Scrabble board game, developed by Scopely in partnership with Hasbro. Launched in 2020, it quickly became one of the most popular mobile word games, with millions of active players competing in leagues, daily challenges, and social games with friends.
-        </p>
-        <p>
-          The core gameplay mirrors classic Scrabble: form words on a 15×15 grid, each letter has a point value, and premium squares (double/triple letter and word) multiply scores. Where Scrabble Go differs is in its social and competitive features — league rankings, tournaments, daily challenges, collectible trophies, and a progression system that rewards consistent play.
-        </p>
-        <p>
-          Our Scrabble Go cheat tool works with any letter set from the game, helping you find the highest-scoring plays and improve your league ranking.
-        </p>
-      </div>
-    </div>
-  </section>
+  <div class="page-tool-card">
+    <UnscrambleTool client:load />
+  </div>
+</div>
 
-  <!-- Tile Values -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">Scrabble Go Tile Values</h2>
-      <p class="text-[15px] text-muted-foreground mb-6 leading-relaxed">
-        Scrabble Go uses the same tile values as classic Scrabble. Here's the reference:
-      </p>
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-border">
-              <th class="text-left py-2 px-3 font-semibold text-foreground">Points</th>
-              <th class="text-left py-2 px-3 font-semibold text-foreground">Letters</th>
+<AdSense />
+
+<div class="page-wrapper">
+  <h2 class="page-h2">What is Scrabble Go?</h2>
+  <div class="page-body">
+    <p><a href="https://scrabblego.hasbro.com/" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Scrabble Go</a> is the official mobile adaptation of the classic Scrabble board game, developed by Scopely in partnership with Hasbro. Launched in 2020, it quickly became one of the most popular mobile word games.</p>
+    <p>The core gameplay mirrors classic Scrabble: form words on a 15×15 grid, each letter has a point value, and premium squares (double/triple letter and word) multiply scores. Where Scrabble Go differs is in its social and competitive features — league rankings, tournaments, daily challenges, collectible trophies, and a progression system.</p>
+    <p>Our Scrabble Go cheat tool works with any letter set from the game, helping you find the highest-scoring plays.</p>
+  </div>
+
+  <h2 class="page-h2">Scrabble Go Tile Values</h2>
+  <div class="page-body">
+    <p>Scrabble Go uses the same tile values as classic Scrabble. Here's the reference:</p>
+  </div>
+  <div class="page-tool-card">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-border">
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Points</th>
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Letters</th>
+          </tr>
+        </thead>
+        <tbody>
+          {TILE_VALUES.map((row, i) => (
+            <tr key={i} class={i % 2 === 0 ? 'bg-muted/30' : ''}>
+              <td class="py-2 px-3 font-bold text-foreground">{row.value}</td>
+              <td class="py-2 px-3 text-muted-foreground font-mono tracking-wider">{row.letters}</td>
             </tr>
-          </thead>
-          <tbody>
-            {TILE_VALUES.map((row, i) => (
-              <tr key={i} class={i % 2 === 0 ? 'bg-muted/30' : ''}>
-                <td class="py-2 px-3 font-bold text-foreground">{row.value}</td>
-                <td class="py-2 px-3 text-muted-foreground font-mono tracking-wider">{row.letters}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
-  </section>
+  </div>
 
-  <!-- How to Use -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">How to Use the Scrabble Go Solver</h2>
-      <div class="space-y-5">
-        {howToSteps.map((step, i) => (
-          <div class="flex gap-4">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
-            <div>
-              <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
-              <p class="text-sm text-muted-foreground">{step.text}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Tips -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">💡 Scrabble Go Strategy Tips</h2>
-      <div class="space-y-5">
+  <h2 class="page-h2">How to Use the Scrabble Go Solver</h2>
+  <div class="page-tool-card">
+    <div class="space-y-5">
+      {howToSteps.map((step, i) => (
         <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">1</div>
+          <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
           <div>
-            <h3 class="font-semibold text-foreground mb-1">Hunt for Bingos every turn</h3>
-            <p class="text-sm text-muted-foreground">Using all 7 tiles in one play earns a 50-point Bingo bonus. Every time you get a full rack, run it through our solver and look for 7-letter words. <strong class="text-foreground">ETERNIS</strong>, <strong class="text-foreground">NASTIER</strong>, <strong class="text-foreground">RATINES</strong> — these hidden Bingos are the difference between winning and losing in close games.</p>
+            <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
+            <p class="text-sm text-muted-foreground">{step.text}</p>
           </div>
         </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">2</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Master high-value 2-letter words</h3>
-            <p class="text-sm text-muted-foreground">Words like <strong class="text-foreground">QI</strong>, <strong class="text-foreground">XI</strong>, <strong class="text-foreground">ZA</strong>, <strong class="text-foreground">JO</strong>, <strong class="text-foreground">XU</strong>, and <strong class="text-foreground">ZO</strong> let you play a single tile on a premium square. This is especially powerful when your rack is weak — a well-placed one-tile play on a Triple Word can score 15-20 points.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">3</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Save high-value tiles for premium squares</h3>
-            <p class="text-sm text-muted-foreground">Q (10 pts), Z (10 pts), X (8 pts), and J (8 pts) should almost never be played on neutral spaces. If you have a Q, look for QI, QAT, QIS, QUA. If you have a Z, look for ZA, ZO, ZE, and -IZE endings. Playing Z on a Triple Word (10 × 3 = 30 base) can yield 60+ total points.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">4</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Use parallel plays to score twice</h3>
-            <p class="text-sm text-muted-foreground">When you place a word perpendicular to an existing word, every intersecting tile creates a new word in the perpendicular direction. For example, if <strong class="text-foreground">STARE</strong> is already on the board and you play <strong class="text-foreground">WIDE</strong> through the E, you score for both <strong class="text-foreground">WIDE</strong> AND the new perpendicular words created. This is one of the most efficient scoring techniques in Scrabble Go.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">5</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Watch your vowel-consonant balance</h3>
-            <p class="text-sm text-muted-foreground">A rack with too many vowels or too many consonants is hard to play. Aim for 3-4 vowels and 3-4 consonants in a 7-tile rack. If you\'re stuck with a bad distribution, consider exchanging tiles strategically — Scrabble Go lets you exchange tiles from your rack for tiles in the bag.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-xl font-bold mb-4 text-foreground">Related Word Game Tools</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { name: 'Scrabble (Classic)', href: '/scrabble', icon: '🎲' },
-          { name: 'Words With Friends', href: '/words-with-friends', icon: '📱' },
-          { name: 'Wordfeud', href: '/wordfeud', icon: '🎮' },
-          { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
-        ].map((tool) => (
-          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
-            <span class="text-xl">{tool.icon}</span>
-            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="mt-8 max-w-3xl mx-auto" id="faq">
-    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
-    <div class="space-y-3">
-      {faqs.map((faq) => (
-        <details class="rounded-xl border border-border bg-card group">
-          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
-            <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
-            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
-          </summary>
-          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
-            <p class="pt-3" set:html={faq.answer} />
-          </div>
-        </details>
       ))}
     </div>
-  </section>
+  </div>
 
-  <div class="mt-12"></div>
+  <h2 class="page-h2">Scrabble Go Strategy Tips</h2>
+  <div class="page-body">
+    <p><strong>1. Hunt for Bingos every turn:</strong> Using all 7 tiles in one play earns a 50-point Bingo bonus. Every time you get a full rack, run it through our solver and look for 7-letter words.</p>
+    <p><strong>2. Master high-value 2-letter words:</strong> Words like <strong class="text-foreground">QI</strong>, <strong class="text-foreground">XI</strong>, <strong class="text-foreground">ZA</strong>, <strong class="text-foreground">JO</strong>, <strong class="text-foreground">XU</strong>, and <strong class="text-foreground">ZO</strong> let you play a single tile on a premium square.</p>
+    <p><strong>3. Save high-value tiles for premium squares:</strong> Q (10 pts), Z (10 pts), X (8 pts), and J (8 pts) should almost never be played on neutral spaces.</p>
+    <p><strong>4. Use parallel plays to score twice:</strong> When you place a word perpendicular to an existing word, every intersecting tile creates a new word in the perpendicular direction.</p>
+    <p><strong>5. Watch your vowel-consonant balance:</strong> Aim for 3-4 vowels and 3-4 consonants in a 7-tile rack.</p>
+  </div>
 
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <h2 class="page-h2">Related Word Game Tools</h2>
+  <div class="page-body">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {[
+        { name: 'Scrabble (Classic)', href: '/scrabble', icon: '🎲' },
+        { name: 'Words With Friends', href: '/words-with-friends', icon: '📱' },
+        { name: 'Wordfeud', href: '/wordfeud', icon: '🎮' },
+        { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
+      ].map((tool) => (
+        <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+          <span class="text-xl">{tool.icon}</span>
+          <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <h2 class="page-h2">Frequently Asked Questions</h2>
+  <div class="space-y-3">
+    {faqs.map((faq) => (
+      <details class="faq-details">
+        <summary class="faq-summary">
+          <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-body">
+          <p set:html={faq.answer} />
+        </div>
+      </details>
+    ))}
+  </div>
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>

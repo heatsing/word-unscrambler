@@ -27,23 +27,23 @@ const faqs = [
   },
   {
     question: 'What are the Letter Boxed rules I need to follow?',
-    answer: 'The rules of Letter Boxed are: (1) Each word must be at least 3 letters. (2) You cannot use the same letter twice in a single word, even if it appears on different sides of the square. (3) <strong class="text-foreground">Crucially:</strong> You cannot use two consecutive letters that come from the same side of the square. For example, if T and R are on the same side, you cannot write "TR" or "RT". (4) The last letter of each word becomes the first letter of your next word, creating a chain. (5) To complete the puzzle, the last letter of your final word must be one that lets you start a new chain with the remaining letters.',
+    answer: 'The rules of Letter Boxed are: (1) Each word must be at least 3 letters. (2) You cannot use the same letter twice in a single word, even if it appears on different sides of the square. (3) <strong class="text-foreground">Crucially:</strong> You cannot use two consecutive letters that come from the same side of the square. For example, if T and R are on the same side, you cannot write "TR" or "RT". (4) The last letter of each word becomes the first letter of your next word, creating a chain.',
   },
   {
     question: 'How does the Letter Boxed scoring work?',
-    answer: 'Your score in Letter Boxed is based on how few words you use to complete the puzzle. Each valid word you submit earns points equal to its letter count. The challenge is not to find <em>more</em> words, but to find a <em>short chain</em> that uses all 12 letters as last letters. Fewer words = fewer opportunities for mistakes and a more elegant solution.',
+    answer: 'Your score in Letter Boxed is based on how few words you use to complete the puzzle. The challenge is not to find <em>more</em> words, but to find a <em>short chain</em> that uses all 12 letters as last letters.',
   },
   {
     question: 'How do I solve Letter Boxed efficiently?',
-    answer: 'The best Letter Boxed solutions use the fewest words possible. Start by identifying "bridge" letters — letters that appear on one side but can connect to many others. Look for common 3-letter words that use letters from multiple sides (<strong class="text-foreground">THE</strong>, <strong class="text-foreground">AND</strong>, <strong class="text-foreground">FOR</strong>, etc.). The key insight is that the last letter of each word <em>must</em> be from a different side than the first letter — so plan your chain backward from letters that are hard to end with. High-value target letters: Q, Z, X, J, V, W, Y.',
+    answer: 'The best Letter Boxed solutions use the fewest words possible. Start by identifying "bridge" letters — letters that appear on one side but can connect to many others. Look for common 3-letter words that use letters from multiple sides. High-value target letters: Q, Z, X, J, V, W, Y.',
   },
   {
     question: 'Can I use the Letter Boxed solver every day?',
-    answer: 'Absolutely. Our Letter Boxed solver works with any set of 12 letters, so you can use it for the daily NYT puzzle, custom puzzles, or practice mode. It\'s completely free with no sign-up required. The same 12 letters appear for all NYT players worldwide each day, so if you\'re stuck, our solver gets you unstuck instantly.',
+    answer: 'Absolutely. Our Letter Boxed solver works with any set of 12 letters, so you can use it for the daily NYT puzzle, custom puzzles, or practice mode. It\'s completely free with no sign-up required.',
   },
   {
     question: 'Why does the NYT Letter Boxed use exactly 12 letters?',
-    answer: 'The 12 letters are arranged 3 per side to create a constrained but not overwhelming search space. With 12 distinct letters and rules preventing same-side consecutive pairs, the puzzle becomes a word puzzle about connectivity and chain-building rather than just vocabulary. The 12-letter constraint means most players can solve it in 4-8 words with practice — but finding the absolute shortest solution (the "par" solution) requires real strategic thinking.',
+    answer: 'The 12 letters are arranged 3 per side to create a constrained but not overwhelming search space. With 12 distinct letters and rules preventing same-side consecutive pairs, the puzzle becomes a word puzzle about connectivity and chain-building rather than just vocabulary.',
   },
 ];
 
@@ -51,166 +51,94 @@ const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta}>
-  <!-- Hero -->
-  <section class="text-center pt-8 pb-6">
-    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-      🗞️ NYT Games · Free Tool · Instant Results
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Letter Boxed Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Enter the 12 letters from your NYT Letter Boxed puzzle and find every valid word. Solve the daily puzzle instantly.
-    </p>
-  </section>
-
-  <!-- Tool -->
-  <div class="max-w-3xl mx-auto mb-10">
-    <UnscrambleTool client:load />
+<div class="page-wrapper">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Letter Boxed Solver</span>
   </div>
 
-  <AdSense />
+  <h1 class="page-h1">Letter Boxed Solver</h1>
+  <p class="page-body">Enter the 12 letters from your NYT Letter Boxed puzzle and find every valid word. Solve the daily puzzle instantly.</p>
 
-  <!-- What is Letter Boxed -->
-  <section class="mt-12 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">What is NYT Letter Boxed?</h2>
-      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
-        <p>
-          <a href="https://www.nytimes.com/puzzles/letter-boxed" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Letter Boxed</a> is one of the signature daily puzzles in The New York Times Games app and website, alongside Wordle, Spelling Bee, and The Mini. The puzzle presents you with a square divided into four sides, each containing three letters — 12 letters total. Your mission: build a chain of words that uses up all 12 letters as last letters.
-        </p>
-        <p>
-          What makes Letter Boxed uniquely challenging is the <em>connectivity rule</em>: you cannot use two consecutive letters that are on the same side of the square. This means every transition between letters must cross a side boundary. The puzzle rewards both vocabulary and strategic chain-planning — a good solver finds the shortest possible path through the 12 letters.
-        </p>
-        <p>
-          Each day, all NYT Letter Boxed players worldwide receive the same 12 letters. The "par" score for each puzzle is published after you solve it, giving you a target to aim for. Our solver shows you all valid words, so you can find your own path to the solution.
-        </p>
-      </div>
-    </div>
-  </section>
+  <div class="page-tool-card">
+    <UnscrambleTool client:load />
+  </div>
+</div>
 
-  <!-- How to Use -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">How to Use the Letter Boxed Solver</h2>
-      <div class="space-y-5">
-        {howToSteps.map((step, i) => (
-          <div class="flex gap-4">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
-            <div>
-              <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
-              <p class="text-sm text-muted-foreground">{step.text}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
+<AdSense />
 
-  <!-- Rules -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">📋 Letter Boxed Rules Explained</h2>
-      <div class="space-y-4 text-[15px] text-muted-foreground">
-        <div class="p-4 rounded-xl border border-border">
-          <h3 class="font-semibold text-foreground mb-2">Rule 1: Minimum 3 Letters</h3>
-          <p>Every word you submit must be at least 3 letters long. Single-letter and two-letter words are not allowed.</p>
-        </div>
-        <div class="p-4 rounded-xl border border-border">
-          <h3 class="font-semibold text-foreground mb-2">Rule 2: No Repeating Letters in a Word</h3>
-          <p>Even if a letter appears on multiple sides of the square, you cannot use it twice in the same word. For example, if the letter <strong class="text-foreground">S</strong> appears on two different sides, a word containing two S's is not allowed.</p>
-        </div>
-        <div class="p-4 rounded-xl border border-border bg-[#c9b458]/5 border-[#c9b458]/20">
-          <h3 class="font-semibold text-foreground mb-2">Rule 3: No Consecutive Same-Side Letters ⚠️</h3>
-          <p>This is the most important and most commonly broken rule. You cannot write two consecutive letters that are on the same side of the square. If <strong class="text-foreground">R</strong> and <strong class="text-foreground">A</strong> are on the same side, you cannot write <strong class="text-foreground">RA</strong> or <strong class="text-foreground">AR</strong> in the same word. This rule is what makes Letter Boxed challenging.</p>
-        </div>
-        <div class="p-4 rounded-xl border border-border">
-          <h3 class="font-semibold text-foreground mb-2">Rule 4: Chain the Last Letter</h3>
-          <p>In the main puzzle, the last letter of your previous word automatically becomes the first letter of your next word. You cannot choose the first letter of subsequent words — it's determined by your chain.</p>
-        </div>
-        <div class="p-4 rounded-xl border border-border">
-          <h3 class="font-semibold text-foreground mb-2">Rule 5: Complete the Puzzle</h3>
-          <p>Once you've used all 12 letters as the <em>last letter</em> of a word (in any order), your puzzle is complete. Fewer words = a better score.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="page-wrapper">
+  <h2 class="page-h2">What is NYT Letter Boxed?</h2>
+  <div class="page-body">
+    <p><a href="https://www.nytimes.com/puzzles/letter-boxed" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Letter Boxed</a> is one of the signature daily puzzles in The New York Times Games app and website, alongside Wordle, Spelling Bee, and The Mini. The puzzle presents you with a square divided into four sides, each containing three letters — 12 letters total. Your mission: build a chain of words that uses up all 12 letters as last letters.</p>
+    <p>What makes Letter Boxed uniquely challenging is the <em>connectivity rule</em>: you cannot use two consecutive letters that are on the same side of the square. This means every transition between letters must cross a side boundary.</p>
+    <p>Each day, all NYT Letter Boxed players worldwide receive the same 12 letters. Our solver shows you all valid words, so you can find your own path to the solution.</p>
+  </div>
 
-  <!-- Tips -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">💡 Letter Boxed Strategy Tips</h2>
-      <div class="space-y-5">
+  <h2 class="page-h2">How to Use the Letter Boxed Solver</h2>
+  <div class="page-tool-card">
+    <div class="space-y-5">
+      {howToSteps.map((step, i) => (
         <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">1</div>
+          <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
           <div>
-            <h3 class="font-semibold text-foreground mb-1">Think in chains, not individual words</h3>
-            <p class="text-sm text-muted-foreground">Letter Boxed isn't about finding <em>as many words as possible</em> — it's about finding the <em>shortest path</em> through all 12 letters. A 4-word solution is better than a 12-word solution, even if both are valid. Think about which letters can "bridge" from one chain to the next.</p>
+            <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
+            <p class="text-sm text-muted-foreground">{step.text}</p>
           </div>
         </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">2</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Find "bridge" letters first</h3>
-            <p class="text-sm text-muted-foreground">Some letters can connect to many others without breaking the same-side rule. Common bridge letters like <strong class="text-foreground">R</strong>, <strong class="text-foreground">S</strong>, <strong class="text-foreground">T</strong>, <strong class="text-foreground">L</strong>, and <strong class="text-foreground">N</strong> are versatile because they have few same-side restrictions. Identify these early and use them as chain links.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">3</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">End with hard-to-use letters</h3>
-            <p class="text-sm text-muted-foreground">Letters like Q, Z, X, J, V, and W are difficult to end a word with. Save these for the end of your chain, when you've built up the right starting letter. A word that ends in <strong class="text-foreground">Q</strong> (like <strong class="text-foreground">ANTIQUER</strong>) forces your next word to start with R — which gives you many more options.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">4</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Use our solver to check your work</h3>
-            <p class="text-sm text-muted-foreground">Our Letter Boxed solver shows you every valid word from your 12 letters. Run your proposed chain through it to verify each word is legal — especially the tricky ones involving words that might have consecutive same-side letters without you noticing.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-xl font-bold mb-4 text-foreground">More NYT Game Tools</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { name: 'Wordle Solver', href: '/wordle-solver', icon: '🎯' },
-          { name: 'Word Finder', href: '/word-finder', icon: '🔍' },
-          { name: 'Word Scramble', href: '/word-scramble', icon: '🔀' },
-          { name: 'Text Twist', href: '/text-twist', icon: '🔄' },
-        ].map((tool) => (
-          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
-            <span class="text-xl">{tool.icon}</span>
-            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="mt-8 max-w-3xl mx-auto" id="faq">
-    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
-    <div class="space-y-3">
-      {faqs.map((faq) => (
-        <details class="rounded-xl border border-border bg-card group">
-          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
-            <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
-            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
-          </summary>
-          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
-            <p class="pt-3" set:html={faq.answer} />
-          </div>
-        </details>
       ))}
     </div>
-  </section>
+  </div>
 
-  <div class="mt-12"></div>
+  <h2 class="page-h2">Letter Boxed Rules Explained</h2>
+  <div class="page-body">
+    <p><strong>Rule 1: Minimum 3 Letters:</strong> Every word you submit must be at least 3 letters long. Single-letter and two-letter words are not allowed.</p>
+    <p><strong>Rule 2: No Repeating Letters in a Word:</strong> Even if a letter appears on multiple sides of the square, you cannot use it twice in the same word.</p>
+    <p><strong>Rule 3: No Consecutive Same-Side Letters:</strong> This is the most important rule. You cannot write two consecutive letters that are on the same side of the square. If <strong class="text-foreground">R</strong> and <strong class="text-foreground">A</strong> are on the same side, you cannot write <strong class="text-foreground">RA</strong> or <strong class="text-foreground">AR</strong> in the same word.</p>
+    <p><strong>Rule 4: Chain the Last Letter:</strong> The last letter of your previous word automatically becomes the first letter of your next word.</p>
+    <p><strong>Rule 5: Complete the Puzzle:</strong> Once you've used all 12 letters as the last letter of a word, your puzzle is complete. Fewer words = a better score.</p>
+  </div>
 
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <h2 class="page-h2">Letter Boxed Strategy Tips</h2>
+  <div class="page-body">
+    <p><strong>1. Think in chains, not individual words:</strong> Letter Boxed isn't about finding <em>as many words as possible</em> — it's about finding the <em>shortest path</em> through all 12 letters. A 4-word solution is better than a 12-word solution.</p>
+    <p><strong>2. Find "bridge" letters first:</strong> Some letters can connect to many others without breaking the same-side rule. Common bridge letters like <strong class="text-foreground">R</strong>, <strong class="text-foreground">S</strong>, <strong class="text-foreground">T</strong>, <strong class="text-foreground">L</strong>, and <strong class="text-foreground">N</strong> are versatile.</p>
+    <p><strong>3. End with hard-to-use letters:</strong> Letters like Q, Z, X, J, V, and W are difficult to end a word with. Save these for the end of your chain.</p>
+    <p><strong>4. Use our solver to check your work:</strong> Our Letter Boxed solver shows you every valid word from your 12 letters. Run your proposed chain through it to verify each word is legal.</p>
+  </div>
+
+  <h2 class="page-h2">More NYT Game Tools</h2>
+  <div class="page-body">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {[
+        { name: 'Wordle Solver', href: '/wordle-solver', icon: '🎯' },
+        { name: 'Word Finder', href: '/word-finder', icon: '🔍' },
+        { name: 'Word Scramble', href: '/word-scramble', icon: '🔀' },
+        { name: 'Text Twist', href: '/text-twist', icon: '🔄' },
+      ].map((tool) => (
+        <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+          <span class="text-xl">{tool.icon}</span>
+          <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <h2 class="page-h2">Frequently Asked Questions</h2>
+  <div class="space-y-3">
+    {faqs.map((faq) => (
+      <details class="faq-details">
+        <summary class="faq-summary">
+          <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-body">
+          <p set:html={faq.answer} />
+        </div>
+      </details>
+    ))}
+  </div>
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>

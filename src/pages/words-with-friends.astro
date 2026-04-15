@@ -27,23 +27,23 @@ const faqs = [
   },
   {
     question: 'How does Words With Friends scoring compare to Scrabble?',
-    answer: 'Words With Friends uses exactly the same tile values as Scrabble: A/E/I/O/U/L/N/S/T/R = 1pt, D/G = 2pts, B/C/M/P = 3pts, F/H/V/W/Y = 4pts, K = 5pts, J/X = 8pts, Q/Z = 10pts. The board layout, premium squares, and Bingo bonus (50 points for using all 7 tiles) are also identical to Scrabble. The only real difference is the dictionary — WWF uses its own word list that differs slightly from OSPD/SOWPODS.',
+    answer: 'Words With Friends uses exactly the same tile values as Scrabble: A/E/I/O/U/L/N/S/T/R = 1pt, D/G = 2pts, B/C/M/P = 3pts, F/H/V/W/Y = 4pts, K = 5pts, J/X = 8pts, Q/Z = 10pts. The board layout, premium squares, and Bingo bonus (50 points for using all 7 tiles) are also identical to Scrabble. The only real difference is the dictionary.',
   },
   {
     question: 'What are the best Words With Friends starting words?',
-    answer: 'The best WWF opening words follow the same principles as Scrabble openings: use multiple vowels and high-frequency consonants. Words like <strong class="text-foreground">ADIEU</strong> (5 vowels), <strong class="text-foreground">AUDIO</strong>, <strong class="text-foreground">RAISE</strong>, <strong class="text-foreground">SRAIN</strong> (an anagram of <strong class="text-foreground">SRAIN</strong>), and <strong class="text-foreground">ARIEL</strong> are strong openers because they give you information about what letters remain in the bag while setting up premium squares.',
+    answer: 'The best WWF opening words follow the same principles as Scrabble openings: use multiple vowels and high-frequency consonants. Words like <strong class="text-foreground">ADIEU</strong> (5 vowels), <strong class="text-foreground">AUDIO</strong>, <strong class="text-foreground">RAISE</strong>, <strong class="text-foreground">SRAIN</strong>, and <strong class="text-foreground">ARIEL</strong> are strong openers.',
   },
   {
     question: 'What\'s the difference between Words With Friends and Scrabble dictionaries?',
-    answer: 'The WWF dictionary and Scrabble dictionaries overlap significantly but have some differences. Words like <strong class="text-foreground">ZA</strong> (slang for "the") and <strong class="text-foreground">QI</strong> are valid in both, but some obscure words that are legal in one game may not be in the other. Our word finder uses a comprehensive list that covers the vast majority of words valid in both games, so you can play confidently.',
+    answer: 'The WWF dictionary and Scrabble dictionaries overlap significantly but have some differences. Our word finder uses a comprehensive list that covers the most commonly used words in both games.',
   },
   {
     question: 'How do I find a Bingo in Words With Friends?',
-    answer: 'A Bingo is playing all 7 tiles in one turn for a 50-point bonus. To find Bingos, enter your full 7-tile rack and look at the results — any 7-letter word is a Bingo candidate. Common WWF Bingos include <strong class="text-foreground">ATEARI</strong>, <strong class="text-foreground">STERN</strong> variants, and words ending in -EST, -ING, and -ION. Finding Bingos is one of the fastest ways to pull ahead in a close game.',
+    answer: 'A Bingo is playing all 7 tiles in one turn for a 50-point bonus. To find Bingos, enter your full 7-tile rack and look at the results — any 7-letter word is a Bingo candidate. Common WWF Bingos include <strong class="text-foreground">ATEARI</strong>, <strong class="text-foreground">STERN</strong> variants, and words ending in -EST, -ING, and -ION.',
   },
   {
     question: 'Can the WWF cheat tool help me play defensively?',
-    answer: 'Yes. While our tool primarily shows you your own plays, you can also use it to think ahead: if your opponent\'s last move ended near a Triple Word square, what short word could you play to either block it or hit it yourself? Running hypothetical racks through the tool helps you anticipate board state changes. Also, look at what tiles your opponent has left — if they\'re playing short words, they may be saving high-value tiles for a setup.',
+    answer: 'Yes. While our tool primarily shows you your own plays, you can also use it to think ahead: if your opponent\'s last move ended near a Triple Word square, what short word could you play to either block it or hit it yourself? Running hypothetical racks through the tool helps you anticipate board state changes.',
   },
 ];
 
@@ -61,250 +61,177 @@ const TILE_VALUES = [
 ---
 
 <Layout meta={meta}>
-  <!-- Hero -->
-  <section class="text-center pt-8 pb-6">
-    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-      📱 Free Tool · No Sign-up · Instant Results
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Words With Friends Cheat</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Enter your WWF tiles and find every valid word, sorted by point value. Get the highest-scoring play every turn.
-    </p>
-  </section>
-
-  <!-- Tool -->
-  <div class="max-w-3xl mx-auto mb-10">
-    <UnscrambleTool client:load />
+<div class="page-wrapper">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Words With Friends Cheat</span>
   </div>
 
-  <AdSense />
+  <h1 class="page-h1">Words With Friends Cheat</h1>
+  <p class="page-body">Enter your WWF tiles and find every valid word, sorted by point value. Get the highest-scoring play every turn.</p>
 
-  <!-- What is Words With Friends -->
-  <section class="mt-12 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">What is Words With Friends?</h2>
-      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
-        <p>
-          <a href="https://www.wordswithfriends.com/" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Words With Friends</a> (WWF) is a popular multiplayer word game available on mobile and web platforms. Created by Zynga and launched in 2009, it quickly became one of the most downloaded word games in the world — with tens of millions of active players. The game is essentially a modern, digitally-native take on Scrabble, designed for asynchronous play with friends, family, or random opponents.
-        </p>
-        <p>
-          In Words With Friends, two players (or more, in private games) take turns forming words on a 15×15 grid. Like Scrabble, each tile has a point value and the board has premium squares (double/triple letter and word) that multiply scores. The key difference from Scrabble is the social and asynchronous nature — you can play a turn and your opponent responds hours or days later, making it perfect for casual play.
-        </p>
-        <p>
-          WWF uses the same tile values as Scrabble, but with a slightly different dictionary and word list. Some words that are valid in WWF might not be in OSPD/SOWPODS, and vice versa. Our WWF cheat tool uses a comprehensive word list that covers the most commonly used words in both games.
-        </p>
-      </div>
-    </div>
-  </section>
+  <div class="page-tool-card">
+    <UnscrambleTool client:load />
+  </div>
+</div>
 
-  <!-- How to Use WWF Cheat -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">How to Use the WWF Cheat Tool</h2>
-      <div class="space-y-5">
-        {howToSteps.map((step, i) => (
-          <div class="flex gap-4">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
-            <div>
-              <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
-              <p class="text-sm text-muted-foreground">{step.text}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
+<AdSense />
 
-  <!-- WWF Scoring System -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">Words With Friends Scoring System</h2>
-      <p class="text-[15px] text-muted-foreground mb-6 leading-relaxed">
-        WWF uses exactly the same point values as Scrabble. Each tile has a fixed value based on its rarity in English, and premium squares on the board multiply those values. Here's the complete tile value reference:
-      </p>
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-border">
-              <th class="text-left py-2 px-3 font-semibold text-foreground">Points</th>
-              <th class="text-left py-2 px-3 font-semibold text-foreground">Letters</th>
-            </tr>
-          </thead>
-          <tbody>
-            {TILE_VALUES.map((row, i) => (
-              <tr key={i} class={i % 2 === 0 ? 'bg-muted/30' : ''}>
-                <td class="py-2 px-3 font-bold text-foreground">{row.value}</td>
-                <td class="py-2 px-3 text-muted-foreground font-mono tracking-wider">{row.letters}</td>
-              </tr>
-            ))}
-            <tr class="border-t border-border bg-muted/30">
-              <td class="py-2 px-3 font-bold text-foreground">0</td>
-              <td class="py-2 px-3 text-muted-foreground font-mono tracking-wider">Blank (2 tiles)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
-        <div class="p-3 rounded-lg bg-[#6aaa64]/10 border border-[#6aaa64]/20">
-          <p class="font-semibold text-foreground">Double Letter (DL)</p>
-          <p class="text-muted-foreground text-xs">Letter value × 2</p>
-        </div>
-        <div class="p-3 rounded-lg bg-[#6aaa64]/10 border border-[#6aaa64]/20">
-          <p class="font-semibold text-foreground">Triple Letter (TL)</p>
-          <p class="text-muted-foreground text-xs">Letter value × 3</p>
-        </div>
-        <div class="p-3 rounded-lg bg-[#c9b458]/10 border border-[#c9b458]/20">
-          <p class="font-semibold text-foreground">Double Word (DW)</p>
-          <p class="text-muted-foreground text-xs">Word score × 2</p>
-        </div>
-        <div class="p-3 rounded-lg bg-[#c9b458]/10 border border-[#c9b458]/20">
-          <p class="font-semibold text-foreground">Triple Word (TW)</p>
-          <p class="text-muted-foreground text-xs">Word score × 3</p>
-        </div>
-      </div>
-      <p class="text-xs text-muted-foreground mt-4">
-        <strong class="text-foreground">Bingo bonus:</strong> Playing all 7 tiles in one turn earns a 50-point bonus. A 7-letter word on a Triple Word square can easily score 80-150 points.
-      </p>
-    </div>
-  </section>
+<div class="page-wrapper">
+  <h2 class="page-h2">What is Words With Friends?</h2>
+  <div class="page-body">
+    <p><a href="https://www.wordswithfriends.com/" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Words With Friends</a> (WWF) is a popular multiplayer word game available on mobile and web platforms. Created by Zynga and launched in 2009, it quickly became one of the most downloaded word games in the world. The game is essentially a modern, digitally-native take on Scrabble, designed for asynchronous play with friends, family, or random opponents.</p>
+    <p>In Words With Friends, two players take turns forming words on a 15×15 grid. Like Scrabble, each tile has a point value and the board has premium squares (double/triple letter and word) that multiply scores. The key difference from Scrabble is the social and asynchronous nature — you can play a turn and your opponent responds hours or days later.</p>
+    <p>WWF uses the same tile values as Scrabble, but with a slightly different dictionary and word list. Our WWF cheat tool uses a comprehensive word list that covers the most commonly used words in both games.</p>
+  </div>
 
-  <!-- Tips for WWF -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">💡 Top Tips for Words With Friends</h2>
-      <div class="space-y-5">
+  <h2 class="page-h2">How to Use the WWF Cheat Tool</h2>
+  <div class="page-tool-card">
+    <div class="space-y-5">
+      {howToSteps.map((step, i) => (
         <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">1</div>
+          <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
           <div>
-            <h3 class="font-semibold text-foreground mb-1">Prioritize premium squares strategically</h3>
-            <p class="text-sm text-muted-foreground">Triple Word squares are the most valuable real estate on the board. However, playing aggressively for them early can backfire if you open up access for your opponent. A good rule: play toward premium squares, but don't sacrifice a solid 30-40 point word to set up a potential 60-point play unless the game state demands it.</p>
+            <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
+            <p class="text-sm text-muted-foreground">{step.text}</p>
           </div>
         </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">2</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Learn the obscure high-value words</h3>
-            <p class="text-sm text-muted-foreground">While <strong class="text-foreground">QAT</strong>, <strong class="text-foreground">QI</strong>, and <strong class="text-foreground">ZA</strong> are well-known, fewer players know words like <strong class="text-foreground">QUIXOTIC</strong> (26 pts), <strong class="text-foreground">SQUEEZING</strong> (26 pts), or <strong class="text-foreground">JACKPY</strong> (28 pts). Our <a href="/word-unscrambler" class="text-primary hover:underline">word unscrambler</a> surfaces these hidden gems every time you run your rack.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">3</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Use parallel plays to score twice</h3>
-            <p class="text-sm text-muted-foreground">A parallel play is when you place a word that intersects perpendicularly with an existing word on the board, creating new words in the crossing tiles. For example, if <strong class="text-foreground">STARE</strong> is on the board, you can play <strong class="text-foreground">WIDE</strong> through the E to make <strong class="text-foreground">WIDES</strong> and <strong class="text-foreground">WASTER</strong> simultaneously. This is one of the most efficient scoring techniques in WWF.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">4</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Don't underestimate 2-letter words</h3>
-            <p class="text-sm text-muted-foreground">The WWF 2-letter word list is a game-changer. Words like <strong class="text-foreground">XI</strong> (Greek letter), <strong class="text-foreground">XU</strong> (Vietnamese coin), <strong class="text-foreground">JO</strong> (Scottish sweetheart), and <strong class="text-foreground">ZA</strong> (slang for "the") let you place a single tile on a premium square while forming a perpendicular word. This minimal-investment approach can score big when your rack is weak.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">5</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Track tile exchanges and play defensively</h3>
-            <p class="text-sm text-muted-foreground">In WWF, when you pass or exchange tiles, your opponent knows something about your rack. If they exchange several tiles, they likely had a difficult rack. If they play a short word near a Triple Word, they may be setting up a big play. Use our tool to think ahead: what would you play if the board looked that way? Anticipating your opponent's setup plays lets you block proactively.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WWF vs Scrabble -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">Words With Friends vs Scrabble: Key Differences</h2>
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-border">
-              <th class="text-left py-2 px-3 font-semibold text-foreground">Feature</th>
-              <th class="text-left py-2 px-3 font-semibold text-foreground">Words With Friends</th>
-              <th class="text-left py-2 px-3 font-semibold text-foreground">Scrabble</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="bg-muted/30">
-              <td class="py-2 px-3 font-medium text-foreground">Tile Values</td>
-              <td class="py-2 px-3 text-muted-foreground">Identical to Scrabble</td>
-              <td class="py-2 px-3 text-muted-foreground">Standard (Q=10, Z=10, etc.)</td>
-            </tr>
-            <tr>
-              <td class="py-2 px-3 font-medium text-foreground">Board Size</td>
-              <td class="py-2 px-3 text-muted-foreground">15×15</td>
-              <td class="py-2 px-3 text-muted-foreground">15×15</td>
-            </tr>
-            <tr class="bg-muted/30">
-              <td class="py-2 px-3 font-medium text-foreground">Bingo Bonus</td>
-              <td class="py-2 px-3 text-muted-foreground">50 points (7 tiles)</td>
-              <td class="py-2 px-3 text-muted-foreground">50 points (7 tiles)</td>
-            </tr>
-            <tr>
-              <td class="py-2 px-3 font-medium text-foreground">Dictionary</td>
-              <td class="py-2 px-3 text-muted-foreground">Zynga's proprietary list</td>
-              <td class="py-2 px-3 text-muted-foreground">OSPD / SOWPODS / OTCWL</td>
-            </tr>
-            <tr class="bg-muted/30">
-              <td class="py-2 px-3 font-medium text-foreground">Game Style</td>
-              <td class="py-2 px-3 text-muted-foreground">Async, social, mobile-first</td>
-              <td class="py-2 px-3 text-muted-foreground">In-person or async tournament</td>
-            </tr>
-            <tr>
-              <td class="py-2 px-3 font-medium text-foreground">Blank Tiles</td>
-              <td class="py-2 px-3 text-muted-foreground">2 blanks, 0 points</td>
-              <td class="py-2 px-3 text-muted-foreground">2 blanks, 0 points</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="text-xs text-muted-foreground mt-4">
-        Despite these small differences, the core strategy is nearly identical between WWF and Scrabble. Our word finder works great for both games.
-      </p>
-    </div>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-xl font-bold mb-4 text-foreground">Related Word Game Tools</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { name: 'Scrabble Finder', href: '/scrabble', icon: '🎲' },
-          { name: 'Wordfeud Solver', href: '/wordfeud', icon: '🎮' },
-          { name: 'Word Cookies', href: '/word-cookies', icon: '🍪' },
-          { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
-        ].map((tool) => (
-          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
-            <span class="text-xl">{tool.icon}</span>
-            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="mt-8 max-w-3xl mx-auto" id="faq">
-    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
-    <div class="space-y-3">
-      {faqs.map((faq) => (
-        <details class="rounded-xl border border-border bg-card group">
-          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
-            <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
-            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
-          </summary>
-          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
-            <p class="pt-3" set:html={faq.answer} />
-          </div>
-        </details>
       ))}
     </div>
-  </section>
+  </div>
 
-  <div class="mt-12"></div>
+  <h2 class="page-h2">Words With Friends Scoring System</h2>
+  <div class="page-body">
+    <p>WWF uses exactly the same point values as Scrabble. Here's the complete tile value reference:</p>
+  </div>
+  <div class="page-tool-card">
+    <div class="overflow-x-auto mb-4">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-border">
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Points</th>
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Letters</th>
+          </tr>
+        </thead>
+        <tbody>
+          {TILE_VALUES.map((row, i) => (
+            <tr key={i} class={i % 2 === 0 ? 'bg-muted/30' : ''}>
+              <td class="py-2 px-3 font-bold text-foreground">{row.value}</td>
+              <td class="py-2 px-3 text-muted-foreground font-mono tracking-wider">{row.letters}</td>
+            </tr>
+          ))}
+          <tr class="border-t border-border bg-muted/30">
+            <td class="py-2 px-3 font-bold text-foreground">0</td>
+            <td class="py-2 px-3 text-muted-foreground font-mono tracking-wider">Blank (2 tiles)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+      <div class="p-3 rounded-lg bg-[#6aaa64]/10 border border-[#6aaa64]/20">
+        <p class="font-semibold text-foreground">Double Letter (DL)</p>
+        <p class="text-muted-foreground text-xs">Letter value × 2</p>
+      </div>
+      <div class="p-3 rounded-lg bg-[#6aaa64]/10 border border-[#6aaa64]/20">
+        <p class="font-semibold text-foreground">Triple Letter (TL)</p>
+        <p class="text-muted-foreground text-xs">Letter value × 3</p>
+      </div>
+      <div class="p-3 rounded-lg bg-[#c9b458]/10 border border-[#c9b458]/20">
+        <p class="font-semibold text-foreground">Double Word (DW)</p>
+        <p class="text-muted-foreground text-xs">Word score × 2</p>
+      </div>
+      <div class="p-3 rounded-lg bg-[#c9b458]/10 border border-[#c9b458]/20">
+        <p class="font-semibold text-foreground">Triple Word (TW)</p>
+        <p class="text-muted-foreground text-xs">Word score × 3</p>
+      </div>
+    </div>
+    <p class="text-xs text-muted-foreground mt-4"><strong class="text-foreground">Bingo bonus:</strong> Playing all 7 tiles in one turn earns a 50-point bonus. A 7-letter word on a Triple Word square can easily score 80-150 points.</p>
+  </div>
 
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <h2 class="page-h2">Top Tips for Words With Friends</h2>
+  <div class="page-body">
+    <p><strong>1. Prioritize premium squares strategically:</strong> Triple Word squares are the most valuable real estate on the board. However, playing aggressively for them early can backfire if you open up access for your opponent.</p>
+    <p><strong>2. Learn the obscure high-value words:</strong> While <strong class="text-foreground">QAT</strong>, <strong class="text-foreground">QI</strong>, and <strong class="text-foreground">ZA</strong> are well-known, fewer players know words like <strong class="text-foreground">QUIXOTIC</strong> (26 pts), <strong class="text-foreground">SQUEEZING</strong> (26 pts), or <strong class="text-foreground">JACKPY</strong> (28 pts).</p>
+    <p><strong>3. Use parallel plays to score twice:</strong> A parallel play is when you place a word that intersects perpendicularly with an existing word on the board, creating new words in the crossing tiles.</p>
+    <p><strong>4. Don't underestimate 2-letter words:</strong> The WWF 2-letter word list is a game-changer. Words like <strong class="text-foreground">XI</strong>, <strong class="text-foreground">XU</strong>, <strong class="text-foreground">JO</strong>, and <strong class="text-foreground">ZA</strong> let you place a single tile on a premium square.</p>
+    <p><strong>5. Track tile exchanges and play defensively:</strong> If your opponent exchanges several tiles, they likely had a difficult rack. If they play a short word near a Triple Word, they may be setting up a big play.</p>
+  </div>
+
+  <h2 class="page-h2">Words With Friends vs Scrabble: Key Differences</h2>
+  <div class="page-tool-card">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-border">
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Feature</th>
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Words With Friends</th>
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Scrabble</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-muted/30">
+            <td class="py-2 px-3 font-medium text-foreground">Tile Values</td>
+            <td class="py-2 px-3 text-muted-foreground">Identical to Scrabble</td>
+            <td class="py-2 px-3 text-muted-foreground">Standard (Q=10, Z=10, etc.)</td>
+          </tr>
+          <tr>
+            <td class="py-2 px-3 font-medium text-foreground">Board Size</td>
+            <td class="py-2 px-3 text-muted-foreground">15×15</td>
+            <td class="py-2 px-3 text-muted-foreground">15×15</td>
+          </tr>
+          <tr class="bg-muted/30">
+            <td class="py-2 px-3 font-medium text-foreground">Bingo Bonus</td>
+            <td class="py-2 px-3 text-muted-foreground">50 points (7 tiles)</td>
+            <td class="py-2 px-3 text-muted-foreground">50 points (7 tiles)</td>
+          </tr>
+          <tr>
+            <td class="py-2 px-3 font-medium text-foreground">Dictionary</td>
+            <td class="py-2 px-3 text-muted-foreground">Zynga's proprietary list</td>
+            <td class="py-2 px-3 text-muted-foreground">OSPD / SOWPODS / OTCWL</td>
+          </tr>
+          <tr class="bg-muted/30">
+            <td class="py-2 px-3 font-medium text-foreground">Game Style</td>
+            <td class="py-2 px-3 text-muted-foreground">Async, social, mobile-first</td>
+            <td class="py-2 px-3 text-muted-foreground">In-person or async tournament</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-muted-foreground mt-4">Despite these small differences, the core strategy is nearly identical between WWF and Scrabble. Our word finder works great for both games.</p>
+  </div>
+
+  <h2 class="page-h2">Related Word Game Tools</h2>
+  <div class="page-body">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {[
+        { name: 'Scrabble Finder', href: '/scrabble', icon: '🎲' },
+        { name: 'Wordfeud Solver', href: '/wordfeud', icon: '🎮' },
+        { name: 'Word Cookies', href: '/word-cookies', icon: '🍪' },
+        { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
+      ].map((tool) => (
+        <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+          <span class="text-xl">{tool.icon}</span>
+          <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <h2 class="page-h2">Frequently Asked Questions</h2>
+  <div class="space-y-3">
+    {faqs.map((faq) => (
+      <details class="faq-details">
+        <summary class="faq-summary">
+          <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-body">
+          <p set:html={faq.answer} />
+        </div>
+      </details>
+    ))}
+  </div>
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>

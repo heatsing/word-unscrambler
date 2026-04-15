@@ -23,31 +23,31 @@ const howToSchema = getHowToSchema(howToSteps);
 const faqs = [
   {
     question: 'What is Wordfeud and how does it work?',
-    answer: 'Wordfeud is a popular multiplayer word game available on iOS, Android, and web. Think of it as Scrabble reimagined for the mobile era — two to four players take turns forming words on a 15×15 grid, with the same premium squares (double/triple letter and word) that Scrabble players know well. Games are played asynchronously, so you can play at your own pace against friends or random opponents. Each player starts with 7 tiles and draws new ones as they play. The game ends when one player uses all their tiles or when both players consecutively pass.',
+    answer: 'Wordfeud is a popular multiplayer word game available on iOS, Android, and web. Think of it as Scrabble reimagined for the mobile era — two to four players take turns forming words on a 15×15 grid, with the same premium squares (double/triple letter and word) that Scrabble players know well. Games are played asynchronously, so you can play at your own pace against friends or random opponents.',
   },
   {
     question: 'How does Wordfeud scoring work?',
-    answer: 'Wordfeud scoring is almost identical to Scrabble: each letter has a point value (A/E/I/O/U/L/N/S/T/R = 1, D/G = 2, B/C/M/P = 3, F/H/V/W/Y = 4, K = 5, J/X = 8, Q/Z = 10), and premium squares multiply tile values (DL/TL) or word values (DW/TW). Using all 7 tiles in one play earns a 50-point Bingo bonus. The key difference from Scrabble is the dictionary — Wordfeud uses its own word list, which our solver covers comprehensively.',
+    answer: 'Wordfeud scoring is almost identical to Scrabble: each letter has a point value (A/E/I/O/U/L/N/S/T/R = 1, D/G = 2, B/C/M/P = 3, F/H/V/W/Y = 4, K = 5, J/X = 8, Q/Z = 10), and premium squares multiply tile values. Using all 7 tiles in one play earns a 50-point Bingo bonus.',
   },
   {
     question: 'What are the best Wordfeud starting words?',
-    answer: 'Strong Wordfeud opening words maximize vowel-consonant balance and use high-frequency letters. <strong class="text-foreground">ADIEU</strong> (contains 4 of the 5 vowels) is a perennial favorite. <strong class="text-foreground">AUDIO</strong>, <strong class="text-foreground">RAISE</strong>, <strong class="text-foreground">STARE</strong>, <strong class="text-foreground">SOVRAN</strong>, and <strong class="text-foreground">AEROSTAT</strong> are all excellent openers because they consume common consonants and set up premium squares for future turns. Your goal in the opening is to learn about the tile distribution while establishing board control.',
+    answer: 'Strong Wordfeud opening words maximize vowel-consonant balance. <strong class="text-foreground">ADIEU</strong> (contains 4 of the 5 vowels) is a perennial favorite. <strong class="text-foreground">AUDIO</strong>, <strong class="text-foreground">RAISE</strong>, <strong class="text-foreground">STARE</strong>, <strong class="text-foreground">SOVRAN</strong>, and <strong class="text-foreground">AEROSTAT</strong> are all excellent openers.',
   },
   {
     question: 'How do I get the 50-point Bingo bonus in Wordfeud?',
-    answer: 'Playing all 7 tiles in a single turn earns a 50-point Bingo bonus. To find Bingo candidates, run your full 7-tile rack through our solver and look for any 7-letter word. Words like <strong class="text-foreground">SENORITA</strong>, <strong class="text-foreground">ANTELOPE</strong>, <strong class="text-foreground">INHALERS</strong>, <strong class="text-foreground">MOLASSES</strong>, and <strong class="text-foreground">LATRINES</strong> are common Bingos that players frequently miss. The Bingo bonus can completely swing a close game — always check for 7-letter possibilities before settling on a smaller word.',
+    answer: 'Playing all 7 tiles in a single turn earns a 50-point Bingo bonus. To find Bingo candidates, run your full 7-tile rack through our solver and look for any 7-letter word. Words like <strong class="text-foreground">SENORITA</strong>, <strong class="text-foreground">ANTELOPE</strong>, <strong class="text-foreground">INHALERS</strong>, <strong class="text-foreground">MOLASSES</strong>, and <strong class="text-foreground">LATRINES</strong> are common Bingos.',
   },
   {
     question: 'Can I use a blank tile in the Wordfeud solver?',
-    answer: 'Yes. Enter a blank tile as a question mark (?) in the search box. The solver will treat it as a wildcard — finding words where that blank letter would go. For example, entering "QI?EST" will find words like "QUIEST" and "QIYEST" (if valid). This is particularly useful when you have a blank and multiple letter possibilities and want to see what plays are available.',
+    answer: 'Yes. Enter a blank tile as a question mark (?) in the search box. The solver will treat it as a wildcard — finding words where that blank letter would go.',
   },
   {
     question: 'What\'s the difference between Wordfeud and Wordfeud 2?',
-    answer: 'Wordfeud 2 (also called "Wordfeud Live") added several features including faster gameplay, a chat function, and some updated dictionary additions. The core game mechanics — board, tiles, scoring — remained essentially the same. Our solver works for both versions since they use the same word list and tile values.',
+    answer: 'Wordfeud 2 (also called "Wordfeud Live") added several features including faster gameplay, a chat function, and some updated dictionary additions. The core game mechanics remained essentially the same. Our solver works for both versions.',
   },
   {
     question: 'How do I play defensively in Wordfeud?',
-    answer: 'Defensive play in Wordfeud means limiting your opponent\'s options. The most important defensive moves are: (1) <strong class="text-foreground">Blocking Triple Word squares</strong> with short words (2-3 letters), especially near the center; (2) <strong class="text-foreground">Avoiding parallel setups</strong> — if your opponent just played a word ending near a Triple Word, try to consume that square with your next play; (3) <strong class="text-foreground">Forcing tile exchanges</strong> by playing short words that offer no productive extension. Our solver helps you see not just your best offensive play, but also what plays are available that might disrupt your opponent\'s plans.',
+    answer: 'Defensive play means limiting your opponent\'s options: (1) Blocking Triple Word squares with short words (2-3 letters); (2) Avoiding parallel setups near your opponent\'s high-value tiles; (3) Forcing tile exchanges by playing short words that offer no productive extension.',
   },
 ];
 
@@ -65,186 +65,125 @@ const TILE_VALUES = [
 ---
 
 <Layout meta={meta}>
-  <!-- Hero -->
-  <section class="text-center pt-8 pb-6">
-    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-      🎮 Free Tool · No Sign-up · Instant Results
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Wordfeud Solver</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Enter your Wordfeud tiles and find every valid word, sorted by point value. Get the highest-scoring play every turn.
-    </p>
-  </section>
-
-  <!-- Tool -->
-  <div class="max-w-3xl mx-auto mb-10">
-    <UnscrambleTool client:load />
+<div class="page-wrapper">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Wordfeud Solver</span>
   </div>
 
-  <AdSense />
+  <h1 class="page-h1">Wordfeud Solver</h1>
+  <p class="page-body">Enter your Wordfeud tiles and find every valid word, sorted by point value. Get the highest-scoring play every turn.</p>
 
-  <!-- What is Wordfeud -->
-  <section class="mt-12 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">What is Wordfeud?</h2>
-      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
-        <p>
-          <a href="https://wordfeud.com/" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Wordfeud</a> is one of the most popular asynchronous word games in the world, with millions of active players across iOS, Android, and web platforms. It was created by the same company behind the popular "Wordfeud" game and has become a go-to word game for players who enjoy the strategic depth of Scrabble but prefer playing at their own pace.
-        </p>
-        <p>
-          The game is played on a 15×15 grid — identical in size to Scrabble — with double and triple letter and word score squares in the same positions. Two to four players take turns forming words horizontally or vertically, with each tile having a Scrabble-style point value. Like Scrabble, Wordfeud rewards vocabulary, strategic board placement, and the ability to spot high-value words under pressure.
-        </p>
-        <p>
-          What sets Wordfeud apart is its social and asynchronous nature. You can play multiple games simultaneously against different opponents, and there's no time pressure — you can take as long as you want to consider your move. This makes it accessible to casual players while still offering enough depth for competitive word game enthusiasts.
-        </p>
-      </div>
-    </div>
-  </section>
+  <div class="page-tool-card">
+    <UnscrambleTool client:load />
+  </div>
+</div>
 
-  <!-- How to Use -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">How to Use the Wordfeud Solver</h2>
-      <div class="space-y-5">
-        {howToSteps.map((step, i) => (
-          <div class="flex gap-4">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
-            <div>
-              <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
-              <p class="text-sm text-muted-foreground">{step.text}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
+<AdSense />
 
-  <!-- Wordfeud Scoring -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">Wordfeud Scoring System</h2>
-      <p class="text-[15px] text-muted-foreground mb-6 leading-relaxed">
-        Wordfeud uses the exact same tile values as Scrabble. Here's the complete reference:
-      </p>
-      <div class="overflow-x-auto mb-6">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-border">
-              <th class="text-left py-2 px-3 font-semibold text-foreground">Points</th>
-              <th class="text-left py-2 px-3 font-semibold text-foreground">Letters</th>
-            </tr>
-          </thead>
-          <tbody>
-            {TILE_VALUES.map((row, i) => (
-              <tr key={i} class={i % 2 === 0 ? 'bg-muted/30' : ''}>
-                <td class="py-2 px-3 font-bold text-foreground">{row.value}</td>
-                <td class="py-2 px-3 text-muted-foreground font-mono tracking-wider">{row.letters}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div class="space-y-3 text-[15px] text-muted-foreground">
-        <div class="flex items-start gap-2">
-          <span class="text-primary mt-0.5">→</span>
-          <p><strong class="text-foreground">Bingo Bonus:</strong> Playing all 7 tiles in one word = 50 bonus points. A well-placed 7-letter Bingo on a Triple Word can score 100+ points in a single turn.</p>
-        </div>
-        <div class="flex items-start gap-2">
-          <span class="text-primary mt-0.5">→</span>
-          <p><strong class="text-foreground">Premium Squares:</strong> Double Letter (DL) and Triple Letter (TL) multiply individual tile values. Double Word (DW) and Triple Word (TW) multiply the entire word score. Premium squares can stack — a word played across two Triple Word squares gets multiplied by 9!</p>
-        </div>
-        <div class="flex items-start gap-2">
-          <span class="text-primary mt-0.5">→</span>
-          <p><strong class="text-foreground">Blank Tiles:</strong> Two blank tiles per game, worth 0 points each. They can represent any letter, making them invaluable for difficult Q, Z, and X situations.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="page-wrapper">
+  <h2 class="page-h2">What is Wordfeud?</h2>
+  <div class="page-body">
+    <p><a href="https://wordfeud.com/" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Wordfeud</a> is one of the most popular asynchronous word games in the world, with millions of active players across iOS, Android, and web platforms. It was created by the same company behind the popular "Wordfeud" game and has become a go-to word game for players who enjoy the strategic depth of Scrabble but prefer playing at their own pace.</p>
+    <p>The game is played on a 15×15 grid — identical in size to Scrabble — with double and triple letter and word score squares in the same positions. Two to four players take turns forming words horizontally or vertically, with each tile having a Scrabble-style point value.</p>
+    <p>What sets Wordfeud apart is its social and asynchronous nature. You can play multiple games simultaneously against different opponents, and there's no time pressure — you can take as long as you want to consider your move.</p>
+  </div>
 
-  <!-- Top Wordfeud Tips -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">💡 Top Wordfeud Tips from Expert Players</h2>
-      <div class="space-y-5">
+  <h2 class="page-h2">How to Use the Wordfeud Solver</h2>
+  <div class="page-tool-card">
+    <div class="space-y-5">
+      {howToSteps.map((step, i) => (
         <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">1</div>
+          <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
           <div>
-            <h3 class="font-semibold text-foreground mb-1">Hunt for Bingos relentlessly</h3>
-            <p class="text-sm text-muted-foreground">The 50-point Bingo bonus is the single biggest scoring opportunity in Wordfeud. Every time you get a full rack of 7 tiles, run it through our solver immediately and look for 7-letter words. <strong class="text-foreground">ETERNIS</strong>, <strong class="text-foreground">NASTIER</strong>, <strong class="text-foreground">RATINES</strong>, <strong class="text-foreground">ALESMITH</strong> — these hidden Bingos are game-changers. A player who consistently finds Bingos will almost always outscore an opponent who doesn't, even if their individual word choices are similar.</p>
+            <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
+            <p class="text-sm text-muted-foreground">{step.text}</p>
           </div>
         </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">2</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Master the high-value 2-letter words</h3>
-            <p class="text-sm text-muted-foreground">Words like <strong class="text-foreground">QI</strong> (11+ pts on a TW), <strong class="text-foreground">XI</strong> (10+ pts), <strong class="text-foreground">ZA</strong> (11+ pts), <strong class="text-foreground">JO</strong> (9+ pts), <strong class="text-foreground">XU</strong> (10+ pts), and <strong class="text-foreground">KI</strong> (7+ pts) let you play a single tile on a premium square. This is especially powerful when your rack is weak — a one-tile play on a Triple Word can score 15-20 points, which beats a 4-letter word played without any premium coverage.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">3</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Save high-value tiles for premium squares</h3>
-            <p class="text-sm text-muted-foreground">Q (10 pts), Z (10 pts), X (8 pts), and J (8 pts) should almost never be played on neutral board spaces. If you have a Q, look for QI, QAT, QIS, QUA, or EQUIP. If you have a Z, look for ZA, ZO, ZA, ZE, and words ending in -IZE. Playing Z on a Triple Word square (10 × 3 = 30 base) while forming another word can easily yield 60+ total points.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">4</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Play parallel words to score twice</h3>
-            <p class="text-sm text-muted-foreground">When you place a word perpendicular to an existing word on the board, every intersecting tile creates a new word in the perpendicular direction. This is called a "parallel play" and it's one of the most efficient scoring techniques. For example, if <strong class="text-foreground">CRANE</strong> is already on the board and you play <strong class="text-foreground">STOOD</strong> through the R, you create <strong class="text-foreground">STOOD</strong> (horizontal) AND <strong class="text-foreground">SRO</strong> + <strong class="text-foreground">TND</strong> in the perpendicular slots — all scored simultaneously.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#6aaa64]/10 flex items-center justify-center text-[#6aaa64] font-bold text-sm">5</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">Know when to play defensively</h3>
-            <p class="text-sm text-muted-foreground">If your opponent is setting up near a Triple Word with a short word, consider whether blocking is worth sacrificing points. Sometimes the best play isn't the highest-scoring word — it's the one that prevents your opponent from scoring 80+ on their next turn. Our solver helps you see all available options, so you can weigh offensive vs. defensive plays. The <a href="/scrabble" class="text-primary hover:underline">Scrabble page</a> has more on defensive strategy.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-xl font-bold mb-4 text-foreground">Related Word Game Tools</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { name: 'Scrabble Finder', href: '/scrabble', icon: '🎲' },
-          { name: 'Words With Friends', href: '/words-with-friends', icon: '📱' },
-          { name: 'Word Cookies', href: '/word-cookies', icon: '🍪' },
-          { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
-        ].map((tool) => (
-          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
-            <span class="text-xl">{tool.icon}</span>
-            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="mt-8 max-w-3xl mx-auto" id="faq">
-    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
-    <div class="space-y-3">
-      {faqs.map((faq) => (
-        <details class="rounded-xl border border-border bg-card group">
-          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
-            <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
-            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
-          </summary>
-          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
-            <p class="pt-3" set:html={faq.answer} />
-          </div>
-        </details>
       ))}
     </div>
-  </section>
+  </div>
 
-  <div class="mt-12"></div>
+  <h2 class="page-h2">Wordfeud Scoring System</h2>
+  <div class="page-body">
+    <p>Wordfeud uses the exact same tile values as Scrabble. Here's the complete reference:</p>
+  </div>
+  <div class="page-tool-card">
+    <div class="overflow-x-auto mb-6">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-border">
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Points</th>
+            <th class="text-left py-2 px-3 font-semibold text-foreground">Letters</th>
+          </tr>
+        </thead>
+        <tbody>
+          {TILE_VALUES.map((row, i) => (
+            <tr key={i} class={i % 2 === 0 ? 'bg-muted/30' : ''}>
+              <td class="py-2 px-3 font-bold text-foreground">{row.value}</td>
+              <td class="py-2 px-3 text-muted-foreground font-mono tracking-wider">{row.letters}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="space-y-3 text-[15px] text-muted-foreground">
+      <div class="flex items-start gap-2">
+        <span class="text-primary mt-0.5">→</span>
+        <p><strong class="text-foreground">Bingo Bonus:</strong> Playing all 7 tiles in one word = 50 bonus points.</p>
+      </div>
+      <div class="flex items-start gap-2">
+        <span class="text-primary mt-0.5">→</span>
+        <p><strong class="text-foreground">Premium Squares:</strong> DL and TL multiply individual tile values. DW and TW multiply the entire word score.</p>
+      </div>
+      <div class="flex items-start gap-2">
+        <span class="text-primary mt-0.5">→</span>
+        <p><strong class="text-foreground">Blank Tiles:</strong> Two blank tiles per game, worth 0 points each. They can represent any letter.</p>
+      </div>
+    </div>
+  </div>
 
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <h2 class="page-h2">Top Wordfeud Tips from Expert Players</h2>
+  <div class="page-body">
+    <p><strong>1. Hunt for Bingos relentlessly:</strong> The 50-point Bingo bonus is the single biggest scoring opportunity in Wordfeud. Every time you get a full rack of 7 tiles, run it through our solver immediately and look for 7-letter words.</p>
+    <p><strong>2. Master the high-value 2-letter words:</strong> Words like <strong class="text-foreground">QI</strong> (11+ pts on a TW), <strong class="text-foreground">XI</strong> (10+ pts), <strong class="text-foreground">ZA</strong> (11+ pts), <strong class="text-foreground">JO</strong> (9+ pts), <strong class="text-foreground">XU</strong> (10+ pts), and <strong class="text-foreground">KI</strong> (7+ pts) let you play a single tile on a premium square.</p>
+    <p><strong>3. Save high-value tiles for premium squares:</strong> Q (10 pts), Z (10 pts), X (8 pts), and J (8 pts) should almost never be played on neutral board spaces.</p>
+    <p><strong>4. Play parallel words to score twice:</strong> When you place a word perpendicular to an existing word on the board, every intersecting tile creates a new word in the perpendicular direction.</p>
+    <p><strong>5. Know when to play defensively:</strong> Sometimes the best play isn't the highest-scoring word — it's the one that prevents your opponent from scoring 80+ on their next turn.</p>
+  </div>
+
+  <h2 class="page-h2">Related Word Game Tools</h2>
+  <div class="page-body">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {[
+        { name: 'Scrabble Finder', href: '/scrabble', icon: '🎲' },
+        { name: 'Words With Friends', href: '/words-with-friends', icon: '📱' },
+        { name: 'Word Cookies', href: '/word-cookies', icon: '🍪' },
+        { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '🔤' },
+      ].map((tool) => (
+        <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
+          <span class="text-xl">{tool.icon}</span>
+          <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <h2 class="page-h2">Frequently Asked Questions</h2>
+  <div class="space-y-3">
+    {faqs.map((faq) => (
+      <details class="faq-details">
+        <summary class="faq-summary">
+          <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-body">
+          <p set:html={faq.answer} />
+        </div>
+      </details>
+    ))}
+  </div>
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>

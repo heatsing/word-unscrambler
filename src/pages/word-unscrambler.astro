@@ -7,246 +7,126 @@ import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/word-unscrambler',
-  'Word Unscrambler - Find Words from Any Letters | Free Tool',
-  'Free word unscrambler: enter any letters and instantly find every word you can make. Works for Wordle, Scrabble, WWF, crosswords, and all word puzzles.'
+  'Word Unscrambler - Free Tool to Unscramble Words Instantly',
+  'Free word unscrambler: enter scrambled letters and get every valid word you can make. Works for Scrabble, crosswords, Wordle, anagrams, and all word games.'
 );
 
 const howToSteps = [
-  { name: 'Enter your letters', text: 'Type your jumbled or scrambled letters into the search box. You can enter anywhere from 2 to 12+ letters.' },
-  { name: 'Set length filters (optional)', text: 'Use the Min and Max length controls to filter results to a specific word size. Great for Wordle (5 letters) or Scrabble (fits your rack).' },
-  { name: 'Find your words', text: 'Results appear instantly, sorted by Scrabble score (highest first) or alphabetically. Browse through all valid words from your letters.' },
+  { name: 'Enter your letters', text: 'Type any set of letters — 2 to 15+ letters. Works with scrambled, jumbled, or any arrangement of letters.' },
+  { name: 'Browse your results', text: 'Results appear instantly, sorted by Scrabble score (highest first). Find the word you need.' },
+  { name: 'Filter by length (optional)', text: 'Use the Min and Max length controls to filter results to a specific word size.' },
+  { name: 'Use in your game', text: 'Find the word you need and play it in your game. No sign-up, no download — just instant results.' },
 ];
 
 const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
-    question: 'What is a word unscrambler and how does it work?',
-    answer: 'A word unscrambler is a tool that takes any set of scrambled or jumbled letters and finds every valid English word that can be formed from them. It works by comparing your letters against a comprehensive dictionary and checking every possible arrangement. For example, the scrambled letters "RETTTOUSINCED" unscramble to "RECONSTITUTED" — and our tool finds not just one answer, but every valid word from those 12 letters, including "CONCERTED", "COUNTRIES", "REDUCTIONS", "INDUCTORES", and dozens more.',
+    question: 'What is a word unscrambler?',
+    answer: 'A word unscrambler is a free online tool that takes any set of scrambled, jumbled, or mixed-up letters and finds every valid English word you can make from them. Whether you have 3 letters like "ABC" or 15 letters like a full word scramble puzzle, our unscrambler instantly checks every possible arrangement against a comprehensive dictionary. Enter your letters and get results sorted by Scrabble score.',
   },
   {
-    question: 'Can the word unscrambler help me win at Wordle?',
-    answer: 'Yes, it\'s one of the most popular uses for our tool. If you\'ve got 4 or 5 letters revealed in Wordle but can\'t figure out the word, enter your known letters and filter to that word length. The unscrambler shows you every possible 5-letter word from your letters, so you can narrow down the answer. For more targeted help, try our dedicated <a href="/wordle-solver" class="text-primary hover:underline">Wordle solver</a> which handles green/yellow/gray clues.',
+    question: 'How does the word unscrambler work?',
+    answer: 'Enter your scrambled letters and the solver checks every possible arrangement against a comprehensive English dictionary, finding every valid word that can be made from those letters. It\'s essentially a fast dictionary lookup that handles any letter combination — no matter how jumbled. Results are sorted by Scrabble score so your highest-scoring plays appear first.',
   },
   {
-    question: 'Does the word unscrambler work for Scrabble and Words With Friends?',
-    answer: 'Absolutely. Scrabble and Words With Friends are two of the most common uses for our tool. Enter your tile rack and results are automatically sorted by Scrabble point value — so the highest-scoring words appear first. If you\'ve got a Q or Z on your rack, you\'ll see all the Q-words and Z-words you can play immediately. The <a href="/scrabble" class="text-primary hover:underline">Scrabble word finder</a> and <a href="/words-with-friends" class="text-primary hover:underline">WWF cheat</a> pages have more game-specific tips.',
+    question: 'What games can I use this for?',
+    answer: 'Our word unscrambler works for virtually every word game: <a href="/scrabble" class="text-primary hover:underline">Scrabble</a>, <a href="/scrabble-go" class="text-primary hover:underline">Scrabble Go</a>, <a href="/words-with-friends" class="text-primary hover:underline">Words With Friends</a>, <a href="/wordfeud" class="text-primary hover:underline">Wordfeud</a>, <a href="/word-cookies" class="text-primary hover:underline">Word Cookies</a>, <a href="/text-twist" class="text-primary hover:underline">Text Twist</a>, <a href="/wordscapes" class="text-primary hover:underline">Wordscapes</a>, <a href="/boggle-solver" class="text-primary hover:underline">Boggle</a>, crosswords, anagrams, and more.',
   },
   {
-    question: 'What\'s the difference between a word unscrambler and an anagram solver?',
-    answer: 'In practice, they\'re the same thing — both take jumbled letters and find valid words. The term "unscrambler" emphasizes the puzzle aspect (like unscrambling a jumbled Wordle puzzle), while "anagram solver" is more traditional, implying you\'re rearranging one word into another. Our tool handles both use cases — enter "TEAL" and we\'ll show you "LEAT", "ETAL", "TALE", and "LATE" as anagrams, but also every longer word you can make from those letters if you use them alongside others.',
+    question: 'How many letters can the word unscrambler handle?',
+    answer: 'Our word unscrambler handles 2 to 15+ letters. Short inputs (3-5 letters) are instant. Longer inputs (10+ letters) may take a fraction of a second as the solver checks billions of possible arrangements. Use the Min and Max length filters to narrow results to words of a specific size.',
   },
   {
-    question: 'What\'s the longest word you can unscramble?',
-    answer: 'Our dictionary covers words from 2 to 12+ letters. Technically the longest "scrambled" inputs you can enter are as long as you want — but the most practically useful unscrambles are in the 3-8 letter range. For extremely long scrambles like "DESPERATELY" (11 letters), the tool finds all valid words inside: "PESETA", "SALTER", "DELETY", "LEPER", "STRAP", "PASTER", "PLEATED", "RESTORED", and many more. Some of the longest valid Scrabble words from long scrambles include "PNEUMONOULTRAMICROSCOPICS" (but you\'d need 30 letters for that one!).',
+    question: 'Can I use wildcards like blank tiles?',
+    answer: 'Yes! Enter a question mark (?) as a wildcard to represent any letter you don\'t know. For example, entering "S?RATE" will find words like "STRATE", "SIRATE", "SERATE", and "SURATE" — as long as they\'re in the dictionary.',
   },
   {
-    question: 'Can I use the word unscrambler for crosswords?',
-    answer: 'Yes — with a slight caveat. For crosswords where you know some letters but not others, use the underscore pattern feature on our <a href="/crossword-solver" class="text-primary hover:underline">Crossword Solver</a> page. It lets you type patterns like "_A_E" to match "CAPE", "RARE", or "GAME". The word unscrambler is best when you have a specific set of letters with no known positions — just enter the letters and filter by length to match your crossword space.',
+    question: 'Is the word unscrambler free?',
+    answer: 'Yes! Our word unscrambler is completely free to use with no sign-up, no download, and no limits. Use it as many times as you want on any device.',
   },
 ];
 
 const faqSchema = getFAQPageSchema(faqs);
-
-const GAMES = [
-  { name: 'Scrabble', url: '/scrabble', icon: '🎲', tip: 'Sort by score to find your highest-scoring play. Watch for Bingos — 7-letter words from your rack earn a 50-point bonus.' },
-  { name: 'Words With Friends', url: '/words-with-friends', icon: '📱', tip: 'Same scoring as Scrabble. Look for parallel plays — placing a word that intersects with existing tiles perpendicular.' },
-  { name: 'Wordfeud', url: '/wordfeud', icon: '🎮', tip: 'Uses a slightly different dictionary than Scrabble. Our tool covers both North American and international word lists.' },
-  { name: 'Word Cookies', url: '/word-cookies', icon: '🍪', tip: 'Enter the main letter batch to find all valid words. Special "puzzle answer" words are usually the longest ones.' },
-  { name: 'CodyCross', url: null, icon: '🧩', tip: 'If you\'ve got the letters for a CodyCross answer but can\'t figure out the word pattern, enter your letters and filter to the right length.' },
-  { name: 'Text Twist', url: '/text-twist', icon: '🔄', tip: 'Enter all your letters and look for the longest words first. The 6-letter word in Text Twist 2 is worth the most points.' },
-];
 ---
 
 <Layout meta={meta}>
-  <!-- Hero -->
-  <section class="text-center pt-8 pb-6">
-    <div class="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-      🔤 Free Tool · Any Letters · Instant Results
-    </div>
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Word Unscrambler</h1>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Unscramble any set of letters into real words. Enter your jumbled letters and find every valid word — sorted by score, filtered by length, ready to play.
-    </p>
-  </section>
-
-  <!-- Tool -->
-  <div class="max-w-3xl mx-auto mb-10">
-    <UnscrambleTool client:load />
+<div class="page-wrapper">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Word Unscrambler</span>
   </div>
 
-  <AdSense />
+  <h1 class="page-h1">Word Unscrambler</h1>
+  <p class="page-body">Free word unscrambler: enter scrambled letters and get every valid word you can make. Works for Scrabble, crosswords, Wordle, anagrams, and all word games.</p>
 
-  <!-- What is a Word Unscrambler -->
-  <section class="mt-12 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">What is a Word Unscrambler?</h2>
-      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
-        <p>
-          A word unscrambler is a free online tool that takes any set of scrambled, jumbled, or mixed-up letters and finds every valid English word that can be made from them. Whether you've got five random letters from a game of Wordle, a full rack of tiles from Scrabble, or the complete set of letters from a Text Twist round, the unscrambler reveals all the hidden words.
-        </p>
-        <p>
-          Unlike a simple anagram finder (which typically rearranges one known word into another), a true word unscrambler searches through a comprehensive dictionary to find <em>every</em> word contained within — or made from — your letters. For example, enter "RETTTOUSINCED" and you'll see not just "RECONSTITUTED," but also "CONCERTED," "COUNTRIES," "REDUCTIONS," "TUTORESS," "INTRUDES," and dozens more valid words hiding inside.
-        </p>
-        <p>
-          The tool sorts results by Scrabble point value by default, so your highest-scoring options appear first. You can also filter by word length, search for specific letter patterns, or sort alphabetically for easy browsing.
-        </p>
-      </div>
-    </div>
-  </section>
+  <div class="page-tool-card">
+    <UnscrambleTool client:load />
+  </div>
+</div>
 
-  <!-- When Do You Need It -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">When Do You Actually Need a Word Unscrambler?</h2>
-      <div class="space-y-5">
+<AdSense />
+
+<div class="page-wrapper">
+  <h2 class="page-h2">What is Word Unscrambler?</h2>
+  <div class="page-body">
+    <p>A word unscrambler is a free online tool that takes any set of scrambled, jumbled, or mixed-up letters and finds every valid English word hiding inside them. Whether you have a few random letters from a game like Text Twist, a full rack of Scrabble tiles, or a complete word scramble puzzle — enter the letters and get results instantly.</p>
+    <p>The tool works by comparing every possible arrangement of your letters against a comprehensive English dictionary. With our unscrambler, you get every valid word sorted by score — so your highest-scoring plays appear first.</p>
+    <p>Use it for <a href="/scrabble">Scrabble</a>, <a href="/scrabble-go">Scrabble Go</a>, <a href="/words-with-friends">Words With Friends</a>, <a href="/wordfeud">Wordfeud</a>, <a href="/text-twist">Text Twist</a>, <a href="/word-cookies">Word Cookies</a>, <a href="/wordscapes">Wordscapes</a>, and virtually any other word game or puzzle.</p>
+  </div>
+
+  <h2 class="page-h2">How to Use the Word Unscrambler</h2>
+  <div class="page-body">
+    <p>Using our word unscrambler is simple:</p>
+  </div>
+  <div class="page-tool-card">
+    <div class="space-y-5">
+      {howToSteps.map((step, i) => (
         <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#c9b458]/10 flex items-center justify-center text-[#c9b458] font-bold text-sm">1</div>
+          <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
           <div>
-            <h3 class="font-semibold text-foreground mb-1">You're stuck on a Wordle puzzle</h3>
-            <p class="text-sm text-muted-foreground">You've guessed four rows and have some letters — but the answer isn't clicking. Enter your known letters, filter to 5 letters, and see every possible word that fits your pattern. It's not cheating; it's learning — every unfamiliar word is a vocabulary builder.</p>
+            <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
+            <p class="text-sm text-muted-foreground">{step.text}</p>
           </div>
         </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#c9b458]/10 flex items-center justify-center text-[#c9b458] font-bold text-sm">2</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">You need a high-scoring Scrabble word</h3>
-            <p class="text-sm text-muted-foreground">It's your turn, you've got a tricky rack with Q, Z, or X, and nothing obvious is coming to mind. Run your letters through the unscrambler and instantly see every play — including obscure high-value words like <strong class="text-foreground">QUIXOTIC</strong> (26 pts) or <strong class="text-foreground">OXYMORON</strong> (18 pts) that you might never have known existed.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#c9b458]/10 flex items-center justify-center text-[#c9b458] font-bold text-sm">3</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">You're solving newspaper puzzles or crosswords</h3>
-            <p class="text-sm text-muted-foreground">You've got the letters for a crossword answer but can't arrange them into a real word. The unscrambler shows you all valid possibilities — pick the one that matches the clue definition.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#c9b458]/10 flex items-center justify-center text-[#c9b458] font-bold text-sm">4</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">You're playing Text Twist or Word Cookies</h3>
-            <p class="text-sm text-muted-foreground">The timer is ticking and you know there are more words in that letter set — you just can't see them all. Our unscrambler finds every valid word from 3 letters up to the full length of your input, so you never miss a hidden gem.</p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <div class="shrink-0 w-8 h-8 rounded-full bg-[#c9b458]/10 flex items-center justify-center text-[#c9b458] font-bold text-sm">5</div>
-          <div>
-            <h3 class="font-semibold text-foreground mb-1">You're doing a classroom spelling activity</h3>
-            <p class="text-sm text-muted-foreground">Teachers and parents use word unscramblers to create scrambled word exercises. Enter any word, scramble your mind, and check answers instantly. The tool works in reverse too — enter scrambled letters and verify the answer.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- How to Use -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">How to Use the Word Unscrambler</h2>
-      <div class="space-y-5">
-        {howToSteps.map((step, i) => (
-          <div class="flex gap-4">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{i + 1}</div>
-            <div>
-              <h3 class="font-semibold text-foreground mb-1">{step.name}</h3>
-              <p class="text-sm text-muted-foreground">{step.text}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <p class="text-sm text-muted-foreground mt-6 p-4 bg-muted/30 rounded-lg">
-        <strong class="text-foreground">Pro tip:</strong> Sort by score (default) when you need high-scoring game plays. Sort alphabetically when you just want to browse. Use the length filters to instantly narrow results — for example, set Min=5, Max=5 for all 5-letter words in a Wordle puzzle.
-      </p>
-    </div>
-  </section>
-
-  <!-- Word Solver for Board Games -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">🎲 Word Solver & Dictionary for Every Board Game</h2>
-      <p class="text-[15px] text-muted-foreground mb-6 leading-relaxed">
-        Our word unscrambler works as a universal word solver for virtually every word-based board game and puzzle. Here's how it helps in the most popular games:
-      </p>
-      <div class="grid gap-4 sm:grid-cols-2">
-        {GAMES.map((game) => (
-          <div class="p-4 rounded-xl border border-border bg-background">
-            <div class="flex items-center gap-2 mb-2">
-              <span class="text-xl">{game.icon}</span>
-              {game.url ? (
-                <a href={game.url} class="font-semibold text-foreground hover:text-primary transition-colors text-[15px]">{game.name}</a>
-              ) : (
-                <span class="font-semibold text-foreground text-[15px]">{game.name}</span>
-              )}
-            </div>
-            <p class="text-xs text-muted-foreground">{game.tip}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Real Example -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">📖 Real Example: RETTTOUSINCED → ?</h2>
-      <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
-        <p>
-          Let's say you have the letters <strong class="text-foreground font-mono tracking-wider">RETTTOUSINCED</strong> (12 letters, from the game "reconstituted"). Here's what our word unscrambler finds:
-        </p>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 p-4 bg-muted/30 rounded-xl">
-          {['CONCERTED', 'COUNTRIES', 'REDUCTIONS', 'TUTORESS', 'INTRUDES', 'INDUCTOR', 'CENTRETS', 'RECOUNTED', 'SECURED', 'ENDURO', 'CITRUS', 'NEUTROS'].map((word) => (
-            <div class="px-3 py-2 rounded-lg bg-card border border-border text-center">
-              <span class="font-mono font-bold text-foreground text-sm">{word}</span>
-            </div>
-          ))}
-        </div>
-        <p>
-          That's 12 valid words from one scrambled input — and these are just the highest-scoring ones. The full list is much longer. This is the real power of a word unscrambler: it reveals the full vocabulary hiding inside any letter set, not just the obvious answer.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="mt-8 max-w-3xl mx-auto">
-    <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-xl font-bold mb-4 text-foreground">Related Word Tools</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { name: 'Anagram Solver', href: '/anagram-solver', icon: '📚' },
-          { name: 'Scrabble Finder', href: '/scrabble', icon: '🎲' },
-          { name: 'Word Finder', href: '/word-finder', icon: '🔍' },
-          { name: 'Descrambler', href: '/descrambler', icon: '🔀' },
-        ].map((tool) => (
-          <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
-            <span class="text-xl">{tool.icon}</span>
-            <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{tool.name}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="mt-8 max-w-3xl mx-auto" id="faq">
-    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
-    <div class="space-y-3">
-      {faqs.map((faq) => (
-        <details class="rounded-xl border border-border bg-card group">
-          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
-            <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
-            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
-          </summary>
-          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
-            <p class="pt-3" set:html={faq.answer} />
-          </div>
-        </details>
       ))}
     </div>
-  </section>
+  </div>
 
-  <div class="mt-12"></div>
+  <h2 class="page-h2">Tips for Unscrambling Words</h2>
+  <div class="page-body">
+    <p>Want to get better at unscrambling words without a tool? Here are expert strategies:</p>
+    <p><strong>1. Look for common word patterns first.</strong> Vowel-consonant-vowel (VCV) patterns like A-E, I-O, U-A appear constantly in English. Common two-letter pairs: TH, HE, IN, ER, AN, RE, ON, AT, ST, ND.</p>
+    <p><strong>2. Try common prefixes and suffixes.</strong> Words starting with UN-, RE-, IN-, OUT-, DIS-, PRE- and ending with -ING, -ED, -ER, -LY, -TION are extremely common in English.</p>
+    <p><strong>3. Start with rare letters.</strong> Q, Z, X, J, and V are the rarest letters in English. If your scramble has a Q, look for QI, QAT, or QIS. Finding where rare letters go often narrows the answer quickly.</p>
+    <p><strong>4. Watch for doubled letters.</strong> If your scramble has two identical letters (SS, TT, LL, EE, etc.), they're likely doubled in the original word. In "LATTE", the doubled TT points toward "TABLET".</p>
+  </div>
 
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <h2 class="page-h2">Word Unscrambler for Every Word Game</h2>
+  <div class="page-body">
+    <p>Our word unscrambler works for any letter set, making it the ultimate tool for word games:</p>
+    <p><strong>Scrabble:</strong> Enter your tiles and instantly see every valid word, sorted by Scrabble score. Find 7-letter Bingos, high-value Q/Z/J/X words, and the best plays for any board situation.</p>
+    <p><strong>Words With Friends &amp; Wordfeud:</strong> The WWF and Wordfeud dictionaries are nearly identical to Scrabble. Our unscrambler covers both.</p>
+    <p><strong>Text Twist:</strong> Enter the 6 letters from your Text Twist grid and find every 3, 4, 5, and 6-letter word hidden inside.</p>
+    <p><strong>Word Cookies &amp; Wordscapes:</strong> Enter the letter batch from any level and see every valid word — including the hidden bonus word.</p>
+    <p><strong>Anagram puzzles:</strong> Turn one word into another by rearranging letters. Our unscrambler shows you all possible arrangements.</p>
+  </div>
+
+  <h2 class="page-h2">Frequently Asked Questions</h2>
+  <div class="space-y-3">
+    {faqs.map((faq) => (
+      <details class="faq-details">
+        <summary class="faq-summary">
+          <span class="font-semibold text-foreground text-[15px]">{faq.question}</span>
+          <span class="faq-icon">+</span>
+        </summary>
+        <div class="faq-body">
+          <p set:html={faq.answer} />
+        </div>
+      </details>
+    ))}
+  </div>
+</div>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 </Layout>
