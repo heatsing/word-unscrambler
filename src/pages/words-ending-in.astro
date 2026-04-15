@@ -12,8 +12,7 @@ const meta = getMeta(
 const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
 const lengths = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-/** Hero — vibrant mint green (distinct from Start With / With Letters pages) */
-const HERO_BG = '#48c9a3';
+const HERO_BG = '#79AE6F';
 ---
 
 <Layout meta={meta} fullBleed={true}>
@@ -79,11 +78,11 @@ const HERO_BG = '#48c9a3';
   }
   .wst-hero {
     flex: 1;
-    background: var(--wst-hero-bg);
-    padding: 1.25rem 1rem 2.5rem;
+    background: linear-gradient(135deg, #79AE6F 0%, #346739 100%);
+    padding: 1.5rem 1rem 2rem;
   }
   .wst-hero-inner {
-    max-width: 42rem;
+    max-width: 68rem;
     margin: 0 auto;
   }
   .wst-bc {
@@ -121,13 +120,13 @@ const HERO_BG = '#48c9a3';
     text-align: center;
   }
   .wst-browse {
-    background: var(--background);
+    background: transparent;
     color: var(--foreground);
-    padding: 2rem 1rem 3rem;
-    border-top: 1px solid var(--border);
+    padding: 2.25rem 1rem 3rem;
+    border-top: 0;
   }
   .wst-browse-inner {
-    max-width: 56rem;
+    max-width: 68rem;
     margin: 0 auto;
   }
   .wst-browse-h2 {

@@ -1,21 +1,22 @@
 ---
-// AdSense placeholder component
-// Replace ca-pub-XXXXXXXXX with your actual Google AdSense publisher ID
-// To get your publisher ID: https://www.google.com/adsense
+const adClient = import.meta.env.PUBLIC_ADSENSE_CLIENT ?? '';
+const adSlot = import.meta.env.PUBLIC_ADSENSE_SLOT ?? '';
+const adsEnabled = adClient.startsWith('ca-pub-') && adSlot.trim().length > 0;
 ---
-<div class="my-8 text-center">
-  <div class="ad-label">Advertisement</div>
-  <!-- Replace XXXXXXXXX with your actual Google AdSense publisher ID -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXX" crossorigin="anonymous"></script>
-  <!-- Demo ad unit - replace with your actual ad unit settings -->
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-XXXXXXXXX"
-       data-ad-slot=""
-       data-ad-format="auto"
-       data-full-width-responsive="true">
-  </ins>
-  <script>
-    try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
-  </script>
-</div>
+{
+  adsEnabled && (
+    <aside class="ad-slot" aria-label="Advertisement">
+      <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adClient}`} crossorigin="anonymous"></script>
+      <ins class="adsbygoogle ad-slot-ins"
+           style="display:block"
+           data-ad-client={adClient}
+           data-ad-slot={adSlot}
+           data-ad-format="auto"
+           data-full-width-responsive="true">
+      </ins>
+      <script>
+        try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+      </script>
+    </aside>
+  )
+}

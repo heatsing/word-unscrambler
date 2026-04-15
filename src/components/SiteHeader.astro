@@ -9,6 +9,10 @@ import {
 
 const rawPath = Astro.url.pathname;
 const currentPath = rawPath.replace(/\/$/, '') || '/';
+const wordsByLengthLinks = [10, 9, 8, 7, 6, 5, 4, 3, 2].map((n) => ({
+  name: `${n}-Letter Words`,
+  href: `/${n}-letter-words`,
+}));
 
 function isActive(href: string): boolean {
   if (!href || href === '#') return false;
@@ -19,22 +23,24 @@ function isActive(href: string): boolean {
 
 <header class="wt-top-header">
   <div class="wt-top-header-inner">
-    <!-- Mobile: hamburger first (reference layout) -->
-    <button
-      type="button"
-      class="wt-bar-btn wt-bar-hamburger"
-      id="mobile-menu-btn"
-      aria-label="Open menu"
-      aria-expanded="false"
-      aria-controls="mobile-drawer"
-    >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
+    <div class="wt-bar-left">
+      <!-- Mobile: hamburger first (reference layout) -->
+      <button
+        type="button"
+        class="wt-bar-btn wt-bar-hamburger"
+        id="mobile-menu-btn"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-drawer"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
 
-    <a href="/" class="wt-bar-logo" aria-label="WordTips Home">
-      <span class="wt-bar-logo-mark" aria-hidden="true">W</span>
-      <span class="wt-bar-logo-text">ord<span class="wt-bar-logo-tips">tips</span></span>
-    </a>
+      <a href="/" class="wt-bar-logo" aria-label="WordTips Home">
+        <span class="wt-bar-logo-mark" aria-hidden="true">W</span>
+        <span class="wt-bar-logo-text">ord<span class="wt-bar-logo-tips">tips</span></span>
+      </a>
+    </div>
 
     <nav class="wt-bar-nav" aria-label="Main navigation">
       <!-- Word Solvers -->
@@ -68,9 +74,9 @@ function isActive(href: string): boolean {
           Word Lists
           <svg class="wt-dd-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
-        <div class="wt-dd-panel wt-dd-panel--simple" role="menu" aria-labelledby="dd-word-lists">
+        <div class="wt-dd-panel wt-dd-panel--hints" role="menu" aria-labelledby="dd-word-lists">
           <div class="wt-dd-caret" aria-hidden="true"></div>
-          <div class="wt-dd-body">
+          <div class="wt-dd-body wt-dd-body--hints">
             {headerWordLists.map((link) => (
               <a href={link.href} class:list={['wt-dd-link', { 'wt-dd-link--active': isActive(link.href) }]} role="menuitem">
                 <span>{link.name}</span>
@@ -79,6 +85,14 @@ function isActive(href: string): boolean {
                 )}
               </a>
             ))}
+            <div class="wt-length-block" role="group" aria-label="Words by Length">
+              <div class="wt-length-title">Words by Length</div>
+              <div class="wt-length-list">
+                {wordsByLengthLinks.map((item) => (
+                  <a href={item.href} class="wt-length-link" role="menuitem">{item.name}</a>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -266,9 +280,16 @@ function isActive(href: string): boolean {
     margin: 0 auto;
     padding: 0 0.75rem 0 0.5rem;
     min-height: 3.25rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .wt-bar-left {
     display: flex;
     align-items: center;
     gap: 0.25rem;
+    min-width: 0;
   }
 
   .wt-bar-hamburger {
@@ -324,7 +345,7 @@ function isActive(href: string): boolean {
     display: flex;
     align-items: stretch;
     gap: 0.125rem;
-    flex: 1;
+    justify-self: center;
     min-width: 0;
   }
 
@@ -464,6 +485,43 @@ function isActive(href: string): boolean {
   }
   .wt-hint-more:hover { text-decoration: underline; }
 
+  .wt-length-block {
+    margin-top: 0.55rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid #e2e8f0;
+  }
+  .wt-length-title {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #5f6b7a;
+    margin: 0 0 0.5rem;
+    padding: 0 0.15rem;
+  }
+  .wt-length-list {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .wt-length-link {
+    display: block;
+    text-align: center;
+    padding: 0.55rem 0.6rem;
+    border-radius: 0.5rem;
+    background: #f2f4f5;
+    border-right: 5px solid #79AE6F;
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.98rem;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  }
+  .wt-length-link:hover {
+    background: #edf4eb;
+    border-right-color: #346739;
+    transform: translateX(1px);
+  }
+
   @media (min-width: 901px) {
     .wt-dd:hover .wt-dd-panel,
     .wt-dd:focus-within .wt-dd-panel {
@@ -478,7 +536,7 @@ function isActive(href: string): boolean {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    margin-left: auto;
+    justify-self: end;
     flex-shrink: 0;
   }
   .wt-mobile-app-pill {
@@ -497,8 +555,12 @@ function isActive(href: string): boolean {
   .hidden { display: none !important; }
 
   @media (max-width: 900px) {
+    .wt-top-header-inner {
+      display: flex;
+    }
     .wt-bar-hamburger { display: inline-flex; }
     .wt-bar-nav { display: none; }
+    .wt-bar-left { flex: 1; }
     .wt-bar-logo { margin-right: auto; }
   }
 

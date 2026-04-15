@@ -47,13 +47,6 @@ const resources = [
   { name: 'Top Searches', href: '/word-finder' },
 ];
 
-const linksColumn = [
-  { name: 'Anagram Solver', href: '/anagram-solver' },
-  { name: 'Letter Solver', href: '/word-unscrambler' },
-  { name: 'Crossword Solver', href: '/crossword-solver' },
-  { name: 'Word Unscrambler', href: '/word-unscrambler' },
-  { name: 'Word Counter', href: '/word-generator' },
-];
 ---
 
 <footer class="wt-footer">
@@ -119,16 +112,6 @@ const linksColumn = [
       </ul>
     </div>
 
-    <!-- Links -->
-    <div class="wt-footer-col">
-      <h3 class="wt-footer-heading">Links</h3>
-      <ul class="wt-footer-links">
-        {linksColumn.map(link => (
-          <li><a href={link.href} class="wt-footer-link">{link.name}</a></li>
-        ))}
-      </ul>
-    </div>
-
     <!-- Info -->
     <div class="wt-footer-col">
       <h3 class="wt-footer-heading">Info</h3>
@@ -163,21 +146,32 @@ const linksColumn = [
   .wt-footer-inner {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 3rem 1.5rem 2rem;
+    padding: 3.25rem 1.5rem 2.25rem;
     display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 2rem;
+    grid-template-columns: 1.45fr repeat(5, minmax(0, 1fr));
+    gap: 2.25rem 1.5rem;
+  }
+  @media (max-width: 1200px) {
+    .wt-footer-inner {
+      grid-template-columns: 1.5fr repeat(3, minmax(0, 1fr));
+    }
   }
   @media (max-width: 900px) {
     .wt-footer-inner {
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 2rem;
+      gap: 1.75rem 1.25rem;
     }
   }
-  @media (max-width: 560px) {
+  @media (max-width: 640px) {
     .wt-footer-inner {
       grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
+      padding: 2.5rem 1rem 1.75rem;
+      gap: 1.5rem 1rem;
+    }
+  }
+  @media (max-width: 480px) {
+    .wt-footer-inner {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -194,10 +188,11 @@ const linksColumn = [
   .wt-logo-w { color: var(--color-primary); }
   .wt-logo-tips { color: var(--color-primary); }
   .wt-footer-tagline {
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     color: var(--muted-foreground);
-    line-height: 1.6;
+    line-height: 1.65;
     margin: 0;
+    max-width: 22rem;
   }
   .wt-footer-social {
     display: flex;
@@ -226,7 +221,7 @@ const linksColumn = [
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--foreground);
-    margin: 0 0 1rem;
+    margin: 0 0 0.9rem;
   }
   .wt-footer-links {
     list-style: none;
@@ -240,9 +235,14 @@ const linksColumn = [
     font-size: 0.875rem;
     color: var(--muted-foreground);
     text-decoration: none;
-    transition: color 0.15s;
+    line-height: 1.45;
+    transition: color 0.15s ease;
   }
-  .wt-footer-link:hover { color: var(--color-primary); }
+  .wt-footer-link:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
 
   /* Bottom bar */
   .wt-footer-bottom {
@@ -258,6 +258,14 @@ const linksColumn = [
     gap: 0.5rem 2rem;
     justify-content: space-between;
     align-items: center;
+  }
+  @media (max-width: 640px) {
+    .wt-footer-bottom-inner {
+      padding: 1rem;
+      justify-content: center;
+      text-align: center;
+      gap: 0.4rem;
+    }
   }
   .wt-footer-copy {
     font-size: 0.8125rem;

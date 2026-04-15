@@ -238,14 +238,27 @@ a[href].rounded-lg:focus-visible {
 /* Section alternate background */
 .section-alt { background: var(--section-alt); }
 
-/* Ad label */
-.ad-label {
+/* Ad slot */
+.ad-slot {
+  margin: 2rem 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.ad-slot-label {
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--muted-foreground);
   text-align: center;
   margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+.ad-slot-ins {
+  display: block;
+  width: 100%;
+  min-height: 90px;
+  background: transparent;
 }
 
 /* ── FAQ Accordion — smooth CSS-only ─────────────────────────── */
@@ -568,9 +581,9 @@ details[open] .faq-icon {
 
 /* Game layout - centered, no sidebar */
 .game-layout {
-  max-width: 500px;
+  max-width: 860px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0;
 }
 .game-layout .page-header {
   text-align: center;
@@ -588,7 +601,7 @@ details[open] .faq-icon {
   margin: 0;
 }
 .game-header-bar {
-  background: #6aaa64;
+  background: var(--color-primary);
   color: #ffffff;
   padding: 0.75rem 1rem;
   display: flex;
@@ -1113,7 +1126,7 @@ html { scroll-behavior: smooth; }
   padding: 2rem 1.5rem;
   background: transparent;
 }
-.dark .page-wrapper { background: #0f0f1a; }
+.dark .page-wrapper { background: transparent; }
 
 .breadcrumb {
   font-size: 0.8rem;
@@ -1196,6 +1209,68 @@ html { scroll-behavior: smooth; }
 }
 .tool-content {
   padding: 0.45rem 0 var(--ui-section-gap);
+}
+
+/* Tool content parity (post-tool sections) */
+.tool-content > .page-wrapper,
+.tool-content > section {
+  max-width: 860px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+.tool-content > section + section,
+.tool-content > .page-wrapper + section,
+.tool-content > section + .page-wrapper {
+  margin-top: 1.1rem !important;
+}
+.tool-content .page-wrapper > .page-h2:first-of-type {
+  margin-top: 0.75rem;
+}
+
+/* Normalize post-tool content cards */
+.tool-content .rounded-2xl.border.border-border.bg-card,
+.tool-content .rounded-lg.border.border-border.bg-card,
+.tool-content .page-tool-card {
+  border: 1px solid var(--ui-card-border);
+  border-radius: var(--ui-radius-lg);
+  box-shadow: var(--ui-card-shadow);
+  background: var(--card);
+}
+
+/* Normalize heading rhythm in lower content blocks */
+.tool-content h2.text-2xl {
+  font-size: 1.4rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.tool-content h2.text-xl {
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+/* Keep body readability close to reference */
+.tool-content .text-\[15px\] {
+  line-height: 1.7;
+}
+.tool-content .page-body,
+.tool-content p,
+.tool-content li {
+  color: var(--muted-foreground);
+}
+.tool-content ul.list-disc,
+.tool-content ol.list-decimal {
+  padding-left: 1.15rem;
+}
+.tool-content table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.tool-content table th {
+  font-weight: 700;
+  color: var(--foreground);
+}
+.tool-content table td {
+  color: var(--muted-foreground);
 }
 
 /* Tool internals (batch-2 refinement) */

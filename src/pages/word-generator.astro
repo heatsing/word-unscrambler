@@ -142,16 +142,16 @@ const interestingWords = [
 
         <!-- FAQ -->
         <section class="mt-8 max-w-3xl mx-auto" id="faq">
-    <h2 class="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
+    <h2 class="page-h2">Frequently Asked Questions</h2>
     <div class="space-y-3">
       {faqs.map((faq) => (
-        <details class="rounded-xl border border-border bg-card group">
-          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
+        <details class="faq-details">
+          <summary class="faq-summary">
             <span class="font-semibold text-foreground text-[15px]" set:html={faq.question} />
-            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg">+</span>
+            <span class="faq-icon">+</span>
           </summary>
-          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
-            <p class="pt-3" set:html={faq.answer} />
+          <div class="faq-body">
+            <p set:html={faq.answer} />
           </div>
         </details>
       ))}

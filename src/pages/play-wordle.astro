@@ -38,17 +38,25 @@ const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta} fullBleed={true}>
-  <div class="game-layout">
-    <div class="page-header">
-      <h1>🎯 Play Wordle</h1>
-      <p>Daily puzzle — same word for everyone, new challenge every day!</p>
-    </div>
+  <div class="tool-page-skin">
+    <section class="tool-hero">
+      <div class="tool-hero-inner page-wrapper">
+        <div class="breadcrumb">
+          <a href="/">Home</a> <span>›</span> <a href="/wordle">Wordle</a> <span>›</span> <span class="current">Play Daily</span>
+        </div>
+        <h1 class="page-h1">Play Wordle</h1>
+        <p class="page-body">Daily puzzle, same word for everyone, one new challenge every day.</p>
+        <div class="page-tool-card">
+          <PlayWordle client:load />
+        </div>
+      </div>
+    </section>
 
-    <PlayWordle client:load />
-
-    <AdSense />
-
-    <section class="mt-10 p-6 rounded-lg border border-border bg-card">
+    <div class="tool-content">
+      <AdSense />
+      <div class="page-wrapper">
+        <div class="game-layout">
+    <section class="mt-2 p-6 rounded-lg border border-border bg-card">
       <h2 class="text-xl font-bold mb-4 text-foreground flex items-center gap-2">
         <span>📖</span> How to Play
       </h2>
@@ -99,10 +107,13 @@ const faqSchema = getFAQPageSchema(faqs);
       </div>
     </section>
 
-    <div class="mt-6 flex flex-wrap gap-3 text-sm">
-      <a href="/wordle-unlimited" class="btn btn-primary">Unlimited Wordle</a>
-      <a href="/wordle-solver" class="btn">Wordle Solver</a>
-      <a href="/wordle" class="btn">Wordle Info</a>
+        <div class="mt-6 flex flex-wrap gap-3 text-sm">
+          <a href="/wordle-unlimited" class="btn btn-primary">Unlimited Wordle</a>
+          <a href="/wordle-solver" class="btn">Wordle Solver</a>
+          <a href="/wordle" class="btn">Wordle Info</a>
+        </div>
+        </div>
+      </div>
     </div>
   </div>
 
