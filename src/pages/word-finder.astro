@@ -12,10 +12,10 @@ const meta = getMeta(
 );
 
 const howToSteps = [
-  { name: 'Enter your letters', text: 'Type any combination of letters ‚Äî 2 to 12+ letters. The more letters you enter, the more word possibilities.' },
+  { name: 'Enter your letters', text: 'Type any combination of letters ‚??2 to 12+ letters. The more letters you enter, the more word possibilities.' },
   { name: 'Browse your results', text: 'Results appear instantly, sorted by Scrabble score (highest first) or by length. Scan for the word you need.' },
-  { name: 'Filter by length (optional)', text: 'Use Min and Max length controls to find words of a specific size ‚Äî useful for Wordle (5 letters) or other word games with length requirements.' },
-  { name: 'Play your word', text: 'Once you\'ve found the word you need, use it in your game. That\'s it ‚Äî no sign-up, no download, no limits.' },
+  { name: 'Filter by length (optional)', text: 'Use Min and Max length controls to find words of a specific size ‚??useful for Wordle (5 letters) or other word games with length requirements.' },
+  { name: 'Play your word', text: 'Once you\'ve found the word you need, use it in your game. That\'s it ‚??no sign-up, no download, no limits.' },
 ];
 
 const howToSchema = getHowToSchema(howToSteps);
@@ -23,7 +23,7 @@ const howToSchema = getHowToSchema(howToSteps);
 const faqs = [
   {
     question: 'What is a word finder and how does it work?',
-    answer: 'A word finder is an online tool that takes any set of letters and finds every valid English word that can be made from them. It works by comparing your letters against a comprehensive dictionary and generating every possible arrangement. For example, enter "TARLPE" and you\'ll see <strong class="text-foreground">PETRAL</strong>, <strong class="text-foreground">PALTER</strong>, <strong class="text-foreground">PLATER</strong>, <strong class="text-foreground">REPLAT</strong>, <strong class="text-foreground">PETAL</strong>, <strong class="text-foreground">PLATE</strong>, <strong class="text-foreground">LEAPT</strong>, <strong class="text-foreground">PLEAT</strong>, and dozens more ‚Äî all instantly.',
+    answer: 'A word finder is an online tool that takes any set of letters and finds every valid English word that can be made from them. It works by comparing your letters against a comprehensive dictionary and generating every possible arrangement. For example, enter "TARLPE" and you\'ll see <strong class="text-foreground">PETRAL</strong>, <strong class="text-foreground">PALTER</strong>, <strong class="text-foreground">PLATER</strong>, <strong class="text-foreground">REPLAT</strong>, <strong class="text-foreground">PETAL</strong>, <strong class="text-foreground">PLATE</strong>, <strong class="text-foreground">LEAPT</strong>, <strong class="text-foreground">PLEAT</strong>, and dozens more ‚??all instantly.',
   },
   {
     question: 'What word games can I use the word finder for?',
@@ -35,7 +35,7 @@ const faqs = [
   },
   {
     question: 'What\'s the difference between a word finder and a Scrabble cheat?',
-    answer: 'Functionally, they\'re the same tool ‚Äî both find valid words from your letters. "Word finder" is a more general term that covers all word games, while "Scrabble cheat" specifically implies the Scrabble context with scoring. Our word finder includes Scrabble tile scoring, so it works perfectly as a Scrabble word finder too.',
+    answer: 'Functionally, they\'re the same tool ‚??both find valid words from your letters. "Word finder" is a more general term that covers all word games, while "Scrabble cheat" specifically implies the Scrabble context with scoring. Our word finder includes Scrabble tile scoring, so it works perfectly as a Scrabble word finder too.',
   },
   {
     question: 'How many words are in the dictionary?',
@@ -50,14 +50,14 @@ const faqs = [
 const faqSchema = getFAQPageSchema(faqs);
 
 const GAMES = [
-  { name: 'Wordle', href: '/wordle-solver', icon: 'üéØ', desc: 'Daily 5-letter puzzle' },
-  { name: 'Scrabble', href: '/scrabble', icon: 'üé≤', desc: 'Classic board game' },
-  { name: 'Words With Friends', href: '/words-with-friends', icon: 'üì±', desc: 'Mobile WWF' },
-  { name: 'Wordfeud', href: '/wordfeud', icon: 'üéÆ', desc: 'Async multiplayer' },
-  { name: 'Boggle', href: '/boggle-solver', icon: 'üé≤', desc: 'Grid word hunt' },
-  { name: 'Text Twist', href: '/text-twist', icon: 'üîÑ', desc: 'Timed scramble' },
-  { name: 'Wordscapes', href: '/wordscapes', icon: 'üåÑ', desc: 'Crossword-style' },
-  { name: 'Word Cookies', href: '/word-cookies', icon: 'üç™', desc: 'Swipe puzzles' },
+  { name: 'Wordle', href: '/wordle-solver', icon: '??Ø', desc: 'Daily 5-letter puzzle' },
+  { name: 'Scrabble', href: '/scrabble', icon: '??≤', desc: 'Classic board game' },
+  { name: 'Words With Friends', href: '/words-with-friends', icon: '??±', desc: 'Mobile WWF' },
+  { name: 'Wordfeud', href: '/wordfeud', icon: '??Æ', desc: 'Async multiplayer' },
+  { name: 'Boggle', href: '/boggle-solver', icon: '??≤', desc: 'Grid word hunt' },
+  { name: 'Text Twist', href: '/text-twist', icon: '???', desc: 'Timed scramble' },
+  { name: 'Wordscapes', href: '/wordscapes', icon: '???', desc: 'Crossword-style' },
+  { name: 'Word Cookies', href: '/word-cookies', icon: '?ç™', desc: 'Swipe puzzles' },
 ];
 ---
 
@@ -66,7 +66,7 @@ const GAMES = [
     <section class="tool-hero">
       <div class="tool-hero-inner page-wrapper">
         <div class="breadcrumb">
-          <a href="/">Home</a> <span>‚Ä∫</span> <a href="/">Tools</a> <span>‚Ä∫</span> <span class="current">Word Finder</span>
+          <a href="/">Home</a> <span>‚??/span> <a href="/">Tools</a> <span>‚??/span> <span class="current">Word Finder</span>
         </div>
         <h1 class="page-h1">Word Finder</h1>
         <p class="page-body">
@@ -91,7 +91,7 @@ const GAMES = [
           A word finder is a free online tool that takes any set of scrambled, jumbled, or mixed-up letters and reveals every valid English word hiding inside them. Whether you're playing <a href="/scrabble" class="text-primary hover:underline">Scrabble</a>, competing in <a href="/words-with-friends" class="text-primary hover:underline">Words With Friends</a>, solving the daily <a href="/wordle-solver" class="text-primary hover:underline">Wordle</a>, or tackling any other word puzzle, a word finder gives you the vocabulary edge you need.
         </p>
         <p>
-          The tool works by comparing your letters against a comprehensive dictionary of over 200,000 English words, generating every possible valid arrangement. Enter "AEIMNRT" and you'll see <strong class="text-foreground">AMINER</strong>, <strong class="text-foreground">MARTIN</strong>, <strong class="text-foreground">RANITE</strong>, <strong class="text-foreground">RETAIL</strong>, <strong class="text-foreground">TRAMINE</strong>, <strong class="text-foreground">MENTAIR</strong>, and 200+ more ‚Äî instantly, sorted by score.
+          The tool works by comparing your letters against a comprehensive dictionary of over 200,000 English words, generating every possible valid arrangement. Enter "AEIMNRT" and you'll see <strong class="text-foreground">AMINER</strong>, <strong class="text-foreground">MARTIN</strong>, <strong class="text-foreground">RANITE</strong>, <strong class="text-foreground">RETAIL</strong>, <strong class="text-foreground">TRAMINE</strong>, <strong class="text-foreground">MENTAIR</strong>, and 200+ more ‚??instantly, sorted by score.
         </p>
         <p>
           Our word finder sorts results by Scrabble tile score by default, so your highest-scoring plays appear first. Use the length filters to narrow results to exactly the word size you need.
@@ -121,7 +121,7 @@ const GAMES = [
   <!-- Games -->
   <section class="mt-8 max-w-3xl mx-auto">
     <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">üéÆ Word Finder for Every Word Game</h2>
+      <h2 class="text-2xl font-bold mb-4 text-foreground">??Æ Word Finder for Every Word Game</h2>
       <p class="text-[15px] text-muted-foreground mb-6 leading-relaxed">
         Our word finder works for every popular word game. Jump to your game below or use the tool above with any letter set.
       </p>
@@ -140,12 +140,12 @@ const GAMES = [
   <!-- Tips -->
   <section class="mt-8 max-w-3xl mx-auto">
     <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-foreground">üí° How to Get the Most from Your Word Finder</h2>
+      <h2 class="text-2xl font-bold mb-6 text-foreground">??° How to Get the Most from Your Word Finder</h2>
       <div class="space-y-5">
         {[
           { num: '1', title: 'Use length filters for targeted results', desc: 'If you need exactly 5 letters for Wordle, set Min=5 and Max=5. If you need a 4-letter word to fit a specific Scrabble space, filter to 4. Length filtering eliminates noise and shows you only relevant words.' },
-          { num: '2', title: 'Sort by score for competitive games', desc: 'For Scrabble, WWF, and Wordfeud, the default sorting (by Scrabble score) puts your highest-scoring plays at the top. Always scan the top results first ‚Äî you might be surprised by how much a single word can be worth.' },
-          { num: '3', title: 'Look for 7-letter Bingos', desc: 'In Scrabble, WWF, and Wordfeud, using all 7 tiles in one play earns a 50-point Bingo bonus. When you have 7 tiles, always check if any 7-letter word is possible ‚Äî a single Bingo can swing a close game.' },
+          { num: '2', title: 'Sort by score for competitive games', desc: 'For Scrabble, WWF, and Wordfeud, the default sorting (by Scrabble score) puts your highest-scoring plays at the top. Always scan the top results first ‚??you might be surprised by how much a single word can be worth.' },
+          { num: '3', title: 'Look for 7-letter Bingos', desc: 'In Scrabble, WWF, and Wordfeud, using all 7 tiles in one play earns a 50-point Bingo bonus. When you have 7 tiles, always check if any 7-letter word is possible ‚??a single Bingo can swing a close game.' },
           { num: '4', title: 'Learn from unfamiliar words', desc: 'Every unfamiliar word in our results is a vocabulary lesson. See QI, ZA, or JO for the first time? Now you know two obscure but legitimate words. The more you use the word finder, the bigger your vocabulary grows.' },
         ].map(({ num, title, desc }) => (
           <div class="flex gap-4">
@@ -166,10 +166,10 @@ const GAMES = [
       <h2 class="text-xl font-bold mb-4 text-foreground">Related Word Tools</h2>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { name: 'Anagram Solver', href: '/anagram-solver', icon: 'üìö' },
-          { name: 'Word Scramble', href: '/word-scramble', icon: 'üîÄ' },
-          { name: 'Descrambler', href: '/descrambler', icon: 'üî§' },
-          { name: 'Word Unscrambler', href: '/word-unscrambler', icon: 'üîÑ' },
+          { name: 'Anagram Solver', href: '/anagram-solver', icon: '???' },
+          { name: 'Word Scramble Solver', href: '/word-scramble', icon: '??' },
+          { name: 'Descrambler', href: '/descrambler', icon: '??§' },
+          { name: 'Word Unscrambler', href: '/word-unscrambler', icon: '???' },
         ].map((tool) => (
           <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
             <span class="text-xl">{tool.icon}</span>

@@ -3,7 +3,7 @@ export const headerWordSolvers = [
   { name: 'NYT Crossplay Solver', href: '/nyt-crossplay-solver' },
   { name: 'Wordle Solver', href: '/wordle-solver' },
   { name: 'Word Unscramble', href: '/unscramble' },
-  { name: 'Word Scrambler', href: '/word-scramble' },
+  { name: 'Word Scramble Solver', href: '/word-scramble' },
   { name: 'Anagram Solver', href: '/anagram-solver' },
   { name: 'Scrabble Solver', href: '/scrabble' },
 ] as const;
@@ -47,7 +47,7 @@ export const wordFinders = [
   { name: 'Scrabble Go', href: '/scrabble-go' },
   { name: 'Words with Friends', href: '/words-with-friends' },
   { name: 'Word Generator', href: '/word-generator' },
-  { name: 'Word Scramble', href: '/word-scramble' },
+  { name: 'Word Scramble Solver', href: '/word-scramble' },
   { name: 'Boggle Solver', href: '/boggle-solver' },
   { name: 'Word Finder', href: '/word-finder' },
   { name: 'Descrambler', href: '/descrambler' },
