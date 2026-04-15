@@ -1,516 +1,272 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import UnscrambleTool from '@/components/UnscrambleTool';
+import WordsStartWithTool from '@/components/WordsStartWithTool';
 import { getMeta, DEFAULT_TITLE, DEFAULT_DESCRIPTION } from '@/lib/meta';
-import { getWebSiteSchema, getOrganizationSchema, getFAQPageSchema } from '@/lib/schema';
-import { wordFinders, dailyGameHints, wordLists, wordsByLength } from '@/lib/nav-links';
+import { getWebSiteSchema, getOrganizationSchema } from '@/lib/schema';
+import {
+  headerWordSolvers,
+  headerWordLists,
+  headerCrosswords,
+} from '@/lib/nav-links';
 
 const meta = getMeta('/', DEFAULT_TITLE, DEFAULT_DESCRIPTION);
 const webSiteSchema = getWebSiteSchema();
 const organizationSchema = getOrganizationSchema();
 
-const homeFaqs = [
-  {
-    question: 'What is a word unscrambler?',
-    answer: 'A word unscrambler is a tool that takes a jumbled set of letters and finds every valid English word you can make from them. You type in letters like "slate" and get back all possible words — short ones, long ones, high-scoring ones. It\'s basically a anagram solver designed for word games.',
-  },
-  {
-    question: 'Does it work for Wordle?',
-    answer: 'Yes! While the basic unscrambler finds words from any letter combination, we also have a dedicated Wordle solver that lets you enter green, yellow, and gray clues to narrow down the answer. Both tools are free and work instantly in your browser.',
-  },
-  {
-    question: 'Is the word finder free?',
-    answer: '100% free. No sign-up, no account, no email required. Just open the page and start unscrambling. All 370,000+ words in our dictionary are available without paying a cent.',
-  },
-  {
-    question: 'Can I find words for Scrabble?',
-    answer: 'Yes. Our Scrabble word finder shows you every valid word along with its Scrabble score, so you can pick the highest-scoring play. You can also filter by letter count to match your rack.',
-  },
-  {
-    question: 'What games does this work for?',
-    answer: 'Scrabble, Words With Friends, Wordfeud, Word Cookies, Wordscapes, Text Twist, Jumble, crosswords, Boggle, Letter Boxed, and any other word game that uses standard English letters.',
-  },
-  {
-    question: 'Does it work on mobile?',
-    answer: 'Yes. The tool is fully responsive and works on phones, tablets, and desktops. Just open the page, type your letters, and get results instantly.',
-  },
-  {
-    question: 'What\'s the difference between an anagram solver and a word unscrambler?',
-    answer: 'They\'re the same thing — both rearrange letters to find all possible words. "Anagram solver" is just the more formal name. Some people also call it a descrambler or word descrambler.',
-  },
-  {
-    question: 'How many words are in the dictionary?',
-    answer: 'Over 370,000 words covering 2 to 10 letters. The word list is updated regularly to include new additions to the English language and game-approved word lists.',
-  },
+const fiveLetterLinks = [
+  '5 Letter Words Starting with B',
+  '5 Letter Words Starting with BE',
+  '5 Letter Words Starting with BEG',
+  '5 Letter Words with the Letter U',
+  '5 Letter Words with the Letter EGU',
+  '5 Letter Words with the Letter G',
+  '5 Letter Words with the Letter EU',
+  '5 Letter Words with the Letter E',
+  '5 Letter Words with the Letter EG',
+  '5 Letter Words with the Letter GU',
+  '5 Letter Words Ending In UN',
+  '5 Letter Words Ending In N',
+  '5 Letter Words Ending In GUN',
 ];
-const faqSchema = getFAQPageSchema(homeFaqs);
 
-const featuredTools = [
-  {
-    name: 'Wordle Solver',
-    href: '/wordle-solver',
-    desc: 'Enter your green, yellow, and gray clues to find any Wordle answer instantly.',
-    icon: '🎯',
-    color: 'bg-indigo-100 dark:bg-indigo-900/30',
-  },
-  {
-    name: 'Anagram Solver',
-    href: '/anagram-solver',
-    desc: 'Enter any word to find all valid rearrangements and word combinations.',
-    icon: '📚',
-    color: 'bg-purple-100 dark:bg-purple-900/30',
-  },
-  {
-    name: 'Scrabble Word Finder',
-    href: '/scrabble',
-    desc: 'Find the highest-scoring words from your Scrabble tiles, sorted by point value.',
-    icon: '🎲',
-    color: 'bg-amber-100 dark:bg-amber-900/30',
-  },
-  {
-    name: 'Crossword Solver',
-    href: '/crossword-solver',
-    desc: 'Fill in crosswords faster. Enter known letters and question marks for unknowns.',
-    icon: '📝',
-    color: 'bg-emerald-100 dark:bg-emerald-900/30',
-  },
-  {
-    name: 'Words With Friends',
-    href: '/words-with-friends',
-    desc: 'Beat your opponent with high-scoring words built from your available tiles.',
-    icon: '💬',
-    color: 'bg-sky-100 dark:bg-sky-900/30',
-  },
-  {
-    name: 'Word Cookies',
-    href: '/word-cookies',
-    desc: 'Solve any Word Cookies puzzle by entering the bowl letters.',
-    icon: '🍪',
-    color: 'bg-orange-100 dark:bg-orange-900/30',
-  },
-  {
-    name: 'Boggle Solver',
-    href: '/boggle-solver',
-    desc: 'Find every word hidden in your Boggle grid, including the long ones.',
-    icon: '🧩',
-    color: 'bg-rose-100 dark:bg-rose-900/30',
-  },
-  {
-    name: 'Word Generator',
-    href: '/word-generator',
-    desc: 'Generate random words by length, starting letter, or ending letter.',
-    icon: '🎲',
-    color: 'bg-cyan-100 dark:bg-cyan-900/30',
-  },
+const today = new Date();
+const dateLabel = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const dailyHintsWithMeta = [
+  { name: 'Connections', subtitle: 'Hints for each category & today\'s answers', href: '/jumble-solver', icon: '🧩' },
+  { name: 'Wordle Hints', subtitle: 'Hints to crack today\'s puzzle', href: '/wordle', icon: '🟩' },
+  { name: 'Pips Hints', subtitle: 'Domino solutions & tips', href: '/crossword-solver', icon: '🎲' },
+  { name: 'Strands Hints', subtitle: 'Theme & spangram revealed', href: '/word-search-solver', icon: '🧶' },
+  { name: 'Mini Crossword Answers', subtitle: 'All clues & answers', href: '/crossword-solver', icon: '🧠' },
+  { name: 'Spelling Bee Answers', subtitle: 'Word list & pangrams', href: '/word-unscrambler', icon: '🐝' },
+  { name: 'Contexto Answer', subtitle: 'Hints & secret word', href: '/word-finder', icon: '🧩' },
+  { name: 'Capture Hints', subtitle: 'Step-by-step solutions', href: '/crossword-solver', icon: '🧭' },
 ];
 ---
 
-<Layout meta={meta}>
-  <!-- Simple Hero - Content-first, not flashy -->
-  <section class="mb-12 fade-in">
-    <!-- Badge -->
-    <div class="flex justify-center mb-5">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider">
-        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        Free Word Tools
-      </span>
-    </div>
+<Layout meta={meta} fullBleed={true}>
+  <div class="home-clone">
+    <section class="home-hero">
+      <div class="home-hero-inner">
+        <h1 class="home-h1">Word Finder</h1>
+        <p class="home-sub">Add your letters first</p>
+        <WordsStartWithTool client:load />
+      </div>
+    </section>
 
-    <!-- H1 -->
-    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-gradient text-center">
-      Word Unscrambler & Word Finder
-    </h1>
+    <section class="home-section">
+      <div class="home-wrap">
+        <h2 class="home-h2">5 Letter Words</h2>
+        <p class="home-muted">5-letter word lists built for puzzle solving</p>
+        <ul class="home-link-grid">
+          {fiveLetterLinks.map((label) => (
+            <li><a href="/words-by-length">{label}</a></li>
+          ))}
+          <li><a href="/words-start-with">Words that start with</a></li>
+          <li><a href="/words-with-letters">Words with letters</a></li>
+          <li><a href="/words-ending-in">Words ending in</a></li>
+        </ul>
+      </div>
+    </section>
 
-    <!-- Subtitle -->
-    <p class="text-center text-muted-foreground text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-      Enter any letters and find every valid word you can make. Built for Wordle, Scrabble, and every word game you play.
-    </p>
-
-    <!-- The tool is the hero -->
-    <div class="rounded-2xl border border-border bg-card shadow-sm p-6 mb-8">
-      <UnscrambleTool client:load />
-    </div>
-  </section>
-
-  <!-- ============ SEO CONTENT SECTION 1 ============ -->
-  <section class="mb-14 max-w-3xl mx-auto fade-in" aria-labelledby="what-is-heading">
-    <h2 id="what-is-heading" class="text-2xl md:text-3xl font-bold mb-5 text-foreground">
-      What is a Word Finder?
-    </h2>
-    <div class="text-muted-foreground space-y-4 text-[15px] leading-relaxed">
-      <p>
-        A word finder (also called a word unscrambler, anagram solver, or descrambler) is a tool that takes a set of mixed-up letters and works out every valid English word hiding inside them. You might see it called a <a href="/scrabble" class="text-primary hover:underline">Scrabble word finder</a>, a <a href="/wordle-solver" class="text-primary hover:underline">Wordle solver</a>, or just a letter unscrambler — they all do the same basic thing.
-      </p>
-      <p>
-        The idea is simple: you have letters, but they're in the wrong order. Maybe you drew a terrible hand in <a href="/scrabble" class="text-primary hover:underline">Scrabble</a>. Maybe you're three guesses deep into <a href="/wordle" class="text-primary hover:underline">Wordle</a> and stuck. Maybe you're halfway through a <a href="/crossword-solver" class="text-primary hover:underline">crossword clue</a> and only know the third and seventh letter. A word finder takes those constraints and shows you every word that fits.
-      </p>
-      <p>
-        Our version goes further than most. It covers <strong class="text-foreground">370,000+ words</strong> from 2 to 10 letters. It works entirely in your browser — no downloads, no sign-up, no monthly fee. It works offline once loaded. And it's updated regularly so you always have the latest game-approved word lists.
-      </p>
-      <p>
-        Whether you're solving a <a href="/anagram-solver" class="text-primary hover:underline">pure anagram</a>, trying to impress in <a href="/words-with-friends" class="text-primary hover:underline">Words With Friends</a>, or just need a <a href="/word-finder" class="text-primary hover:underline">word finder</a> for everyday puzzles, one tool handles all of it.
-      </p>
-    </div>
-  </section>
-
-  <!-- ============ SEO CONTENT SECTION 2 ============ -->
-  <section class="mb-14 max-w-3xl mx-auto fade-in" aria-labelledby="when-heading">
-    <h2 id="when-heading" class="text-2xl md:text-3xl font-bold mb-5 text-foreground">
-      When Do You Need a Word Game Helper?
-    </h2>
-    <div class="text-muted-foreground space-y-4 text-[15px] leading-relaxed">
-      <p class="text-foreground font-medium mb-4">
-        You don't need to be losing to use a word solver. Here are the moments when it genuinely helps:
-      </p>
-    </div>
-    <ol class="space-y-5 max-w-3xl mx-auto">
-      <li class="flex gap-4 text-[15px] leading-relaxed">
-        <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm shadow-sm">1</span>
-        <div>
-          <strong class="text-foreground">You're stuck mid-game.</strong>
-          <span class="text-muted-foreground"> Three moves into Text Twist and you can see a 7-letter word hiding in there but can't quite grab it. You type in the letters and there it is — "twisted." That split-second reveal changes everything.</span>
-        </div>
-      </li>
-      <li class="flex gap-4 text-[15px] leading-relaxed">
-        <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm shadow-sm">2</span>
-        <div>
-          <strong class="text-foreground">You want the highest-scoring play.</strong>
-          <span class="text-muted-foreground"> In Scrabble, you have an S, two Es, a T, an R, and an L. You know "st" starts a word, but what's the best ending? You check the Scrabble finder and it shows "streel" (6 points) vs "steer" (5 points) vs "relets" (6 points). You pick the play that wins the game.</span>
-        </div>
-      </li>
-      <li class="flex gap-4 text-[15px] leading-relaxed">
-        <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm shadow-sm">3</span>
-        <div>
-          <strong class="text-foreground">You're working on a crossword clue with limited information.</strong>
-          <span class="text-muted-foreground"> The clue says " ___ and ___ " (classic crossword pattern for a famous duo). You know the first letter is T and it ends in O. You plug in <code class="px-1.5 py-0.5 bg-muted rounded text-sm font-mono">t??o</code> and the crossword solver gives you "taco," "taro," "tempo," "typo," "tango," "turbo" — all in seconds.</span>
-        </div>
-      </li>
-      <li class="flex gap-4 text-[15px] leading-relaxed">
-        <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm shadow-sm">4</span>
-        <div>
-          <strong class="text-foreground">You lost a daily puzzle and want to learn.</strong>
-          <span class="text-muted-foreground"> You played <a href="/wordle" class="text-primary hover:underline">Wordle</a>, got five wrong, and want to see what you missed. You type in your guesses and the Wordle solver shows you what the answer could have been and why — so next time you see those letters, you'll recognize the pattern faster.</span>
-        </div>
-      </li>
-      <li class="flex gap-4 text-[15px] leading-relaxed">
-        <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm shadow-sm">5</span>
-        <div>
-          <strong class="text-foreground">You're playing a new game and don't know the meta yet.</strong>
-          <span class="text-muted-foreground"> You just downloaded <a href="/word-cookies" class="text-primary hover:underline">Word Cookies</a> or <a href="/wordfeud" class="text-primary hover:underline">Wordfeud</a> and keep running into words you've never heard of. A quick unscramble tells you what's valid, and over time you build your vocabulary for that specific game.</span>
-        </div>
-      </li>
-    </ol>
-  </section>
-
-  <!-- ============ SEO CONTENT SECTION 3 ============ -->
-  <section class="mb-14 max-w-3xl mx-auto fade-in" aria-labelledby="how-to-heading">
-    <h2 id="how-to-heading" class="text-2xl md:text-3xl font-bold mb-5 text-foreground">
-      How to Use the Word Finder
-    </h2>
-    <div class="text-muted-foreground space-y-4 text-[15px] leading-relaxed mb-6">
-      <p>
-        It's dead simple. No learning curve, no settings to figure out, no tutorial needed. Here's how it works in three steps:
-      </p>
-    </div>
-    <ol class="space-y-6 mb-8">
-      <li class="flex gap-4 text-[15px] leading-relaxed">
-        <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm shadow-sm">1</span>
-        <div>
-          <strong class="text-foreground">Type your letters.</strong>
-          <span class="text-muted-foreground"> Go to the search box above and type in whatever letters you have. No spaces, no punctuation — just letters. For example, if you're playing <a href="/word-cookies" class="text-primary hover:underline">Word Cookies</a> and your bowl shows "c," "o," "o," "k," "i," "e," you type in <code class="px-1.5 py-0.5 bg-muted rounded text-sm font-mono">cookei</code>.</span>
-        </div>
-      </li>
-      <li class="flex gap-4 text-[15px] leading-relaxed">
-        <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm shadow-sm">2</span>
-        <div>
-          <strong class="text-foreground">Hit Unscramble (or press Enter).</strong>
-          <span class="text-muted-foreground"> Results appear instantly. You'll see every valid English word grouped by length, sorted by Scrabble score by default (highest-scoring words first). You can also sort alphabetically or by length using the dropdown.</span>
-        </div>
-      </li>
-      <li class="flex gap-4 text-[15px] leading-relaxed">
-        <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm shadow-sm">3</span>
-        <div>
-          <strong class="text-foreground">Use the results for your game.</strong>
-          <span class="text-muted-foreground"> Click any word to copy it, or use the "Copy all" button to grab the full list. Filter by minimum or maximum word length if you only need 5-letter words (for Wordle) or 7+ letter words (for Scrabble bonus tiles).</span>
-        </div>
-      </li>
-    </ol>
-
-    <!-- Example -->
-    <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
-      <h3 class="font-semibold text-foreground mb-4 flex items-center gap-2">
-        <span class="text-primary">✨</span> Example: Unscrambling "tearsw"
-      </h3>
-      <div class="grid md:grid-cols-2 gap-4 text-[15px]">
-        <div class="p-4 bg-muted/50 rounded-xl text-center">
-          <p class="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Your Letters</p>
-          <p class="text-2xl font-mono font-bold text-foreground tracking-widest">t · e · a · r · s · w</p>
-        </div>
-        <div class="p-4 bg-muted/50 rounded-xl text-center">
-          <p class="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Words Found</p>
-          <p class="text-sm font-mono text-foreground leading-loose">
-            water<span class="text-muted-foreground mx-1">·</span>stare<br/>
-            waste<span class="text-muted-foreground mx-1">·</span>tears<br/>
-            awes<span class="text-muted-foreground mx-1">·</span>sew<br/>
-            ate<span class="text-muted-foreground mx-1">·</span>ear<br/>
-            war<span class="text-muted-foreground mx-1">·</span>art<br/>
-            ...and 20+ more
-          </p>
+    <section class="home-section alt">
+      <div class="home-wrap">
+        <h2 class="home-h2">Word Games</h2>
+        <p class="home-muted">Fun daily word games made by Wordtips</p>
+        <div class="card-grid">
+          <a class="game-card" href="/crossword-solver">
+            <h3>WT Mini Crossword</h3>
+            <p>Like NYT Mini, but free. Forever. No paywall.</p>
+            <span>Play</span>
+          </a>
+          <a class="game-card" href="/wordle-unlimited">
+            <h3>WordQuest</h3>
+            <p>Unlimited Wordle with streaks & powerups.</p>
+            <span>Play</span>
+          </a>
+          <a class="game-card" href="/wordle">
+            <h3>WordQuest Daily</h3>
+            <p>Today's puzzle with points and hints.</p>
+            <span>Play</span>
+          </a>
         </div>
       </div>
-      <p class="text-xs text-muted-foreground mt-4">
-        That's the power of a 6-letter combination — each one contains multiple smaller words inside it. The unscrambler finds them all.
-      </p>
-    </div>
-  </section>
+    </section>
 
-  <!-- ============ SEO CONTENT SECTION 4 ============ -->
-  <section class="mb-14 max-w-3xl mx-auto fade-in" aria-labelledby="every-game-heading">
-    <h2 id="every-game-heading" class="text-2xl md:text-3xl font-bold mb-5 text-foreground">
-      Word Solver for Every Game
-    </h2>
-    <div class="text-muted-foreground space-y-4 text-[15px] leading-relaxed mb-6">
-      <p>
-        Different games have different rules, different board layouts, and different word lists. Here's how our tools map to the most popular word games:
-      </p>
-    </div>
-    <div class="grid gap-4">
-      <!-- Scrabble -->
-      <div class="rounded-xl border border-border bg-card p-5 shadow-sm flex gap-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-xl">🎲</div>
-        <div>
-          <h3 class="font-bold text-foreground mb-1"><a href="/scrabble" class="hover:underline">Scrabble</a></h3>
-          <p class="text-sm text-muted-foreground">Use our <a href="/scrabble" class="text-primary hover:underline">Scrabble word finder</a> to find the highest-scoring plays. Sort by score to spot bonuses from letter tiles, and use the length filter to match your exact rack size. Our dictionary includes all TSL and OSPD/OWL-acceptable words.</p>
+    <section class="home-section">
+      <div class="home-wrap">
+        <h2 class="home-h2">Daily Word Games Hints & Answers</h2>
+        <p class="home-muted">Keep your streak alive. Daily help for daily puzzles.</p>
+        <div class="daily-grid">
+          {dailyHintsWithMeta.map((item) => (
+            <a class="daily-item" href={item.href}>
+              <div class="daily-item-top">
+                <span class="daily-item-icon" aria-hidden="true">{item.icon}</span>
+                <div>
+                  <strong>{item.name}</strong>
+                  <span>{item.subtitle}</span>
+                </div>
+              </div>
+              <em>{dateLabel}</em>
+            </a>
+          ))}
         </div>
       </div>
-      <!-- Words With Friends -->
-      <div class="rounded-xl border border-border bg-card p-5 shadow-sm flex gap-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center text-xl">💬</div>
-        <div>
-          <h3 class="font-bold text-foreground mb-1"><a href="/words-with-friends" class="hover:underline">Words With Friends</a></h3>
-          <p class="text-sm text-muted-foreground">The <a href="/words-with-friends" class="text-primary hover:underline">Words With Friends helper</a> uses the same WWF-approved word list as the official game. Enter your tiles, find every valid word, and sort by the scoring system (which differs slightly from classic Scrabble).</p>
-        </div>
-      </div>
-      <!-- Wordle -->
-      <div class="rounded-xl border border-border bg-card p-5 shadow-sm flex gap-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-xl">🎯</div>
-        <div>
-          <h3 class="font-bold text-foreground mb-1"><a href="/wordle-solver" class="hover:underline">Wordle</a></h3>
-          <p class="text-sm text-muted-foreground">Our dedicated <a href="/wordle-solver" class="text-primary hover:underline">Wordle solver</a> takes your color-coded feedback — green for correct position, yellow for wrong position, gray for not in word — and narrows down the answer. Works for the original NYT Wordle and unlimited clones.</p>
-        </div>
-      </div>
-      <!-- Wordfeud -->
-      <div class="rounded-xl border border-border bg-card p-5 shadow-sm flex gap-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-xl">🧩</div>
-        <div>
-          <h3 class="font-bold text-foreground mb-1"><a href="/wordfeud" class="hover:underline">Wordfeud</a></h3>
-          <p class="text-sm text-muted-foreground"><a href="/wordfeud" class="text-primary hover:underline">Wordfeud</a> uses a slightly different dictionary than Scrabble. Our Wordfeud solver has the right word list for that game, so you get valid options without any "that's not in the Wordfeud dictionary" disappointments.</p>
-        </div>
-      </div>
-      <!-- Word Cookies -->
-      <div class="rounded-xl border border-border bg-card p-5 shadow-sm flex gap-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-xl">🍪</div>
-        <div>
-          <h3 class="font-bold text-foreground mb-1"><a href="/word-cookies" class="hover:underline">Word Cookies</a></h3>
-          <p class="text-sm text-muted-foreground"><a href="/word-cookies" class="text-primary hover:underline">Word Cookies</a> gives you a bowl of letters and asks you to find every word, long and short. Type the bowl letters into the unscrambler and it finds all possible words — 2 letters, 3 letters, all the way up to the longest word hidden inside.</p>
-        </div>
-      </div>
-      <!-- Jumble -->
-      <div class="rounded-xl border border-border bg-card p-5 shadow-sm flex gap-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center text-xl">🔤</div>
-        <div>
-          <h3 class="font-bold text-foreground mb-1"><a href="/jumble-solver" class="hover:underline">Jumble</a></h3>
-          <p class="text-sm text-muted-foreground">The newspaper <a href="/jumble-solver" class="text-primary hover:underline">Jumble puzzle</a> shows you a cartoon with a scrambled caption. Unscramble the four words, then use those letters to solve the final phrase. Our descrambler handles the first part instantly.</p>
-        </div>
-      </div>
-      <!-- Crosswords -->
-      <div class="rounded-xl border border-border bg-card p-5 shadow-sm flex gap-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center text-xl">📝</div>
-        <div>
-          <h3 class="font-bold text-foreground mb-1"><a href="/crossword-solver" class="hover:underline">Crosswords</a></h3>
-          <p class="text-sm text-muted-foreground">For <a href="/crossword-solver" class="text-primary hover:underline">crossword clues</a>, you often know only a few letters. Type in what you know and use question marks (?) for unknown squares — e.g., <code class="px-1 py-0.5 bg-muted rounded text-xs font-mono">t??er</code> finds every 5-letter word starting with T and ending in ER. Works for any crossword, print or digital.</p>
-        </div>
-      </div>
-      <!-- Wordscapes -->
-      <div class="rounded-xl border border-border bg-card p-5 shadow-sm flex gap-4">
-        <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center text-xl">🌿</div>
-        <div>
-          <h3 class="font-bold text-foreground mb-1"><a href="/wordscapes" class="hover:underline">Wordscapes</a></h3>
-          <p class="text-sm text-muted-foreground"><a href="/wordscapes" class="text-primary hover:underline">Wordscapes</a> shows you a circle of letters and asks you to find all words from 3 to 7 letters. Type the circle letters into our unscrambler and it finds every valid word — just keep swiping until you've cleared the level.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ============ SEO CONTENT SECTION 5 ============ -->
-  <section class="mb-14 max-w-3xl mx-auto fade-in" aria-labelledby="why-heading">
-    <h2 id="why-heading" class="text-2xl md:text-3xl font-bold mb-5 text-foreground">
-      Why Use Our Word Unscrambler?
-    </h2>
-    <div class="text-muted-foreground space-y-4 text-[15px] leading-relaxed mb-8">
-      <p>
-        There are a dozen word solvers online. Most of them have ads stacked three deep, require you to create an account, or have word lists that are years out of date. Here's why ours is different:
-      </p>
-    </div>
+    <section class="home-section alt">
+      <div class="home-wrap">
+        <h2 class="home-h2">Popular Word Games Solvers & Helpers</h2>
+        <div class="card-grid">
+          {headerWordSolvers.map((tool) => (
+            <a class="game-card" href={tool.href}>
+              <h3>{tool.name}</h3>
+              <p>The ultimate helper to turn patterns into possibilities.</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
 
-    <!-- Feature comparison table -->
-    <div class="overflow-x-auto rounded-2xl border border-border shadow-sm mb-8">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="border-b border-border bg-muted/50">
-            <th class="text-left p-4 font-semibold text-foreground">Feature</th>
-            <th class="text-center p-4 font-semibold text-primary">Our Tool</th>
-            <th class="text-center p-4 font-semibold text-muted-foreground">Typical Sites</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="border-b border-border">
-            <td class="p-4 text-foreground font-medium">100% Free</td>
-            <td class="p-4 text-center"><span class="text-green-600 font-bold">✅ Yes</span></td>
-            <td class="p-4 text-center text-muted-foreground">Usually "free" with paywall for results</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="p-4 text-foreground font-medium">No sign-up required</td>
-            <td class="p-4 text-center"><span class="text-green-600 font-bold">✅ No account needed</span></td>
-            <td class="p-4 text-center text-muted-foreground">Many require email or social login</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="p-4 text-foreground font-medium">Works offline</td>
-            <td class="p-4 text-center"><span class="text-green-600 font-bold">✅ Loads once, works forever</span></td>
-            <td class="p-4 text-center text-muted-foreground">Needs internet for every search</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="p-4 text-foreground font-medium">Word count</td>
-            <td class="p-4 text-center"><span class="text-green-600 font-bold">✅ 370,000+ words</span></td>
-            <td class="p-4 text-center text-muted-foreground">Often limited to 50k–150k</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="p-4 text-foreground font-medium">Word list updated</td>
-            <td class="p-4 text-center"><span class="text-green-600 font-bold">✅ Daily</span></td>
-            <td class="p-4 text-center text-muted-foreground">Monthly or never</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="p-4 text-foreground font-medium">Specialized solvers</td>
-            <td class="p-4 text-center"><span class="text-green-600 font-bold">✅ 8+ game-specific tools</span></td>
-            <td class="p-4 text-center text-muted-foreground">One generic unscrambler</td>
-          </tr>
-          <tr class="border-b border-border">
-            <td class="p-4 text-foreground font-medium">Game-specific word lists</td>
-            <td class="p-4 text-center"><span class="text-green-600 font-bold">✅ WWF, Wordfeud, Wordle</span></td>
-            <td class="p-4 text-center text-muted-foreground">Generic dictionary, wrong words</td>
-          </tr>
-          <tr>
-            <td class="p-4 text-foreground font-medium">No ads in results</td>
-            <td class="p-4 text-center"><span class="text-green-600 font-bold">✅ Clean, distraction-free</span></td>
-            <td class="p-4 text-center text-muted-foreground">Pop-ups, banners, autoplay video</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p class="text-[15px] text-muted-foreground leading-relaxed">
-      We built this because we're word game players too. We got tired of fighting paywalls and terrible UIs just to unscramble a few letters. The tool we made is the one we wanted to use ourselves.
-    </p>
-  </section>
-
-  <!-- ============ FAQ SECTION ============ -->
-  <section class="mb-14 max-w-3xl mx-auto fade-in" aria-labelledby="faq-heading">
-    <h2 id="faq-heading" class="text-2xl md:text-3xl font-bold mb-6 text-foreground">
-      Frequently Asked Questions
-    </h2>
-    <div class="space-y-3">
-      {homeFaqs.map((faq) => (
-        <details class="rounded-xl border border-border bg-card group">
-          <summary class="flex items-center justify-between gap-4 p-4 cursor-pointer list-none select-none">
-            <span class="font-semibold text-foreground text-[15px] pr-4">{faq.question}</span>
-            <span class="text-muted-foreground group-hover:text-foreground transition-colors shrink-0 text-lg leading-none">+</span>
-          </summary>
-          <div class="px-4 pb-4 text-sm text-muted-foreground leading-relaxed border-t border-border">
-            <p class="pt-3 text-[15px]">{faq.answer}</p>
+    <section class="home-section">
+      <div class="home-wrap">
+        <h2 class="home-h2">Crossword Clues</h2>
+        <ul class="clues-list">
+          <li><a href="/crossword-solver">Fabric used for casino tables</a></li>
+          <li><a href="/crossword-solver">Togetherness</a></li>
+          <li><a href="/crossword-solver">Basic belief</a></li>
+          <li><a href="/crossword-solver">Romantic rendezvous</a></li>
+          <li><a href="/crossword-solver">Whac-A-___ (classic arcade game)</a></li>
+          <li><a href="/crossword-solver">Dog breed favored by Queen Elizabeth II</a></li>
+        </ul>
+        <div class="mini-columns">
+          <div>
+            <h3>Word Lists</h3>
+            <ul>{headerWordLists.map((l) => <li><a href={l.href}>{l.name}</a></li>)}</ul>
           </div>
-        </details>
-      ))}
-    </div>
-  </section>
-
-  <!-- ============ FEATURED TOOLS GRID ============ -->
-  <section class="mb-14 fade-in" aria-labelledby="featured-heading">
-    <h2 id="featured-heading" class="text-2xl md:text-3xl font-bold mb-8 text-foreground">
-      Explore All Word Tools
-    </h2>
-    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      {featuredTools.map((tool, i) => (
-        <a
-          href={tool.href}
-          class={`rounded-2xl border border-border bg-card p-6 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 group block fade-in-delay-${(i % 4) + 1}`}
-        >
-          <div class={`w-12 h-12 rounded-xl ${tool.color} flex items-center justify-center text-2xl mb-4`}>
-            {tool.icon}
+          <div>
+            <h3>Crosswords</h3>
+            <ul>{headerCrosswords.map((l) => <li><a href={l.href}>{l.name}</a></li>)}</ul>
           </div>
-          <h3 class="font-bold text-foreground text-base mb-2">
-            {tool.name}
-          </h3>
-          <p class="text-sm text-muted-foreground leading-relaxed">{tool.desc}</p>
-          <span class="inline-flex items-center gap-1 text-sm text-primary font-medium mt-3 group-hover:gap-2 transition-all">
-            Use tool →
-          </span>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <!-- ============ BROWSE TOOLS BY CATEGORY ============ -->
-  <section class="mb-14 fade-in" aria-labelledby="browse-heading">
-    <h2 id="browse-heading" class="text-2xl md:text-3xl font-bold mb-8 text-foreground">
-      Browse by Category
-    </h2>
-    <div class="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <h3 class="font-semibold text-base mb-4 text-foreground flex items-center gap-2">
-          🔍 Word Finders
-        </h3>
-        <ul class="space-y-2.5 text-sm">
-          {wordFinders.slice(0, 7).map((item) => (
-            <li><a href={item.href} class="text-primary hover:underline">{item.name}</a></li>
-          ))}
-          <li><a href="/word-unscrambler" class="text-muted-foreground hover:text-primary text-xs">View all →</a></li>
-        </ul>
+        </div>
       </div>
-      <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <h3 class="font-semibold text-base mb-4 text-foreground flex items-center gap-2">
-          🎯 Daily Games
-        </h3>
-        <ul class="space-y-2.5 text-sm">
-          {dailyGameHints.slice(0, 7).map((item) => (
-            <li><a href={item.href} class="text-primary hover:underline">{item.name}</a></li>
-          ))}
-        </ul>
-      </div>
-      <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <h3 class="font-semibold text-base mb-4 text-foreground flex items-center gap-2">
-          📏 By Length
-        </h3>
-        <ul class="space-y-2.5 text-sm">
-          {wordsByLength.slice(0, 7).map((item) => (
-            <li><a href={item.href} class="text-primary hover:underline">{item.name}</a></li>
-          ))}
-          <li><a href="/words-by-length" class="text-muted-foreground hover:text-primary text-xs">View all →</a></li>
-        </ul>
-      </div>
-      <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <h3 class="font-semibold text-base mb-4 text-foreground flex items-center gap-2">
-          📖 Word Lists
-        </h3>
-        <ul class="space-y-2.5 text-sm">
-          {wordLists.map((item) => (
-            <li><a href={item.href} class="text-primary hover:underline">{item.name}</a></li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(webSiteSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </Layout>
+
+<style>
+  .home-clone { background: var(--background); color: var(--foreground); }
+  .home-hero {
+    background: #56ba95;
+    padding: 2rem 1rem 2.75rem;
+  }
+  .home-hero-inner {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+  .home-h1 {
+    margin: 0;
+    text-align: center;
+    color: #fff;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .home-sub {
+    margin: 0.5rem 0 1.5rem;
+    text-align: center;
+    color: rgb(255 255 255 / 0.9);
+    font-weight: 600;
+  }
+  .home-section { padding: 2.25rem 1rem; }
+  .home-section.alt { background: var(--muted); }
+  .home-wrap { max-width: 72rem; margin: 0 auto; }
+  .home-h2 {
+    margin: 0 0 0.4rem;
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
+    font-weight: 800;
+  }
+  .home-muted { margin: 0 0 1rem; color: var(--muted-foreground); }
+  .home-link-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.65rem;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  }
+  .home-link-grid a, .clues-list a, .mini-columns a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .home-link-grid a:hover, .clues-list a:hover, .mini-columns a:hover { text-decoration: underline; }
+  .card-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+  .game-card {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 0.85rem;
+    padding: 1rem;
+    background: var(--card);
+    text-decoration: none;
+    color: inherit;
+  }
+  .game-card h3 { margin: 0 0 0.35rem; font-size: 1.05rem; font-weight: 800; }
+  .game-card p { margin: 0; color: var(--muted-foreground); line-height: 1.55; }
+  .game-card span { display: inline-block; margin-top: 0.75rem; color: var(--color-primary); font-weight: 700; }
+  .daily-grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+  .daily-item {
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 0.8rem;
+    background: var(--card);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .daily-item-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+  }
+  .daily-item-icon {
+    width: 1.4rem;
+    height: 1.4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .daily-item strong { font-size: 0.95rem; }
+  .daily-item span { color: var(--muted-foreground); font-size: 0.86rem; display: block; margin-top: 0.05rem; }
+  .daily-item em {
+    color: var(--muted-foreground);
+    opacity: 0.8;
+    font-size: 0.78rem;
+    font-style: normal;
+    margin-top: 0.25rem;
+  }
+  .clues-list { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.55rem; }
+  .mini-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+    margin-top: 1.3rem;
+  }
+  .mini-columns h3 { margin: 0 0 0.4rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .mini-columns ul { margin: 0; padding-left: 1rem; display: grid; gap: 0.45rem; }
+</style>

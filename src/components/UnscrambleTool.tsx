@@ -85,7 +85,7 @@ export default function UnscrambleTool() {
 
   return (
     <div className="unscramble-tool">
-      <div className="mb-6 flex gap-3 flex-wrap items-end">
+      <div className="tool-form-row mb-5 flex gap-3 flex-wrap items-end">
         <div className="flex-1 min-w-[200px]">
           <label htmlFor="letters" className="block text-sm font-medium text-foreground mb-1">Letters</label>
           <input
@@ -108,7 +108,7 @@ export default function UnscrambleTool() {
         </button>
         <button type="button" className="btn" onClick={clearAll}>Clear</button>
       </div>
-      <div className="mb-6 flex flex-wrap gap-4 text-sm">
+      <div className="tool-filter-row mb-5 flex flex-wrap gap-4 text-sm">
         <label className="flex items-center gap-2">
           <span>Min length</span>
           <select value={minLength} onChange={(e) => setMinLength(Number(e.target.value))} className="input w-20">
@@ -140,14 +140,14 @@ export default function UnscrambleTool() {
       </div>
       {searched && (
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">Results ({results.length} word{results.length !== 1 ? 's' : ''})</h2>
+          <div className="tool-results-head flex items-center justify-between mb-4">
+            <h2 className="tool-results-title text-2xl font-bold">Results ({results.length} word{results.length !== 1 ? 's' : ''})</h2>
             {results.length > 0 && (
               <button type="button" className="btn" onClick={copyResults}>{copied ? 'Copied!' : 'Copy all'}</button>
             )}
           </div>
           {results.length === 0 && !loading && (
-            <p className="text-muted-foreground">No words found for these letters. Try different letters or length range.</p>
+            <p className="tool-empty-state text-muted-foreground">No words found for these letters. Try different letters or length range.</p>
           )}
           {results.length > 0 && (
             <div className="grid gap-6 fade-in">
@@ -156,12 +156,12 @@ export default function UnscrambleTool() {
                 .map(([len, words]) => (
                   <div key={len}>
                     <div className="flex items-center gap-3 mb-3">
-                      <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{len} letter{len !== 1 ? 's' : ''}</h3>
+                      <h3 className="tool-group-title text-sm font-semibold text-muted-foreground uppercase tracking-wider">{len} letter{len !== 1 ? 's' : ''}</h3>
                       <span className="text-xs bg-primary/10 text-primary font-semibold px-2 py-0.5 rounded-full">{words.length}</span>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
                       {words.map((r) => (
-                        <div key={r.word} className="result-card p-3 rounded-lg border border-border bg-card cursor-pointer text-center font-medium text-foreground" title={`Score: ${r.score}`}>
+                        <div key={r.word} className="result-card tool-result-card p-3 rounded-lg border border-border bg-card cursor-pointer text-center font-medium text-foreground" title={`Score: ${r.score}`}>
                           {r.word}
                         </div>
                       ))}

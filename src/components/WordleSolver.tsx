@@ -49,6 +49,7 @@ function solveWordle(
 }
 
 export default function WordleSolver() {
+  const [dictionaryMode, setDictionaryMode] = useState<"strict" | "wide">("strict");
   const [pattern, setPattern] = useState(["", "", "", "", ""]);
   const [includeLetters, setIncludeLetters] = useState("");
   const [excludeLetters, setExcludeLetters] = useState("");
@@ -60,10 +61,30 @@ export default function WordleSolver() {
   const loadWords = useCallback(async () => {
     if (words.length > 0) return;
     try {
-      const res = await fetch("/data/words_5.json");
-      if (res.ok) setWords(await res.json());
+      if (dictionaryMode === "strict") {
+        const strictRes = await fetch("/data/words_wordle_answers_5.json");
+        if (strictRes.ok) {
+          setWords(await strictRes.json());
+          return;
+        }
+      } else {
+        const wideRes = await fetch("/data/words_wordle_5.json");
+        if (wideRes.ok) {
+          setWords(await wideRes.json());
+          return;
+        }
+      }
+      const fallback = await fetch("/data/words_5.json");
+      if (fallback.ok) setWords(await fallback.json());
     } catch { /* silent */ }
-  }, [words.length]);
+  }, [words.length, dictionaryMode]);
+
+  const handleModeChange = (mode: "strict" | "wide") => {
+    setDictionaryMode(mode);
+    setWords([]);
+    setResults([]);
+    setSearched(false);
+  };
 
   const handleSolve = useCallback(async () => {
     setLoading(true);
@@ -108,12 +129,12 @@ export default function WordleSolver() {
 
   return (
     <div className="wordle-solver">
-      <div className="rounded-lg border border-border bg-card p-6 mb-6">
+      <div className="tool-form-card rounded-lg border border-border bg-card p-6 mb-6">
         <div className="mb-6">
           <label className="block text-sm font-semibold text-foreground mb-3">
             Pattern (known letters in position)
           </label>
-          <div className="flex gap-2 justify-center">
+          <div className="tool-tile-row flex gap-2 justify-center">
             {pattern.map((letter, i) => (
               <input
                 key={i}
@@ -127,7 +148,7 @@ export default function WordleSolver() {
               />
             ))}
           </div>
-          <p className="text-xs text-muted-foreground text-center mt-2">
+          <p className="tool-helper-text text-xs text-muted-foreground text-center mt-2">
             Enter known letters. Leave boxes empty for unknown positions.
           </p>
         </div>
@@ -165,6 +186,21 @@ export default function WordleSolver() {
           </div>
         </div>
 
+        <div className="mb-4">
+          <label htmlFor="wordle-dict-mode" className="block text-sm font-semibold text-foreground mb-1">
+            Dictionary Mode
+          </label>
+          <select
+            id="wordle-dict-mode"
+            className="input"
+            value={dictionaryMode}
+            onChange={(e) => handleModeChange(e.target.value as "strict" | "wide")}
+          >
+            <option value="strict">Strict (answer-like words)</option>
+            <option value="wide">Wide (larger candidate pool)</option>
+          </select>
+        </div>
+
         <div className="flex gap-3">
           <button type="button" className="btn btn-primary flex-1" onClick={handleSolve} disabled={loading}>
             {loading ? <><span className="spinner mr-2" />Searching\u2026</> : "Find Words"}
@@ -175,8 +211,8 @@ export default function WordleSolver() {
 
       {searched && (
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">
+          <div className="tool-results-head flex items-center justify-between mb-4">
+            <h2 className="tool-results-title text-2xl font-bold">
               {results.length} word{results.length !== 1 ? "s" : ""} found
             </h2>
             {results.length > 0 && (
@@ -185,17 +221,17 @@ export default function WordleSolver() {
           </div>
 
           {results.length === 0 && !loading && (
-            <p className="text-muted-foreground">
+            <p className="tool-empty-state text-muted-foreground">
               No words match your pattern. Try adjusting your letters.
             </p>
           )}
 
           {results.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 fade-in">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 fade-in">
               {results.map((r) => (
                 <div
                   key={r.word}
-                  className="result-card p-4 rounded-lg border border-border bg-card text-center cursor-pointer"
+                  className="result-card tool-result-card p-4 rounded-lg border border-border bg-card text-center cursor-pointer"
                   title={`Score: ${r.score}`}
                 >
                   <span className="font-bold uppercase text-lg tracking-wide">{r.word}</span>
@@ -207,8 +243,8 @@ export default function WordleSolver() {
         </div>
       )}
 
-      <div className="rounded-lg border border-border bg-card p-6">
-        <h2 className="text-xl font-bold mb-4 text-foreground">Best Wordle Starting Words</h2>
+      <div className="tool-info-card rounded-lg border border-border bg-card p-6">
+        <h2 className="tool-info-title text-xl font-bold mb-4 text-foreground">Best Wordle Starting Words</h2>
         <p className="text-sm text-muted-foreground mb-4">
           These opening words give you the best chance of finding the answer in few guesses.
         </p>

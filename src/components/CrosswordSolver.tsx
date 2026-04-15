@@ -107,7 +107,7 @@ export default function CrosswordSolver() {
 
   return (
     <div className="crossword-solver">
-      <div className="rounded-lg border border-border bg-card p-6 mb-6">
+      <div className="tool-form-card rounded-lg border border-border bg-card p-6 mb-6">
         <div className="mb-6">
           <label htmlFor="crossword-pattern" className="block text-sm font-semibold text-foreground mb-2">
             Letter Pattern (use _ for unknown letters)
@@ -123,7 +123,7 @@ export default function CrosswordSolver() {
             maxLength={10}
             autoComplete="off"
           />
-          <p className="text-xs text-muted-foreground text-center mt-2">
+          <p className="tool-helper-text text-xs text-muted-foreground text-center mt-2">
             Enter known letters. Use underscore (_) for each unknown letter.
           </p>
         </div>
@@ -186,8 +186,8 @@ export default function CrosswordSolver() {
 
       {searched && (
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">
+          <div className="tool-results-head flex items-center justify-between mb-4">
+            <h2 className="tool-results-title text-2xl font-bold">
               {results.length} word{results.length !== 1 ? "s" : ""} found
             </h2>
             {results.length > 0 && (
@@ -198,17 +198,17 @@ export default function CrosswordSolver() {
           </div>
 
           {results.length === 0 && !loading && (
-            <p className="text-muted-foreground text-center py-8">
+            <p className="tool-empty-state text-muted-foreground text-center py-8">
               No words match your pattern. Try adjusting your letters or length.
             </p>
           )}
 
           {results.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 fade-in">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 fade-in">
               {results.map((r) => (
                 <div
                   key={r.word}
-                  className="result-card p-4 rounded-lg border border-border bg-card text-center cursor-pointer"
+                  className="result-card tool-result-card p-4 rounded-lg border border-border bg-card text-center cursor-pointer"
                   title={`Score: ${r.score}`}
                 >
                   <span className="font-bold uppercase text-lg tracking-wide text-foreground">{r.word}</span>
@@ -220,8 +220,8 @@ export default function CrosswordSolver() {
         </div>
       )}
 
-      <div className="rounded-lg border border-border bg-card p-6">
-        <h2 className="text-xl font-bold mb-4 text-foreground">Pattern Examples</h2>
+      <div className="tool-info-card rounded-lg border border-border bg-card p-6">
+        <h2 className="tool-info-title text-xl font-bold mb-4 text-foreground">Pattern Examples</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="flex items-center gap-3 p-3 rounded-lg border border-border bg-background">
             <code className="text-lg font-mono font-bold text-foreground">_ A _ _ E</code>

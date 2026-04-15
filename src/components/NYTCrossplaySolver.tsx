@@ -29,8 +29,13 @@ function canFormWithBlanks(word: string, rack: string): boolean {
   return true;
 }
 
-function loadWordsByLength(len: number): Promise<string[]> {
-  return fetch(`/data/words_${len}.json`)
+function getWordsPath(len: number, mode: GameMode): string {
+  if (mode === "general") return `/data/words_${len}.json`;
+  return `/data/words_common_${len}.json`;
+}
+
+function loadWordsByLength(len: number, mode: GameMode): Promise<string[]> {
+  return fetch(getWordsPath(len, mode))
     .then((r) => (r.ok ? r.json() : []))
     .catch(() => []);
 }
@@ -102,7 +107,7 @@ export default function NYTCrossplaySolver() {
           ? [lenParsed]
           : [5, 6, 7, 4, 8, 3, 9, 2, 10];
 
-      const wordLists = await Promise.all(lengths.map((n) => loadWordsByLength(n)));
+      const wordLists = await Promise.all(lengths.map((n) => loadWordsByLength(n, gameMode)));
       const merged: string[] = wordLists.flat();
 
       const out: ResultRow[] = [];
@@ -121,7 +126,7 @@ export default function NYTCrossplaySolver() {
     } finally {
       setLoading(false);
     }
-  }, [letters, starts, ends, contains, lengthStr, wildOk]);
+  }, [letters, starts, ends, contains, lengthStr, wildOk, gameMode]);
 
   return (
     <div className="crossplay-tool">

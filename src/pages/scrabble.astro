@@ -68,19 +68,24 @@ const DICTIONARIES = [
 ];
 ---
 
-<Layout meta={meta}>
-<div class="page-wrapper">
+<Layout meta={meta} fullBleed={true}>
+<div class="tool-page-skin">
+<section class="tool-hero">
+<div class="tool-hero-inner page-wrapper">
   <div class="breadcrumb">
     <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Scrabble Word Finder</span>
   </div>
 
   <h1 class="page-h1">Scrabble Word Finder & Cheat</h1>
-  <p class="page-body">Enter your Scrabble tiles and instantly find every valid word, sorted by point value. Find the highest-scoring play for any board situation.</p>
+  <p class="page-body">Enter your Scrabble tiles and instantly find every valid word, sorted by point value. Find the highest-scoring play for any board situation. Supports up to 3 wildcards (? or space).</p>
 
   <div class="page-tool-card">
     <UnscrambleTool client:load />
   </div>
 </div>
+</section>
+
+<div class="tool-content">
 
 <AdSense />
 
@@ -222,4 +227,6 @@ const DICTIONARIES = [
 
 <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+</div>
+</div>
 </Layout>

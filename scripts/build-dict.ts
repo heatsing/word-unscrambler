@@ -14,6 +14,9 @@ const WORDS_TXT = path.join(ROOT, 'words.txt');
 const OUT_DIR = path.join(ROOT, 'public', 'data');
 const MIN_LEN = 2;
 const MAX_LEN = 10;
+const BANNED_SUBSTRINGS = [
+  'fuck', 'shit', 'bitch', 'cunt', 'nigg', 'fagg', 'porn', 'dick', 'pussy', 'slut',
+];
 
 /** Public domain English word list (alpha only, one per line). Tried in order. */
 const REMOTE_WORDLIST_URLS = [
@@ -39,12 +42,43 @@ function normalize(word: string): string {
   return word.trim().toLowerCase().replace(/[^a-z]/g, '');
 }
 
-function collectByLength(words: string[], byLen: Record<number, string[]>): void {
+function hasVowel(word: string): boolean {
+  return /[aeiouy]/.test(word);
+}
+
+function isCommonWord(word: string): boolean {
+  if (word.length < MIN_LEN || word.length > MAX_LEN) return false;
+  if (!/^[a-z]+$/.test(word)) return false;
+  if (BANNED_SUBSTRINGS.some((bad) => word.includes(bad))) return false;
+  if (word.length >= 5 && !hasVowel(word)) return false;
+  return true;
+}
+
+function isWordleCandidate(word: string): boolean {
+  if (word.length !== 5) return false;
+  if (!isCommonWord(word)) return false;
+  if (word.endsWith('s')) return false;
+  if (/([a-z])\1\1/.test(word)) return false;
+  const uniq = new Set(word).size;
+  return uniq >= 3;
+}
+
+function isWordleAnswerCandidate(word: string): boolean {
+  if (!isWordleCandidate(word)) return false;
+  // Tighter answer-like profile: avoid rare morphology and harsh endings.
+  if (/(ing|ed|er|ly)$/.test(word)) return false;
+  if (/(ness|ment|tion)$/.test(word)) return false;
+  if (/[jqxz]{2}/.test(word)) return false;
+  if (/^[aeiou]{2}/.test(word)) return false;
+  return true;
+}
+
+function collectByLength(words: string[], byLen: Record<number, Set<string>>): void {
   for (const w of words) {
     const n = normalize(w);
     if (n.length < MIN_LEN || n.length > MAX_LEN) continue;
-    if (!byLen[n.length]) byLen[n.length] = [];
-    if (!byLen[n.length].includes(n)) byLen[n.length].push(n);
+    if (!byLen[n.length]) byLen[n.length] = new Set<string>();
+    byLen[n.length].add(n);
   }
 }
 
@@ -90,7 +124,7 @@ async function fetchRemoteWords(): Promise<string[]> {
 }
 
 async function main(): Promise<void> {
-  const byLen: Record<number, string[]> = {};
+  const byLen: Record<number, Set<string>> = {};
   fs.mkdirSync(OUT_DIR, { recursive: true });
 
   if (!fs.existsSync(WORDS_TXT)) {
@@ -107,12 +141,7 @@ async function main(): Promise<void> {
       console.log('Merging', remote.length, 'remote words into dictionary.');
       collectByLength(remote, byLen);
     }
-    for (let len = MIN_LEN; len <= MAX_LEN; len++) {
-      const arr = (byLen[len] ?? []).sort();
-      const outPath = path.join(OUT_DIR, `words_${len}.json`);
-      fs.writeFileSync(outPath, JSON.stringify(arr), 'utf-8');
-      console.log('Wrote', outPath, '(' + arr.length + ' words)');
-    }
+    writeDictionaries(byLen);
     return;
   }
 
@@ -126,12 +155,35 @@ async function main(): Promise<void> {
     collectByLength(remote, byLen);
   }
 
+  writeDictionaries(byLen);
+}
+
+function writeDictionaries(byLen: Record<number, Set<string>>): void {
+  let fullTotal = 0;
+  let commonTotal = 0;
   for (let len = MIN_LEN; len <= MAX_LEN; len++) {
-    const arr = (byLen[len] ?? []).sort();
-    const outPath = path.join(OUT_DIR, `words_${len}.json`);
-    fs.writeFileSync(outPath, JSON.stringify(arr), 'utf-8');
-    console.log('Wrote', outPath, '(' + arr.length + ' words)');
+    const full = Array.from(byLen[len] ?? []).sort();
+    const common = full.filter(isCommonWord);
+    fullTotal += full.length;
+    commonTotal += common.length;
+
+    const fullPath = path.join(OUT_DIR, `words_${len}.json`);
+    const commonPath = path.join(OUT_DIR, `words_common_${len}.json`);
+    fs.writeFileSync(fullPath, JSON.stringify(full), 'utf-8');
+    fs.writeFileSync(commonPath, JSON.stringify(common), 'utf-8');
+    console.log('Wrote', fullPath, '(' + full.length + ' words)');
+    console.log('Wrote', commonPath, '(' + common.length + ' words)');
   }
+
+  const wordle = Array.from(byLen[5] ?? []).filter(isWordleCandidate).sort();
+  const wordleAnswers = Array.from(byLen[5] ?? []).filter(isWordleAnswerCandidate).sort();
+  const wordlePath = path.join(OUT_DIR, 'words_wordle_5.json');
+  const wordleAnswersPath = path.join(OUT_DIR, 'words_wordle_answers_5.json');
+  fs.writeFileSync(wordlePath, JSON.stringify(wordle), 'utf-8');
+  fs.writeFileSync(wordleAnswersPath, JSON.stringify(wordleAnswers), 'utf-8');
+  console.log('Wrote', wordlePath, '(' + wordle.length + ' words)');
+  console.log('Wrote', wordleAnswersPath, '(' + wordleAnswers.length + ' words)');
+  console.log('Dictionary profiles => full:', fullTotal, 'common:', commonTotal, 'wordle:', wordle.length, 'wordleAnswers:', wordleAnswers.length);
 }
 
 main();

@@ -28,13 +28,18 @@ function canFormWithBlanks(word: string, rack: string): boolean {
   return true;
 }
 
-function loadWordsByLength(len: number): Promise<string[]> {
-  return fetch(`/data/words_${len}.json`)
+function getWordsPath(len: number, mode: DictMode): string {
+  if (mode === "all" || mode === "scrabble_us" || mode === "scrabble_uk") return `/data/words_${len}.json`;
+  return `/data/words_common_${len}.json`;
+}
+
+function loadWordsByLength(len: number, mode: DictMode): Promise<string[]> {
+  return fetch(getWordsPath(len, mode))
     .then((r) => (r.ok ? r.json() : []))
     .catch(() => []);
 }
 
-type DictMode = "wwf" | "scrabble" | "general";
+type DictMode = "scrabble_us" | "scrabble_uk" | "nyt_crossplay" | "wwf" | "all";
 
 interface ResultRow {
   word: string;
@@ -50,6 +55,7 @@ function HintIcon({ label }: { label: string }) {
 }
 
 export default function WordsStartWithTool() {
+  const showTopDictionaryTabs = true;
   const [letters, setLetters] = useState("");
   const [starts, setStarts] = useState("");
   const [ends, setEnds] = useState("");
@@ -57,7 +63,7 @@ export default function WordsStartWithTool() {
   const [exclude, setExclude] = useState("");
   const [include, setInclude] = useState("");
   const [lengthStr, setLengthStr] = useState("");
-  const [dictMode, setDictMode] = useState<DictMode>("wwf");
+  const [dictMode, setDictMode] = useState<DictMode>("all");
   const [results, setResults] = useState<ResultRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
@@ -100,7 +106,7 @@ export default function WordsStartWithTool() {
           ? [lenParsed]
           : [5, 6, 7, 4, 8, 3, 9, 2, 10];
 
-      const wordLists = await Promise.all(lengths.map((n) => loadWordsByLength(n)));
+      const wordLists = await Promise.all(lengths.map((n) => loadWordsByLength(n, dictMode)));
       const merged: string[] = wordLists.flat();
 
       const out: ResultRow[] = [];
@@ -124,10 +130,33 @@ export default function WordsStartWithTool() {
     } finally {
       setLoading(false);
     }
-  }, [letters, starts, ends, contains, exclude, include, lengthStr, wildOk]);
+  }, [letters, starts, ends, contains, exclude, include, lengthStr, wildOk, dictMode]);
 
   return (
     <div className="wst-tool">
+      {showTopDictionaryTabs && (
+        <div className="wst-dict-tabs" role="tablist" aria-label="Dictionary selector">
+          {[
+            { id: "scrabble_us" as const, label: "Scrabble US" },
+            { id: "scrabble_uk" as const, label: "Scrabble UK" },
+            { id: "nyt_crossplay" as const, label: "NYT Crossplay" },
+            { id: "wwf" as const, label: "Words With Friends" },
+            { id: "all" as const, label: "All Dictionaries" },
+          ].map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              role="tab"
+              aria-selected={dictMode === item.id}
+              className={`wst-dict-tab ${dictMode === item.id ? "is-active" : ""}`}
+              onClick={() => setDictMode(item.id)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       <div className="wst-main-search">
         <svg
           className="wst-search-icon"
@@ -265,9 +294,11 @@ export default function WordsStartWithTool() {
             onChange={(e) => setDictMode(e.target.value as DictMode)}
             aria-label="Dictionary"
           >
+            <option value="scrabble_us">Scrabble US</option>
+            <option value="scrabble_uk">Scrabble UK</option>
+            <option value="nyt_crossplay">NYT Crossplay</option>
             <option value="wwf">Words With Friends</option>
-            <option value="scrabble">Scrabble US</option>
-            <option value="general">General word list</option>
+            <option value="all">All Dictionaries</option>
           </select>
         </label>
 
@@ -306,6 +337,32 @@ export default function WordsStartWithTool() {
 
       <style>{`
         .wst-tool { max-width: 36rem; margin: 0 auto; }
+        .wst-dict-tabs {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.4rem;
+          justify-content: center;
+          margin: 0 0 0.85rem;
+        }
+        .wst-dict-tab {
+          border: 1px solid rgb(255 255 255 / 0.55);
+          background: rgb(255 255 255 / 0.15);
+          color: #fff;
+          font-size: 0.72rem;
+          font-weight: 700;
+          border-radius: 999px;
+          padding: 0.32rem 0.6rem;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+        .wst-dict-tab:hover {
+          background: rgb(255 255 255 / 0.25);
+        }
+        .wst-dict-tab.is-active {
+          background: #fff;
+          border-color: #fff;
+          color: #0f172a;
+        }
         .wst-main-search {
           position: relative;
           display: flex;

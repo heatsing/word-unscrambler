@@ -50,19 +50,24 @@ const faqs = [
 const faqSchema = getFAQPageSchema(faqs);
 ---
 
-<Layout meta={meta}>
-<div class="page-wrapper">
+<Layout meta={meta} fullBleed={true}>
+<div class="tool-page-skin">
+<section class="tool-hero">
+<div class="tool-hero-inner page-wrapper">
   <div class="breadcrumb">
     <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Word Unscrambler</span>
   </div>
 
   <h1 class="page-h1">Word Unscrambler</h1>
-  <p class="page-body">Free word unscrambler: enter scrambled letters and get every valid word you can make. Works for Scrabble, crosswords, Wordle, anagrams, and all word games.</p>
+  <p class="page-body">Free word unscrambler: enter scrambled letters and get every valid word you can make. Works for Scrabble, crosswords, Wordle, anagrams, and all word games. Supports up to 3 wildcards (? or space).</p>
 
   <div class="page-tool-card">
     <UnscrambleTool client:load />
   </div>
 </div>
+</section>
+
+<div class="tool-content">
 
 <AdSense />
 
@@ -129,4 +134,6 @@ const faqSchema = getFAQPageSchema(faqs);
 
 <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+</div>
+</div>
 </Layout>
