@@ -12,7 +12,7 @@ const meta = getMeta(
 );
 
 const howToSteps = [
-  { name: 'Enter the 12 letters', text: 'Type all 12 letters from your Letter Boxed puzzle â??the letters shown on the four sides of the square.' },
+  { name: 'Enter the 12 letters', text: 'Type all 12 letters from your Letter Boxed puzzle Ã¢??the letters shown on the four sides of the square.' },
   { name: 'Find all valid words', text: 'The solver shows every valid 3+ letter word you can make from those letters, following Letter Boxed rules.' },
   { name: 'Build your chain', text: 'In Letter Boxed, the last letter of each word must be the first letter of the next word. Use our list to plan optimal chains.' },
   { name: 'Complete the puzzle', text: 'Use all 12 letters as last letters to complete the puzzle. Fewer words in your chain = a better score.' },
@@ -23,7 +23,7 @@ const howToSchema = getHowToSchema(howToSteps);
 const faqs = [
   {
     question: 'What is NYT Letter Boxed and how does it work?',
-    answer: 'Letter Boxed is a daily word puzzle from <a href="https://www.nytimes.com/puzzles/letter-boxed" target="_blank" rel="noopener" class="text-primary hover:underline">The New York Times Games</a>. You\'re given 12 letters arranged in a square â??three letters on each of the four sides. Your goal is to form a chain of words using these letters, where each word must use letters from <em>at least two different sides</em> of the square, and no letter can be used twice in the same word.',
+    answer: 'Letter Boxed is a daily word puzzle from <a href="https://www.nytimes.com/puzzles/letter-boxed" target="_blank" rel="noopener" class="text-primary hover:underline">The New York Times Games</a>. You\'re given 12 letters arranged in a square Ã¢??three letters on each of the four sides. Your goal is to form a chain of words using these letters, where each word must use letters from <em>at least two different sides</em> of the square, and no letter can be used twice in the same word.',
   },
   {
     question: 'What are the Letter Boxed rules I need to follow?',
@@ -35,7 +35,7 @@ const faqs = [
   },
   {
     question: 'How do I solve Letter Boxed efficiently?',
-    answer: 'The best Letter Boxed solutions use the fewest words possible. Start by identifying "bridge" letters â??letters that appear on one side but can connect to many others. Look for common 3-letter words that use letters from multiple sides. High-value target letters: Q, Z, X, J, V, W, Y.',
+    answer: 'The best Letter Boxed solutions use the fewest words possible. Start by identifying "bridge" letters Ã¢??letters that appear on one side but can connect to many others. Look for common 3-letter words that use letters from multiple sides. High-value target letters: Q, Z, X, J, V, W, Y.',
   },
   {
     question: 'Can I use the Letter Boxed solver every day?',
@@ -54,11 +54,7 @@ const faqSchema = getFAQPageSchema(faqs);
 <div class="tool-page-skin">
 <section class="tool-hero">
 <div class="tool-hero-inner page-wrapper">
-  <div class="breadcrumb">
-    <a href="/">Home</a> <span>â??/span> <a href="/">Tools</a> <span>â??/span> <span class="current">Letter Boxed Solver</span>
-  </div>
-
-  <h1 class="page-h1">Letter Boxed Solver</h1>
+<h1 class="page-h1">Letter Boxed Solver</h1>
   <p class="page-body">Enter the 12 letters from your NYT Letter Boxed puzzle and find every valid word. Solve the daily puzzle instantly.</p>
 
   <div class="page-tool-card">
@@ -73,7 +69,7 @@ const faqSchema = getFAQPageSchema(faqs);
 <div class="page-wrapper">
   <h2 class="page-h2">What is NYT Letter Boxed?</h2>
   <div class="page-body">
-    <p><a href="https://www.nytimes.com/puzzles/letter-boxed" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Letter Boxed</a> is one of the signature daily puzzles in The New York Times Games app and website, alongside Wordle, Spelling Bee, and The Mini. The puzzle presents you with a square divided into four sides, each containing three letters â??12 letters total. Your mission: build a chain of words that uses up all 12 letters as last letters.</p>
+    <p><a href="https://www.nytimes.com/puzzles/letter-boxed" target="_blank" rel="noopener" class="text-primary hover:underline font-medium">Letter Boxed</a> is one of the signature daily puzzles in The New York Times Games app and website, alongside Wordle, Spelling Bee, and The Mini. The puzzle presents you with a square divided into four sides, each containing three letters Ã¢??12 letters total. Your mission: build a chain of words that uses up all 12 letters as last letters.</p>
     <p>What makes Letter Boxed uniquely challenging is the <em>connectivity rule</em>: you cannot use two consecutive letters that are on the same side of the square. This means every transition between letters must cross a side boundary.</p>
     <p>Each day, all NYT Letter Boxed players worldwide receive the same 12 letters. Our solver shows you all valid words, so you can find your own path to the solution.</p>
   </div>
@@ -104,7 +100,7 @@ const faqSchema = getFAQPageSchema(faqs);
 
   <h2 class="page-h2">Letter Boxed Strategy Tips</h2>
   <div class="page-body">
-    <p><strong>1. Think in chains, not individual words:</strong> Letter Boxed isn't about finding <em>as many words as possible</em> â??it's about finding the <em>shortest path</em> through all 12 letters. A 4-word solution is better than a 12-word solution.</p>
+    <p><strong>1. Think in chains, not individual words:</strong> Letter Boxed isn't about finding <em>as many words as possible</em> Ã¢??it's about finding the <em>shortest path</em> through all 12 letters. A 4-word solution is better than a 12-word solution.</p>
     <p><strong>2. Find "bridge" letters first:</strong> Some letters can connect to many others without breaking the same-side rule. Common bridge letters like <strong class="text-foreground">R</strong>, <strong class="text-foreground">S</strong>, <strong class="text-foreground">T</strong>, <strong class="text-foreground">L</strong>, and <strong class="text-foreground">N</strong> are versatile.</p>
     <p><strong>3. End with hard-to-use letters:</strong> Letters like Q, Z, X, J, V, and W are difficult to end a word with. Save these for the end of your chain.</p>
     <p><strong>4. Use our solver to check your work:</strong> Our Letter Boxed solver shows you every valid word from your 12 letters. Run your proposed chain through it to verify each word is legal.</p>
@@ -114,10 +110,10 @@ const faqSchema = getFAQPageSchema(faqs);
   <div class="page-body">
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
       {[
-        { name: 'Wordle Solver', href: '/wordle-solver', icon: 'ð??¯' },
-        { name: 'Word Finder', href: '/word-finder', icon: 'ð??' },
+        { name: 'Wordle Solver', href: '/wordle-solver', icon: 'Ã°??Â¯' },
+        { name: 'Word Finder', href: '/word-finder', icon: 'Ã°??ï¿½' },
         { name: 'Word Scramble Solver', href: '/word-scramble', icon: '??' },
-        { name: 'Text Twist', href: '/text-twist', icon: 'ð???' },
+        { name: 'Text Twist', href: '/text-twist', icon: 'Ã°???' },
       ].map((tool) => (
         <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
           <span class="text-xl">{tool.icon}</span>

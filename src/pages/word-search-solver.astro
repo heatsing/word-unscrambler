@@ -14,7 +14,7 @@ const meta = getMeta(
 const howToSteps = [
   { name: 'Gather your letters', text: 'Enter the letters from your word search grid. For simple unscrambling, just type the letters you want to find words from.' },
   { name: 'Find all valid words', text: 'Our solver shows every valid English word from your letters, sorted by length.' },
-  { name: 'Match to your puzzle', text: 'Use the found words to locate them in your word search grid ‚??horizontally, vertically, or diagonally.' },
+  { name: 'Match to your puzzle', text: 'Use the found words to locate them in your word search grid √¢??horizontally, vertically, or diagonally.' },
 ];
 
 const howToSchema = getHowToSchema(howToSteps);
@@ -26,7 +26,7 @@ const faqs = [
   },
   {
     question: 'How does the word search solver work?',
-    answer: 'Our solver takes the letters from your word search grid (or a specific set of letters) and finds every valid English word that can be formed from them. While it can\'t directly map words onto a 2D grid, it\'s perfect for unscrambling letters to find hidden words. If you\'re stuck on a specific word from your list, enter the letters and see if it\'s a valid English word ‚??and what other words are hiding in those same letters.',
+    answer: 'Our solver takes the letters from your word search grid (or a specific set of letters) and finds every valid English word that can be formed from them. While it can\'t directly map words onto a 2D grid, it\'s perfect for unscrambling letters to find hidden words. If you\'re stuck on a specific word from your list, enter the letters and see if it\'s a valid English word √¢??and what other words are hiding in those same letters.',
   },
   {
     question: 'What directions can words go in a word search?',
@@ -34,7 +34,7 @@ const faqs = [
   },
   {
     question: 'What are some tips for solving word searches faster?',
-    answer: '1. <strong class="text-foreground">Start with unique letters:</strong> Words containing Q, Z, X, or J are usually easier to spot first because those letters appear rarely. 2. <strong class="text-foreground">Use the word list:</strong> Look at each word and mentally scan the grid for its first and last letters ‚??this narrows your search significantly. 3. <strong class="text-foreground">Circle words as you find them:</strong> This prevents re-scanning and helps you see remaining letter patterns. 4. <strong class="text-foreground">Check the leftover letters:</strong> After finding all listed words, the remaining letters in themed puzzles often spell a bonus word or phrase.',
+    answer: '1. <strong class="text-foreground">Start with unique letters:</strong> Words containing Q, Z, X, or J are usually easier to spot first because those letters appear rarely. 2. <strong class="text-foreground">Use the word list:</strong> Look at each word and mentally scan the grid for its first and last letters √¢??this narrows your search significantly. 3. <strong class="text-foreground">Circle words as you find them:</strong> This prevents re-scanning and helps you see remaining letter patterns. 4. <strong class="text-foreground">Check the leftover letters:</strong> After finding all listed words, the remaining letters in themed puzzles often spell a bonus word or phrase.',
   },
   {
     question: 'Can I use this for themed word searches?',
@@ -49,10 +49,7 @@ const faqSchema = getFAQPageSchema(faqs);
   <div class="tool-page-skin">
     <section class="tool-hero">
       <div class="tool-hero-inner page-wrapper">
-        <div class="breadcrumb">
-          <a href="/">Home</a> <span>‚??/span> <a href="/">Tools</a> <span>‚??/span> <span class="current">Word Search Solver</span>
-        </div>
-        <h1 class="page-h1">Word Search Solver</h1>
+<h1 class="page-h1">Word Search Solver</h1>
         <p class="page-body">
           Enter your word search letters and find every valid word hidden within them. Solve any word search puzzle faster.
         </p>
@@ -72,7 +69,7 @@ const faqSchema = getFAQPageSchema(faqs);
       <h2 class="text-2xl font-bold mb-4 text-foreground">What is a Word Search Puzzle?</h2>
       <div class="text-[15px] text-muted-foreground leading-relaxed space-y-4">
         <p>
-          A word search puzzle (also known as <em>Word Find</em>, <em>Search-a-Word</em>, or <em>Mystery Word</em>) is a classic puzzle found in newspapers, puzzle books, and mobile apps worldwide. The puzzle consists of a grid of letters and a list of words to find. Words are hidden in the grid in straight lines ‚??horizontally, vertically, or diagonally ‚??and can read forwards or backwards.
+          A word search puzzle (also known as <em>Word Find</em>, <em>Search-a-Word</em>, or <em>Mystery Word</em>) is a classic puzzle found in newspapers, puzzle books, and mobile apps worldwide. The puzzle consists of a grid of letters and a list of words to find. Words are hidden in the grid in straight lines √¢??horizontally, vertically, or diagonally √¢??and can read forwards or backwards.
         </p>
         <p>
           The challenge is finding all the hidden words as quickly as possible. While word searches are typically a relaxing, no-pressure puzzle, competitive players enjoy racing to complete them as fast as possible. Our solver helps you find the words you\'re stuck on, making it easier to finish any puzzle.
@@ -88,10 +85,10 @@ const faqSchema = getFAQPageSchema(faqs);
       <div class="space-y-5">
         {[
           { num: '1', title: 'Scan for unique letters first', desc: 'Words containing Q, Z, X, J, or other rare letters are easiest to spot because there are few of them in the grid. Start with those to quickly eliminate easy words from your list.' },
-          { num: '2', title: 'Use the word list strategically', desc: 'Look at a word on your list and mentally scan for its first and last letters in the grid. When you find them, check all 8 directions between those points ‚??this is much faster than blind scanning.' },
-          { num: '3', title: 'Circle as you go', desc: 'Circle each word as you find it. This prevents re-scanning the same area and helps you see which parts of the grid still have unclaimed letters ‚??which often contain the remaining words.' },
+          { num: '2', title: 'Use the word list strategically', desc: 'Look at a word on your list and mentally scan for its first and last letters in the grid. When you find them, check all 8 directions between those points √¢??this is much faster than blind scanning.' },
+          { num: '3', title: 'Circle as you go', desc: 'Circle each word as you find it. This prevents re-scanning the same area and helps you see which parts of the grid still have unclaimed letters √¢??which often contain the remaining words.' },
           { num: '4', title: 'Check the leftover letters', desc: 'After finding all listed words in a themed puzzle, the remaining un-circled letters often spell a bonus word or phrase (like a hidden message). This is a common feature in published word searches.' },
-          { num: '5', title: 'Use our solver when stuck', desc: 'If you\'re stuck on a specific word, enter its letters in our solver. It confirms whether it\'s a valid English word and shows other words hiding in those same letters ‚??helping you see patterns you might have missed.' },
+          { num: '5', title: 'Use our solver when stuck', desc: 'If you\'re stuck on a specific word, enter its letters in our solver. It confirms whether it\'s a valid English word and shows other words hiding in those same letters √¢??helping you see patterns you might have missed.' },
         ].map(({ num, title, desc }) => (
           <div class="flex gap-4">
             <div class="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">{num}</div>
@@ -108,9 +105,9 @@ const faqSchema = getFAQPageSchema(faqs);
   <!-- Word Search Directions -->
   <section class="mt-8 max-w-3xl mx-auto">
     <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <h2 class="text-2xl font-bold mb-4 text-foreground">??ê Word Search: All 8 Directions</h2>
+      <h2 class="text-2xl font-bold mb-4 text-foreground">√∞??ÔøΩ Word Search: All 8 Directions</h2>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm text-muted-foreground">
-        {['‚??Left to Right', '‚??Right to Left', '‚??Top to Bottom', '‚??Bottom to Top', '‚??Top-left to Bot-right', '‚??Top-right to Bot-left', '‚??Bot-left to Top-right', '‚??Bot-right to Top-left'].map((dir) => (
+        {['√¢??Left to Right', '√¢??Right to Left', '√¢??Top to Bottom', '√¢??Bottom to Top', '√¢??Top-left to Bot-right', '√¢??Top-right to Bot-left', '√¢??Bot-left to Top-right', '√¢??Bot-right to Top-left'].map((dir) => (
           <div class="p-3 rounded-lg border border-border bg-background text-center font-medium text-foreground">
             {dir}
           </div>
@@ -128,10 +125,10 @@ const faqSchema = getFAQPageSchema(faqs);
       <h2 class="text-xl font-bold mb-4 text-foreground">More Word Game Tools</h2>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { name: 'Word Finder', href: '/word-finder', icon: '??ç' },
-          { name: 'Boggle Solver', href: '/boggle-solver', icon: '??≤' },
+          { name: 'Word Finder', href: '/word-finder', icon: '√∞??ÔøΩ' },
+          { name: 'Boggle Solver', href: '/boggle-solver', icon: '√∞??¬≤' },
           { name: 'Word Scramble Solver', href: '/word-scramble', icon: '??' },
-          { name: 'Text Twist', href: '/text-twist', icon: '???' },
+          { name: 'Text Twist', href: '/text-twist', icon: '√∞???' },
         ].map((tool) => (
           <a href={tool.href} class="flex items-center gap-2 p-3 rounded-xl border border-border bg-background hover:border-primary/50 hover:shadow-sm transition-all group">
             <span class="text-xl">{tool.icon}</span>

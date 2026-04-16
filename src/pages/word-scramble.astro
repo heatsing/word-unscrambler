@@ -1,20 +1,20 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import UnscrambleTool from '@/components/UnscrambleTool';
+import WordsStartWithTool from '@/components/WordsStartWithTool';
 import AdSense from '@/components/AdSense';
 import { getMeta } from '@/lib/meta';
 import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/word-scramble',
-  'Word Scramble Solver - Unscramble Any Letters | Free Tool',
-  'Free word scramble solver: enter scrambled letters to find every valid word. Works for word scrambles, Jumble puzzles, Scrabble, and all word games.'
+  'Word Scramble - Word Finder | Unscramble Letters & Wildcards',
+  'Word scramble finder: enter your letters with up to 3 wildcards (? or space). Filter by starts, ends, contains, and length. NYT Crossplay, Words With Friends, Scrabble US/UK, or all dictionaries.'
 );
 
 const howToSteps = [
-  { name: 'Enter your scrambled letters', text: 'Type any set of jumbled or scrambled letters into the search box. Works with 2 to 12+ letters.' },
-  { name: 'Filter by length (optional)', text: 'If you need a word of a specific length, use the Min and Max controls to filter results.' },
-  { name: 'Browse your results', text: 'Results are sorted by Scrabble score (highest first). Find the word you need and use it in your game.' },
+  { name: 'Enter your letters', text: 'Type scrambled letters in the main field. Use ? or space for up to three wildcards when you are missing tiles.' },
+  { name: 'Add filters (optional)', text: 'Use Starts, Ends, Contains, and Length to match board slots or clues. Exclude or Include letters if you need extra constraints.' },
+  { name: 'Pick a dictionary and search', text: 'Choose NYT Crossplay, Words With Friends, Scrabble US/UK, or all dictionaries, then tap SEARCH. Results are sorted by Scrabble-style score.' },
 ];
 
 const howToSchema = getHowToSchema(howToSteps);
@@ -26,7 +26,7 @@ const faqs = [
   },
   {
     question: 'How does the word scramble solver work?',
-    answer: 'Enter your scrambled letters and our solver checks every possible arrangement against a comprehensive English dictionary, finding every valid word that can be made from those letters. It\'s essentially a fast dictionary lookup that handles any letter combination — no matter how jumbled.',
+    answer: 'Enter your rack (letters plus up to three wildcards as ? or space). We match words from the dictionary you select that can be spelled using those tiles, then apply your optional filters (starts with, ends with, contains, exact length, include/exclude letters). Matches are ranked by a Scrabble-style letter score for quick scanning.',
   },
   {
     question: 'What games use word scrambles?',
@@ -51,18 +51,12 @@ const faqSchema = getFAQPageSchema(faqs);
 
 <Layout meta={meta} fullBleed={true}>
 <div class="tool-page-skin">
-<section class="tool-hero">
+<section class="tool-hero" style="--wst-search-btn-bg: #f2c051; --wst-search-btn-shadow: #c9a035;">
 <div class="tool-hero-inner page-wrapper">
-  <div class="breadcrumb">
-    <a href="/">Home</a> <span>›</span> <a href="/">Tools</a> <span>›</span> <span class="current">Word Scramble Solver</span>
-  </div>
+<h1 class="page-h1">Word Scramble - Word Finder</h1>
+  <p class="page-body">Enter up to 3 wildcards (? or space). Filter by starts, ends, contains, and length — then search across game dictionaries.</p>
 
-  <h1 class="page-h1">Word Scramble Solver</h1>
-  <p class="page-body">Enter any scrambled or jumbled letters and find every valid word you can make. Works for word scrambles, Jumble puzzles, Scrabble, and more.</p>
-
-  <div class="page-tool-card">
-    <UnscrambleTool client:load />
-  </div>
+  <WordsStartWithTool client:load />
 </div>
 </section>
 
