@@ -42,6 +42,28 @@ npm run preview   # serve dist/
 
 Deploy easily with Vercel for automatic builds and hosting (`vercel.json` uses `npm run build` and `dist/`).
 
+### Nginx (project-integrated)
+
+This repository now includes Nginx config for serving the generated static site:
+
+- `nginx/nginx.conf`: Nginx server config (SPA fallback + static asset caching + gzip)
+- `docker-compose.nginx.yml`: one-command Nginx runtime
+
+Build first, then run Nginx:
+
+```bash
+npm run build
+docker compose -f docker-compose.nginx.yml up -d
+```
+
+Visit: `http://localhost:8080`
+
+Stop service:
+
+```bash
+docker compose -f docker-compose.nginx.yml down
+```
+
 ## 📄 License
 
 MIT License
