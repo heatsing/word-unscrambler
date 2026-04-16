@@ -1,0 +1,20 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import type { PageMeta } from "@/lib/meta";
+
+interface Props {
+  meta: PageMeta;
+  sectionTitle?: string;
+}
+
+const { meta, sectionTitle = "Component Library" } = Astro.props;
+---
+
+<Layout meta={meta} wide={true}>
+  <section class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+    <p class="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">{sectionTitle}</p>
+    <div class="mt-4">
+      <slot />
+    </div>
+  </section>
+</Layout>

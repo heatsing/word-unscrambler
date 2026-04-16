@@ -1,0 +1,34 @@
+---
+interface IntegrationItem {
+  name: string;
+  status: "active" | "planned";
+  note: string;
+}
+
+interface Props {
+  items: IntegrationItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="rounded-xl border border-border bg-background p-4">
+  <div class="mb-3 flex items-center justify-between">
+    <h3 class="text-sm font-bold uppercase tracking-[0.08em] text-muted-foreground">Integrations</h3>
+    <span class="badge badge-outline">{items.length} items</span>
+  </div>
+
+  <ul class="space-y-2">
+    {items.map((item) => (
+      <li class="flex items-start justify-between gap-3 rounded-lg border border-border bg-card p-3">
+        <div>
+          <p class="font-semibold text-foreground">{item.name}</p>
+          <p class="text-sm text-muted-foreground">{item.note}</p>
+        </div>
+        <span class:list={["badge", item.status === "active" ? "badge-success" : "badge-ghost"]}>
+          {item.status}
+        </span>
+      </li>
+    ))}
+  </ul>
+</section>

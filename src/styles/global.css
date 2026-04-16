@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark;
+}
 
 /* Dark mode: class .dark on html or ancestor */
 @custom-variant dark (&:where(.dark, .dark *));

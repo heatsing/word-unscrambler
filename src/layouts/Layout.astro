@@ -1,5 +1,5 @@
 ---
-import BaseHead from '@/components/BaseHead.astro';
+import AstroSeo from '@/components/AstroSeo.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
 import SiteFooter from '@/components/SiteFooter.astro';
 import AdSense from '@/components/AdSense.astro';
@@ -29,7 +29,15 @@ const mainClass = fullBleed
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={meta.title} description={meta.description} canonical={meta.canonical} noindex={meta.noindex} />
+    <AstroSeo title={meta.title} description={meta.description} canonical={meta.canonical} noindex={meta.noindex} />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKV97BJX9X"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FKV97BJX9X');
+    </script>
     <script is:inline>
       (function(){var k='word-unscrambler-theme';var s=typeof localStorage!=='undefined'?localStorage.getItem(k):null;var d=typeof window!=='undefined'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;if(s==='dark'||(!s&&d))document.documentElement.classList.add('dark');})();
     </script>

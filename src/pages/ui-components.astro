@@ -1,0 +1,21 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import DaisyShowcase from "@/components/ui/DaisyShowcase";
+import { getMeta } from "@/lib/meta";
+
+const meta = getMeta(
+  "/ui-components",
+  "UI Components | Tailwind CSS + daisyUI",
+  "Preview Tailwind CSS and daisyUI components integrated into this project."
+);
+---
+
+<Layout meta={meta}>
+  <h1 class="page-h1">UI Components</h1>
+  <p class="page-body">
+    Tailwind CSS + daisyUI is now integrated. Use this page as a visual reference for new UI blocks.
+  </p>
+  <div class="page-tool-card">
+    <DaisyShowcase client:load />
+  </div>
+</Layout>

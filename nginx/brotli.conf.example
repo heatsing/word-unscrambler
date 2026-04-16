@@ -1,0 +1,9 @@
+# Enable this file only when your Nginx image includes ngx_brotli module.
+# Example:
+#   include /etc/nginx/conf.d/brotli.conf;
+
+brotli on;
+brotli_comp_level 5;
+brotli_min_length 1024;
+brotli_static on;
+brotli_types text/plain text/css application/json application/javascript application/xml image/svg+xml;

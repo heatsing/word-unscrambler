@@ -1,0 +1,78 @@
+---
+import DocsLayout from "@/layouts/DocsLayout.astro";
+import InfoCallout from "@/components/InfoCallout.astro";
+import IntegrationsPanel from "@/components/integrations/IntegrationsPanel.astro";
+import InteractiveWordTools from "@/components/ui/InteractiveWordTools";
+import SchemaOrg from "@/components/SchemaOrg.astro";
+import { getMeta } from "@/lib/meta";
+
+const meta = getMeta(
+  "/component-library",
+  "Component Library | Layouts + Astro Components + Integrations",
+  "Showcase for newly added Layout, Astro components, and Integration components."
+);
+
+const integrations = [
+  { name: "Tailwind CSS", status: "active", note: "Utility-first style system for the whole project." },
+  { name: "daisyUI", status: "active", note: "Prebuilt UI primitives now available in Astro pages/components." },
+  { name: "Nginx Deployment", status: "active", note: "Static dist hosting config added with Docker Compose." },
+  { name: "Sentry", status: "planned", note: "Can be enabled later for production error monitoring." },
+] as const;
+
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Component Library",
+  url: meta.canonical,
+  description: meta.description,
+  inLanguage: "en-US",
+  isPartOf: {
+    "@type": "WebSite",
+    name: "Word Unscrambler",
+    url: "https://wordunscrambler.cc",
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://wordunscrambler.cc/" },
+    { "@type": "ListItem", position: 2, name: "Component Library", item: meta.canonical },
+  ],
+};
+---
+
+<DocsLayout meta={meta} sectionTitle="New Components">
+  <h1 class="page-h1 mt-0">Layouts / Astro Components / Integrations</h1>
+  <p class="page-body">
+    This page confirms the newly added architecture blocks and gives a reusable starting point.
+  </p>
+
+  <div class="mt-6 grid gap-4 lg:grid-cols-2">
+    <InfoCallout
+      title="Layouts component added"
+      description="Use DocsLayout for internal documentation pages, guides, and component galleries."
+      tone="success"
+    >
+      <a href="/ui-components" class="btn btn-sm btn-primary">View UI Demo</a>
+    </InfoCallout>
+
+    <InfoCallout
+      title="Astro component added"
+      description="InfoCallout is a reusable content block for notices, release notes, and onboarding hints."
+      tone="info"
+    />
+  </div>
+
+  <div class="mt-4">
+    <IntegrationsPanel items={integrations} />
+  </div>
+
+  <div class="mt-4">
+    <InteractiveWordTools client:load />
+  </div>
+</DocsLayout>
+
+<SchemaOrg data={pageSchema} />
+<SchemaOrg data={breadcrumbSchema} />

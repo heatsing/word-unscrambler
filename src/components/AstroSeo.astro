@@ -1,19 +1,35 @@
 ---
-import { ASSET_PATHS } from '@/lib/assets-version';
+import { ASSET_PATHS } from "@/lib/assets-version";
 
-const SITE = 'https://wordunscrambler.cc';
+const SITE = "https://wordunscrambler.cc";
 
 interface Props {
   title: string;
   description: string;
   canonical: string;
   noindex?: boolean;
+  ogType?: "website" | "article";
+  ogImage?: string;
+  twitterCard?: "summary" | "summary_large_image";
+  twitterSite?: string;
 }
-const { title, description, canonical, noindex = false } = Astro.props;
-const fullTitle = title.includes('|') ? title : `${title} | Word Unscrambler`;
-const origin = canonical.startsWith('http') ? new URL(canonical).origin : SITE;
-const ogImage = `${origin}${ASSET_PATHS.ogImage}`;
+
+const {
+  title,
+  description,
+  canonical,
+  noindex = false,
+  ogType = "website",
+  ogImage,
+  twitterCard = "summary_large_image",
+  twitterSite = "@wordunscrambler",
+} = Astro.props;
+
+const fullTitle = title.includes("|") ? title : `${title} | Word Unscrambler`;
+const origin = canonical.startsWith("http") ? new URL(canonical).origin : SITE;
+const resolvedOgImage = ogImage ?? `${origin}${ASSET_PATHS.ogImage}`;
 ---
+
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,10 +44,19 @@ const ogImage = `${origin}${ASSET_PATHS.ogImage}`;
 <link rel="sitemap" type="application/xml" href={`${SITE}/sitemap-index.xml`} />
 {noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow" />}
 <meta name="googlebot" content="index, follow" />
-<meta property="og:type" content="website" />
+
+<!-- Open Graph -->
+<meta property="og:type" content={ogType} />
 <meta property="og:site_name" content="Word Unscrambler" />
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
-<meta property="og:image" content={ogImage} />
+<meta property="og:image" content={resolvedOgImage} />
 <meta property="og:locale" content="en_US" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content={twitterCard} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={resolvedOgImage} />
+<meta name="twitter:site" content={twitterSite} />
