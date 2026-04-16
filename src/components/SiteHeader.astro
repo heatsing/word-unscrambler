@@ -198,24 +198,6 @@ function isActive(href: string): boolean {
 
 <script>
   (function () {
-    var themeKey = 'wordtips-theme-v2';
-    var root = document.documentElement;
-    function applyTheme(dark) {
-      root.classList.toggle('dark', dark);
-      var sun = document.getElementById('icon-sun');
-      var moon = document.getElementById('icon-moon');
-      if (sun) sun.classList.toggle('hidden', !dark);
-      if (moon) moon.classList.toggle('hidden', dark);
-      try { localStorage.setItem(themeKey, dark ? 'dark' : 'light'); } catch {}
-    }
-    var stored = localStorage.getItem(themeKey);
-    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(stored === 'dark' || (!stored && prefersDark));
-    var tt = document.getElementById('theme-toggle');
-    if (tt) tt.addEventListener('click', function () {
-      applyTheme(!root.classList.contains('dark'));
-    });
-
     var mq = window.matchMedia('(min-width: 901px)');
     function closeAllDd() {
       document.querySelectorAll('.wt-dd-trigger').forEach(function (b) {
@@ -507,26 +489,6 @@ function isActive(href: string): boolean {
       transform: translateX(-50%) translateY(0.2rem);
     }
   }
-
-  .wt-bar-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    justify-self: end;
-    flex-shrink: 0;
-  }
-  .wt-mobile-app-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 999px;
-    border: 2px solid rgb(255 255 255 / 0.55);
-    color: #fff;
-    text-decoration: none;
-  }
-  .wt-mobile-app-pill:hover { background: rgb(255 255 255 / 0.12); }
 
   .hidden { display: none !important; }
 

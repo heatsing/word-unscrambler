@@ -1203,9 +1203,13 @@ html { scroll-behavior: smooth; }
 }
 .tool-hero .page-h1 {
   color: #fff;
+  text-align: center;
 }
 .tool-hero .page-body {
   color: rgb(255 255 255 / 0.92);
+  text-align: center;
+  margin-inline: auto;
+  max-width: 52rem;
 }
 .tool-content {
   padding: 0.45rem 0 var(--ui-section-gap);
