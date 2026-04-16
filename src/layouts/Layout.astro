@@ -1,5 +1,6 @@
 ---
 import AstroSeo from '@/components/AstroSeo.astro';
+import GlobalStructuredData from '@/components/GlobalStructuredData.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
 import SiteFooter from '@/components/SiteFooter.astro';
 import AdSense from '@/components/AdSense.astro';
@@ -29,7 +30,16 @@ const mainClass = fullBleed
 <!doctype html>
 <html lang="en">
   <head>
-    <AstroSeo title={meta.title} description={meta.description} canonical={meta.canonical} noindex={meta.noindex} />
+    <AstroSeo
+      title={meta.title}
+      description={meta.description}
+      canonical={meta.canonical}
+      noindex={meta.noindex}
+      ogType={meta.ogType}
+      ogImage={meta.ogImage}
+      twitterCard={meta.twitterCard}
+      twitterSite={meta.twitterSite}
+    />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKV97BJX9X"></script>
     <script is:inline>
@@ -50,6 +60,12 @@ const mainClass = fullBleed
     </main>
     <AdSense />
     <SiteFooter />
+    <GlobalStructuredData
+      title={meta.title}
+      description={meta.description}
+      canonical={meta.canonical}
+      pathname={Astro.url.pathname}
+    />
     <slot name="footer" />
     <script>
       // Stagger section entrance animations

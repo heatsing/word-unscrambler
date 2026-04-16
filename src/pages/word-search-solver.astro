@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/word-search-solver',
@@ -16,8 +17,6 @@ const howToSteps = [
   { name: 'Find all valid words', text: 'Our solver shows every valid English word from your letters, sorted by length.' },
   { name: 'Match to your puzzle', text: 'Use the found words to locate them in your word search grid â??horizontally, vertically, or diagonally.' },
 ];
-
-const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
@@ -42,7 +41,6 @@ const faqs = [
   },
 ];
 
-const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta} fullBleed={true}>
@@ -157,11 +155,11 @@ const faqSchema = getFAQPageSchema(faqs);
     </div>
   </section>
 
+  <InternalLinks />
+
   <div class="mt-12"></div>
       </div>
     </div>
   </div>
-
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <SeoSchemaBlocks faqs={faqs} howToSteps={howToSteps} />
 </Layout>

@@ -3,7 +3,6 @@ import DocsLayout from "@/layouts/DocsLayout.astro";
 import InfoCallout from "@/components/InfoCallout.astro";
 import IntegrationsPanel from "@/components/integrations/IntegrationsPanel.astro";
 import InteractiveWordTools from "@/components/ui/InteractiveWordTools";
-import SchemaOrg from "@/components/SchemaOrg.astro";
 import { getMeta } from "@/lib/meta";
 
 const meta = getMeta(
@@ -19,28 +18,6 @@ const integrations = [
   { name: "Sentry", status: "planned", note: "Can be enabled later for production error monitoring." },
 ] as const;
 
-const pageSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: "Component Library",
-  url: meta.canonical,
-  description: meta.description,
-  inLanguage: "en-US",
-  isPartOf: {
-    "@type": "WebSite",
-    name: "Word Unscrambler",
-    url: "https://wordunscrambler.cc",
-  },
-};
-
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://wordunscrambler.cc/" },
-    { "@type": "ListItem", position: 2, name: "Component Library", item: meta.canonical },
-  ],
-};
 ---
 
 <DocsLayout meta={meta} sectionTitle="New Components">
@@ -70,9 +47,6 @@ const breadcrumbSchema = {
   </div>
 
   <div class="mt-4">
-    <InteractiveWordTools client:load />
+    <InteractiveWordTools client:visible />
   </div>
 </DocsLayout>
-
-<SchemaOrg data={pageSchema} />
-<SchemaOrg data={breadcrumbSchema} />

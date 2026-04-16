@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import PlayWordle from '@/components/PlayWordle';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/play-wordle',
@@ -34,7 +35,6 @@ const faqs = [
   },
 ];
 
-const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta} fullBleed={true}>
@@ -104,6 +104,8 @@ const faqSchema = getFAQPageSchema(faqs);
       </div>
     </section>
 
+        <InternalLinks />
+
         <div class="mt-6 flex flex-wrap gap-3 text-sm">
           <a href="/wordle-unlimited" class="btn btn-primary">Unlimited Wordle</a>
           <a href="/wordle-solver" class="btn">Wordle Solver</a>
@@ -113,6 +115,5 @@ const faqSchema = getFAQPageSchema(faqs);
       </div>
     </div>
   </div>
-
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <SeoSchemaBlocks faqs={faqs} />
 </Layout>

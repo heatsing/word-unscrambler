@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/boggle-solver',
@@ -17,8 +18,6 @@ const howToSteps = [
   { name: 'Sort by word length for scoring', text: 'Boggle scores by word length: 3-4 letters = 1pt, 5 letters = 2pts, 6 letters = 3pts, 7 letters = 5pts, 8+ letters = 11pts. Longest words are worth the most.' },
   { name: 'Dominate your game', text: 'Use the found words to beat your opponents. Look for the hidden 8-letter words that other players often miss.' },
 ];
-
-const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
@@ -42,8 +41,6 @@ const faqs = [
     answer: 'Yes! Using our solver after a Boggle game is one of the best ways to expand your vocabulary. Every unfamiliar word you find is a learning opportunity. For example, you might see <strong class="text-foreground">QUIXOTRY</strong> (the practice of pursuing idealistic goals) or <strong class="text-foreground">OUPONG</strong> (a Chinese coin) â??words you\'d never encounter in daily life but that exist in the official Boggle dictionary.',
   },
 ];
-
-const faqSchema = getFAQPageSchema(faqs);
 
 const SCORING_TABLE = [
   { length: '3-4 letters', points: '1 point each' },
@@ -173,10 +170,9 @@ const SCORING_TABLE = [
       </details>
     ))}
   </div>
+  <InternalLinks />
 </div>
 </div>
 </div>
-
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+<SeoSchemaBlocks faqs={faqs} howToSteps={howToSteps} />
 </Layout>

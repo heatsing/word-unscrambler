@@ -1,0 +1,16 @@
+---
+import SchemaOrg from '@/components/SchemaOrg.astro';
+import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
+
+interface Props {
+  faqs?: { question: string; answer: string }[];
+  howToSteps?: { name: string; text: string }[];
+}
+
+const { faqs = [], howToSteps = [] } = Astro.props;
+const faqSchema = faqs.length > 0 ? getFAQPageSchema(faqs) : null;
+const howToSchema = howToSteps.length > 0 ? getHowToSchema(howToSteps) : null;
+---
+
+{faqSchema && <SchemaOrg data={faqSchema} />}
+{howToSchema && <SchemaOrg data={howToSchema} />}

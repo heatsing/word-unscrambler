@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/scrabble-go',
@@ -17,8 +18,6 @@ const howToSteps = [
   { name: 'Look for Bingos', text: 'Watch for 7-letter words — using all 7 tiles earns a 50-point Bingo bonus.' },
   { name: 'Check premium squares', text: 'When placing words on the board, aim for Triple Word (TW) and Double Word (DW) squares to maximize your score.' },
 ];
-
-const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
@@ -46,8 +45,6 @@ const faqs = [
     answer: 'Not at all. A word finder is a vocabulary tool — it shows you words that are already in the dictionary. Think of it like using a dictionary when you\'re unsure of a spelling. Our tool helps you learn new words (every unfamiliar word is a vocabulary lesson), find plays you\'d never have spotted otherwise, and improve your overall word skills.',
   },
 ];
-
-const faqSchema = getFAQPageSchema(faqs);
 
 const TILE_VALUES = [
   { letters: 'A, E, I, O, U, L, N, S, T, R', value: 1 },
@@ -164,10 +161,9 @@ const TILE_VALUES = [
       </details>
     ))}
   </div>
+  <InternalLinks />
 </div>
 </div>
 </div>
-
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+<SeoSchemaBlocks faqs={faqs} howToSteps={howToSteps} />
 </Layout>

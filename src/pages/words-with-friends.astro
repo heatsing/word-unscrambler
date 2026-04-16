@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/words-with-friends',
@@ -17,8 +18,6 @@ const howToSteps = [
   { name: 'Scan for the best plays', text: 'Results are sorted by WWF score automatically. Look for words that use your high-value tiles (Q, Z, X, J) on premium squares.' },
   { name: 'Play your word', text: 'If you use all 7 tiles in one play, you earn a 50-point Bingo bonus — watch for 7-letter words in your results.' },
 ];
-
-const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
@@ -46,8 +45,6 @@ const faqs = [
     answer: 'Yes. While our tool primarily shows you your own plays, you can also use it to think ahead: if your opponent\'s last move ended near a Triple Word square, what short word could you play to either block it or hit it yourself? Running hypothetical racks through the tool helps you anticipate board state changes.',
   },
 ];
-
-const faqSchema = getFAQPageSchema(faqs);
 
 const TILE_VALUES = [
   { letters: 'A, E, I, O, U, L, N, S, T, R', value: 1 },
@@ -230,10 +227,9 @@ const TILE_VALUES = [
       </details>
     ))}
   </div>
+  <InternalLinks />
 </div>
 </div>
 </div>
-
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+<SeoSchemaBlocks faqs={faqs} howToSteps={howToSteps} />
 </Layout>

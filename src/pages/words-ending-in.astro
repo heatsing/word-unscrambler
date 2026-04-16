@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getMeta } from '@/lib/meta';
+import InternalLinks from '@/components/InternalLinks.astro';
 import WordsStartWithTool from '@/components/WordsStartWithTool';
 
 const meta = getMeta(
@@ -65,6 +66,8 @@ const HERO_BG = '#79AE6F';
           <a href="/words-with-letters">Words With Letters</a>,{' '}
           <a href="/words-by-length">Words By Length</a>.
         </p>
+
+        <InternalLinks />
       </div>
     </section>
   </div>

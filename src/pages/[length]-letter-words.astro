@@ -4,6 +4,7 @@ import { getMeta } from '@/lib/meta';
 import { getWordsByLength } from '@/lib/words-data';
 import { getScrabbleScore } from '@/lib/unscramble';
 import { wordFinders, dailyGameHints } from '@/lib/nav-links';
+import InternalLinks from '@/components/InternalLinks.astro';
 import WordFinderByLength from '@/components/WordFinderByLength';
 
 export function getStaticPaths() {
@@ -215,6 +216,10 @@ const wordFindersList = [...dailyGameHints, ...wordFinders];
           }
         })();
       </script>
+
+      <div class="mt-10">
+        <InternalLinks />
+      </div>
     </div>
   </div>
 </Layout>

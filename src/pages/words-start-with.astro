@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getMeta } from '@/lib/meta';
+import InternalLinks from '@/components/InternalLinks.astro';
 import WordsStartWithTool from '@/components/WordsStartWithTool';
 
 const meta = getMeta(
@@ -27,7 +28,7 @@ const HERO_BG = '#79AE6F';
         </nav>
 
         <h1 class="wst-h1">Words That Start with</h1>
-        <p class="wst-sub">Enter up to 3 wildcards (? or space)</p>
+        <p class="wst-sub">Find words that start with specific letters using up to 3 wildcards (? or space).</p>
 
         <WordsStartWithTool client:load />
       </div>
@@ -35,6 +36,10 @@ const HERO_BG = '#79AE6F';
 
     <section class="wst-browse" aria-labelledby="wst-browse-heading">
       <div class="wst-browse-inner">
+        <p class="wst-intro">
+          Use this word finder when you know the beginning of a word but still need help with the rest. It is useful for crossword clues, Wordle follow-up guesses, Scrabble hooks, and any puzzle where a starting prefix is already known.
+        </p>
+
         <h2 id="wst-browse-heading" class="wst-browse-h2">Browse by length</h2>
         <ul class="wst-chips">
           {lengths.map((len) => (
@@ -59,6 +64,8 @@ const HERO_BG = '#79AE6F';
           <a href="/words-with-letters">Words With Letters</a>,{' '}
           <a href="/words-by-length">Words By Length</a>.
         </p>
+
+        <InternalLinks />
       </div>
     </section>
   </div>
@@ -122,6 +129,12 @@ const HERO_BG = '#79AE6F';
   .wst-browse-inner {
     max-width: 68rem;
     margin: 0 auto;
+  }
+  .wst-intro {
+    margin: 0 0 1.5rem;
+    color: var(--muted-foreground);
+    line-height: 1.7;
+    max-width: 56rem;
   }
   .wst-browse-h2 {
     font-size: 0.8rem;

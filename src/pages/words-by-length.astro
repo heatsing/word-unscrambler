@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getMeta } from '@/lib/meta';
+import InternalLinks from '@/components/InternalLinks.astro';
 
 const meta = getMeta(
   '/words-by-length',
@@ -25,7 +26,7 @@ const lengthsData = [
   <section class="text-center mb-12">
     <h1 class="text-4xl font-bold mb-4 text-foreground">Words By Length</h1>
     <p class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-      Browse our dictionary by word length. Choose a length below to see 2-letter through 10-letter words for Wordle, Scrabble, and word games.
+      Browse our dictionary by word length to find 2-letter through 10-letter words for Wordle, Scrabble, Words With Friends, crosswords, and other word games.
     </p>
   </section>
 
@@ -107,6 +108,13 @@ const lengthsData = [
       <p>
         Each length links to a page of words for that count. Use our <a href="/unscramble" class="text-primary hover:underline">Unscramble</a> tool to find words from your letters, or <a href="/words-start-with" class="text-primary hover:underline">Words Start With</a>, <a href="/words-with-letters" class="text-primary hover:underline">Words With Letters</a>, and <a href="/words-ending-in" class="text-primary hover:underline">Words Ending In</a> for more filters.
       </p>
+      <p>
+        If you already know the target slot length in a crossword, need a 5-letter Wordle answer pattern, or want 7-letter Scrabble bingo candidates, browsing by word length is one of the fastest ways to narrow the dictionary before applying more specific filters.
+      </p>
     </div>
   </article>
+
+  <div class="mt-12">
+    <InternalLinks />
+  </div>
 </Layout>

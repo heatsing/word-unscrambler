@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/wordfeud',
@@ -17,8 +18,6 @@ const howToSteps = [
   { name: 'Find your best play', text: 'Results are sorted by score automatically. Look for words using Q, Z, X, and J on premium squares. Watch for 7-letter Bingos (50-point bonus).' },
   { name: 'Consider board position', text: 'A shorter word hitting a Triple Word square can score more than a longer word on neutral territory. Compare your options before playing.' },
 ];
-
-const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
@@ -50,8 +49,6 @@ const faqs = [
     answer: 'Defensive play means limiting your opponent\'s options: (1) Blocking Triple Word squares with short words (2-3 letters); (2) Avoiding parallel setups near your opponent\'s high-value tiles; (3) Forcing tile exchanges by playing short words that offer no productive extension.',
   },
 ];
-
-const faqSchema = getFAQPageSchema(faqs);
 
 const TILE_VALUES = [
   { letters: 'A, E, I, O, U, L, N, S, T, R', value: 1 },
@@ -182,10 +179,9 @@ const TILE_VALUES = [
       </details>
     ))}
   </div>
+  <InternalLinks />
 </div>
 </div>
 </div>
-
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+<SeoSchemaBlocks faqs={faqs} howToSteps={howToSteps} />
 </Layout>

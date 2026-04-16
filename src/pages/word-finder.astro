@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/word-finder',
@@ -17,8 +18,6 @@ const howToSteps = [
   { name: 'Filter by length (optional)', text: 'Use Min and Max length controls to find words of a specific size â??useful for Wordle (5 letters) or other word games with length requirements.' },
   { name: 'Play your word', text: 'Once you\'ve found the word you need, use it in your game. That\'s it â??no sign-up, no download, no limits.' },
 ];
-
-const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
@@ -46,8 +45,6 @@ const faqs = [
     answer: 'Yes! The Min and Max length controls let you filter results to exactly the word size you need. This is essential for games like Wordle (exactly 5 letters) or Scrabble (where you might need a 4-letter word to fit a specific space on the board).',
   },
 ];
-
-const faqSchema = getFAQPageSchema(faqs);
 
 const GAMES = [
   { name: 'Wordle', href: '/wordle-solver', icon: 'ð??¯', desc: 'Daily 5-letter puzzle' },
@@ -194,12 +191,12 @@ const GAMES = [
       ))}
     </div>
   </section>
+  <InternalLinks />
 
   <div class="mt-12"></div>
 
       </div>
     </div>
   </div>
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <SeoSchemaBlocks faqs={faqs} howToSteps={howToSteps} />
 </Layout>

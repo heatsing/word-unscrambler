@@ -1,8 +1,9 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/wordle',
@@ -35,7 +36,6 @@ const faqs = [
   },
 ];
 
-const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta} fullBleed={true}>
@@ -187,9 +187,10 @@ const faqSchema = getFAQPageSchema(faqs);
     <a href="/wordle-solver" class="hover:text-foreground transition-colors">🧩 Wordle Solver →</a>
     <a href="/anagram-solver" class="hover:text-foreground transition-colors">Anagram Solver →</a>
   </nav>
+  <InternalLinks />
 
       </div>
     </div>
   </div>
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <SeoSchemaBlocks faqs={faqs} />
 </Layout>

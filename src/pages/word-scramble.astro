@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import WordsStartWithTool from '@/components/WordsStartWithTool';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/word-scramble',
@@ -16,8 +17,6 @@ const howToSteps = [
   { name: 'Add filters (optional)', text: 'Use Starts, Ends, Contains, and Length to match board slots or clues. Exclude or Include letters if you need extra constraints.' },
   { name: 'Pick a dictionary and search', text: 'Choose NYT Crossplay, Words With Friends, Scrabble US/UK, or all dictionaries, then tap SEARCH. Results are sorted by Scrabble-style score.' },
 ];
-
-const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
@@ -46,7 +45,6 @@ const faqs = [
   },
 ];
 
-const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta} fullBleed={true}>
@@ -153,10 +151,10 @@ const faqSchema = getFAQPageSchema(faqs);
       </details>
     ))}
   </div>
-</div>
-</div>
-</div>
 
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+  <InternalLinks />
+</div>
+</div>
+</div>
+<SeoSchemaBlocks faqs={faqs} howToSteps={howToSteps} />
 </Layout>

@@ -2,8 +2,10 @@
 import Layout from '@/layouts/Layout.astro';
 import WordleSolver from '@/components/WordleSolver';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
+import SchemaOrg from '@/components/SchemaOrg.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/wordle-solver',
@@ -49,7 +51,6 @@ const faqs = [
   },
 ];
 
-const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta} fullBleed={true}>
@@ -240,12 +241,13 @@ const faqSchema = getFAQPageSchema(faqs);
         </details>
       ))}
     </div>
+    <InternalLinks />
   </section>
 
       <div class="mt-12"></div>
 
-      <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
-      <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+      <SchemaOrg data={appSchema} />
+      <SeoSchemaBlocks faqs={faqs} />
     </div>
   </div>
 </Layout>

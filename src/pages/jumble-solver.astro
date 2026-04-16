@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/jumble-solver',
@@ -46,7 +47,6 @@ const faqs = [
   },
 ];
 
-const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta} fullBleed={true}>
@@ -247,8 +247,10 @@ const faqSchema = getFAQPageSchema(faqs);
     </div>
   </section>
 
+  <InternalLinks />
+
       </div>
     </div>
   </div>
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <SeoSchemaBlocks faqs={faqs} />
 </Layout>

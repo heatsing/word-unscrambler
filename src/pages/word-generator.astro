@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import AdSense from '@/components/AdSense';
 import RandomWordGenerator from '@/components/RandomWordGenerator';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/word-generator',
@@ -29,8 +30,6 @@ const faqs = [
     answer: 'Yes! Our word generator is completely free to use with no sign-up, no download, and no limits. Generate as many words as you want.',
   },
 ];
-
-const faqSchema = getFAQPageSchema(faqs);
 
 const interestingWords = [
   { word: 'Ephemeral', meaning: 'Lasting for a very short time' },
@@ -155,10 +154,12 @@ const interestingWords = [
     </div>
         </section>
 
+        <InternalLinks />
+
         <div class="mt-12"></div>
       </div>
     </div>
   </div>
 
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <SeoSchemaBlocks faqs={faqs} />
 </Layout>

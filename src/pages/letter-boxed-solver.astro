@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/letter-boxed-solver',
@@ -17,8 +18,6 @@ const howToSteps = [
   { name: 'Build your chain', text: 'In Letter Boxed, the last letter of each word must be the first letter of the next word. Use our list to plan optimal chains.' },
   { name: 'Complete the puzzle', text: 'Use all 12 letters as last letters to complete the puzzle. Fewer words in your chain = a better score.' },
 ];
-
-const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
@@ -47,7 +46,6 @@ const faqs = [
   },
 ];
 
-const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta} fullBleed={true}>
@@ -137,10 +135,9 @@ const faqSchema = getFAQPageSchema(faqs);
       </details>
     ))}
   </div>
+  <InternalLinks />
 </div>
 </div>
 </div>
-
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+<SeoSchemaBlocks faqs={faqs} howToSteps={howToSteps} />
 </Layout>

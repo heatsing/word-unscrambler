@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/descrambler',
@@ -45,7 +46,6 @@ const famousScrambles = [
   { scrambled: "WOLFEN", answer: "FENLOW", note: "Mixed geography term" },
 ];
 
-const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta} fullBleed={true}>
@@ -143,9 +143,9 @@ const faqSchema = getFAQPageSchema(faqs);
           <a href="/scrabble" class="btn">Scrabble Finder</a>
           <a href="/text-twist" class="btn">Text Twist</a>
         </div>
+        <InternalLinks />
       </div>
     </div>
   </div>
-
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <SeoSchemaBlocks faqs={faqs} />
 </Layout>

@@ -1,8 +1,11 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SchemaOrg from '@/components/SchemaOrg.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getSoftwareApplicationSchema, getFAQPageSchema } from '@/lib/schema';
+import { getSoftwareApplicationSchema } from '@/lib/schema';
 
 const meta = getMeta('/unscramble', 'Unscramble Words', 'Type your jumbled letters and get every valid word. Filter by length, sort by score or A–Z. Works for Wordle, Scrabble, and crosswords.');
 const appSchema = getSoftwareApplicationSchema();
@@ -11,7 +14,6 @@ const faqs = [
   { question: 'Can I use wildcards?', answer: 'The basic version uses only the letters you type. For wildcard support (e.g. ? for any letter), use our full Word Unscrambler tool.' },
   { question: 'Is it free?', answer: 'Yes. The unscramble tool is free to use with no sign-up required.' },
 ];
-const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta} fullBleed={true}>
@@ -56,10 +58,11 @@ const faqSchema = getFAQPageSchema(faqs);
             </details>
           ))}
         </div>
+        <InternalLinks />
       </div>
     </div>
   </div>
 
-  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <SchemaOrg data={appSchema} />
+  <SeoSchemaBlocks faqs={faqs} />
 </Layout>

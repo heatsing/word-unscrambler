@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import CrosswordSolver from '@/components/CrosswordSolver';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/crossword-solver',
@@ -17,8 +18,6 @@ const howToSteps = [
   { name: 'Add letters you know exist (optional)', text: 'Use the "Include letters" field to enter letters that must appear in the word, even if you don\'t know their position.' },
   { name: 'Find your answer', text: 'Click Find Words to see every word matching your pattern, sorted by relevance. Combine with the clue definition to find the right answer.' },
 ];
-
-const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
@@ -47,7 +46,6 @@ const faqs = [
   },
 ];
 
-const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta} fullBleed={true}>
@@ -165,10 +163,9 @@ const faqSchema = getFAQPageSchema(faqs);
       </details>
     ))}
   </div>
+  <InternalLinks />
 </div>
-
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+<SeoSchemaBlocks faqs={faqs} howToSteps={howToSteps} />
 </div>
 </div>
 </Layout>

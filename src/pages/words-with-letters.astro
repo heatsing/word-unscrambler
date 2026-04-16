@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getMeta } from '@/lib/meta';
+import InternalLinks from '@/components/InternalLinks.astro';
 import WordsStartWithTool from '@/components/WordsStartWithTool';
 
 const meta = getMeta(
@@ -29,7 +30,7 @@ const HERO_BG = '#79AE6F';
         </nav>
 
         <h1 class="wst-h1">Words With Letters</h1>
-        <p class="wst-sub">Enter up to 3 wildcards (? or space)</p>
+        <p class="wst-sub">Find words that contain your letters with up to 3 wildcards (? or space).</p>
 
         <WordsStartWithTool client:load />
       </div>
@@ -37,6 +38,10 @@ const HERO_BG = '#79AE6F';
 
     <section class="wst-browse" aria-labelledby="wwl-browse-heading">
       <div class="wst-browse-inner">
+        <p class="wst-intro">
+          This page helps when you know which letters must appear in a word but not exactly where they go. Use it to narrow Wordle candidates, build Scrabble plays from a rack, or explore word lists that contain specific letters across different word lengths.
+        </p>
+
         <h2 id="wwl-browse-heading" class="wst-browse-h2">Browse by word length</h2>
         <div class="wwl-length-stack">
           {lengths.map((len) => (
@@ -69,6 +74,8 @@ const HERO_BG = '#79AE6F';
             <a href="/unscramble">Unscramble</a> tool for quick letter-only searches.
           </p>
         </article>
+
+        <InternalLinks />
       </div>
     </section>
   </div>
@@ -132,6 +139,12 @@ const HERO_BG = '#79AE6F';
   .wst-browse-inner {
     max-width: 68rem;
     margin: 0 auto;
+  }
+  .wst-intro {
+    margin: 0 0 1.5rem;
+    color: var(--muted-foreground);
+    line-height: 1.7;
+    max-width: 56rem;
   }
   .wst-browse-h2 {
     font-size: 0.8rem;

@@ -1,8 +1,9 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import NYTCrossplaySolver from '@/components/NYTCrossplaySolver';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/nyt-crossplay-solver',
@@ -28,7 +29,6 @@ const faqs = [
   },
 ];
 
-const faqSchema = getFAQPageSchema(faqs);
 ---
 
 <Layout meta={meta} fullBleed={true}>
@@ -59,11 +59,11 @@ const faqSchema = getFAQPageSchema(faqs);
             </div>
           ))}
         </div>
+        <InternalLinks />
       </div>
     </section>
   </div>
-
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="footer" />
+  <SeoSchemaBlocks faqs={faqs} />
 </Layout>
 
 <style>

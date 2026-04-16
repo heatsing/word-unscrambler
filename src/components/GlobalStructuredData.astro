@@ -1,0 +1,57 @@
+---
+import SchemaOrg from '@/components/SchemaOrg.astro';
+import { getOrganizationSchema, getWebSiteSchema } from '@/lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  pathname?: string;
+}
+
+const { title, description, canonical, pathname = '/' } = Astro.props;
+const organizationSchema = getOrganizationSchema();
+const webSiteSchema = getWebSiteSchema();
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  description,
+  url: canonical,
+  inLanguage: 'en-US',
+  isPartOf: {
+    '@type': 'WebSite',
+    url: 'https://wordunscrambler.cc',
+    name: 'Word Unscrambler',
+  },
+};
+
+const pathSegments = pathname
+  .split('/')
+  .filter(Boolean)
+  .map((seg) => decodeURIComponent(seg).replace(/[-_]/g, ' '));
+
+const breadcrumbItems = [
+  { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://wordunscrambler.cc/' },
+  ...pathSegments.map((segment, index) => {
+    const urlPath = '/' + pathname.split('/').filter(Boolean).slice(0, index + 1).join('/') + '/';
+    return {
+      '@type': 'ListItem',
+      position: index + 2,
+      name: segment.replace(/\b\w/g, (m) => m.toUpperCase()),
+      item: `https://wordunscrambler.cc${urlPath}`,
+    };
+  }),
+];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbItems,
+};
+---
+
+<SchemaOrg data={organizationSchema} />
+<SchemaOrg data={webSiteSchema} />
+<SchemaOrg data={webPageSchema} />
+<SchemaOrg data={breadcrumbSchema} />

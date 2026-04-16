@@ -2,8 +2,9 @@
 import Layout from '@/layouts/Layout.astro';
 import UnscrambleTool from '@/components/UnscrambleTool';
 import AdSense from '@/components/AdSense';
+import InternalLinks from '@/components/InternalLinks.astro';
+import SeoSchemaBlocks from '@/components/SeoSchemaBlocks.astro';
 import { getMeta } from '@/lib/meta';
-import { getFAQPageSchema, getHowToSchema } from '@/lib/schema';
 
 const meta = getMeta(
   '/text-twist',
@@ -17,8 +18,6 @@ const howToSteps = [
   { name: 'Work through all word lengths', text: 'Text Twist awards points for words of different lengths. Look through the results for 3, 4, 5, and 6-letter words to maximize your score.' },
   { name: 'Beat the timer', text: 'Use the solver to check your work or find words you missed. It\'s especially useful for the hardest Text Twist levels where the 6-letter word is tricky.' },
 ];
-
-const howToSchema = getHowToSchema(howToSteps);
 
 const faqs = [
   {
@@ -46,8 +45,6 @@ const faqs = [
     answer: 'Absolutely. Whether you\'re playing against the clock in single-player mode or competing head-to-head against friends, our solver gives you every valid word instantly. Use it to check your answers or find words you missed.',
   },
 ];
-
-const faqSchema = getFAQPageSchema(faqs);
 
 const EXAMPLE_LETTERS = [
   { letters: 'T W I S T N', answer: 'TWISTS (6), WIST (4), TWIST (5), TINS (4), WITS (4), TINT (4)...' },
@@ -187,10 +184,9 @@ const EXAMPLE_LETTERS = [
       </details>
     ))}
   </div>
+  <InternalLinks />
 </div>
 </div>
 </div>
-
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-<script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+<SeoSchemaBlocks faqs={faqs} howToSteps={howToSteps} />
 </Layout>
